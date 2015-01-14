@@ -120,7 +120,8 @@
 }
 
 @function __is-space($char-code) {
-    // TODO
+    // TODO - find the rest of the space characters
+    @return $char-code == ' ';
 }
 
 @function __replace-holders($list, $placeholder) {
@@ -150,5 +151,52 @@
     @return $result;
 }
 
+@function __trimmed-left-index($string) {
+    $index: 1;
+    $length: str-length($string);
+
+    @while ($index <= $length) and (__is-space(__STRING-char-at($string, $index))) {
+        $index: $index + 1;
+    }
+
+    @return $index;
+}
+
+@function __trimmed-right-index($string) {
+    $index: str-length($string);
+
+    @while ($index > 0) and (__is-space(__STRING-char-at($string, $index))) {
+        $index: $index - 1;
+    }
+
+    @return $index;
+}
+
+@function __unescape-html-char($char) {
+    @return const-get('html-unescapes' $char);
+}
+
+// SASSDASH
+// ========
+
+@function __sassdash($value) {
+    @if (__is-map-like($value) && not type-of($value) == list) {
+        @if (instanceof($value, 'SassdashWrapper')) {
+            @return $value;
+        }
+    }
+
+    @return new('SassdashWrapper', (
+        value: $value
+    ));
+}
+
+@function SassdashWrapper($value, $chain-all: false, $actions: ()) {
+    @return (
+        __actions__: $actions,
+        __chain__: if($chain-all, true, false),
+        __wrapped__: $value
+    );
+}
 
 

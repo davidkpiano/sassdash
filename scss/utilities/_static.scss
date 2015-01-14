@@ -63,3 +63,26 @@ $__const__: () !global;
 
     @return $__const__;
 }
+
+@function new($type, $params, $extends: false) {
+    $instance-meta: (
+        _type: $type,
+        _extends: $extends
+    );
+
+    $instance: ();
+
+    @if $extends {
+        $instance: map-merge($instance, new($extends, $params));
+    }
+
+    $instance: map-merge($instance, call($type, $params...));
+
+    $instance: map-merge($instance, $instance-meta);
+
+    @return $instance;
+}
+
+@function instanceof($value, $type) {
+    @return get($value, _type) == $type;
+}

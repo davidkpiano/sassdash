@@ -10,6 +10,22 @@
             "'": '&#39;',
             '`': '&#96;'
         ));
+    $void: const-set('html-unescapes', (
+            '&amp;': '&',
+            '&lt;': '<',
+            '&gt;': '>',
+            '&quot;': '"',
+            '&#39;': "'",
+            '&#96;': '`'
+        ));
+    $void: const-set('string-escapes', (
+            '\\': '\\',
+            "'": "'",
+            '\n': 'n',
+            '\r': 'r',
+            '\u2028': 'u2028',
+            '\u2029': 'u2029'
+        ));
 }
 
 @include initialize();
@@ -85,5 +101,54 @@
     @return const-get('html-escapes' $char);
 }
 
-@debug __escape-html-char('&');
+@function __escape-string-char($char) {
+    @return '\\#{const-get('string-escapes' $char)}';
+}
+
+@function __index-of-nan($list, $from-index, $from-right) {
+    // TODO
+}
+
+@function __is-index($value, $length) {
+    @return $value > -1
+        and $value % 1 == 0
+        and ($length == null or $value < $length);
+}
+
+@function __is-map-like($value) {
+    @return $value and (type-of($value) == map);
+}
+
+@function __is-space($char-code) {
+    // TODO
+}
+
+@function __replace-holders($list, $placeholder) {
+    // TODO
+}
+
+@function __sorted-uniq($list, $iteratee: null) {
+    $seen: null;
+    $index: 1;
+    $length: length($list);
+    $res-index: 1;
+    $result: ();
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+        $computed: if($iteratee, call($iteratee, $value, $index, $list), $value);
+
+        @if not ($seen == $computed) {
+            $seen: $computed;
+            $result: append($result, $value);
+        }
+
+        $res-index: $res-index + 1;
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
 

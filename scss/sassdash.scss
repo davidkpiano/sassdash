@@ -1,0 +1,89 @@
+
+@import 'utilities/_static';
+
+@mixin initialize() {
+    $void: const-set('html-escapes', (
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '`': '&#96;'
+        ));
+}
+
+@include initialize();
+
+@function __base-compare-ascending($value, $other) {
+    @if $value > $other {
+        @return 1;
+    }
+
+    @if $value < $other {
+        @return -1;
+    }
+
+    @return 0;
+}
+
+@function __base-index-of($list, $value, $from-index: 1) {
+    $length: length($list);
+    $index: $from-index;
+
+    @while $index <= $length {
+        @if (nth($list, $index) == $value) {
+            @return $index;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return -1;
+}
+
+@function __base-sort-by() { /* TODO */ }
+
+@function __char-at-callback($string) {
+    // ... 
+}
+
+@function __STRING-char-at($string, $index) {
+    @return str-slice($string, $index, $index);
+}
+
+@function __chars-index($string, $chars, $direction) {
+    $index: 1;
+    $length: str-length($string);
+    $direction-map: ('right': -1, 'left': 1);
+    $increment: map-get($direction-map, $direction);
+
+    @while str-index($chars, __STRING-char-at($string, $index))
+        and $index <= $length {
+        $index: $index + $increment;
+    }
+
+    @return $index;
+}
+
+@function __chars-left-index($string, $chars) {
+    @return __chars-index($string, $chars, $direction: left);
+}
+
+@function __chars-right-index($string, $chars) {
+    @return __chars-index($string, $chars, $direction: right);
+}
+
+@function __compare-ascending($map, $other) {
+    // TODO
+}
+
+@function __compare-multiple-ascending($map, $other) {
+    // TODO
+}
+
+@function __escape-html-char($char) {
+    @return const-get('html-escapes' $char);
+}
+
+@debug __escape-html-char('&');
+

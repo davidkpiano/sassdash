@@ -1,0 +1,65 @@
+
+
+$__static__: () !global;
+$__const__: () !global;
+
+@function pop($list) {
+    $length: length($list);
+    $index: 2;
+    $popped-list: ();
+
+    @while $index <= $length {
+        $popped-list: append($popped-list, nth($list, $index));
+
+        $index: $index + 1;
+    }
+
+    @return $popped-list;
+}
+
+@function get($map, $properties) {
+    $map: map-get($map, nth($properties, 1));
+    $properties: pop($properties);
+
+    @if not $map {
+        @return null;
+    }
+
+    @if length($properties) == 0 {
+        @return $map;
+    }
+
+    @return get($map, $properties);
+}
+
+@function set($map, $properties, $value) {
+    $property: nth($properties, 1);
+    $properties: pop($properties);
+    $child-map: map-get($map, $property);
+
+    @if length($properties) == 0 {
+        @return map-merge($map, ($property: $value));
+    }
+
+    @return map-merge($map, ($property: set($child-map, $properties, $value)));
+}
+
+@function static-get($properties) {
+    @return get($__static__, $properties);
+}
+
+@function static-set($properties, $value) {
+    $__static__: set($__static__, $properties, $value) !global;
+
+    @return $__static__;
+}
+
+@function const-get($properties) {
+    @return get($__const__, $properties);
+}
+
+@function const-set($properties, $value) {
+    $__const__: set($__const__, $properties, $value) !global;
+
+    @return $__const__;
+}

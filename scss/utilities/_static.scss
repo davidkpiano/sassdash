@@ -64,7 +64,7 @@ $__const__: () !global;
     @return $__const__;
 }
 
-@function new($type, $params, $extends: false) {
+@function new($type, $params: (), $extends: false) {
     $instance-meta: (
         _type: $type,
         _extends: $extends
@@ -81,6 +81,11 @@ $__const__: () !global;
     $instance: map-merge($instance, $instance-meta);
 
     @return $instance;
+}
+
+@function method($instance, $method, $params...) {
+    $instance-method: get($instance, $method);
+    @return call(get($instance, $method), $params...);
 }
 
 @function instanceof($value, $type) {

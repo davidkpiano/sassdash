@@ -1,5 +1,6 @@
 
 @import 'utilities/_static';
+@import 'utilities/_helpers';
 
 @mixin initialize() {
     $void: const-set('html-escapes', (
@@ -26,6 +27,7 @@
             '\u2028': 'u2028',
             '\u2029': 'u2029'
         ));
+    $void: const-set('POSITIVE_INFINITY', 999999);
 }
 
 @include initialize();
@@ -198,5 +200,142 @@
         __wrapped__: $value
     );
 }
+
+@function LazyWrapper($value) {
+    @return (
+        actions: null,
+        dir: 1,
+        drop-count: 0,
+        filtered: false,
+        iteratees: null,
+        take-count: const-get('POSITIVE_INFINITY'),
+        views: null,
+        wrapped: $value
+    );
+}
+
+@function __lazy-clone() {
+    // todo
+}
+
+@function __lazy-reverse() {
+    // todo
+}
+
+@function __lazy-value() {
+    // todo
+}
+
+@function MapCache() {
+    @return (
+        __data__: ()
+    );
+}
+
+@function __map-delete($this, $key) {
+    $data: get($this, __data__);
+
+    @return set($this, map-delete($data, $key));
+}
+
+@function __map-get($this, $key) {
+    @return get($this, __data__ $key);
+}
+
+@function __map-has($this, $key) {
+    $data: get($this, __data__);
+
+    @return map-has-key($data, $key);
+}
+
+@function __map-set($this, $key, $value) {
+    @return set($this, __data__ $key, $value);
+}
+
+@function SetCache($values: ()) {
+    @return (
+        data: (
+            number: (),
+            set: new(Set)
+        ),
+        values: $values
+    );
+}
+
+@function __cache-index-of($this, $value) {
+    $type: type-of($value);
+    $data: get($this, data);
+    $result: if($type == number, get($data, $type $value), method(get($data, set), has, $value));
+
+    @return if($result, 0, -1);
+}
+
+@function __cache-push($this, $value) {
+    $data: get($this, data);
+    $type: type-of($value);
+
+    @if ($type == number) {
+        $data: set($data, $type $value, true);
+    } @else {
+        // data.set.add(value);
+        $data: set($data, set, method(get($data, set), add, $value));
+    }
+}
+
+@function __args-to-map($args) {
+    // todo
+}
+
+@function __list-copy($list, $other: ()) {
+    $index: 1;
+    $length: length($list);
+    $other-length: length($other);
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, nth($list, $index));
+
+        $index: $index + 1;
+    }
+
+    @while ($other-length >= $index) {
+        $result: append($result, nth($other, $index));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __list-each($list, $iteratee) {
+    $index: 1;
+    $length: length($list);
+    $break: false;
+    $result-list: ();
+
+    @while ($index <= $length) and not $break {
+        $item: call($iteratee, nth($list, $index), $index, $list);
+
+        @if (call($iteratee, nth($list, $index), $index, $list) == false) {
+            $break: true;
+        } @else {
+            $result-list: append($result-list, $item);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result-list;
+}
+
+@function __list-each-right($list, $iteratee) {
+    $list: __list-reverse($list);
+    $result-list: __list-each($list, $iteratee);
+    $result-list: __list-reverse($result-list);
+
+    @return $result-list;
+}
+
+
 
 

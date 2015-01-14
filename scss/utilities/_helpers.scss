@@ -1,0 +1,12 @@
+
+
+@function __list-reverse($list) {
+    $length: length($list);
+    $result-list: ();
+
+    @for $index from $length through 1 {
+        $result-list: append($result-list, nth($list, $index));
+    }
+
+    @return $result-list;
+}

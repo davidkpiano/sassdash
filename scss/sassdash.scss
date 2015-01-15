@@ -28,6 +28,8 @@
             '\u2029': 'u2029'
         ));
     $void: const-set('POSITIVE_INFINITY', 999999);
+    $void: const-set('NEGATIVE_INFINITY', -999999);
+
 }
 
 @include initialize();
@@ -334,6 +336,142 @@
     $result-list: __list-reverse($result-list);
 
     @return $result-list;
+}
+
+@function __list-every($list, $predicate) {
+    $index: 1;
+    $length: length($list);
+
+    @while ($index <= $length) {
+        @if (not call($predicate, nth($list, $index), $index, $list)) {
+            @return false;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return true;
+}
+
+@function __list-filter($list, $predicate) {
+    $index: 1;
+    $length: length($list);
+    $result-list: ();
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+
+        @if (call($predicate, $value, $index, $list)) {
+            $result-list: append($result-list, $value);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result-list;
+}
+
+// TODO remove - for testing only
+@function is-even($val, $idx, $list) {
+    @return $val % 2 == 0;
+}
+
+@function __list-map($list, $iteratee) {
+    $index: 1;
+    $length: length($list);
+    $result-list: ();
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+
+        $result-list: append($result-list, call($iteratee, $value, $index, $list));
+
+        $index: $index + 1;
+    }
+
+    @return $result-list;
+}
+
+@function __list-max($list) {
+    $index: 1;
+    $length: length($list);
+    $result: const-get(NEGATIVE_INFINITY);
+
+    // TODO use Hugo's comparison for strings
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+        @if ($value > $result) {
+            $result: $value;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __list-min($list) {
+    $index: 1;
+    $length: length($list);
+    $result: const-get(POSITIVE_INFINITY);
+
+    // TODO use Hugo's comparison for strings
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+        @if ($value < $result) {
+            $result: $value;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __list-reduce($list, $iteratee, $accumulator: null, $init-from-list: true) {
+    $index: 1;
+    $length: length($list);
+
+    @if ($init-from-list and ($length > 0)) {
+        $accumulator: nth($list, $index);
+        $index: $index + 1;
+    }
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+        $accumulator: call($iteratee, $accumulator, $value, $index, $list);
+
+        $index: $index + 1;
+    }
+
+    @return $accumulator;
+}
+
+@function __list-reduce-right($list, $iteratee, $accumulator: null, $init-from-list: true) {
+    $list: __list-reverse($list);
+
+    @return __list-reduce($list, $iteratee, $accumulator, $init-from-list);
+}
+
+@function __list-some($list, $predicate) {
+    $index: 1;
+    $length: length($list);
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+
+        @if (call($predicate, $value, $index, $list)) {
+            @return true;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return false;
+}
+
+@function __assign-defaults($map-value, $source-value) {
+    @return if($map-value == null, $source-value, $map-value);
 }
 
 

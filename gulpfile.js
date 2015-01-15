@@ -5,7 +5,8 @@ gulp.task('scss', function() {
     gulp.src('scss/*.scss')
         .pipe(sass({
             style: 'expanded',
-            "sourcemap=none": true
+            "sourcemap=none": true,
+            trace: true
         }))
         .pipe(gulp.dest('css'));
 });

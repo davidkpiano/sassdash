@@ -1,4 +1,7 @@
 
+@function __char-at($string, $index) {
+    @return str-slice($string, $index, $index);
+}
 
 @function __list-reverse($list) {
     $length: length($list);
@@ -59,6 +62,33 @@
     @return new(SetCache, $values);
 }
 
+@function __to-map($value) {
+    @if (type-of($value) == string) {
+        $index: 1;
+        $length: str-length($value);
+        $result: ();
+
+        @while ($index <= $length) {
+            $result: set($result, $index, __char-at($string, $index));
+        }
+
+        @return $result;
+    } @else if (type-of($value) == list) {
+        $index: 1;
+        $length: length($value);
+        $result: ();
+
+        @while ($index <= $length) {
+            $result: set($result, $index, nth($value, $index));
+
+            $index: $index + 1;
+        }
+
+        @return $result;
+    } @else if (type-of($value) == map) {
+        @return $map;
+    }
+}
 
 
 

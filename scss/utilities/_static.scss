@@ -1,6 +1,7 @@
 
 
 $__static__: () !global;
+$__scope__: () !global;
 $__const__: () !global;
 
 @function pop($list) {
@@ -52,6 +53,22 @@ $__const__: () !global;
     $__static__: set($__static__, $properties, $value) !global;
 
     @return $__static__;
+}
+
+@function scope-set($properties, $value: null) {
+    $__scope__: set($__scope__, $properties, $value) !global;
+
+    @return get($__scope__, $properties);
+}
+
+@function scope-get($properties) {
+    @return get($__scope__, $properties);
+}
+
+@function scope-end() {
+    $__scope__: () !global;
+
+    @return null;
 }
 
 @function const-get($properties) {

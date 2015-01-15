@@ -71,17 +71,13 @@
     // ... 
 }
 
-@function __STRING-char-at($string, $index) {
-    @return str-slice($string, $index, $index);
-}
-
 @function __chars-index($string, $chars, $direction) {
     $index: 1;
     $length: str-length($string);
     $direction-map: ('right': -1, 'left': 1);
     $increment: map-get($direction-map, $direction);
 
-    @while str-index($chars, __STRING-char-at($string, $index))
+    @while str-index($chars, __char-at($string, $index))
         and $index <= $length {
         $index: $index + $increment;
     }
@@ -165,7 +161,7 @@
     $index: 1;
     $length: str-length($string);
 
-    @while ($index <= $length) and (__is-space(__STRING-char-at($string, $index))) {
+    @while ($index <= $length) and (__is-space(__char-at($string, $index))) {
         $index: $index + 1;
     }
 
@@ -175,7 +171,7 @@
 @function __trimmed-right-index($string) {
     $index: str-length($string);
 
-    @while ($index > 0) and (__is-space(__STRING-char-at($string, $index))) {
+    @while ($index > 0) and (__is-space(__char-at($string, $index))) {
         $index: $index - 1;
     }
 
@@ -602,6 +598,110 @@
     @return $result;
 }
 
+@function __base-each($collection, $iteratee) {
+    $length: if($collection, length($collection), 0);
+
+    @if (not type-of($collection) == list) {
+        @return __base-for-own($collection, $iteratee);
+    }
+
+    $index: 1;
+    $iterable: __to-map($collection);
+
+    $break: false;
+
+    @while ($index <= $length and not $break) {
+        $iteration: call($iteratee, get($iterable, $index), $index, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $iterable: set($iterable, $index, $iteration);
+        }
+
+        $index: $index + 1;
+    }
+
+    $collection: $iterable;
+
+    @return $collection;
+}
+
+@function __base-each-right($collection, $iteratee) {
+    $collection: __list-reverse($collection);
+
+    $reversed-result: _base-each($collection, $iteratee);
+
+    @return __list-reverse($collection);
+}
+
+@function __base-every-iteratee($value, $index, $collection) {
+    $predicate: scope-get(predicate);
+
+    $result: if(call($predicate, $value, $index, $collection), true, false);
+
+    $void: scope-set(result, $result);
+
+    @return null;
+}
+@function __base-every($collection, $predicate) {
+    $void: scope-set(result, true);
+    $void: scope-set(predicate, $predicate);
+
+    $void: __base-each($collection, __base-every-iteratee);
+
+    $result: scope-get(result);
+    $void: scope-end;
+
+    @return if($result, true, false);
+}
+
+@function __base-filter-iteratee($value, $index, $collection) {
+    $result: scope-get(result);
+    $predicate: scope-get(predicate);
+
+    @if (call($predicate, $value, $index, $collection)) {
+        $void: scope-set(result, append($result, $value));
+    }
+
+    @return null;
+}
+@function __base-filter($collection, $predicate) {
+    $void: scope-set(result, ());
+    $void: scope-set(predicate, $predicate);
+
+    $void: __base-each($collection, __base-filter-iteratee);
+
+    $result: scope-get(result);
+    $void: scope-end;
+
+    @return $result;
+}
+
+@function __base-find-iteratee($value, $key, $collection) {
+    $predicate: scope-get(predicate);
+    $return-key: scope-get(return-key);
+
+    @if call($predicate, $value, $key, $collection) {
+        $void: scope-set(result, if($return-key, $key, $value));
+
+        @return false;
+    }
+
+    @return null;
+}
+@function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
+    $void: scope-set(result, null);
+    $void: scope-set(predicate, $predicate);
+    $void: scope-set(return-key, $return-key);
+
+    $void: call($each-function, $collection, __base-find-iteratee);
+
+    $result: scope-get(result);
+    $void: scope-end;
+
+    @return $result;
+}
 
 
 

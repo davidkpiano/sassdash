@@ -10,3 +10,56 @@
 
     @return $result-list;
 }
+
+@function pow($number, $exp) {
+    $value: 1;
+    
+    @if $exp > 0 {
+        // If the exponent is positive, multiply.
+        @for $i from 1 through $exp {
+           $value: $value * $number;
+        }
+    }
+    @else if $exp < 0 {
+        // If the exponent is negative, divide.
+        @for $i from 1 through -$exp {
+            $value: $value / $number;
+        }
+    }
+
+    @return $value;
+}
+
+@function __parse-float($value) {
+    @if type-of($value) == number {
+        @return $value;
+    }
+
+    @return __to-number($value);
+}
+
+@function __is-length($value) {
+    @return type-of($value) == number
+        and $value > -1
+        and $value % 1 == 0
+        and $value < (pow(2, 53) - 1);
+}
+
+@function __is-index($value, $length: null) {
+    $value: __parse-float($value);
+
+    @debug $value, $length, $value <= $length;
+    
+    @return $value > 0
+        and $value % 1 == 0
+        and ($length == null or $value <= $length);
+}
+
+@function __create-cache($values) {
+    @return new(SetCache, $values);
+}
+
+
+
+
+

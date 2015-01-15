@@ -1,6 +1,8 @@
 
+
 @import 'utilities/_static';
 @import 'utilities/_helpers';
+@import 'utilities/_parse_float';
 
 @mixin initialize() {
     $void: const-set('html-escapes', (
@@ -29,10 +31,12 @@
         ));
     $void: const-set('POSITIVE_INFINITY', 999999);
     $void: const-set('NEGATIVE_INFINITY', -999999);
-
+    $void: const-set('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
 }
 
 @include initialize();
+
+
 
 @function __base-compare-ascending($value, $other) {
     @if $value > $other {
@@ -113,10 +117,12 @@
     // TODO
 }
 
-@function __is-index($value, $length) {
-    @return $value > -1
+@function __is-index($value, $length: null) {
+    $value: __parse-float($value);
+    
+    @return $value > 0
         and $value % 1 == 0
-        and ($length == null or $value < $length);
+        and ($length == null or $value <= $length);
 }
 
 @function __is-map-like($value) {
@@ -473,6 +479,130 @@
 @function __assign-defaults($map-value, $source-value) {
     @return if($map-value == null, $source-value, $map-value);
 }
+
+@function __assign-own-defaults() {
+    // todo
+}
+
+@function __base-assign($map, $source, $customizer: false) {
+    $index: 1;
+    $props: map-keys($source);
+    $length: length($props);
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+
+        @if ($customizer) {
+            $value: get($map, $key);
+            $result: call($customizer, $value, get($source, $key), $key, $map, $source);
+
+            @if ($result == if($result, not $result == $value, $value))
+                or ($value == null and not map-has-key($map, $key))
+            {
+                $map: set($map, $key, $result);
+            }
+        } @else {
+            $map: set($map, $key, get($source, $key));
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $map;
+}
+
+@function __base-at($collection, $props) {
+    $index: 1;
+    $length: length($collection);
+    $is-list: type-of($collection) == list;
+    $props-length: length($props);
+    $result: ();
+
+    @while ($index <= $props-length) {
+        $key: nth($props, $index);
+
+        @if ($is-list) {
+            $key: __parse-float($key);
+            $result: append($result, if(__is-index($key, $length), nth($collection, $key), null));
+        } @else {
+            $result: append($result, get($collection, $key));
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __base-bind-all() {
+    // todo
+}
+
+@function __base-callback() {
+    // todo
+}
+
+@function __base-clone() {
+    // todo
+}
+
+@function __base-create() {
+    // todo
+}
+
+@function __base-delay() {
+    // not being implemented
+}
+
+@function __base-difference($list, $values) {
+    $length: if(type-of($list) == list, length($list), 0);
+    $result: ();
+
+    @if ($length == 0) {
+        @return $result;
+    }
+
+    $index: 1;
+    $index-of: __base-index-of; // getIndexOf()
+    $is-common: ($index-of == __base-index-of);
+    $cache: if($is-common and length($values) >= 200, __create-cache($values), false);
+    $values-length: length($values);
+
+    @if ($cache) {
+        $index-of: __cache-index-of;
+        $is-common: false;
+        $values: $cache;
+    }
+
+    @while ($index <= $length) {
+        $continue-outer: false;
+        $value: nth($list, $index);
+
+        @if ($is-common) {
+            $values-index: $values-length;
+
+            @while ($values-index > 0 and not $continue-outer) {
+                @if (nth($values, $values-index) == $value) {
+                    $continue-outer: true;
+                } @else {
+                    $values-index: $values-index - 1;
+                }
+            }
+
+            @if (not $continue-outer) {
+                $result: append($result, $value);
+            }
+        } @else if (call($index-of, $values, $value) < 0) {
+            $result: append($result, $value);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
 
 
 

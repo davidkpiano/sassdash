@@ -19,7 +19,16 @@ $__const__: () !global;
 }
 
 @function get($map, $properties) {
-    $map: map-get($map, nth($properties, 1));
+    @if not (type-of($map) == list or type-of($map) == map) {
+        $map: ($map,);
+    }
+
+    @if type-of($map) == list {
+        $map: nth($map, nth($properties, 1));
+    } @else {
+        $map: map-get($map, nth($properties, 1));
+    }
+
     $properties: pop($properties);
 
     @if not $map {

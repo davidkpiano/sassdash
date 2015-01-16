@@ -86,8 +86,25 @@
 
         @return $result;
     } @else if (type-of($value) == map) {
-        @return $map;
+        @return $value;
     }
+}
+
+@function __to-list($value) {
+    // TODO
+    @if type-of($value) == map {
+        $length: length($value);
+        $index: 1;
+        $result: ();
+
+        @while ($index <= $length) {
+            $result: append(get($value, $index));
+        }
+
+        @return if($result == map-values($value), $result, map-values($value));
+    }
+
+    @return $value;
 }
 
 @function __is-list($value) {
@@ -109,4 +126,45 @@
     @return __keys-in($map);
 }
 
+@function __base-for($map, $iteratee, $keys-function) {
+    $index: 1;
+    $iterable: __to-map($map);
+    $props: call($keys-function, $iterable);
+    $length: length($props);
+    $result-map: ();
 
+    $break: false;
+
+    @while ($index <= $length and not $break) {
+        $key: nth($props, $index);
+        $iteration: call($iteratee, get($iterable, $key), $key, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $result-map: set($result-map, $key, $iteration);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result-map;
+}
+
+@function __base-for-own($map, $iteratee) {
+    @return __base-for($map, $iteratee, __keys);
+}
+
+@function __is-strict-comparable($value) {
+    @return true;
+}
+
+@function __is-list-like($value) {
+    // TODO
+    @return __is-list($value);
+}
+
+@function __is-plain-map($value) {
+    // TODO
+    @return type-of($value) == map;
+}

@@ -1,5 +1,5 @@
 
-
+@import 'utilities/_sort';
 @import 'utilities/_static';
 @import 'utilities/_helpers';
 @import 'utilities/_parse_float';
@@ -541,8 +541,11 @@
     // todo
 }
 
-@function __base-clone() {
+@function __base-clone($value, $is-deep: false, $customizer: null, $key: null, $object: null) {
     // todo
+
+    // Sass does not copy by reference, so returning same value is safe
+    @return $value;
 }
 
 @function __base-create() {
@@ -604,7 +607,7 @@
 @function __base-each($collection, $iteratee) {
     $length: if($collection, length($collection), 0);
 
-    @if (not type-of($collection) == list) {
+    @if not (type-of($collection) == list) {
         @return __base-for-own($collection, $iteratee);
     }
 
@@ -625,10 +628,13 @@
         $index: $index + 1;
     }
 
-    $collection: $iterable;
+    $collection: if(type-of($collection) == list, map-values($iterable), $iterable);
 
     @return $collection;
 }
+
+// @debug __base-each((1, 3, 55), double);
+// @debug __base-each((foo: 1, bar: 3, baz: 55), double);
 
 @function __base-each-right($collection, $iteratee) {
     $collection: __list-reverse($collection);
@@ -741,30 +747,30 @@
     @return $result;
 }
 
-@function __base-for($map, $iteratee, $keys-function) {
-    $index: 1;
-    $iterable: __to-map($map);
-    $props: call($keys-function, $iterable);
-    $length: length($props);
-    $result-map: ();
+// @function __base-for($map, $iteratee, $keys-function) {
+//     $index: 1;
+//     $iterable: __to-map($map);
+//     $props: call($keys-function, $iterable);
+//     $length: length($props);
+//     $result-map: ();
 
-    $break: false;
+//     $break: false;
 
-    @while ($index <= $length and not $break) {
-        $key: nth($props, $index);
-        $iteration: call($iteratee, get($iterable, $key), $key, $iterable);
+//     @while ($index <= $length and not $break) {
+//         $key: nth($props, $index);
+//         $iteration: call($iteratee, get($iterable, $key), $key, $iterable);
 
-        @if ($iteration == false) {
-            $break: true;
-        } @else {
-            $result-map: set($result-map, $key, $iteration);
-        }
+//         @if ($iteration == false) {
+//             $break: true;
+//         } @else {
+//             $result-map: set($result-map, $key, $iteration);
+//         }
 
-        $index: $index + 1;
-    }
+//         $index: $index + 1;
+//     }
 
-    @return $result-map;
-}
+//     @return $result-map;
+// }
 
 @function __base-for-right($map, $iteratee, $keys-function) {
     $map: __list-reverse($map);
@@ -778,9 +784,9 @@
     @return __base-for($map, $iteratee, __keys-in);
 }
 
-@function __base-for-own($map, $iteratee) {
-    @return __base-for($map, $iteratee, __keys);
-}
+// @function __base-for-own($map, $iteratee) {
+//     @return __base-for($map, $iteratee, __keys);
+// }
 
 @function __base-for-own-right($map, $iteratee) {
     @return __base-for-right($map, $iteratee, __keys);
@@ -789,7 +795,7 @@
 @function __base-functions($map, $props) {
     $index: 1;
     $length: length($props);
-    $result: ()
+    $result: ();
 
     @while ($index <= $length) {
         $key: nth($props, $index);
@@ -804,4 +810,333 @@
     @return $result;
 }
 
+@function __base-invoke-iteratee($value, $index, $collection) {
+    $function: scope-get(method-name);
+    $args: scope-get(args);
+
+    @return call($function, $value, $index, $collection, $args...);
+}
+@function __base-invoke($collection, $method-name, $args...) {
+    $index: 1;
+    $is-function: function-exists($method-name);
+    $length: if($collection, length($collection), 0);
+
+    $_: scope-set(method-name, $method-name);
+    $_: scope-set(args, $args);
+    
+    $result: __base-each($collection, __base-invoke-iteratee);
+
+    $_: scope-end();
+
+    @return $result;
+}
+
+@function __base-is-equal($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
+    @return $value == $other;
+}
+
+@function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
+    @return $value == $other;
+}
+
+@function __base-is-match($map, $props, $values, $strict-compare-flags: (), $customizer: false) {
+    $length: length($props);
+    $result: null;
+
+    @if ($map == null) {
+        @return if($length == 0 or $length == null, false, true);
+    }
+
+    $index: 1;
+    $no-customizer: if($customizer, false, true);
+
+    @while ($index <= $length) {
+        @if if(($no-customizer and length($strict-compare-flags) > 0 and nth($strict-compare-flags, $index)),
+                (not nth($values, $index) == get($map, nth($props, $index))),
+                (not map-has-key($map, nth($props, $index)))
+            ) {
+            @return false;
+        }
+
+        $index: $index + 1;
+    }
+
+    $index: 1;
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+
+        @if ($no-customizer and length($strict-compare-flags) > 0 and nth($strict-compare-flags, $index)) {
+            $result: map-has-key($map, $key);
+        } @else {
+            $map-value: get($map, $key);
+            $src-value: get($values, $index);
+
+            $result: if($customizer, call($customizer, $map-value, $src-value, $key), null);
+
+            @if ($result == null) {
+                $result: call(__base-is-equal, $src-value, $map-value, $customizer, true);
+            }
+        }
+
+        @if (not $result) {
+            @return false;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return true;
+}
+
+// @debug __base-is-match((foo: bar, baz: 42), (baz), (43));
+
+@function __base-map($collection, $iteratee) {
+    $result: ();
+
+    $result: append($result, __base-each($collection, $iteratee));
+
+    @return $result;
+}
+
+// @debug __base-map((foo: 1, bar: 3, baz: 55), double);
+
+@function __base-matches-function-1($map) {
+    $value: scope-get(value);
+    $key: scope-get(key);
+
+    $_: scope-end();
+
+    @return (not ($map == null))
+        and (map-has-key($map, $key))
+        and ($value == get($map, $key));
+}
+@function __base-matches-function-2($map) {
+    $props: scope-get(props);
+    $values: scope-get(values);
+    $strict-compare-flags: scope-get(strict-compare-flags);
+
+    $_: scope-end();
+
+    @return __base-is-match($map, $props, $values, $strict-compare-flags);
+}
+@function __base-matches($source, $is-cloned: false) {
+    $props: map-keys($source);
+    $length: length($props);
+
+    @if ($length == 1) {
+        $key: nth($props, 1);
+        $value: get($source, $key);
+
+        $_: scope-set(key, $key);
+        $_: scope-set(value, $value);
+
+        @if (__is-strict-comparable($value)) {
+            @return '__base-matches-function-1';
+        }
+    }
+
+    @if ($is-cloned) {
+        $source: __base-clone($source, true);
+    }
+
+    $values: (); // list
+    $strict-compare-flags: (); // list
+
+    @while ($length > 0) {
+        $value: get($source, nth($props, $length));
+        $values: set($values, $length, $value);
+        $strict-compare-flags: set($strict-compare-flags, $length, __is-strict-comparable($value));
+
+        $length: $length - 1;
+    }
+
+    $values: __to-list($values);
+    $strict-compare-flags: __to-list($strict-compare-flags);
+
+    $_: scope-set(props, $props);
+    $_: scope-set(values, $values);
+    $_: scope-set(strict-compare-flags, $strict-compare-flags);
+
+    @return '_base-matches-function-2';
+}
+
+@function __base-merge-iteratee($src-value, $key, $source) {
+    $map: scope-get(map);
+    $source: scope-get(source);
+    $customizer: scope-get(customizer);
+    $stack-a: scope-get(stack-a);
+    $stack-b: scope-get(stack-b);
+    $is-src-list: scope-get(is-src-list);
+
+    $is-list: __is-list-like($src-value);
+    $is-map: __is-plain-map($src-value);
+    $value: get($map, $key);
+
+    @if not ($is-list or $is-map) {
+        $result: if($customizer, call($customizer, $value, $src-value, $key, $map, $source), null);
+        $is-common: ($result == null);
+
+        @if ($is-common) {
+            $result: $src-value;
+        }
+
+        @if ($is-src-list or not $result == null)
+            and ($is-common or not $result == $value)
+        {
+            $map: set($map, $key, $result);
+        }
+
+        @return $map;
+    }
+
+    $stack-a: if(length($stack-a), $stack-a, ());
+    $stack-b: if(length($stack-b), $stack-b, ());
+
+    $length: length($stack-a);
+
+    @while ($length > 0) {
+        @if (nth($stack-a, $length) == $src-value) {
+            $map: set($map, $key, nth($stack-b, $length));
+
+            @return $map;
+        }
+
+        $result: if($customizer, call($customizer, $value, $src-value, $key, $map, $source), null);
+        $is-common: ($result == null);
+
+        @if ($is-common) {
+            $result: if($is-list,
+                if(__is-list($value), $value, ()),
+                if(__is-plain-map($value), $value, ()));
+        }
+
+        $stack-a: append($stack-a, $src-value);
+        $stack-b: append($stack-b, $result);
+
+        @if ($is-common) {
+            $map: set($map, $key, __base-merge($result, $src-value, $customizer, $stack-a, $stack-b));
+        } @else if not ($result == $value) {
+            $map: set($map, $key, $result);
+        }
+
+        $length: $length - 1;
+    }
+
+    @return $map;
+}
+@function __base-merge($map, $source, $customizer: null, $stack-a: null, $stack-b: null) {
+    $is-src-list: __is-list-like($source);
+    $result: ();
+
+    $_: scope-set(map, $map);
+    $_: scope-set(source, $source);
+    $_: scope-set(customizer, $customizer);
+    $_: scope-set(stack-a, $stack-a);
+    $_: scope-set(stack-b, $stack-b);
+    $_: scope-set(is-src-list, $is-src-list);
+
+    $merge-function: if($is-src-list, __array-each, __base-for-own);
+
+    $result: call($merge-function, $source, __base-merge-iteratee);
+
+    $_: scope-end();
+
+    @return $result;
+}
+
+// @debug __base-merge((baz: butt), (foo: bar, baz: quo));
+
+
+@function __base-property-function($map) {
+    $key: scope-get(key);
+
+    @return if($map == null, null, get($map, $key));
+}
+@function __base-property($key) {
+    $_: scope-set(key, $key);
+
+    @return __base-property-function;
+}
+
+@function __base-pull-at($list, $indexes) {
+    // not implementing - mutates list
+}
+
+@function __base-random($min, $max) {
+    @return $min + floor(random() * ($max - $min + 1));
+}
+
+// @debug __base-random(3, 10);
+
+@function __base-reduce-iteratee($value, $index, $collection) {
+    $collection: scope-get(collection);
+    $iteratee: scope-get(iteratee);
+    $accumulator: scope-get(accumulator);
+    $init-from-collection: scope-get(init-from-collection);
+    $each-function: scope-get(each-function);
+
+    @if ($init-from-collection) {
+        $init-from-collection: false;
+        $accumulator: $value;
+    } @else {
+        $accumulator: call($iteratee, $accumulator, $value, $index, $collection);
+    }
+
+    $_: scope-set(collection, $collection);
+    $_: scope-set(iteratee, $iteratee);
+    $_: scope-set(accumulator, $accumulator);
+    $_: scope-set(init-from-collection, $init-from-collection);
+    $_: scope-set(each-function, $each-function);
+
+    @return null;
+}
+@function __base-reduce($collection, $iteratee, $accumulator, $init-from-collection, $each-function) {
+    $_: scope-set(collection, $collection);
+    $_: scope-set(iteratee, $iteratee);
+    $_: scope-set(accumulator, $accumulator);
+    $_: scope-set(init-from-collection, $init-from-collection);
+    $_: scope-set(each-function, $each-function);
+
+    $_: call($each-function, $collection, __base-reduce-iteratee);
+
+    $accumulator: scope-get(accumulator);
+
+    @return $accumulator;
+}
+
+@function __base-set-data() {
+    // todo
+}
+
+@function __base-slice($list, $start: null, $end: null) {
+    $index: 1;
+    $length: length($list);
+
+    $start: if($start == null, 0, if($start, $start, 0));
+
+    @if ($start < 0) {
+        $start: if(-$start > $length, 0, ($length + $start));
+    }
+
+    $end: if($end == null or $end > $length, $length, if($end, $end, 0));
+
+    @if ($end < 0) {
+        $end: $end + $length;
+    }
+
+    $length: if($start > $end, 0, ($end - $start));
+
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, nth($list, ($index + $start)));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@debug __base-slice((1 2 3 4 5 6 7 8), 2, 5);
 

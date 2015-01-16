@@ -90,6 +90,23 @@
     }
 }
 
+@function __is-list($value) {
+    @return type-of($value) == list;
+}
 
+@function __is-arguments($value) {
+    @return __is-list($value);
+}
+
+@function __keys-in($map) {
+    $map: __to-map($map);
+
+    @return map-keys($map);
+}
+
+@function __keys($map) {
+    // currently the same as __keys-in
+    @return __keys-in($map);
+}
 
 

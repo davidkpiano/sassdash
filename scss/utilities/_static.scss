@@ -3,6 +3,7 @@
 $__static__: () !global;
 $__scope__: () !global;
 $__const__: () !global;
+$__this__: () !global;
 
 @function pop($list) {
     $length: length($list);
@@ -117,3 +118,15 @@ $__const__: () !global;
 @function instanceof($value, $type) {
     @return get($value, _type) == $type;
 }
+
+@function this($this-arg: false) {
+    @if ($this-arg) {
+        $__this__: $this-arg !global;
+    } @else {
+        @return $__this__;
+    }
+
+    @return null;
+}
+
+

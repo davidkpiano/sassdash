@@ -32,6 +32,9 @@
     $void: const-set('POSITIVE_INFINITY', 999999);
     $void: const-set('NEGATIVE_INFINITY', -999999);
     $void: const-set('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
+    $void: const-set('HALF_MAX_LIST_LENGTH', 999999);
+    $void: const-set('MAX_LIST_LENGTH', 999999);
+
 }
 
 @include initialize();
@@ -1109,17 +1112,15 @@
     // todo
 }
 
-@function __base-slice($list, $start: null, $end: null) {
-    $index: 1;
+@function __base-slice($list, $start: 1, $end: length($list)) {
+    $index: 0;
     $length: length($list);
-
-    $start: if($start == null, 0, if($start, $start, 0));
 
     @if ($start < 0) {
         $start: if(-$start > $length, 0, ($length + $start));
     }
 
-    $end: if($end == null or $end > $length, $length, if($end, $end, 0));
+    $end: if($end > $length, $length, if($end, $end, 0));
 
     @if ($end < 0) {
         $end: $end + $length;
@@ -1138,5 +1139,408 @@
     @return $result;
 }
 
-@debug __base-slice((1 2 3 4 5 6 7 8), 2, 5);
+// @debug __base-slice((1 2 3 4 5 6 7 8), 2, 5);
+
+@function __base-some-iteratee($value, $index, $collection) {
+    $predicate: scope-get(predicate);
+    $result: scope-get(result);
+
+    $result: call($predicate, $value, $index, $collection);
+
+    $_: scope-set(result, $result);
+
+    @return if($result, false, true);
+}
+@function __base-some($collection, $predicate) {
+    $result: false;
+
+    $_: scope-set(predicate, $predicate);
+    $_: scope-set(result, $result);
+
+    $_: __base-each($collection, __base-some-iteratee);
+
+    $result: scope-get(result);
+
+    $_: scope-end();
+
+    @return if($result, true, false);
+}
+
+// @debug __base-some((1 3 5 7 9), is-even);
+// @debug __base-some((2 3 5 7 9), is-even);
+
+@function __base-uniq($list, $iteratee: null) {
+    $index: 1;
+    $index-of: __get-index-of();
+    $length: length($list);
+    $is-common: ($index-of == '__base-index-of');
+    $is-large: ($is-common and $length >= 200);
+    $seen: if($is-large, __create-cache(), false);
+    $result: ();
+
+    @if ($seen) {
+        $index-of: '__cache-index-of';
+        $is-common: false;
+    } @else {
+        $is-large: false;
+        $seen: if($iteratee, (), $result);
+    }
+
+    @while ($index <= $length) {
+        $continue-outer: false;
+        $value: nth($list, $index);
+        $computed: if($iteratee, call($iteratee, $value, $index, $list), $value);
+
+        @if ($is-common) {
+            $seen-index: length($seen);
+
+            @while ($seen-index > 0 and not $continue-outer) {
+                @if (nth($seen, $seen-index) == $computed) {
+                    $continue-outer: true;
+                } @else {
+                    $seen-index: $seen-index - 1;
+                }
+            }
+
+            @if (not $continue-outer) {
+                @if ($iteratee) {
+                    $seen: append($seen, $computed);
+                }
+
+                $result: append($result, $value);
+                $seen: $result;
+            }
+        } @else if (call($index-of, $seen, $computed) < 0) {
+            @if ($iteratee or $is-large) {
+                $seen: append($seen, $computed);
+            }
+
+            $result: append($result, $value);
+            $seen: $result;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+// @function flr($val, $idx, $lis) {
+//     @return floor($val);
+// }
+// @debug __base-uniq((1 2 1 3 1 4 2.4), flr);
+
+@function __base-values($map, $props) {
+    $index: 1;
+    $length: length($props);
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, get($map, nth($props, $index)));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __base-wrapper-value($value, $actions) {
+    // todo
+    $result: $value;
+
+    @if (instanceof($result, LazyWrapper)) {
+        // todo
+    }
+
+    $index: 1;
+    $length: length($actions);
+
+    @while ($index <= $length) {
+        $args: ($result,);
+        $action: nth($actions, $index);
+
+        $args: append($args, get($action, args));
+        $result: call(get($action, func), get($action, this-arg), $args...);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __binary-index($list, $value, $ret-highest) {
+    $low: 0;
+    $high: if($list, length($list), $low);
+
+    @if (type-of($value) == number and $high <= const-get(HALF_MAX_LIST_LENGTH)) {
+        @while ($low < $high) {
+            $mid: floor(($low + $high) / 2);
+            $computed: nth($list, $mid);
+
+            @if (if($ret-highest, ($computed <= $value), ($computed < $value))) {
+                $low: $mid + 1;
+            } @else {
+                $high: $mid;
+            }
+        }
+
+        @return $high;
+    }
+
+    @return __binary-index-by($list, $value, __identity, $ret-highest);
+}
+
+@function __binary-index-by($list, $value, $iteratee, $ret-highest) {
+    $value: call($iteratee, $value);
+
+    $low: 0;
+    $high: if($list, length($list), 0);
+    $val-is-undefined: ($value == null);
+
+    @while ($low < $high) {
+        $mid: floor(($low + $high) / 2);
+        $computed: call($iteratee, nth($list, $mid));
+
+        @if ($val-is-undefined) {
+            $set-low: ($ret-highest > 0 or not ($computed == null));
+        } @else {
+            $set-low: if($ret-highest > 0, ($computed <= $value), ($computed < $value));
+        }
+
+        @if ($set-low) {
+            $low: $mid + 1;
+        } @else {
+            $high: $mid;
+        }
+    }
+
+    @return call(native-min, $high, const-get(MAX_LIST_INDEX));
+}
+
+@function __bind-callback-1($value) {
+    $function: scope-get(function);
+    $this-arg: scope-get(this-arg);
+
+    $_: scope-end();
+
+    @return call-this($function, $this-arg, $value);
+}
+@function __bind-callback-3($value, $index, $collection) {
+    $function: scope-get(function);
+    $this-arg: scope-get(this-arg);
+
+    $_: scope-end();
+
+    @return call-this($function, $this-arg, $value, $index, $collection);
+}
+@function __bind-callback-4($accumulator, $value, $index, $collection) {
+    $function: scope-get(function);
+    $this-arg: scope-get(this-arg);
+
+    $_: scope-end();
+
+    @return call-this($function, $this-arg, $accumulator, $value, $index, $collection);
+}
+@function __bind-callback-5($value, $other, $key, $map, $source) {
+    $function: scope-get(function);
+    $this-arg: scope-get(this-arg);
+
+    $_: scope-end();
+
+    @return call-this($function, $this-arg, $value, $other, $key, $map, $source);
+}
+@function __bind-callback-any($args...) {
+    $function: scope-get(function);
+    $this-arg: scope-get(this-arg);
+
+    $_: scope-end();
+
+    @return call-this($function, $this-arg, $args...);
+}
+@function __bind-callback($function, $this-arg, $arg-count) {
+    @if (not function-exists($function)) {
+        @return __identity;
+    }
+
+    @if ($this-arg == null) {
+        @return $function;
+    }
+
+    $_: scope-set(function, $function);
+    $_: scope-set(this-arg, $this-arg);
+
+    $arg-count-case: (
+        1: __bind-callback-1,
+        3: __bind-callback-3,
+        4: __bind-callback-4,
+        5: __bind-callback-5
+    );
+
+    @if ($arg-count > 5) {
+        @return __bind-callback-any;
+    }
+
+    @return get($arg-count-case, $arg-count);
+}
+
+@function __buffer-clone() {
+    // not implemented
+}
+
+@function __compose-args($args, $partials, $holders) {
+    $holders-length: length($holders);
+    $args-index: 1;
+    $args-length: __native-max(length($args) - $holders-length, 0);
+    $left-index: 1;
+    $left-length: length($partials);
+    $result: ();
+
+    @while ($left-index <= $left-length) {
+        $result: set($result, $left-index, nth($partials, $left-index));
+
+        $left-index: $left-index + 1;
+    }
+    @while ($args-index <= $holders-length) {
+        $result: set($result, nth($holders, $args-index), nth($args, $args-index));
+
+        $args-index: $args-index + 1;
+    }
+    @while ($args-length > 0) {
+        $result: set($result, $left-index, nth($args, $args-index));
+
+        $left-index: $left-index + 1;
+        $args-index: $args-index + 1;
+        $args-length: $args-length - 1;
+    }
+
+    @return $result;
+}
+
+@function __compose-args-right() {
+    // TODO
+}
+
+    // function composeArgsRight(args, partials, holders) {
+    //   var holdersIndex = -1,
+    //       holdersLength = holders.length,
+    //       argsIndex = -1,
+    //       argsLength = nativeMax(args.length - holdersLength, 0),
+    //       rightIndex = -1,
+    //       rightLength = partials.length,
+    //       result = Array(argsLength + rightLength);
+
+    //   while (++argsIndex < argsLength) {
+    //     result[argsIndex] = args[argsIndex];
+    //   }
+    //   var pad = argsIndex;
+    //   while (++rightIndex < rightLength) {
+    //     result[pad + rightIndex] = partials[rightIndex];
+    //   }
+    //   while (++holdersIndex < holdersLength) {
+    //     result[pad + holders[holdersIndex]] = args[argsIndex++];
+    //   }
+    //   return result;
+    // }
+
+@function __create-aggregator-function-iteratee($value, $key, $collection) {
+    $result: scope-get(result);
+    $setter: scope-get(setter);
+    $iteratee: scope-get(iteratee);
+
+    $result: call($setter, $result, $value, call($iteratee, $value, $key, $collection), $collection);
+
+    @return $result;
+}
+@function __create-aggregator-function($collection, $iteratee, $this-arg) {
+    $setter: scope-get(setter);
+    $initializer: scope-get(initializer);
+
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+    $_: scope-set(iteratee, $iteratee);
+
+    $result: if($initializer, call($initializer), ());
+
+    @if (__is-list($collection)) {
+        $index: 1;
+        $length: length($collection);
+
+        @while ($index <= $length) {
+            $value: nth($collection, $index);
+            $result: call($setter, $result, $value, call($iteratee, $value, $index, $collection), $collection);
+
+            $index: $index + 1;
+        }
+    } @else {
+        $_: scope-set(result, $result);
+
+        $result: __base-each($collection, __create-aggregator-function-iteratee);
+    }
+
+    @return $result;
+}
+@function __create-aggregator($setter, $initializer) {
+    $_: scope-set(setter, $setter);
+    $_: scope-set(initializer, $initializer);
+
+    @return __create-aggregator-function;
+}
+
+    // function createAggregator(setter, initializer) {
+    //   return function(collection, iteratee, thisArg) {
+    //     iteratee = getCallback(iteratee, thisArg, 3);
+
+    //     var result = initializer ? initializer() : {};
+    //     if (isArray(collection)) {
+    //       var index = -1,
+    //           length = collection.length;
+
+    //       while (++index < length) {
+    //         var value = collection[index];
+    //         setter(result, value, iteratee(value, index, collection), collection);
+    //       }
+    //     } else {
+    //       baseEach(collection, function(value, key, collection) {
+    //         setter(result, value, iteratee(value, key, collection), collection);
+    //       });
+    //     }
+    //     return result;
+    //   };
+    // }
+
+@function __create-assigner() {
+    // todo
+}
+
+@function __create-bind-wrapper($function, $this-arg) {
+    // todo
+}
+
+@function __create-cache($values) {
+    @return new(SetCache($values));
+}
+
+@function __create-compounder() {
+    // todo
+}
+
+@function __create-ctor-wrapper() {}
+
+@function __create-extremum() {}
+
+@function __create-hybrid-wrapper() {}
+
+@function __create-pad($string, $length, $chars: ' ') {
+    $str-length: str-length($string);
+
+    @if ($str-length >= $length) or not (__native-is-finite($length)) {
+        @return '';
+    }
+
+    $pad-length: $length - $str-length;
+    $chars: $chars + '';
+
+    @return __base-slice(__repeat($chars, ceil($pad-length / str-length($chars))), 1, $pad-length);
+}
+
+// @debug __create-pad('abcd', 14);
 

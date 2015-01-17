@@ -168,3 +168,40 @@
     // TODO
     @return type-of($value) == map;
 }
+
+@function __get-index-of() {
+    @return '__base-index-of';
+}
+
+@function __identity($value) {
+    @return $value;
+}
+
+@function call-this($function, $this-arg, $values...) {
+    $_: this($this-arg);
+
+    @return call($function, $values...);
+}
+
+@function __native-max($args...) {
+    @return max($args...);
+}
+
+@function __native-is-finite($value) {
+    // todo
+    @return true;
+}
+
+@function __repeat($string, $value: 1) {
+    $result: '';
+
+    @for $iteration from 1 through $value {
+        $result: $result + $string;
+    }
+
+    @return $result;
+}
+
+// @debug __repeat('abc', 4);
+
+

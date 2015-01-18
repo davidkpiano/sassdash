@@ -1544,3 +1544,62 @@
 
 // @debug __create-pad('abcd', 14);
 
+@function __create-partial-wrapper() {}
+
+@function __create-wrapper() {}
+
+@function __equal-lists($list, $other, $equal-func, $customizer, $is-where, $stack-a, $stack-b) {
+    $index: 1;
+    $list-length: length($list);
+    $other-length: length($other);
+    $result: true;
+
+    @if not ($list-length == $other-length)
+        and not ($is-where and ($other-length > $list-length))
+    {
+        @return $false;
+    }
+
+    @while ($result and ($index < $list-length)) {
+        $list-value: nth($list, $index);
+        $other-value: nth($other, $index);
+
+        $result: null;
+
+        @if ($customizer) {
+            $result = if($is-where,
+                call($customizer, $other-value, $list-value, $index),
+                call($customizer, $list-value, $other-value, $index));
+        }
+
+        @if (__is-undefined($result)) {
+            @if ($is-where) {
+                $other-index: $other-length;
+
+                $break: false;
+                @while ($other-index > 0 and not $break) {
+                    $other-value: nth($other, $other-index);
+                    $result: if(if($list-value, $list-value == $other-value, false),
+                        true,
+                        call($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+
+                    @if ($result) {
+                        $break: true;
+                    }
+
+                    $other-index: $other-index - 1;
+                }
+            } @else {
+                $result: if(if($list-value, $list-value == $other-value, false),
+                    true,
+                    call($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+            }
+        }
+
+        $index: $index + 1;
+    }
+
+    @return if($result, true, false);
+}
+
+@function __equal-by-tag() {}

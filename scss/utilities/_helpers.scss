@@ -204,4 +204,9 @@
 
 // @debug __repeat('abc', 4);
 
+@function __is-undefined($value) {
+    // @return $value == '__undefined__';
+
+    @return $value == null;
+}
 

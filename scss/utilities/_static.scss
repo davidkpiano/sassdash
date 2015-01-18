@@ -78,6 +78,7 @@ $__this__: () !global;
 @function new($type, $params: (), $extends: false) {
     $instance-meta: (
         _type: $type,
+        _constructor: $type,
         _extends: $extends
     );
 
@@ -117,4 +118,7 @@ $__this__: () !global;
     @return $value == $__undefined__;
 }
 
+@function Object() {
+    @return ();
+}
 

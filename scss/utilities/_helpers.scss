@@ -92,16 +92,28 @@
 
 @function __to-list($value) {
     // TODO
-    @if type-of($value) == map {
+    @if type-of($value) == 'map' {
         $length: length($value);
         $index: 1;
         $result: ();
 
         @while ($index <= $length) {
-            $result: append(get($value, $index));
+            $result: append($result, get($value, $index));
+
+            $index: $index + 1;
         }
 
         @return if($result == map-values($value), $result, map-values($value));
+    }
+
+    @if type-of($value) == 'string' {
+        $result: ();
+
+        @for $index from 1 through str-length($value) {
+            $result: append($result, str-slice($value, $index, $index));
+        }
+
+        @return $result;
     }
 
     @return $value;
@@ -166,14 +178,15 @@
 
 @function __is-plain-map($value) {
     // TODO
-    @return type-of($value) == map;
+    @return (type-of($value) == 'map')
+        and not (map-has-key($value, '_constructor'));
 }
 
 @function __get-index-of() {
     @return '__base-index-of';
 }
 
-@function __identity($value) {
+@function __identity($value, $args...) {
     @return $value;
 }
 
@@ -181,6 +194,10 @@
     $_: this($this-arg);
 
     @return call($function, $values...);
+}
+
+@function __native-min($args...) {
+    @return min($args...);
 }
 
 @function __native-max($args...) {
@@ -210,3 +227,57 @@
     @return $value == null;
 }
 
+@function __noop($args...) {
+    @return null;
+}
+
+@function __is-ctor($ctor) {
+    // todo
+    @return function-exists($ctor);
+}
+
+@function __is-string($value) {
+    @return (type-of($value) == 'string');
+}
+
+@function __string-split($string, $delimiter: '') {
+    @if (not $delimiter)
+        or (length($delimiter) == 0)
+        or ($delimiter == '')
+    {
+        @return __to-list($string);
+    }
+
+    $delimiter-index: str-index($string, $delimiter);
+
+    @if not ($delimiter-index) {
+        @return $string;
+    }
+
+    @return join(
+        str-slice($string, 1, $delimiter-index - 1),
+        __string-split(
+            str-slice($string, $delimiter-index + length($delimiter-index)),
+            $delimiter));
+} 
+
+// @debug __string-split('asd,qwe,zxc,rty,fgh,234', ',');
+// @debug __string-split('abcde');
+
+@function __is-map($value) {
+    @return type-of($value) == 'map';
+}
+
+@function __is-falsey($value) {
+    @if ($value == null)
+        or ($value == '')
+        or ($value == "")
+        or ($value == $__undefined__)
+        or ($value == 0)
+        or not ($value)
+    {
+        @return true;
+    }
+
+    @return false;
+}

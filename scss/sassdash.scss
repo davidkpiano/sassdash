@@ -1,8 +1,5 @@
 
-@import 'utilities/_sort';
-@import 'utilities/_static';
-@import 'utilities/_helpers';
-@import 'utilities/_parse_float';
+@import 'utilities/_module';
 
 @mixin initialize() {
     $void: const-set('html-escapes', (
@@ -1567,7 +1564,7 @@
         $result: null;
 
         @if ($customizer) {
-            $result = if($is-where,
+            $result: if($is-where,
                 call($customizer, $other-value, $list-value, $index),
                 call($customizer, $list-value, $other-value, $index));
         }
@@ -1603,3 +1600,5 @@
 }
 
 @function __equal-by-tag() {}
+
+

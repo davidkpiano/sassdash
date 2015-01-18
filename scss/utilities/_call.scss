@@ -1,0 +1,59 @@
+
+// $this-arg: pointer to scope
+@function __call($method, $this-arg: $__current-scope__, $properties...) {
+    $scope-id: __function-scope($method);
+    $function-name: __function-name($method);
+
+    $_: scope-use(if($scope-id, $scope-id, $this-arg));
+
+    $result: call($function-name, $properties...);
+
+    $_: scope-use-end();
+
+    @return $result;
+}
+
+// returns scope of function, if any
+@function __function-scope($function) {
+    $scope-index: str-index($function, '@');
+    $scope-id: false;
+
+    @if ($scope-index) {
+        $scope-id: str-slice($function, $scope-index);
+    }
+
+    @return $scope-id;
+}
+
+@function __function-name($function) {
+    $scope-index: str-index($function, '@');
+
+    @return if($scope-index, str-slice($function, 1, $scope-index - 1), $function);
+}
+
+// @debug __function-scope('__basd-neg@abcd1234');
+
+// $_: scope-start();
+// $_: scope(foo, bar);
+
+// $closure: $__current-scope__;
+
+// $_: scope-end();
+
+// $_: scope-start();
+// $_: scope(baz, quo);
+
+// $another-closure: $__current-scope__;
+
+// $_: scope-end();
+
+
+// @function do-closure($value) {
+//     @return this(foo) + $value;
+// }
+
+// @function do-another-closure($value) {
+//     @return this(baz) + $value;
+// }
+// @debug __call(do-closure, $closure, bells);
+// @debug __call(do-another-closure, $another-closure, tients);

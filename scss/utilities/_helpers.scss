@@ -281,3 +281,26 @@
 
     @return false;
 }
+
+@function __splice($list, $start, $delete-count: 1, $items...) {
+    $result: ();
+    $index: 1;
+
+    @while ($index < $start) {
+        $result: append($result, nth($list, $index));
+
+        $index: $index + 1;
+    }
+
+    $index: $start + $delete-count;
+
+    @while ($index <= length($list)) {
+        $result: append($result, nth($list, $index));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+// @debug __splice((10 20 30 40 50 60), 3, 2);

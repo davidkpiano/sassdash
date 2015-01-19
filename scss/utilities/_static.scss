@@ -27,7 +27,7 @@ $__this__: () !global;
     @if type-of($map) == list {
         $map: nth($map, nth($properties, 1));
     } @else {
-        $map: map-get($map, nth($properties, 1));
+        $map: map-get($map, unquote(nth($properties, 1)));
     }
 
     $properties: pop($properties);
@@ -104,7 +104,7 @@ $__this__: () !global;
     @if type-of($value) != 'map' {
         @return false;
     }
-    
+
     @return get($value, _type) == $type;
 }
 

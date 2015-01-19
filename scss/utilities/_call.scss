@@ -8,7 +8,7 @@
 
         @if (this($function-name) and function-exists(this($function-name))) {
             $function-name: this($function-name);
-        } @else if not (function-exists($function-name)) {
+        } @else if not ($function-name and function-exists($function-name)) {
             $_: scope-use-end();
             @return null;
         }
@@ -22,6 +22,10 @@
 
 // returns scope of function, if any
 @function __function-scope($function) {
+    @if not ($function) {
+        @return null;
+    }
+
     $scope-index: str-index($function, '@');
     $scope-id: false;
 
@@ -33,6 +37,10 @@
 }
 
 @function __function-name($function) {
+    @if not ($function) {
+        @return null;
+    }
+
     $scope-index: str-index($function, '@');
 
     @return if($scope-index, str-slice($function, 1, $scope-index - 1), $function);

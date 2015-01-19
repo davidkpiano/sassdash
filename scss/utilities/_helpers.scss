@@ -190,12 +190,6 @@
     @return $value;
 }
 
-@function call-this($function, $this-arg, $values...) {
-    $_: this($this-arg);
-
-    @return call($function, $values...);
-}
-
 @function __native-min($args...) {
     @return min($args...);
 }
@@ -312,3 +306,4 @@
 @function __get-length($list, $args...) {
     @return length($list);
 }
+

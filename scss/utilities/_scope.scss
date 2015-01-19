@@ -46,7 +46,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
     @if length($args) == 0 {
         @return $__current-scope__;
     }
-    
+
     @return scope($args...);
 }
 

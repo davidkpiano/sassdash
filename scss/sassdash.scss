@@ -69,6 +69,14 @@
 
 @function __base-sort-by() { /* TODO */ }
 
+@function __base-to-string($value) {
+    @if (type-of($value) == 'string') {
+        @return $value;
+    }
+
+    @return if($value == null, '', $value + '');
+}
+
 @function __char-at-callback($string) {
     // ... 
 }
@@ -423,7 +431,7 @@
     @while ($index <= $length) {
         $value: nth($list, $index);
 
-        @if (call($predicate, $value, $index, $list)) {
+        @if (__call($predicate, null, $value, $index, $list)) {
             $result-list: append($result-list, $value);
         }
 
@@ -599,8 +607,22 @@
     // todo
 }
 
-@function __base-callback() {
-    // todo
+@function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
+    $type: if(function-exists($function), 'function', type-of($function));
+
+    @if ($type == 'function') {
+        @return if(not __is-undefined($this-arg) and __is-bindable($function),
+            __bind-callback($function, $this-arg, $arg-count),
+            $function);
+    }
+
+    @if ($function == null) {
+        @return __identity;
+    }
+
+    @return if($type == 'map',
+        __base-matches($function, __is-falsey($arg-count)),
+        __base-property(if(__is-truthy($arg-count), __base-to-string($function), $function)));
 }
 
 @function __base-clone($value, $is-deep: false, $customizer: null, $key: null, $object: null) {
@@ -1400,46 +1422,36 @@
 }
 
 @function __bind-callback-1($value) {
-    $function: scope-get(function);
-    $this-arg: scope-get(this-arg);
+    $function: scope(function);
+    $this-arg: scope(this-arg);
 
-    $_: scope-end();
-
-    @return call-this($function, $this-arg, $value);
+    @return __call($function, $this-arg, $value);
 }
 @function __bind-callback-3($value, $index, $collection) {
-    $function: scope-get(function);
-    $this-arg: scope-get(this-arg);
+    $function: scope(function);
+    $this-arg: scope(this-arg);
 
-    $_: scope-end();
-
-    @return call-this($function, $this-arg, $value, $index, $collection);
+    @return __call($function, $this-arg, $value, $index, $collection);
 }
 @function __bind-callback-4($accumulator, $value, $index, $collection) {
-    $function: scope-get(function);
-    $this-arg: scope-get(this-arg);
+    $function: scope(function);
+    $this-arg: scope(this-arg);
 
-    $_: scope-end();
-
-    @return call-this($function, $this-arg, $accumulator, $value, $index, $collection);
+    @return __call($function, $this-arg, $accumulator, $value, $index, $collection);
 }
 @function __bind-callback-5($value, $other, $key, $map, $source) {
-    $function: scope-get(function);
-    $this-arg: scope-get(this-arg);
+    $function: scope(function);
+    $this-arg: scope(this-arg);
 
-    $_: scope-end();
-
-    @return call-this($function, $this-arg, $value, $other, $key, $map, $source);
+    @return __call($function, $this-arg, $value, $other, $key, $map, $source);
 }
-@function __bind-callback-any($args...) {
-    $function: scope-get(function);
-    $this-arg: scope-get(this-arg);
+@function __bind-callback-any($arguments...) {
+    $function: scope(function);
+    $this-arg: scope(this-arg);
 
-    $_: scope-end();
-
-    @return call-this($function, $this-arg, $args...);
+    @return __call($function, $this-arg, $arguments...);
 }
-@function __bind-callback($function, $this-arg, $arg-count) {
+@function __bind-callback($function, $this-arg: null, $arg-count: null) {
     @if (not function-exists($function)) {
         @return __identity;
     }
@@ -1448,6 +1460,7 @@
         @return $function;
     }
 
+    $_: scope-start();
     $_: scope-set(function, $function);
     $_: scope-set(this-arg, $this-arg);
 
@@ -1462,7 +1475,11 @@
         @return __bind-callback-any;
     }
 
-    @return get($arg-count-case, $arg-count);
+    $result: scoped-function(get($arg-count-case, $arg-count), $this-arg);
+
+    $_: scope-end();
+
+    @return $result;
 }
 
 @function __buffer-clone() {
@@ -1525,20 +1542,24 @@
     // }
 
 @function __create-aggregator-function-iteratee($value, $key, $collection) {
-    $result: scope-get(result);
-    $setter: scope-get(setter);
-    $iteratee: scope-get(iteratee);
+    $result: scope(result);
+    $setter: scope(setter);
+    $iteratee: scope(iteratee);
 
     $result: call($setter, $result, $value, call($iteratee, $value, $key, $collection), $collection);
 
-    @return $result;
+    @debug $result;
+
+    $_: scope(result, $result);
+
+    @return true;
 }
-@function __create-aggregator-function($collection, $iteratee, $this-arg) {
-    $setter: scope-get(setter);
-    $initializer: scope-get(initializer);
+@function __create-aggregator-function($collection, $iteratee, $this-arg: null) {
+    $setter: scope(setter);
+    $initializer: scope(initializer);
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
-    $_: scope-set(iteratee, $iteratee);
+    $_: scope(iteratee, $iteratee);
 
     $result: if($initializer, call($initializer), ());
 
@@ -1553,18 +1574,24 @@
             $index: $index + 1;
         }
     } @else {
-        $_: scope-set(result, $result);
+        $_: scope(result, $result);
 
-        $result: __base-each($collection, __create-aggregator-function-iteratee);
+        $_: __base-each($collection, __create-aggregator-function-iteratee);
+
+        $result: scope(result);
     }
 
     @return $result;
 }
-@function __create-aggregator($setter, $initializer) {
-    $_: scope-set(setter, $setter);
-    $_: scope-set(initializer, $initializer);
+@function __create-aggregator($setter, $initializer: null) {
+    $_: scope-start();
+        $_: scope(setter, $setter);
+        $_: scope(initializer, $initializer);
 
-    @return __create-aggregator-function;
+        $function: scoped-function(__create-aggregator-function);
+    $_: scope-end();
+
+    @return $function;
 }
 
     // function createAggregator(setter, initializer) {
@@ -1779,10 +1806,12 @@
 
 // @debug __extremum-by((1 3 4 5 6 9 2 4 3), __identity, true);
 
-@function __get-callback($function: __noop, $args...) {
-    // todo
+@function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
+    $result: __callback;
 
-    @return $function;
+    $result: if($result == __callback, __base-callback, $result);
+
+    @return if($arg-count, call($result, $function, $this-arg, $arg-count), $result);
 }
 
 @function __get-data($function) {
@@ -2167,7 +2196,7 @@
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @while ($index <= $length) {
-        @if (call($predicate, nth($list, $index), $index, $list)) {
+        @if (__call($predicate, $this-arg, nth($list, $index), $index, $list)) {
             @return $index;
         }
 
@@ -2767,14 +2796,88 @@
 
 // @debug __includes((a b c d e f g), d, 4);
 
-@function __count-by() {}
+@function __count-by-iteratee($result, $value, $key, $args...) {
+    $result: if(map-has-key($result, $key), set($result, $key, get($result, $key) + 1), set($result, $key, 1));
+
+    @return $result;
+}
+@function __count-by($arguments...) {
+    $function: __create-aggregator(__count-by-iteratee);
+
+    @return __call($function, null, $arguments...);
+}
 // todo
 
-    // var countBy = createAggregator(function(result, value, key) {
-    //   hasOwnProperty.call(result, key) ? ++result[key] : (result[key] = 1);
-    // });
+// @debug __count-by((1 2 3 4 5 6 7 9 11 13 15 17), is-even);
+
+@function __every($collection, $predicate: __identity, $this-arg: $__undefined__) {
+    $function: if(__is-list($collection), __list-every, __base-every);
+
+    @if (not function-exists($predicate) or not __is-undefined($this-arg)) {
+        $predicate: __get-callback($predicate, $this-arg, 3);
+    }
+
+    @return call($function, $collection, $predicate);
+}
+
+// @debug __every((true 1 null 'yes'));
+// @debug __every((2 4 6 8 10), is-even);
+
+@function __filter($collection, $predicate: __identity, $this-arg: null) {
+    @debug 'here';
+    $function: if(__is-list($collection), __list-filter, __base-filter);
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @debug $predicate;
+
+    @return __call($function, $this-arg, $collection, $predicate);
+}
+
+// @debug __filter((1 2 3 4 5 6 6 1239), is-even);
 
 
+@function __callback($function: __identity, $this-arg: null, $guard: null) {
+    @if ($guard and __is-iteratee-call($function, $this-arg, $guard)) {
+        $this-arg: null;
+    }
+
+    @return __base-callback($function, $this-arg);
+}
+
+// $_: scope-start();
+// $_: scope(poop, 12341234);
+
+// $poop: __callback('poop', this());
+
+// $_: scope-end();
+// @debug $poop;
+// @debug __call($poop, null, (poop: 78788));
 
 
+// @debug __filter(((a: 123, bam: true), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
+
+@function __find($collection, $predicate: __identity, $this-arg: null) {
+    @if (__is-list($collection)) {
+        $index: __find-index($collection, $predicate, $this-arg);
+
+        @return if($index > -1, nth($collection, $index), $__undefined__);
+    }
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($collection, $predicate, __base-each);
+}
+
+// @debug __find((123, 233, 137, 138, 592, 3939), is-even);
+// @debug __find(((a: 123, bam: false), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
+
+@function __find-last($collection, $predicate: __identity, $this-arg: null) {
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($collection, $predicate, __base-each-right);
+}
+
+@debug __find-last((123, 233, 137, 138, 592, 3939), is-even);
+@debug __find-last(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
 

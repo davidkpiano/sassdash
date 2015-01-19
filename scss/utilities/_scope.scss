@@ -43,6 +43,10 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 }
 
 @function this($args...) {
+    @if length($args) == 0 {
+        @return $__current-scope__;
+    }
+    
     @return scope($args...);
 }
 
@@ -66,6 +70,14 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
     $__previous-scope__: null !global;
 
     @return true;
+}
+
+@function scoped-function($function, $scope: $__current-scope__) {
+    @if ($scope) {
+        @return '#{$function}#{$scope}';
+    }
+
+    @return $function;
 }
 
 

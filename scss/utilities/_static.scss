@@ -101,17 +101,11 @@ $__this__: () !global;
 }
 
 @function instanceof($value, $type) {
-    @return get($value, _type) == $type;
-}
-
-@function this($this-arg: false) {
-    @if ($this-arg) {
-        $__this__: $this-arg !global;
-    } @else {
-        @return $__this__;
+    @if type-of($value) != 'map' {
+        @return false;
     }
-
-    @return null;
+    
+    @return get($value, _type) == $type;
 }
 
 @function is-undefined($value: $__undefined__) {

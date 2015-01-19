@@ -279,7 +279,11 @@
         @return true;
     }
 
-    @return false;
+    @return if($value, false, true);
+}
+
+@function __is-truthy($value) {
+    @return $value and not __is-falsey($value);
 }
 
 @function __splice($list, $start, $delete-count: 1, $items...) {
@@ -304,3 +308,7 @@
 }
 
 // @debug __splice((10 20 30 40 50 60), 3, 2);
+
+@function __get-length($list, $args...) {
+    @return length($list);
+}

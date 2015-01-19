@@ -15,7 +15,7 @@
 
         $result: call($function-name, $properties...);
 
-    $_: scope-use-end();
+    $_: scope-use-end();    
 
     @return $result;
 }

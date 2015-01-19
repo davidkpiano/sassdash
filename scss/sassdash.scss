@@ -693,7 +693,7 @@
 @function __base-each($collection, $iteratee) {
     $length: if($collection, length($collection), 0);
 
-    @if not (type-of($collection) == list) {
+    @if not (__is-list($collection)) {
         @return __base-for-own($collection, $iteratee);
     }
 
@@ -701,9 +701,8 @@
     $iterable: __to-map($collection);
 
     $break: false;
-
     @while ($index <= $length and not $break) {
-        $iteration: call($iteratee, get($iterable, $index), $index, $iterable);
+        $iteration: __call($iteratee, null, get($iterable, $index), $index, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -725,7 +724,7 @@
 @function __base-each-right($collection, $iteratee) {
     $collection: __list-reverse($collection);
 
-    $reversed-result: _base-each($collection, $iteratee);
+    $reversed-result: __base-each($collection, $iteratee);
 
     @return __list-reverse($collection);
 }
@@ -774,29 +773,36 @@
 }
 
 @function __base-find-iteratee($value, $key, $collection) {
-    $predicate: scope-get(predicate);
-    $return-key: scope-get(return-key);
+    $predicate: scope(predicate);
+    $return-key: scope(return-key);
 
-    @if call($predicate, $value, $key, $collection) {
-        $_: scope-set(result, if($return-key, $key, $value));
+    @if __call($predicate, null, $value, $key, $collection) {
+        $_: scope(result, if($return-key, $key, $value));
 
         @return false;
     }
 
-    @return null;
+    @return true;
 }
 @function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
-    $_: scope-set(result, null);
-    $_: scope-set(predicate, $predicate);
-    $_: scope-set(return-key, $return-key);
+    $result: null;
 
-    $_: call($each-function, $collection, __base-find-iteratee);
+    $_: scope-start();
+        $_: scope(result, null);
+        $_: scope(predicate, $predicate);
+        $_: scope(return-key, $return-key);
 
-    $result: scope-get(result);
-    $_: scope-end;
+        $iteratee: scoped-function(__base-find-iteratee);
+
+        $_: call($each-function, $collection, $iteratee);
+
+        $result: scope(result);
+    $_: scope-end();
 
     @return $result;
 }
+
+// @debug __base-find((1 2 3 4 5), is-even);
 
 @function __base-flatten($list, $is-deep: false, $is-strict: false, $from-index: 1) {
     $index: $from-index;
@@ -989,37 +995,39 @@
 // @debug __base-map((foo: 1, bar: 3, baz: 55), double);
 
 @function __base-matches-function-1($map) {
-    $value: scope-get(value);
-    $key: scope-get(key);
+    $value: this(value);
+    $key: this(key);
 
-    $_: scope-end();
-
-    @return (not ($map == null))
+    @return ($map != null)
         and (map-has-key($map, $key))
         and ($value == get($map, $key));
 }
 @function __base-matches-function-2($map) {
-    $props: scope-get(props);
-    $values: scope-get(values);
-    $strict-compare-flags: scope-get(strict-compare-flags);
-
-    $_: scope-end();
-
-    @return __base-is-match($map, $props, $values, $strict-compare-flags);
+    @return __base-is-match(
+        this('map'),
+        this('props'),
+        this('values'),
+        this('strict-compare-flags'));
 }
 @function __base-matches($source, $is-cloned: false) {
     $props: map-keys($source);
     $length: length($props);
 
+    $_: scope-start();
+
     @if ($length == 1) {
         $key: nth($props, 1);
         $value: get($source, $key);
 
-        $_: scope-set(key, $key);
-        $_: scope-set(value, $value);
+        $_: scope(key, $key);
+        $_: scope(value, $value);
 
         @if (__is-strict-comparable($value)) {
-            @return '__base-matches-function-1';
+            $result: scoped-function(__base-matches-function-1);
+
+            $_: scope-end();
+
+            @return $result;
         }
     }
 
@@ -1041,11 +1049,15 @@
     $values: __to-list($values);
     $strict-compare-flags: __to-list($strict-compare-flags);
 
-    $_: scope-set(props, $props);
-    $_: scope-set(values, $values);
-    $_: scope-set(strict-compare-flags, $strict-compare-flags);
+    $_: scope(props, $props);
+    $_: scope(values, $values);
+    $_: scope(strict-compare-flags, $strict-compare-flags);
 
-    @return '_base-matches-function-2';
+    $result: scoped-function(__base-matches-function-2);
+
+    $_: scope-end();
+
+    @return $result;
 }
 
 @function __base-merge-iteratee($src-value, $key, $source) {
@@ -2878,6 +2890,20 @@
     @return __base-find($collection, $predicate, __base-each-right);
 }
 
-@debug __find-last((123, 233, 137, 138, 592, 3939), is-even);
-@debug __find-last(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
+// @debug __find-last((123, 233, 137, 138, 592, 3939), is-even);
+// @debug __find-last(((a: 123, bam: true), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
+
+@function __find-where($collection, $source) {
+    @return __find($collection, __matches($source));
+}
+
+@function __matches($source) {
+    @return __base-matches($source, true);
+}
+
+@debug __find-where(((a: 123, bam: true), (a: 234, bam: true), (a: 345, bam: false)), (bam: true));
+
+
+
+
 

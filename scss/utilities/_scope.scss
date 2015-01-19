@@ -60,14 +60,16 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 
 @function scope-use($scope-id) {
     $__previous-scope__: $__current-scope__ !global;
-    $__current-scope__: $scope-id !global;
+
+    @if ($scope-id) {    
+        $__current-scope__: $scope-id !global;
+    }
 
     @return true;
 }
 
 @function scope-use-end() {
     $__current-scope__: $__previous-scope__ !global;
-    $__previous-scope__: null !global;
 
     @return true;
 }

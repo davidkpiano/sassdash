@@ -20,11 +20,11 @@ $__this__: () !global;
 }
 
 @function get($map, $properties) {
-    @if not (type-of($map) == list or type-of($map) == map) {
+    @if (type-of($map) != 'list' and type-of($map) != 'map') {
         $map: ($map,);
     }
 
-    @if type-of($map) == list {
+    @if type-of($map) == 'list' {
         $map: nth($map, nth($properties, 1));
     } @else {
         $map: map-get($map, unquote(nth($properties, 1)));

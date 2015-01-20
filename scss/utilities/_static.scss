@@ -32,7 +32,7 @@ $__this__: () !global;
 
     $properties: pop($properties);
 
-    @if not $map {
+    @if not $map and length($properties) > 0 {
         @return null;
     }
 
@@ -106,10 +106,6 @@ $__this__: () !global;
     }
 
     @return get($value, _type) == $type;
-}
-
-@function is-undefined($value: $__undefined__) {
-    @return $value == $__undefined__;
 }
 
 @function Object() {

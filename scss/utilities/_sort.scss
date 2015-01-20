@@ -34,6 +34,10 @@
 
 // @debug quick-sort((5 6 1 3 7 2 6 3 4 5), asc);
 
-@function sort($list, $predicate) {
+@function sort($list, $predicate, $args...) {
   @return quick-sort($list, $predicate);
+}
+
+@function sort-iteratee($value, $index, $collection, $predicate, $args...) {
+  @return sort($value, $predicate);
 }

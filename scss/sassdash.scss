@@ -608,7 +608,7 @@
 }
 
 @function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
-    $type: if(function-exists($function), 'function', type-of($function));
+    $type: if(__function-exists($function), 'function', type-of($function));
 
     @if ($type == 'function') {
         @return if(not __is-undefined($this-arg) and __is-bindable($function),
@@ -904,20 +904,36 @@
 }
 
 @function __base-invoke-iteratee($value, $index, $collection) {
-    $function: scope-get(method-name);
-    $args: scope-get(args);
+    $function: this(function);
+    $args: this(args);
+    $index: this(index);
 
-    @return call($function, $value, $index, $collection, $args...);
+    $result: __call($function, null, $value, $index, $collection, $args...);
+
+    $_: this(result, set(this(result), $index, $result));
+    $_: this(index, this(index) + 1);
+
+    @return true;
 }
 @function __base-invoke($collection, $method-name, $args...) {
     $index: 1;
-    $is-function: function-exists($method-name);
+    $is-func: __is-function($method-name);
     $length: if($collection, length($collection), 0);
+    $result: ();
+    $function: if($is-func, $method-name, if($value != null, get($value, $method-name), false));
 
-    $_: scope-set(method-name, $method-name);
-    $_: scope-set(args, $args);
-    
-    $result: __base-each($collection, __base-invoke-iteratee);
+    $_: scope-start();
+
+    $_: scope(result, $result);
+    $_: scope(function, $function);
+    $_: scope(args, $args);
+    $_: scope(index, $index);
+
+    $iteratee: scoped-function(__base-invoke-iteratee);
+
+    $_: __base-each($collection, $iteratee);
+
+    $result: scope(result);
 
     $_: scope-end();
 
@@ -994,7 +1010,7 @@
 
 // @debug __base-map((foo: 1, bar: 3, baz: 55), double);
 
-@function __base-matches-function-1($map) {
+@function __base-matches-function-1($map, $args...) {
     $value: this(value);
     $key: this(key);
 
@@ -1560,8 +1576,6 @@
 
     $result: call($setter, $result, $value, call($iteratee, $value, $key, $collection), $collection);
 
-    @debug $result;
-
     $_: scope(result, $result);
 
     @return true;
@@ -1573,7 +1587,7 @@
     $iteratee: __get-callback($iteratee, $this-arg, 3);
     $_: scope(iteratee, $iteratee);
 
-    $result: if($initializer, call($initializer), ());
+    $result: if($initializer, __call($initializer), ());
 
     @if (__is-list($collection)) {
         $index: 1;
@@ -1581,7 +1595,7 @@
 
         @while ($index <= $length) {
             $value: nth($collection, $index);
-            $result: call($setter, $result, $value, call($iteratee, $value, $index, $collection), $collection);
+            $result: call($setter, $result, $value, __call($iteratee, null, $value, $index, $collection), $collection);
 
             $index: $index + 1;
         }
@@ -1754,7 +1768,7 @@
                     call($customizer, $map-value, $other-value, $key));
             }
 
-            @if (is-undefined($result)) {
+            @if (__is-undefined($result)) {
                 $result: if($map-value, ($map-value == $other-value), false);
                 $result: if($result, $result, call($equal-func, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
             }
@@ -2897,11 +2911,64 @@
     @return __find($collection, __matches($source));
 }
 
+// @debug __find-where(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), (bam: true));
+
+@function __for-each($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
+        __list-each($collection, $iteratee),
+        __base-each($collection, __bind-callback($iteratee, $this-arg, 3)));
+}
+
+// @debug __for-each((1 2 3), double);
+
+@function __for-each-right($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
+        __list-each-right($collection, $iteratee),
+        __base-each-right($collection, __bind-callback($iteratee, $this-arg, 3)));
+}
+
+@function __group-by-aggregator($result, $value, $key, $args...) {
+    @if (map-has-key($result, $key)) {
+        $result: set($result, $key, append(get($result, $key), $value));
+    } @else {
+        $result: set($result, $key, $value);
+    }
+
+    @return $result;
+}
+@function __group-by($arguments...) {
+    $function: __create-aggregator(__group-by-aggregator);
+
+    @return __call($function, null, $arguments...);
+}
+
+// @function flooor($value, $args...) {
+//     @return floor($value);
+// }
+// @debug __group-by((4.2, 4.3, 6.1, 7.3), flooor);
+
+@function __index-by-aggregator($result, $value, $key, $args...) {
+    @return set($result, $key, $value);
+}
+@function __index-by($arguments...) {
+    $function: __create-aggregator(__index-by-aggregator);
+
+    @return __call($function, null, $arguments...);
+}
+
+// @debug __index-by(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
+
+@function __invoke($collection, $method-name, $args...) {
+    @return __base-invoke($collection, $method-name, $args...);
+}
+
+// @debug __invoke(((3 1 2), (8 2 3 4 1 2 5 6 9)), sort-iteratee, asc);
+
 @function __matches($source) {
     @return __base-matches($source, true);
 }
 
-@debug __find-where(((a: 123, bam: true), (a: 234, bam: true), (a: 345, bam: false)), (bam: true));
+
 
 
 

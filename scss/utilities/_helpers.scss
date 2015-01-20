@@ -216,9 +216,7 @@
 // @debug __repeat('abc', 4);
 
 @function __is-undefined($value) {
-    // @return $value == '__undefined__';
-
-    @return $value == null;
+    @return $value == $__undefined__;
 }
 
 @function __noop($args...) {

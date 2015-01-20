@@ -27,7 +27,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 }
 
 @function scope-get($key: $__undefined__) {
-    @if (is-undefined($key)) {
+    @if (__is-undefined($key)) {
         @return static-get($__current-scope__);
     }
 
@@ -35,7 +35,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 }
 
 @function scope($key: $__undefined__, $value: $__undefined__) {
-    @if (is-undefined($value)) {
+    @if (__is-undefined($value)) {
         @return scope-get($key);
     }
 

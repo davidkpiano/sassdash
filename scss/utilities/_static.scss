@@ -25,7 +25,13 @@ $__this__: () !global;
     }
 
     @if type-of($map) == 'list' {
-        $map: nth($map, nth($properties, 1));
+        $index: nth($properties, 1);
+
+        @if ($index > length($map)) {
+            @return null;
+        }
+
+        $map: nth($map, $index);
     } @else {
         $map: map-get($map, unquote(nth($properties, 1)));
     }

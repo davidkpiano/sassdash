@@ -149,7 +149,8 @@
 
     @while ($index <= $length and not $break) {
         $key: nth($props, $index);
-        $iteration: call($iteratee, get($iterable, $key), $key, $iterable);
+
+        $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -276,6 +277,12 @@
 
 @function __is-truthy($value) {
     @return $value and not __is-falsey($value);
+}
+
+@function either($this, $that) {
+    $this-bool: if(__is-truthy($this), true, false);
+
+    @return if($this-bool, $this, $that);
 }
 
 @function __splice($list, $start, $delete-count: 1, $items...) {

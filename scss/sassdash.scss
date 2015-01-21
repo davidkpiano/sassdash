@@ -67,7 +67,22 @@
     @return -1;
 }
 
-@function __base-sort-by() { /* TODO */ }
+@function __base-sort-by($list, $comparer) {
+    $length: length($list);
+
+    $list: sort($list, $comparer);
+
+    $list: __to-map($list);
+
+    @while ($length > 0) {
+        $list: set($list, $length, get(get($list, $length), 'value'));
+
+        $length: $length - 1;
+    }
+
+    @return __to-list($list);
+}
+
 
 @function __base-to-string($value) {
     @if (type-of($value) == 'string') {
@@ -104,11 +119,26 @@
 }
 
 @function __compare-ascending($map, $other) {
-    // TODO
+    @return either(__base-compare-ascending(get($map, 'criteria'), get($other, 'criteria')), (get($map, 'index') - get($other, 'index')));
 }
 
 @function __compare-multiple-ascending($map, $other) {
-    // TODO
+    $index: 1;
+    $map-criteria: get($map, 'criteria');
+    $other-criteria: get($other, 'criteria');
+    $length: length($map-criteria);
+
+    @while ($index <= $length) {
+        $result: __base-compare-ascending(nth($map-criteria, $index), nth($other-criteria, $index));
+
+        @if ($result) {
+            @return $result;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return (get($map, 'index') - get($other, 'index'));
 }
 
 @function __escape-html-char($char) {
@@ -448,6 +478,13 @@
 @function double($val, $args...) {
     @return 2 * $val;
 }
+$users: (
+    (name: barney, age: 42, foo: true),
+    (name: fred, age: 31, foo: false),
+    (name: alex, age: 43, foo: true),
+    (name: jim, age: 52, foo: false),
+    (name: fred, age: 7, foo: true),
+);
 
 @function __list-map($list, $iteratee) {
     $index: 1;
@@ -501,7 +538,7 @@
     @return $result;
 }
 
-@function __list-reduce($list, $iteratee, $accumulator: null, $init-from-list: true) {
+@function __list-reduce($list, $iteratee, $accumulator: null, $init-from-list: true, $args...) {
     $index: 1;
     $length: length($list);
 
@@ -520,8 +557,9 @@
     @return $accumulator;
 }
 
-@function __list-reduce-right($list, $iteratee, $accumulator: null, $init-from-list: true) {
+@function __list-reduce-right($list, $iteratee, $accumulator: null, $init-from-list: true, $args...) {
     $list: __list-reverse($list);
+
 
     @return __list-reduce($list, $iteratee, $accumulator, $init-from-list);
 }
@@ -533,7 +571,7 @@
     @while ($index <= $length) {
         $value: nth($list, $index);
 
-        @if (call($predicate, $value, $index, $list)) {
+        @if (__call($predicate, null, $value, $index, $list)) {
             @return true;
         }
 
@@ -840,30 +878,34 @@
     @return $result;
 }
 
-// @function __base-for($map, $iteratee, $keys-function) {
-//     $index: 1;
-//     $iterable: __to-map($map);
-//     $props: call($keys-function, $iterable);
-//     $length: length($props);
-//     $result-map: ();
+@function __base-for($map, $iteratee, $keys-function) {
+    $index: 1;
+    $iterable: __to-map($map);
+    $props: __call($keys-function, null, $iterable);
+    $length: length($props);
+    $result-map: ();
 
-//     $break: false;
+    $break: false;
 
-//     @while ($index <= $length and not $break) {
-//         $key: nth($props, $index);
-//         $iteration: call($iteratee, get($iterable, $key), $key, $iterable);
+    // @debug $iterable, $props, $map, $iteratee;
 
-//         @if ($iteration == false) {
-//             $break: true;
-//         } @else {
-//             $result-map: set($result-map, $key, $iteration);
-//         }
+    @while ($index <= $length and not $break) {
+        $key: nth($props, $index);
+        $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
 
-//         $index: $index + 1;
-//     }
+        @debug $iteration;
 
-//     @return $result-map;
-// }
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $result-map: set($result-map, $key, $iteration);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result-map;
+}
 
 @function __base-for-right($map, $iteratee, $keys-function) {
     $map: __list-reverse($map);
@@ -877,9 +919,9 @@
     @return __base-for($map, $iteratee, __keys-in);
 }
 
-// @function __base-for-own($map, $iteratee) {
-//     @return __base-for($map, $iteratee, __keys);
-// }
+@function __base-for-own($map, $iteratee) {
+    @return __base-for($map, $iteratee, __keys);
+}
 
 @function __base-for-own-right($map, $iteratee) {
     @return __base-for-right($map, $iteratee, __keys);
@@ -917,7 +959,7 @@
 }
 @function __base-invoke($collection, $method-name, $args...) {
     $index: 1;
-    $is-func: __is-function($method-name);
+    $is-func: __function-exists($method-name);
     $length: if($collection, length($collection), 0);
     $result: ();
     $function: if($is-func, $method-name, if($value != null, get($value, $method-name), false));
@@ -1194,38 +1236,37 @@
 
 // @debug __base-random(3, 10);
 
-@function __base-reduce-iteratee($value, $index, $collection) {
-    $collection: scope-get(collection);
-    $iteratee: scope-get(iteratee);
-    $accumulator: scope-get(accumulator);
-    $init-from-collection: scope-get(init-from-collection);
-    $each-function: scope-get(each-function);
+@function __base-reduce-iteratee($value, $index, $collection: null) {
+    $iteratee: this(iteratee);
+    $accumulator: this(accumulator);
+    $init-from-collection: this(init-from-collection);
 
     @if ($init-from-collection) {
-        $init-from-collection: false;
+        $_: this(init-from-collection, false);
         $accumulator: $value;
     } @else {
-        $accumulator: call($iteratee, $accumulator, $value, $index, $collection);
+        $accumulator: __call($iteratee, null, $accumulator, $value, $index, $collection);
     }
 
-    $_: scope-set(collection, $collection);
-    $_: scope-set(iteratee, $iteratee);
-    $_: scope-set(accumulator, $accumulator);
-    $_: scope-set(init-from-collection, $init-from-collection);
-    $_: scope-set(each-function, $each-function);
+    $_: this(accumulator, $accumulator);
 
-    @return null;
+    @return true;
 }
-@function __base-reduce($collection, $iteratee, $accumulator, $init-from-collection, $each-function) {
-    $_: scope-set(collection, $collection);
-    $_: scope-set(iteratee, $iteratee);
-    $_: scope-set(accumulator, $accumulator);
-    $_: scope-set(init-from-collection, $init-from-collection);
-    $_: scope-set(each-function, $each-function);
+@function __base-reduce($collection, $iteratee, $accumulator, $init-from-collection: false, $each-function: null) {
 
-    $_: call($each-function, $collection, __base-reduce-iteratee);
+    $_: scope-start();
+        $_: scope(iteratee, $iteratee);
+        $_: scope(accumulator, $accumulator);
+        $_: scope(init-from-collection, $init-from-collection);
 
-    $accumulator: scope-get(accumulator);
+        $iteratee: scoped-function(__base-reduce-iteratee);
+
+        @debug $collection, $each-function, $iteratee;
+
+        $_: __call($each-function, null, $collection, $iteratee);
+
+        $accumulator: scope(accumulator);
+    $_: scope-end();
 
     @return $accumulator;
 }
@@ -1270,24 +1311,25 @@
 // @debug __base-slice((1 2 3 4 5 6 7 8), 2, 5);
 
 @function __base-some-iteratee($value, $index, $collection) {
-    $predicate: scope-get(predicate);
-    $result: scope-get(result);
+    $predicate: this(predicate);
+    $result: this(result);
 
-    $result: call($predicate, $value, $index, $collection);
+    $result: __call($predicate, null, $value, $index, $collection);
 
-    $_: scope-set(result, $result);
+    $_: this(result, $result);
 
     @return if($result, false, true);
 }
 @function __base-some($collection, $predicate) {
     $result: false;
 
-    $_: scope-set(predicate, $predicate);
-    $_: scope-set(result, $result);
+    $_: scope-start();
+    $_: scope(predicate, $predicate);
+    $_: scope(result, $result);
 
     $_: __base-each($collection, __base-some-iteratee);
 
-    $result: scope-get(result);
+    $result: scope(result);
 
     $_: scope-end();
 
@@ -1660,7 +1702,46 @@
 
 @function __create-ctor-wrapper() {}
 
-@function __create-extremum() {}
+@function __create-extremum-function($collection, $iteratee: null, $this-arg: null) {
+    $list-function: this(list-function);
+    $is-min: this(is-min);
+
+    @if ($this-arg and __is-iteratee-call($collection, $iteratee, $this-arg)) {
+        $iteratee: null;
+    }
+
+    $function: __get-callback();
+    $no-iteratee: ($iteratee == null);
+
+    @if not ($function == __base-callback and $no-iteratee) {
+        $no-iteratee: false;
+        $iteratee: __call($function, null, $iteratee, $this-arg, 3);
+    }
+
+    @if ($no-iteratee) {
+        $is-list: __is-list($collection);
+
+        @if (not $is-list and __is-string($collection)) {
+            $iteratee: __char-at-callback;
+        } @else {
+            @return __call($list-function, null, if($is-list, $collection, __to-iterable($collection)));
+        }
+    }
+
+    @return __extremum-by($collection, $iteratee, $is-min);
+}
+@function __create-extremum($list-function, $is-min: false) {
+
+    $_: scope-start();
+    $_: scope(list-function, $list-function);
+    $_: scope(is-min, $is-min);
+
+    $function: scoped-function(__create-extremum-function);
+
+    $_: scope-end();
+
+    @return $function;
+}
 
 @function __create-hybrid-wrapper() {}
 
@@ -1798,7 +1879,7 @@
     $computed: scope(computed);
     $result: scope(result);
 
-    $current: call($iteratee, $value, $index, $collection);
+    $current: __call($iteratee, null, $value, $index, $collection);
     
     @if (if($is-min, $current < $computed, $current > $computed))
         or ($current == $ex-value and $current == $result)
@@ -1822,7 +1903,9 @@
         $_: scope(computed, $computed);
         $_: scope(result, $result);
 
-        $_: __base-each($collection, __extremum-by-iteratee);
+        $iteratee: scoped-function(__extremum-by-iteratee);
+
+        $_: __base-each($collection, $iteratee);
 
         $result: scope(result);
     $_: scope-end();
@@ -2964,10 +3047,403 @@
 
 // @debug __invoke(((3 1 2), (8 2 3 4 1 2 5 6 9)), sort-iteratee, asc);
 
+@function __map($collection, $iteratee: __identity, $this-arg: null) {
+    $function: if(__is-list($collection), __list-map, __base-map);
+
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+
+    @return __call($function, null, $collection, $iteratee);
+}
+
+// @debug __map(((foo: bar, baz: quo), (foo: wat, baz: weay)), 'baz');
+
+@function __max($arguments...) {
+    $function: __create-extremum(__list-max);
+
+    @return __call($function, null, $arguments...);
+}
+
+// @debug __max((1 5 8 3 2 5 88 3 2 5 4));
+// @debug __max(((a: asdf, foo: 38), (a: qwer, foo: 22), (a: zxcv, foo: 29)), 'foo');
+
+@function __min($arguments...) {
+    $function: __create-extremum(__list-min, true);
+
+    @return __call($function, null, $arguments...);
+}
+
+// @debug __min((1 5 8 3 2 5 88 3 2 5 4));
+// @debug __min(((a: asdf, foo: 38), (a: qwer, foo: 22), (a: zxcv, foo: 29)), 'foo');
+
+@function __partition-initializer() {
+    @return (1: (), 2: ());
+}
+@function __partition-aggregator($result, $value, $key, $args...) {
+    $result-key: if($key, 0, 1);
+    $result-value: get($result, $result-key);
+    $result-value: if($result-value, $result-value, ());
+
+    @return set($result, $result-key, append($result-value, $value));
+}
+@function __partition($arguments...) {
+    $function: __create-aggregator(__partition-aggregator);
+
+    @return __to-list(__call($function, null, $arguments...));
+}
+
+// @debug __partition((1 2 3), is-even);
+
+@function __pluck($collection, $key) {
+    @debug $collection, $key, __property($key);
+    @debug __map($collection, __property($key));
+    @return __map($collection, __property($key));
+}
+
+// @debug __pluck(((a: 1, b: 2), (a: 3, b: 4)), 'a');
+
+@function __reduce($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
+    $function: if(__is-list($collection), __list-reduce, __base-reduce);
+
+    @debug $function, __get-callback($iteratee, $this-arg, 4), $accumulator;
+
+    @return __call($function, null,
+        $collection,
+        __get-callback($iteratee, $this-arg, 4),
+        $accumulator,
+        ($accumulator == null and $this-arg == null),
+        __base-each);
+}
+
+// @function sum($sum, $n, $args...) {
+//     @return $sum + $n;
+// }
+// @debug __reduce((1 2 3), sum);
+
+// @function double-map($result, $n, $key, $args...) {
+//     $result: set($result, $key, double(get($result, $key)));
+
+//     @return $result;
+// }
+// @debug __reduce((a: 1, b: 2, c: 3), double-map);
+// @debug __call(__base-reduce, null, (a:1,b:2,c:3), double-map, null, true, __base-each);
+// TODO fix reduce with maps!
+
+@function __reduce-right($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
+    $function: if(__is-list($collection), __list-reduce-right, __base-reduce);
+
+    @debug $collection, $iteratee, $function;
+    @return __call($function, null, $collection, __get-callback($iteratee, $this-arg, 4), $accumulator, ($accumulator == null and $this-arg == null), __base-each-right);
+}
+
+// $array: ((0, 1), (2, 3), (4, 5));
+// @function reduce-right-stuff($flattened, $other, $args...) {
+//     @debug $flattened, $other, append($flattened, $other);
+//     @return append($flattened, $other);
+// }
+// @debug __reduce-right($array, reduce-right-stuff);
+
+@function __reject-iteratee($value, $index, $collection) {
+    $predicate: this(predicate);
+
+    @return not __call($predicate, null, $value, $index, $collection);
+}
+@function __reject($collection, $predicate: __identity, $this-arg: null) {
+    $function: if(__is-list($collection), __list-filter, __base-filter);
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    $_: scope-start();
+    $_: scope(predicate, $predicate);
+
+    $result: __call($function, null, $collection, __reject-iteratee);
+
+    $_: scope-end();
+
+    @return $result;
+}
+
+// @debug __reject((1 2 3 4 5 6 7 8), is-even);
+// @debug __reject(((a: 1, b: true), (a: 2, b: false), (a: 3, b: true), (a: 4, b: false)), 'b');
+// @debug __pluck(__reject(((act: 1, b: true), (act: 2, b: false), (act: 3, b: true), (act: 4, b: false)), 'b'), act); // works with __property
+
+@function __sample($collection, $n: null, $guard: null) {
+    @if (if($guard, __is-iteratee-call($collection, $n, $guard), ($n == null))) {
+        $length: length($collection);
+        @return if($length > 0, nth($collection, __base-random(1, $length)), $__undefined__);
+    }
+
+    $n: if(type-of($n) == 'number', $n, if($n, 1, 0));
+    $result: __shuffle($collection);
+    $result: __take($result, __native-min(if($n < 0, 0, $n), length($result)));
+
+    @return $result;
+}
+
+// @debug __sample((1 2 3 4 5), 4);
+
+@function __shuffle($collection) {
+    $collection: __to-iterable($collection);
+
+    $index: 1;
+    $length: length($collection);
+    $result: ();
+
+    @while ($index <= $length) {
+        $rand: __base-random(1, $index);
+
+        @if ($index != $rand) {
+            $result: set($result, $index, get($result, $rand));
+        }
+
+        $result: set($result, $rand, get($collection, $index));
+
+        $index: $index + 1;
+    }
+
+    @return __to-list($result);
+}
+
+// @debug __shuffle((1 2 3 4 5));
+// @debug __sample((1 2 3 4 5), 4);
+
+@function __size($collection: null) {
+    $length: if($collection, length($collection), 0);
+
+    @return if(__is-length($length), $length, length(__keys($collection)));
+}
+
+// @debug __size((1 2 3 4 5));
+// @debug __size((a:2,b:3,c:4));
+
+@function __some($collection, $predicate: __identity, $this-arg: $__undefined__) {
+    $function: if(__is-list($collection), __list-some, __base-some);
+
+    @if (not __function-exists($predicate)) or (not __is-undefined($this-arg)) {
+        $predicate: __get-callback($predicate, $this-arg, 3);
+    }
+
+    @return __call($function, null, $collection, $predicate);
+}
+
+// @debug __some((1 2 3 4 5), is-even);
+// @debug __some((1 3 5 7 9), is-even);
+// @debug __some(((a: false, b: 32), (a: true, b: 32), (a: false, b: 42)), 'a');
+// @debug __some(((a: false, b: 32), (a: true, b: 32), (a: false, b: 42)), (b: 42));
+
+@function __sort-by-iteratee($value, $key, $collection) {
+    $result: this(result);
+    $iteratee: this(iteratee);
+    $index: this(index);
+
+    $result: append($result, (
+            'criteria': __call($iteratee, null, $value, $key, $collection),
+            'index': $index,
+            'value': $value
+        ));
+
+    $_: this(result, $result);
+    $_: this(index, $index + 1);
+
+    @return true;
+}
+@function __sort-by($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+    $index: 1;
+    $length: if($collection, length($collection), 0);
+    $result: ();
+
+    @if (__is-truthy($this-arg) and __is-iteratee-call($collection, $iteratee, $this-arg)) {
+        $iteratee: null;
+    }
+
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+
+    $_: scope-start();
+        $_: scope(result, $result);
+        $_: scope(iteratee, $iteratee);
+        $_: scope(index, $index);
+
+        $sort-by-iteratee: scoped-function(__sort-by-iteratee);
+
+        $_: __base-each($collection, $sort-by-iteratee);
+
+        $result: scope(result);
+    $_: scope-end();
+
+    @return __base-sort-by($result, __compare-ascending);
+}
+
+@debug __sort-by($users, 'age');
+
+@function __sort-by-all-iteratee($value, $key, $collection) {
+    $props: this(props);
+    $result: this(result);
+    $index: this(index);
+
+    $length: length($props);
+    $criteria: ();
+
+    @while ($length > 0) {
+        $criteria: set($criteria, $length, if($value == null, $__undefined__, get($value, get($props, $length))));
+
+        $length: $length - 1;
+    }
+
+    $criteria: __to-list($criteria);
+
+    $result: append($result, (
+            'criteria': $criteria,
+            'index': $index,
+            'value': $value
+        ));
+
+    $_: this(result, $result);
+    $_: this(index, $index + 1);
+
+    @return true;
+}
+@function __sort-by-all($arguments...) {
+    $collection: nth($arguments, 1);
+    $args: $arguments;
+
+    @if (length($args) > 3 and __is-iteratee-call(nth($args, 2), nth($args, 3), nth($args, 4))) {
+        $args: ($collection, nth($args, 2));
+    }
+
+    $index: 1;
+    $length: if($collection, length($collection), 0);
+    $props: __base-flatten($args, false, false, 1);
+    $result: ();
+
+    $_: scope-start();
+        $_: scope(props, $props);
+        $_: scope(result, $result);
+        $_: scope(index, $index);
+
+        $iteratee: scoped-function(__sort-by-all-iteratee);
+
+        $_: __base-each($collection, $iteratee);
+
+        $result: scope(result);
+    $_: scope-end();
+
+    @return __base-sort-by($result, __compare-multiple-ascending);
+}
+
+// @debug __sort-by-all($users, ('user', 'age'));
+
+@function __where($collection, $source) {
+    @return __filter($collection, __matches($source));
+}
+
+// @debug __matches(('foo': true));
+// @debug __where($users, ('foo': true));
+
+// @function __now() {} // not implemented
+
+@function __after-callback($arguments...) {
+    $n: this(n);
+    $function: this(function);
+
+    @if ($n < 1) {
+        @return __call($function, this(), $arguments...);
+    }
+
+    $_: this(n, $n - 1);
+
+    @return null;
+}
+@function __after($n, $function) {
+    @if not (__function-exists($function)) {
+        @if (__function-exists($n)) {
+            $temp: $n;
+            $n: $function;
+            $function: $temp;
+        } @else {
+            @error 'FUNC_ERROR_TEXT';
+        }
+    }
+
+    $n: if(__native-is-finite($n), $n, 0);
+
+    $_: scope-start();
+    $_: scope(function, $function);
+    $_: scope(n, $n);
+
+    $after-callback: scoped-function(__after-callback);
+
+    $_: scope-end();
+
+    @return $after-callback;
+}
+
+// $after: __after(3, length);
+// @debug __call($after, null, (1, 2, 3));
+// @debug __call($after, null, (1, 2, 3));
+// @debug __call($after, null, (1, 2, 3));
+// @debug __call($after, null, (1, 2, 3));
+
+@function __ary() {} // todo
+
+@function __before-callback($arguments...) {
+    $n: this(n);
+    $function: this(function);
+    $result: null;
+
+    $n: $n - 1;
+    $_: this(n, $n);
+
+    @if ($n > 0) {
+        $result: __call($function, this(), $arguments...);
+    } @else {
+        $_: this(function, null);
+    }
+
+    @return $result;
+}
+@function __before($n, $function) {
+    @if not (__function-exists($function)) {
+        @if (__function-exists($n)) {
+            $temp: $n;
+            $n: $function;
+            $function: $temp;
+        } @else {
+            @error 'FUNC_ERROR_TEXT';
+        }
+    }
+
+    $_: scope-start();
+    $_: scope(function, $function);
+    $_: scope(n, $n);
+
+    $after-callback: scoped-function(__before-callback);
+
+    $_: scope-end();    
+
+    @return $after-callback;
+}
+
+// $before: __before(3, length);
+// @debug __call($before, null, (1, 2, 3));
+// @debug __call($before, null, (1, 2, 3));
+// @debug __call($before, null, (1, 2, 3));
+// @debug __call($before, null, (1, 2, 3));
+
+@function __bind() {} // todo
+
+@function __bind-all() {} // todo
+
+@function __bind-key() {} // todo
+
+@function __curry() {} // todo
+
+@function __property($key) {
+    @return __base-property($key + '');
+}
+
+
 @function __matches($source) {
     @return __base-matches($source, true);
 }
-
 
 
 

@@ -90,47 +90,14 @@
     }
 }
 
-@function __to-list($value) {
-    // TODO
-    @if type-of($value) == 'map' {
-        $length: length($value);
-        $index: 1;
-        $result: ();
 
-        @while ($index <= $length) {
-            $result: append($result, get($value, $index));
 
-            $index: $index + 1;
-        }
-
-        @return if($result == map-values($value), $result, map-values($value));
-    }
-
-    @if type-of($value) == 'string' {
-        $result: ();
-
-        @for $index from 1 through str-length($value) {
-            $result: append($result, str-slice($value, $index, $index));
-        }
-
-        @return $result;
-    }
-
-    @return $value;
-}
-
-@function __is-list($value) {
-    @return type-of($value) == list;
-}
-
-@function __is-arguments($value) {
-    @return __is-list($value);
-}
 
 @function __keys-in($map) {
     $map: __to-map($map);
+    $skip-keys: ('_type', '_constructor', '_extends');
 
-    @return map-keys($map);
+    @return __without(map-keys($map), $skip-keys...);
 }
 
 @function __keys($map) {
@@ -177,12 +144,6 @@
     @return __is-list($value);
 }
 
-@function __is-plain-map($value) {
-    // TODO
-    @return (type-of($value) == 'map')
-        and not (map-has-key($value, '_constructor'));
-}
-
 @function __get-index-of() {
     @return '__base-index-of';
 }
@@ -216,10 +177,6 @@
 
 // @debug __repeat('abc', 4);
 
-@function __is-undefined($value) {
-    @return $value == $__undefined__;
-}
-
 @function __noop($args...) {
     @return null;
 }
@@ -227,10 +184,6 @@
 @function __is-ctor($ctor) {
     // todo
     @return function-exists($ctor);
-}
-
-@function __is-string($value) {
-    @return (type-of($value) == 'string');
 }
 
 @function __string-split($string, $delimiter: '') {
@@ -256,10 +209,6 @@
 
 // @debug __string-split('asd,qwe,zxc,rty,fgh,234', ',');
 // @debug __string-split('abcde');
-
-@function __is-map($value) {
-    @return type-of($value) == 'map';
-}
 
 @function __is-falsey($value) {
     @if ($value == null)

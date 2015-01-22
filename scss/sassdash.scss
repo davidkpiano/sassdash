@@ -641,6 +641,25 @@ $users: (
     @return $result;
 }
 
+@function __base-copy($source, $map, $props: null) {
+    @if not ($props) {
+        $props: $map;
+        $map: ();
+    }
+
+    $index: 1;
+    $length: length($props);
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+        $map: set($map, $key, get($source, $key));
+
+        $index: $index + 1;
+    }
+
+    @return $map;
+}
+
 @function __base-bind-all() {
     // todo
 }
@@ -1023,10 +1042,10 @@ $users: (
             $map-value: get($map, $key);
             $src-value: get($values, $index);
 
-            $result: if($customizer, call($customizer, $map-value, $src-value, $key), null);
+            $result: if($customizer, __call($customizer, null, $map-value, $src-value, $key), null);
 
             @if ($result == null) {
-                $result: call(__base-is-equal, $src-value, $map-value, $customizer, true);
+                $result: __call(__base-is-equal, null, $src-value, $map-value, $customizer, true);
             }
         }
 
@@ -2933,12 +2952,9 @@ $users: (
 // @debug __every((2 4 6 8 10), is-even);
 
 @function __filter($collection, $predicate: __identity, $this-arg: null) {
-    @debug 'here';
     $function: if(__is-list($collection), __list-filter, __base-filter);
 
     $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @debug $predicate;
 
     @return __call($function, $this-arg, $collection, $predicate);
 }
@@ -3272,7 +3288,7 @@ $users: (
     @return __base-sort-by($result, __compare-ascending);
 }
 
-@debug __sort-by($users, 'age');
+// @debug __sort-by($users, 'age');
 
 @function __sort-by-all-iteratee($value, $key, $collection) {
     $props: this(props);
@@ -3435,6 +3451,330 @@ $users: (
 @function __bind-key() {} // todo
 
 @function __curry() {} // todo
+
+@function __curry-right() {} // todo
+
+// @function __debounce() {} // not implemented
+
+// @function __defer() {} // not implemented
+
+// @function __delay() {} // not implemented
+
+@function __flow-function($arguments...) {
+    $functions: this(functions);
+    $length: this(length);
+
+    $index: 1;
+    $result: __call(nth($functions, $index), null, $arguments...);
+    $index: $index + 1;
+
+    @while ($index <= $length) {
+        $result: __call(nth($functions, $index), null, $result);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+@function __flow($arguments...) {
+    $functions: $arguments;
+    $length: length($functions);
+
+    @if (__is-falsey($length)) {
+        @return __noop;
+    }
+
+    @if not(__list-every($functions, __function-exists)) {
+        @error 'FUNC_ERROR_TEXT';
+    }
+
+    $_: scope-start();
+
+    $_: scope(functions, $functions);
+    $_: scope(length, $length);
+
+    $scoped-function: scoped-function(__flow-function);
+    $_: scope-end();
+
+    @return $scoped-function;
+}
+
+// @function add($a, $b) { @return $a + $b; }
+// @function square($a) { @return $a * $a; }
+// $flow: __flow(add, square);
+// @debug __call($flow, null, 1, 2);
+
+@function __flow-right-function($arguments...) {
+    $functions: this(functions);
+    $index: this(from-index);
+
+    $result: __call(nth($functions, $index), null, $arguments...);
+    $index: $index - 1;
+
+    @while ($index > 0) {
+        $result: __call(nth($functions, $index), null, $result);
+
+        $index: $index - 1;
+    }
+
+    @return $result;
+}
+@function __flow-right($arguments...) {
+    $functions: $arguments;
+    $from-index: length($functions);
+
+    @if ($from-index < 1) {
+        @return __noop;
+    }
+
+    @if not(__list-every($functions, __function-exists)) {
+        @error 'FUNC_ERROR_TEXT';
+    }
+
+    $_: scope-start();
+
+    $_: scope(functions, $functions);
+    $_: scope(from-index, $from-index);
+
+    $scoped-function: scoped-function(__flow-right-function);
+    $_: scope-end();
+
+    @return $scoped-function;
+}
+
+// @function add($a, $b) { @return $a + $b; }
+// @function square($a) { @return $a * $a; }
+// $flow-right: __flow-right(square, add);
+// @debug __call($flow-right, null, 1, 2);
+
+@function __memoize() {} // todo
+
+@function __negate-function($arguments...) {
+    $predicate: this(predicate);
+
+    @return not __call($predicate, this(), $arguments...);
+}
+@function __negate($predicate) {
+    @if not (__function-exists($predicate)) {
+        @error 'FUNC_ERROR_TEXT';
+    }
+
+    $_: scope-start();
+    $_: scope(predicate, $predicate);
+
+    $scoped-function: scoped-function(__negate-function);
+    $_: scope-end();
+
+    @return $scoped-function;
+}
+
+// @debug __filter((1 2 3 4 5 6), __negate(__negate(is-even)));
+
+@function __once($function) {
+    @return __before($function, 2);
+}
+
+@function __partial() {} // todo
+
+@function __partial-right() {} // todo
+
+@function __rearg() {} // todo
+
+// @function __throttle() {} // not implemented
+
+@function __wrap() {} // todo
+
+@function __clone($value, $is-deep: null, $customizer: null, $this-arg: null) {
+    @if (type-of($is-deep) != 'bool' and $is-deep != null) {
+        $this-arg: $customizer;
+        $customizer: if(__is-iteratee-call($value, $is-deep, $this-arg), null, $is-deep);
+        $is-deep: false;
+    }
+
+    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 1), false);
+
+    @return __base-clone($value, $is-deep, $customizer);
+}
+
+// @debug __clone((foo: bar, baz: (quo: qote)));
+
+@function __clone-deep($value, $customizer: null, $this-arg: null) {
+    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 1), false);
+
+    @return __base-clone($value, true, $customizer);
+}
+
+@function __is-arguments($value) {
+    @return __is-list($value);
+}
+
+@function __is-list($value) {
+    @return type-of($value) == 'list';
+}
+
+@function __is-boolean($value) {
+    @return type-of($value) == 'bool';
+}
+
+@function __is-date() {} // todo
+
+// @function __is-element() {} // not implemented
+
+@function __is-empty($value: null) {
+    @if ($value == null) {
+        @return true;
+    }
+
+    @if (__is-string($value)) {
+        @return str-length($value) == 0;
+    }
+
+    @if (__is-map-like($value)) {
+        @return length($value) == 0;
+    }
+
+    @if (__is-boolean($value)) {
+        @return true;
+    }
+
+    @return not __length(__keys($value));
+}
+
+// @debug __is-empty(null);
+// @debug __is-empty(true);
+// @debug __is-empty((1 2 3));
+// @debug __is-empty(());
+// @debug __is-empty((a:1,b:2,c:3));
+
+@function __is-equal($value, $other, $customizer: null, $this-arg: null) {
+    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 3), false);
+
+    @if (not $customizer and __is-strict-comparable($value) and __is-strict-comparable($other)) {
+        @return ($value == $other) and (type-of($value) == type-of($other));
+    }
+
+    $result: if($customizer, __call($customizer, null, $value, $other), $__undefined__);
+
+    @return if(__is-undefined($result), __base-is-equal($value, $other, $customizer), ($result and true));
+}
+
+// @debug (foo: bar, baz: 3) == (baz: 3, foo: bar);
+// @debug __is-equal((foo: bar, baz: 3), (baz: 3, foo: bar));
+// @function abs-match($value, $other) {
+//     @return abs($value) == abs($other);
+// }
+// @debug __is-equal(3, -3, abs-match);
+
+// @function __is-error() {} // not implemented
+
+// Sass numbers can get HUGE. Well, Ruby numbers can.
+@function __is-finite($value) {
+    @return (type-of($value) == 'number' and __native-is-finite($value));
+}
+
+@function __is-function($value) {
+    @return (__function-exists($value));
+}
+
+@function __is-map($value) {
+    @return (type-of($value) == 'map');
+}
+
+@function __is-match($map, $source, $customizer: null, $this-arg: null) {
+    $props: __keys($source);
+    $length: length($props);
+
+    $customizer: if(__is-function($customizer), __bind-callback($customizer, $this-arg, 3), false);
+
+    @if (not $customizer and $length == 1) {
+        $key: nth($props, 1);
+        $value: get($source, $key);
+
+        @if (__is-strict-comparable($value)) {
+            @return if($map != null and $value == get($map, $key), map-has-key($map, $key), false);
+        }
+    }
+
+    $values: ();
+    $strict-compare-flags: ();
+
+    @while ($length > 0) {
+        $value: get($source, nth($props, $length));
+        $values: set($values, $length, $value);
+        $strict-compare-flags: set($strict-compare-flags, $length, __is-strict-comparable($value));
+
+        $length: $length - 1;
+    }
+
+    $values: __to-list($values);
+    $strict-compare-flags: __to-list($strict-compare-flags);
+
+    @return __base-is-match($map, $props, $values, $strict-compare-flags, $customizer);
+}
+
+// @debug __is-match((foo: 'bar', age: 40), (age: 40));
+// @debug __is-match((foo: 'bar', age: 40), (age: 36));
+// @function abs-match($value, $other, $args...) {
+//     @return abs($value) == abs($other);
+// }
+// @debug __is-match((foo: 3), (foo: -3), abs-match);
+
+// @function __is-nan() {} // not implemented
+
+// @function __is-native() {} // not implemented
+
+@function __is-null($value) {
+    @return ($value == null);
+}
+
+@function __is-number($value) {
+    @return (type-of($value) == 'number');
+}
+
+@function __is-plain-map($value) {
+    @return (type-of($value) == 'map')
+        and not (map-has-key($value, '_constructor'));
+}
+
+// @function __is-regexp($value) {} // not implemented
+
+@function __is-string($value) {
+    @return (type-of($value) == 'string');
+}
+
+// @function __is-typed-array($value) {} // not implemented
+
+@function __is-undefined($value) {
+    @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
+}
+
+@function __to-list($value) {
+    // TODO
+    @if type-of($value) == 'map' {
+        @return map-values($value);
+    }
+
+    @if type-of($value) == 'string' {
+        $result: ();
+
+        @for $index from 1 through str-length($value) {
+            $result: append($result, str-slice($value, $index, $index));
+        }
+
+        @return $result;
+    }
+
+    @return if(__is-list($value), $value, ());
+}
+// @debug __to-list('abcde');
+// @debug __to-list($users);
+// @debug __to-list((a:1,b:2,c:3));
+// @debug __to-list((10, 20, 30, 40, 50));
+// @debug __to-list(38238);
+
+@function __to-plain-map($value) {
+    @return __base-copy($value, __keys-in($value));
+}
 
 @function __property($key) {
     @return __base-property($key + '');

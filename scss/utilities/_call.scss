@@ -1,6 +1,6 @@
 
 // $this-arg: pointer to scope
-@function __function-exists($function) {
+@function __function-exists($function, $args...) {
     @if (type-of($function) != 'string') {
         @return false;
     }

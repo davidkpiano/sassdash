@@ -1,0 +1,40 @@
+@import '../node_modules/bootcamp/dist/_bootcamp';
+@import '../scss/_sassdash';
+
+$bc-setting-verbose: true;
+
+@include runner-start;
+
+// @include describe('sassdash constructor'){}
+
+@include describe('sassdash _after') {
+    @include it('should create a function that invokes func after n calls') {
+        $test-after: __after(5, length);
+
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+
+        @include should(expect($result), to(equal(2)));
+
+        $test-after: __after(5, length);
+
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+        $result: __call($test-after, null, (1, 2));
+
+        @include should(expect($result), to(equal(null)));
+
+        $test-after: __after(0, length);
+
+        $result: __call($test-after, null, (1, 2));
+
+        @include should(expect($result), to(equal(2)));
+    }
+}
+
+@include runner-end;

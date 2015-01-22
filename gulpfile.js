@@ -14,3 +14,11 @@ gulp.task('scss', function() {
 gulp.task('default', ['scss'], function() {
     gulp.watch('scss/*.scss', ['scss']);
 });
+
+gulp.task('test', ['scss'], function() {
+    gulp.src('tests/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('css'));
+
+    gulp.watch('tests/*.scss', ['test']);
+});

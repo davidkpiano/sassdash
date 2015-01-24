@@ -693,6 +693,18 @@ $users: (
     // todo
 }
 
+    // var baseCreate = (function() {
+    //   function Object() {}
+    //   return function(prototype) {
+    //     if (isObject(prototype)) {
+    //       Object.prototype = prototype;
+    //       var result = new Object;
+    //       Object.prototype = null;
+    //     }
+    //     return result || context.Object();
+    //   };
+    // }());
+
 @function __base-delay() {
     // not being implemented
 }
@@ -911,8 +923,6 @@ $users: (
     @while ($index <= $length and not $break) {
         $key: nth($props, $index);
         $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
-
-        @debug $iteration;
 
         @if ($iteration == false) {
             $break: true;
@@ -1703,8 +1713,48 @@ $users: (
     //   };
     // }
 
-@function __create-assigner() {
-    // todo
+@function __create-assigner-function($arguments...) {
+    $assigner: this($assigner);
+    $length: length($arguments);
+    $map: nth($arguments, 1);
+
+    @if ($length < 2 or $map == null) {
+        @return $map;
+    }
+
+    @if ($length > 3 and __is-iteratee-call(nth($arguments, 2), nth($arguments, 3), nth($arguments, 4))) {
+        $length: 2;
+    }
+
+    @if ($length > 3 and __function-exists(nth($arguments, $length - 1))) {
+        $length: $length - 1;
+        $customizer: __bind-callback(nth($arguments, $length), nth($arguments, $length - 1), 5);
+    } @else if ($length > 2 and __function-exists(nth($arguments, $length))) {
+        $length: $length - 1;
+        $customizer: nth($arguments, $length);
+    }
+
+    $index: 1;
+
+    @while ($index <= $length) {
+        $source: nth($arguments, $index);
+
+        @if ($source) {
+            $map: __call($assigner, null, $map, $source, $customizer);
+        }
+    }
+
+    @return $map;
+}
+@function __create-assigner($assigner) {
+    $_: scope-start();
+    $_: scope(assigner, $assigner);
+
+    $scoped-function: scoped-function(__create-assigner-function);
+
+    $_: scope-end();
+
+    @return $scoped-function;
 }
 
 @function __create-bind-wrapper($function, $this-arg) {
@@ -3775,6 +3825,63 @@ $users: (
 @function __to-plain-map($value) {
     @return __base-copy($value, __keys-in($value));
 }
+
+@function __assign($arguments...) {
+    $assigner: __create-assigner(__base-assign);
+
+    @return __call($assigner, null, $arguments...);
+}
+
+@function __create($prototype, $properties, $guard: null) {
+    $result: __base-create($prototype);
+
+    @if ($guard and __is-iteratee-call($prototype, $properties, $guard)) {
+        $properties: null;
+    }
+
+    @return if($properties, __base-copy($properties, $result, __keys($properties)), $result);
+}
+
+@function __defaults($map: null, $args...) {
+    @if ($map == null) {
+        @return $map;
+    }
+
+    $args: append($args, __assign-defaults);
+
+    @return __assign($map, $args...);
+}
+
+@function __find-key($map, $predicate: __identity, $this-arg: null) {
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($map, $predicate, __base-for-own, true);
+}
+
+// @debug __find-key($users, ('age': 43));
+// @debug __find-key($users, 'foo');
+
+@function __find-last-key($map, $predicate: __identity, $this-arg: null) {
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($map, $predicate, __base-for-own-right, true);
+}
+
+// @debug __find-last-key($users, ('age': 43));
+// @debug __find-last-key($users, 'foo');
+
+
+@function __for-in($map, $iteratee: __identity, $this-arg: $__undefined__) {
+    @if (not __function-exists($iteratee) or not __is-undefined($this-arg)) {
+        $iteratee: __bind-callback($iteratee, $this-arg, 3);
+    }
+
+    @return __base-for($map, $iteratee, __keys-in);
+}
+
+// @debug __for-in((foo: 1, bar: 2, baz: 3), double);
+
+
 
 @function __property($key) {
     @return __base-property($key + '');

@@ -35,6 +35,14 @@ $bc-setting-verbose: true;
 
         @include should(expect($result), to(equal(2)));
     }
+
+    @include it('should allow func as the first argument') {
+        $test-after: __after(length, 0);
+
+        $result: __call($test-after, null, (1, 2));
+
+        @include should(expect($result), to(equal(2)));
+    }
 }
 
 @include runner-end;

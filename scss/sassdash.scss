@@ -912,7 +912,7 @@ $users: (
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;
     $iterable: __to-map($map);
-    $props: __call($keys-function, null, $iterable);
+    $props: __call($keys-function, null, $map);
     $length: length($props);
     $result-map: ();
 
@@ -937,11 +937,27 @@ $users: (
 }
 
 @function __base-for-right($map, $iteratee, $keys-function) {
-    $map: __list-reverse($map);
+    $iterable: __to-map($map);
+    $props: __call($keys-function, null, $map);
+    $length: length($props);
+    $result-map: ();
 
-    $result: __base-for($map, $iteratee, $keys-function);
+    $break: false;
 
-    @return __list-reverse($result);
+    @while ($length > 0 and not $break) {
+        $key: nth($props, $length);
+        $iteration: __call($iteratee, null, get($iterable, $key), $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $result-map: set($result-map, $key, $iteration);
+        }
+
+        $length: $length - 1;
+    }
+
+    @return $result-map;
 }
 
 @function __base-for-in($map, $iteratee) {
@@ -964,7 +980,7 @@ $users: (
     @while ($index <= $length) {
         $key: nth($props, $index);
 
-        @if (function-exists(get($map, $key))) {
+        @if (__function-exists(get($map, $key))) {
             $result: append($result, $key);
         }
 
@@ -1215,12 +1231,13 @@ $users: (
     $is-src-list: __is-list-like($source);
     $result: ();
 
-    $_: scope-set(map, $map);
-    $_: scope-set(source, $source);
-    $_: scope-set(customizer, $customizer);
-    $_: scope-set(stack-a, $stack-a);
-    $_: scope-set(stack-b, $stack-b);
-    $_: scope-set(is-src-list, $is-src-list);
+    $_: scope-start();
+    $_: scope(map, $map);
+    $_: scope(source, $source);
+    $_: scope(customizer, $customizer);
+    $_: scope(stack-a, $stack-a);
+    $_: scope(stack-b, $stack-b);
+    $_: scope(is-src-list, $is-src-list);
 
     $merge-function: if($is-src-list, __list-each, __base-for-own);
 
@@ -2206,7 +2223,7 @@ $users: (
     // _helpers
 }
 
-@function __to-string($value) {
+@function __to-string($value, $args...) {
     @if (type-of($value) == 'string') {
         @return $value;
     }
@@ -3773,22 +3790,22 @@ $users: (
 
 // @function __is-native() {} // not implemented
 
-@function __is-null($value) {
+@function __is-null($value, $args...) {
     @return ($value == null);
 }
 
-@function __is-number($value) {
+@function __is-number($value, $args...) {
     @return (type-of($value) == 'number');
 }
 
-@function __is-plain-map($value) {
+@function __is-plain-map($value, $args...) {
     @return (type-of($value) == 'map')
         and not (map-has-key($value, '_constructor'));
 }
 
 // @function __is-regexp($value) {} // not implemented
 
-@function __is-string($value) {
+@function __is-string($value, $args...) {
     @return (type-of($value) == 'string');
 }
 
@@ -3880,6 +3897,225 @@ $users: (
 }
 
 // @debug __for-in((foo: 1, bar: 2, baz: 3), double);
+
+@function __for-in-right($map, $iteratee: __identity, $this-arg: null) {
+    $iteratee: __bind-callback($iteratee, $this-arg, 3);
+
+    @return __base-for-right($map, $iteratee, __keys-in);
+}
+
+// @debug __for-in-right((foo: 1, bar: 2, baz: 3), double);
+
+@function __for-own($map, $iteratee: __identity, $this-arg: $__undefined__) {
+    @if (not __function-exists($iteratee))
+        or (not __is-undefined($this-arg))
+    {
+        $iteratee: __bind-callback($iteratee, $this-arg, 3);
+    }
+
+    @return __base-for-own($map, $iteratee);
+}
+
+@function debug($value, $args...) { @debug $value; @return true; }
+// @debug __for-own((0: zero, 1: one, length: 3), debug);
+
+@function __for-own-right($map, $iteratee: __identity, $this-arg: null) {
+    $iteratee: __bind-callback($iteratee, $this-arg, 3);
+
+    @return __base-for-right($map, $iteratee, __keys);
+}
+
+// @debug __for-own-right((1: one, 2: two, 3: three), debug);
+
+@function __functions($map) {
+    @return __base-functions($map, __keys-in($map));
+}
+// @debug __functions((1: length, 2: str-length, 3: __identity, 4: bogus));
+
+@function __has($map, $key) {
+    @return if($map, map-has-key($map, $key), false);
+}
+// @debug __has((foo: bar, baz: quo), 'foo');
+
+@function __invert($map, $multi-value: false, $guard: false) {
+    @if ($guard and __is-iteratee-call($map, $multi-value, $guard)) {
+        $multi-value: null;
+    }
+
+    $index: 1;
+    $props: __keys($map);
+    $length: length($props);
+    $result: ();
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+        $value: get($map, $key);
+
+        @if ($multi-value) {
+            @if (map-has-key($result, $value)) {
+                $result: set($result, $value, append(get($result, $value), $key));
+            } @else {
+                $result: set($result, $value, $key);
+            }
+        } @else {
+            $result: set($result, $value, $key);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+// @debug __invert((foo: fred, bar: barney, baz: fred));
+// @debug __invert((foo: fred, bar: barney, baz: fred), true);
+
+@function __keys($map) {
+    // currently the same as __keys-in
+    @return __keys-in($map);
+}
+
+@function __keys-in($map) {
+    $map: __to-map($map);
+    $skip-keys: ('_type', '_constructor', '_extends');
+
+    @return __without(map-keys($map), $skip-keys...);
+}
+
+// @debug __keys((40, 41, 42));
+// @debug __keys(new(Scope));
+
+
+@function __map-values-iteratee($value, $key, $map) {
+    $result: this(result);
+    $iteratee: this(iteratee);
+
+    $result: set($result, $key, __call($iteratee, null, $value, $key, $map));
+
+    $_: this(result, $result);
+
+    @return true;
+}
+@function __map-values($map, $iteratee: __identity, $this-arg: null) {
+    $result: ();
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+
+    $_: scope-start();
+    $_: scope(result, $result);
+    $_: scope(iteratee, $iteratee);
+
+    $scoped-function: scoped-function(__map-values-iteratee);
+
+    $_: __base-for-own($map, $scoped-function);
+
+    $result: scope(result);
+    $_: scope-end();
+
+    @return $result;
+}
+
+// @debug __map-values((foo: 1, bar: 2, baz: 3), double);
+// @debug __map-values($users, 'age');
+
+@function __merge($arguments...) {
+    $merge-assigner: __create-assigner(__base-merge);
+
+    @return __call($merge-assigner, null, $arguments...);
+    // todo
+}
+
+@function __omit-callback($value, $key, $map) {
+    $predicate: this(predicate);
+
+    @return not __call($predicate, null, $value, $key, $map);
+}
+@function __omit($map, $predicate, $this-arg: null, $args...) {
+    @if ($map == null) {
+        @return ();
+    }
+
+    @if not (__function-exists($predicate)) {
+        $props: __list-map(__base-flatten(($map, $predicate, $this-arg), false, false, 1), __to-string);
+
+        @return __pick-by-list($map, __base-difference(__keys-in($map), $props));
+    }
+
+    $predicate: __bind-callback($predicate, $this-arg, 3);
+
+    $_: scope-start();
+    $_: scope(predicate, $predicate);
+
+    $scoped-callback: scoped-function(__omit-callback);
+
+    $result: __pick-by-callback($map, $scoped-callback);
+
+    $_: scope-end();
+
+    @return $result;
+}
+
+// @debug __omit((user: fred, age: 40), 'age');
+
+@function __pairs($map) {
+    $index: 1;
+    $props: __keys($map);
+    $length: length($props);
+    $result: ();
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+
+        $result: append($result, ($key, get($map, $key)));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+// @debug __pairs((name: fred, age: 40));
+
+@function __pick($map, $predicate, $this-arg: null) {
+    @if ($map == null) {
+        @return ();
+    }
+
+    @return if(__function-exists($predicate),
+        __pick-by-callback($map, __bind-callback($predicate, $this-arg, 3)),
+        __pick-by-list($map, __base-flatten(($map, $predicate, $this-arg), false, false, 1)));
+}
+// @debug __pick((name: fred, age: 40), 'name');
+// @debug __pick((name: fred, age: 40), __is-number);
+
+@function __result($map, $key, $default-value: null) {
+    $value: if($map == null, $__undefined__, get($map, $key));
+    $result: null;
+
+    @if (__is-undefined($value) or __is-null($value)) {
+        $value: $default-value;
+    }
+
+    @if (__function-exists($value)) {
+        $_: scope-start($map);
+
+        $scoped-function: scoped-function($value);
+
+        $result: __call($scoped-function, $__current-scope__);
+
+        $_: scope-end();
+    } @else {
+        $result: $value;
+    }
+
+    @return $result;
+}
+
+// @function greet() {
+//     @return 'Hey, my name is #{this(name)}.';
+// }
+// @debug __result((name: fred, age: 40), 'name');
+// @debug __result((name: fred, age: 40), 'status', 'busy');
+// @debug __result((name: fred, age: 40, greet: greet), 'greet');
+
 
 
 

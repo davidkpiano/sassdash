@@ -13,11 +13,15 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
     );
 }
 
-@function scope-start() {
+@function scope-start($map: null) {
     $scope: new(Scope);
     $scope-id: get($scope, _id);
 
     $__current-scope__: $scope-id !global;
+
+    @if ($map and type-of($map) == 'map') {
+        $scope: map-merge($scope, $map);
+    }
 
     @return static-set($__current-scope__, $scope);
 }

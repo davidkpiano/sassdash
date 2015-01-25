@@ -93,21 +93,6 @@
     }
 }
 
-
-
-
-@function __keys-in($map) {
-    $map: __to-map($map);
-    $skip-keys: ('_type', '_constructor', '_extends');
-
-    @return __without(map-keys($map), $skip-keys...);
-}
-
-@function __keys($map) {
-    // currently the same as __keys-in
-    @return __keys-in($map);
-}
-
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;
     $iterable: __to-map($map);

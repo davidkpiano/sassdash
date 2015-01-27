@@ -72,7 +72,9 @@
         $result: ();
 
         @while ($index <= $length) {
-            $result: set($result, $index, __char-at($string, $index));
+            $result: set($result, $index, __char-at($value, $index));
+
+            $index: $index + 1;
         }
 
         @return $result;
@@ -248,4 +250,16 @@
 @function __get-length($list, $args...) {
     @return length($list);
 }
+
+@function __native-random() {
+    @return random();
+}
+
+@function __string-index-of($string, $target, $position: 1) {
+    $string: str-slice($string, $position);
+
+    @return str-index($string, $target);
+}
+
+
 

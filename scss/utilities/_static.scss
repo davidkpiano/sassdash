@@ -20,7 +20,14 @@ $__this__: () !global;
 }
 
 @function get($map, $properties) {
-    @if (type-of($map) != 'list' and type-of($map) != 'map') {
+    @if (type-of($map) == 'string') {
+        $string: $map;
+        $map: ();
+
+        @for $index from 1 through str-length($string) {
+            $map: append($map, str-slice($string, $index, $index));
+        }
+    } @else if (type-of($map) != 'list' and type-of($map) != 'map') {
         $map: ($map,);
     }
 

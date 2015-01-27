@@ -689,8 +689,12 @@ $users: (
     @return $value;
 }
 
-@function __base-create() {
-    // todo
+@function __base-create($constructor, $args...) {
+    @if not (__function-exists($constructor)) {
+        @return ();
+    }
+
+    @return new($constructor, $args...);
 }
 
     // var baseCreate = (function() {
@@ -1460,10 +1464,6 @@ $users: (
     @return $result;
 }
 
-@function __values($map) {
-    @return __base-values($map, map-keys($map));
-}
-
 @function __base-wrapper-value($value, $actions) {
     // todo
     $result: $value;
@@ -1782,9 +1782,31 @@ $users: (
     @return new(SetCache($values));
 }
 
-@function __create-compounder() {
-    // todo
+@function __create-compounder-function($string) {
+    $callback: this(callback);
+
+    $index: 1;
+    $list: __words(__deburr($string));
+    $length: length($list);
+    $result: '';
+
+    @while ($index <= $length) {
+        $result: __call($callback, null, $result, nth($list, $index), $index);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
 }
+@function __create-compounder($callback) {
+    $_: scope-start();
+    $_: scope(callback, $callback);
+    $scoped-function: scoped-function(__create-compounder-function);
+    $_: scope-end();
+
+    @return $scoped-function;
+}
+
 
 @function __create-ctor-wrapper() {}
 
@@ -4116,7 +4138,180 @@ $users: (
 // @debug __result((name: fred, age: 40), 'status', 'busy');
 // @debug __result((name: fred, age: 40, greet: greet), 'greet');
 
+// @function __transform-iteratee($value, $index, $map) {
+//     $iteratee: this(iteratee);
+//     $accumulator: this(accumulator);
 
+//     @return __call($iteratee, null, $value, $index, $map);
+// }
+// @function __transform($map, $iteratee: __identity, $accumulator: null, $this-arg: null) {
+//     $is-list: __is-list($map);
+//     $iteratee: __get-callback($iteratee, $this-arg, 4);
+
+//     @if ($accumulator == null) {
+//         @if ($is-list or __is-map($map)) {
+//             $ctor: get($map, '_constructor');
+
+//             @if ($is-list) {
+//                 $accumulator: ();
+//             } @else {
+//                 $accumulator: __base-create(if(__function-exists($ctor), $ctor, null));
+//             }
+//         } @else {
+//             $accumulator: ();
+//         }
+//     }
+
+//     $function: if($is-list, __list-each, __base-for-own);
+
+//     $_: scope-start();
+//     $_: scope(iteratee, $iteratee);
+//     $_: scope(accumulator, $accumulator);
+
+//     $scoped-function: scoped-function(__transform-iteratee);
+
+//     $_: __call($function, null, $map, $scoped-function);
+
+//     $accumulator: scope(accumulator);
+//     $_: scope-end();
+
+//     @return $accumulator;
+// }
+
+@function __values($map) {
+    @return __base-values($map, __keys($map));
+}
+
+// @debug __values(new(Scope));
+// @debug __values((a:1,b:3));
+// @debug __values((12 23 34));
+// @debug __values('hi there');
+
+@function __values-in($map) {
+    @return __base-values($map, __keys-in($map));
+}
+
+@function __random($min: null, $max: null, $floating: null) {
+    @if ($floating and __is-iteratee-call($min, $max, $floating)) {
+        $max: null;
+        $floating: null;
+    }
+
+    $no-min: ($min == null);
+    $no-max: ($max == null);
+
+    @if ($floating == null) {
+        @if ($no-max and type-of($min) == 'bool') {
+            $floating: $min;
+            $min: 1;
+        } @else if (type-of($max) == 'bool') {
+            $floating: $max;
+            $no-max: true;
+        }
+    }
+
+    @if ($no-min and $no-max) {
+        $max: 1;
+        $no-max: false;
+    }
+
+    $min: if($min == true, 1, if($min == false, 0, $min));
+
+    @if ($no-max) {
+        $max: $min;
+        $min: 0;
+    } @else {
+        $max: if($max == true, 1, if($max == false, 0, $max));
+    }
+
+    @if ($floating or ($min % 1 > 0) or ($max % 1 > 0)) {
+        $rand: __native-random();
+
+        @return __native-min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
+    }
+    @return __base-random($min, $max);
+}
+
+// @debug __random(0, 5);
+// @debug __random(5);
+// @debug __random(5, true);
+// @debug __random(1.2, 5.2);
+
+@function __camel-case-compounder($result, $word, $index) {
+    $word: to-lower-case($word);
+
+    @return if($index > 1, $result + to-upper-case(__char-at($word, 1)) + str-slice($word, 2), $word);
+}
+@function __camel-case($arguments...) {
+    $compounder: __create-compounder(__camel-case-compounder);
+
+    @return __call($compounder, null, $arguments...);
+}
+
+// @debug __camel-case('Foo Bar');
+// @debug __camel-case('--foo-bar');
+// @debug __camel-case('__foo_bar__');
+
+@function __capitalize($string) {
+    $string: __base-to-string($string);
+
+    @return if(str-length($string) > 0, to-upper-case(__char-at($string, 1)) + str-slice($string, 2), false);
+}
+
+// @debug __capitalize('fred');
+
+@function __deburr($string) {
+    // todo
+    @return $string;
+}
+
+@function __ends-with($string, $target, $position: str-length($string)) {
+    $string: __base-to-string($string);
+    $target: $target + '';
+
+    $length: str-length($string);
+
+    $position: __native-min(if($position < 0, 1, $position), $length) - str-length($target);
+
+    @debug __string-index-of($string, $target, $position);
+
+    @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
+}
+
+@debug __ends-with('abc', 'c');
+@debug __ends-with('abc', 'b');
+@debug __ends-with('abc', 'b', 2);
+
+@function __words($string, $args...) {
+    $string: __base-to-string($string);
+
+    $result: ();
+
+    $temp: '';
+
+    $letters: 'abcdefghijklmnopqrstuvwxyz';
+
+    @for $index from 1 through str-length($string) {
+        $letter: str-slice($string, $index, $index);
+
+        @if not (str-index($letters, to-lower-case($letter))) {
+            @if (str-length($temp) > 0) {
+                $result: append($result, $temp);
+                $temp: '';
+            }
+        } @else {
+            $temp: $temp + $letter;
+        }
+    }
+
+    @if (str-length($temp) > 0) {
+        $result: append($result, $temp);
+    }
+
+    @return $result;
+}
+
+// @debug __words('dear god, what have I done??');
 
 
 @function __property($key) {

@@ -28,6 +28,7 @@
             '\u2028': 'u2028',
             '\u2029': 'u2029'
         ));
+    // $_: const-set('reg-exp-chars', ('.' '*' '+' '?' '^' '$' '{' '}' '(' ')' '|' '[' ']' '/' '\'));
     $_: const-set('POSITIVE_INFINITY', 999999);
     $_: const-set('NEGATIVE_INFINITY', -999999);
     $_: const-set('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
@@ -142,7 +143,9 @@
 }
 
 @function __escape-html-char($char) {
-    @return const-get('html-escapes' $char);
+    $escaped-char: const-get('html-escapes' $char);
+
+    @return if($escaped-char, $escaped-char, $char);
 }
 
 @function __escape-string-char($char) {
@@ -505,7 +508,7 @@ $users: (
 @function __list-max($list) {
     $index: 1;
     $length: length($list);
-    $result: const-get(NEGATIVE_INFINITY);
+    $result: const-get('NEGATIVE_INFINITY');
 
     // TODO use Hugo's comparison for strings
     @while ($index <= $length) {
@@ -1863,7 +1866,7 @@ $users: (
     $pad-length: $length - $str-length;
     $chars: $chars + '';
 
-    @return __base-slice(__repeat($chars, ceil($pad-length / str-length($chars))), 1, $pad-length);
+    @return str-slice(__repeat($chars, ceil($pad-length / str-length($chars))), 1, $pad-length);
 }
 
 // @debug __create-pad('abcd', 14);
@@ -4279,6 +4282,82 @@ $users: (
 // @debug __ends-with('abc', 'c');
 // @debug __ends-with('abc', 'b');
 // @debug __ends-with('abc', 'b', 2);
+
+@function __escape($string) {
+    $string: __base-to-string($string);
+
+    @each $unescaped, $escaped in const-get('html-escapes') {
+        $string: __string-replace($string, $unescaped, $escaped);
+    }
+
+    @return $string;
+}
+
+@debug __escape('fred, barney & pebbles < your face >');
+
+// @function __escape-reg-exp($string) {
+//     $string: __base-to-string($string);
+
+//     @each $char in const-get('reg-exp-chars') {
+//         $string: __string-replace($string, $char, '\#{$char}');
+//     }
+
+//     @return $string;
+// }
+
+// @debug __escape-reg-exp('[lodash](http://www.lodash.com)');
+
+@function __kebab-case-compounder($result, $word, $index: 0) {
+    @return $result + if($index > 1, '-', '') + to-lower-case($word);
+}
+@function __kebab-case($arguments...) {
+    $compounder: __create-compounder(__kebab-case-compounder);
+
+    @return __call($compounder, null, $arguments...);
+}
+
+// @debug __kebab-case('Foo Bar');
+// @debug __kebab-case('fooBar');
+// @debug __kebab-case('__foo_bar__');
+
+@function __pad($string, $length: 0, $chars: ' ') {
+    $string: __base-to-string($string);
+
+    $str-length: str-length($string);
+
+    @if ($str-length >= $length or not __native-is-finite($length)) {
+        @return $string;
+    }
+
+    $mid: ($length - $str-length) / 2;
+    $left-length: floor($mid);
+    $right-length: ceil($mid);
+
+    $chars: __create-pad('', $right-length, $chars);
+
+    @return str-slice($chars, 0, $left-length) + $string + $chars;
+}
+
+// @debug __pad('abc', 8, '.');
+// @debug __pad('abc', 8, '_-');
+// @debug __pad('abc', 3);
+
+@function __pad-left($string, $length: 0, $chars: ' ') {
+    $string: __base-to-string($string);
+
+    @return if($string != '', __create-pad($string, $length, $chars) + $string, $string);
+}
+
+// @debug __pad-left('abc', 5);
+// @debug __pad-left('abc', 6, '_-');
+
+@function __pad-right($string, $length: 0, $chars: ' ') {
+    $string: __base-to-string($string);
+
+    @return if($string != '', $string + __create-pad($string, $length, $chars), $string);
+}
+
+
 
 @function __words($string, $args...) {
     $string: __base-to-string($string);

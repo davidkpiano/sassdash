@@ -4271,16 +4271,14 @@ $users: (
 
     $length: str-length($string);
 
-    $position: __native-min(if($position < 0, 1, $position), $length) - str-length($target);
-
-    @debug __string-index-of($string, $target, $position);
+    $position: __native-min(if($position < 0, 1, $position), $length) + 1 - str-length($target);
 
     @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
 }
 
-@debug __ends-with('abc', 'c');
-@debug __ends-with('abc', 'b');
-@debug __ends-with('abc', 'b', 2);
+// @debug __ends-with('abc', 'c');
+// @debug __ends-with('abc', 'b');
+// @debug __ends-with('abc', 'b', 2);
 
 @function __words($string, $args...) {
     $string: __base-to-string($string);

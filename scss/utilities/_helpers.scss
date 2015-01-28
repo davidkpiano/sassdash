@@ -255,10 +255,16 @@
     @return random();
 }
 
-@function __string-index-of($string, $target, $position: 1) {
+@function __string-index-of($string, $target, $position: 0) {
     $string: str-slice($string, $position);
 
-    @return str-index($string, $target);
+    $string-index: str-index($string, $target);
+
+    @if not ($string-index) {
+        @return -1;
+    }
+
+    @return $string-index + $position - 1;
 }
 
 

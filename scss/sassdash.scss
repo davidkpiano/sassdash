@@ -4357,6 +4357,16 @@ $users: (
     @return if($string != '', $string + __create-pad($string, $length, $chars), $string);
 }
 
+@function __parse-int($string, $radix, $guard: null) {
+    @if ($guard and __is-iteratee-call($string, $radix, $guard)) {
+        $radix: 0;
+    }
+
+    @return __native-parse-int($string, $radix);
+}
+
+
+
 
 
 @function __words($string, $args...) {

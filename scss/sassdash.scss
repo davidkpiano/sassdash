@@ -4365,9 +4365,39 @@ $users: (
     @return __native-parse-int($string, $radix);
 }
 
+@function __repeat($string, $value: 1) {
+    $result: '';
 
+    @for $iteration from 1 through $value {
+        $result: $result + $string;
+    }
 
+    @return $result;
+}
 
+@function __snake-case-compounder($result, $word, $index) {
+    @return $result + if($index > 1, '_', '') + to-lower-case($word);
+}
+@function __snake-case($arguments...) {
+    $compounder: __create-compounder(__snake-case-compounder);
+
+    @return __call($compounder, null, $arguments...);
+}
+
+// @debug __snake-case('Foo Bar');
+// @debug __snake-case('--foo-bar');
+// @debug __snake-case('fooBar');
+
+@function __starts-with($string, $target, $position: 1) {
+    $string: __base-to-string($string);
+    $position: __native-min(if($position < 0, 1, $position), str-length($string));
+    
+    @return __string-last-index-of($string, $target, $position) == $position;
+}
+
+@debug __starts-with('abc', 'a');
+@debug __starts-with('abc', 'b');
+@debug __starts-with('abc', 'b', 2);
 
 @function __words($string, $args...) {
     $string: __base-to-string($string);
@@ -4381,6 +4411,7 @@ $users: (
     @for $index from 1 through str-length($string) {
         $letter: str-slice($string, $index, $index);
 
+        // TODO fix and remove to-lower-case
         @if not (str-index($letters, to-lower-case($letter))) {
             @if (str-length($temp) > 0) {
                 $result: append($result, $temp);

@@ -34,6 +34,8 @@
     $_: const-set('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
     $_: const-set('HALF_MAX_LIST_LENGTH', 999999);
     $_: const-set('MAX_LIST_LENGTH', 999999);
+    $_: const-set('DEFAULT_TRUNC_LENGTH', 30);
+    $_: const-set('DEFAULT_TRUNC_OMISSION', '...');
 
 }
 
@@ -2119,6 +2121,7 @@ $users: (
     }
 
     $type: type-of($index);
+    $prereq: false;
 
     @if ($type == 'number') {
         $length: length($map);
@@ -4391,13 +4394,129 @@ $users: (
 @function __starts-with($string, $target, $position: 1) {
     $string: __base-to-string($string);
     $position: __native-min(if($position < 0, 1, $position), str-length($string));
-    
+
     @return __string-last-index-of($string, $target, $position) == $position;
 }
 
-@debug __starts-with('abc', 'a');
-@debug __starts-with('abc', 'b');
-@debug __starts-with('abc', 'b', 2);
+// @debug __starts-with('abc', 'a');
+// @debug __starts-with('abc', 'b');
+// @debug __starts-with('abc', 'b', 2);
+
+@function __template() {} // not implemented
+
+@function __trim($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, __trimmed-left-index($string), __trimmed-right-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string, __chars-left-index($string, $chars), __chars-right-index($string, $chars));
+}
+
+// @debug __trim('  abc   ') + 'def';
+// @debug __trim('-_-abc-_-', '_-');
+// @debug __map(('  foo  ', '    bar     '), __trim);
+
+@function __trim-left($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, __trimmed-left-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string, __chars-left-index($string, $chars));
+}
+
+@function __trim-right($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, 0, __trimmed-right-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string, 0, __chars-right-index($string, $chars));
+}
+
+// @debug __trim-right('abc       ') + 'def';
+
+@function __trunc($string, $options: null, $guard: null) {
+    @if ($guard and __is-iteratee-call($string, $options, $guard)) {
+        $options: null;
+    }
+
+    $length: const-get('DEFAULT_TRUNC_LENGTH');
+    $omission: const-get('DEFAULT_TRUNC_OMISSION');
+    $separator: null;
+
+    @if ($options != null) {
+        @if (__is-map($options)) {
+            $separator: if(map-has-key($options, 'separator'), get($options, 'separator'), $separator);
+            $length: if(map-has-key($options, 'length'), get($options, 'length'), $length);
+            $omission: if(map-has-key($options, 'omission'), __base-to-string(get($options, 'omission')), $omission);
+        } @else {
+            $length: if(__is-number($options), $options, if($options, 1, 0));
+        }
+    }
+
+    $string: __base-to-string($string);
+
+    @if ($length >= str-length($string)) {
+        @return $string;
+    }
+
+    $end: $length - str-length($omission);
+
+    @if ($end < 1) {
+        @return $omission;
+    }
+
+    $result: str-slice($string, 0, $end);
+
+    @if ($separator == null) {
+        @return $result + $omission;
+    }
+
+    @if (__string-index-of($string, $separator, $end) != $end) {
+        $index: __string-last-index-of($result, $separator);
+
+        @if ($index > -1) {
+            $result: str-slice($result, 0, $index - 1);
+        }
+    }
+
+    @return $result + $omission;
+}
+
+// @debug __trunc('hi-diddly-ho there, neighborino');
+// // => 'hi-diddly-ho there, neighbo...'
+// @debug __trunc('hi-diddly-ho there, neighborino', 24);
+// // => 'hi-diddly-ho there, n...'
+// @debug __trunc('hi-diddly-ho there, neighborino', ( 'length': 24, 'separator': ' ' ));
+// // => 'hi-diddly-ho there,...'
+// @debug __trunc('hi-diddly-ho there, neighborino', ( 'omission': ' [...]' ));
+// // => 'hi-diddly-ho there, neig [...]'
 
 @function __words($string, $args...) {
     $string: __base-to-string($string);

@@ -3056,15 +3056,6 @@ $users: (
 
 // @debug __filter((1 2 3 4 5 6 6 1239), is-even);
 
-
-@function __callback($function: __identity, $this-arg: null, $guard: null) {
-    @if ($guard and __is-iteratee-call($function, $this-arg, $guard)) {
-        $this-arg: null;
-    }
-
-    @return __base-callback($function, $this-arg);
-}
-
 // $_: scope-start();
 // $_: scope(poop, 12341234);
 
@@ -4518,6 +4509,19 @@ $users: (
 // @debug __trunc('hi-diddly-ho there, neighborino', ( 'omission': ' [...]' ));
 // // => 'hi-diddly-ho there, neig [...]'
 
+
+@function __unescape($string) {
+    $string: __base-to-string($string);
+
+    @each $escaped, $unescaped in const-get('html-unescapes') {
+        $string: __string-replace($string, $escaped, $unescaped);
+    }
+
+    @return $string;
+}
+
+// @debug __unescape('fred, barney &amp; pebbles&quot;');
+
 @function __words($string, $args...) {
     $string: __base-to-string($string);
 
@@ -4525,16 +4529,21 @@ $users: (
 
     $temp: '';
 
-    $letters: 'abcdefghijklmnopqrstuvwxyz';
+    $lowercase-letters: 'abcdefghijklmnopqrstuvwxyz';
+    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     @for $index from 1 through str-length($string) {
         $letter: str-slice($string, $index, $index);
 
         // TODO fix and remove to-lower-case
-        @if not (str-index($letters, to-lower-case($letter))) {
+        @if not (str-index($lowercase-letters, $letter)) {
             @if (str-length($temp) > 0) {
                 $result: append($result, $temp);
                 $temp: '';
+            }
+
+            @if (str-index($uppercase-letters, $letter)) {
+                $temp: $temp + $letter;
             }
         } @else {
             $temp: $temp + $letter;
@@ -4549,16 +4558,52 @@ $users: (
 }
 
 // @debug __words('dear god, what have I done??');
+// @debug __words('try---toFindAllThe-words    in thisCrazy.sentence.');
+
+@function __attempt() {} // not implemented
+
+@function __callback($function: __identity, $this-arg: null, $guard: null) {
+    @if ($guard and __is-iteratee-call($function, $this-arg, $guard)) {
+        $this-arg: null;
+    }
+
+    @return __base-callback($function, $this-arg);
+}
+
+@function __constant-function() {
+    $value: this('value');
+
+    @return $value;
+}
+@function __constant($value) {
+    $_: scope-start();
+    $_: scope('value', $value);
+    $scoped-function: scoped-function(__constant-function);
+    $_: scope-end();
+
+    @return $scoped-function;
+}
+
+// $my-object: (user: 'fred');
+// $get-my-object: __constant($my-object);
+// @debug __call($get-my-object);
+
+@function __identity($value, $args...) {
+    @return $value;
+}
+
+@function __matches($source) {
+    @return __base-matches($source, true);
+}
+
+
+
 
 
 @function __property($key) {
     @return __base-property($key + '');
 }
 
-
-@function __matches($source) {
-    @return __base-matches($source, true);
-}
 
 
 

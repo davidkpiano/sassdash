@@ -138,10 +138,6 @@
     @return '__base-index-of';
 }
 
-@function __identity($value, $args...) {
-    @return $value;
-}
-
 @function __native-min($args...) {
     @return min($args...);
 }

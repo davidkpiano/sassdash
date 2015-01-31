@@ -163,9 +163,6 @@
 
 // @debug __repeat('abc', 4);
 
-@function __noop($args...) {
-    @return null;
-}
 
 @function __is-ctor($ctor) {
     // todo

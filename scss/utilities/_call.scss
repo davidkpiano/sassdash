@@ -10,7 +10,7 @@
         function-exists(__function-name($function)));
 }
 
-@function __call($method, $this-arg: $__current-scope__, $properties...) {
+@function __call($method, $this-arg: $__current-scope__, $args...) {
     $function-name: __function-name($method);
     $scope-id: __function-scope($method);
 
@@ -23,8 +23,8 @@
             $_: scope-use-end();
             @return null;
         }
-
-        $result: call($function-name, $properties...);
+        
+        $result: call($function-name, $args...);
 
     $_: scope-use-end();    
 

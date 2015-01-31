@@ -88,11 +88,12 @@ $__this__: () !global;
     @return $__const__;
 }
 
-@function new($type, $params: (), $extends: false) {
+@function new($type, $params: (), $extends: false, $prototype: ()) {
     $instance-meta: (
         _type: $type,
         _constructor: $type,
-        _extends: $extends
+        _extends: $extends,
+        _prototype: $prototype
     );
 
     $instance: ();

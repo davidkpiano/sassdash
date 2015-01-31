@@ -2278,14 +2278,12 @@ $users: (
 
     $index: 1;
     $length: if($list, length($list), 0);
-    $result-index: 1; // not-used
     $result: ();
 
     @while ($index <= $length) {
-        $result: append($result, __base-slice($list, $index, $index + $size - 1));
+        $result: append($result, __base-slice($list, $index - 1, $index + $size - 1));
 
         $index: $index + $size;
-        $result-index: $result-index + 1; // not used
     }
 
     @return $result;
@@ -2450,7 +2448,7 @@ $users: (
 
 // @debug __find-last-index((1 2 3 5 7 9 4 3), is-even);
 
-@function __first($list) {
+@function __first($list, $args...) {
     @return if($list, nth($list, 1), $__undefined__);
 }
 
@@ -4000,7 +3998,7 @@ $users: (
 
 @function __keys-in($map) {
     $map: __to-map($map);
-    $skip-keys: ('_type', '_constructor', '_extends');
+    $skip-keys: ('_type', '_constructor', '_extends', '_prototype');
 
     @return __without(map-keys($map), $skip-keys...);
 }
@@ -4291,7 +4289,7 @@ $users: (
     @return $string;
 }
 
-@debug __escape('fred, barney & pebbles < your face >');
+// @debug __escape('fred, barney & pebbles < your face >');
 
 // @function __escape-reg-exp($string) {
 //     $string: __base-to-string($string);
@@ -4704,120 +4702,224 @@ $users: (
 
 // Aliases
 // =======
-@function _backflow($args...) { @return call(_flow-right, $args...); }
+@function _backflow($args...) { @return call(__flow-right, $args...); }
 
-// Add functions that return wrapped values when chaining
-@function _after($args...) { @return call(_after, $args...);
-@function _ary($args...) { @return call(_ary, $args...);
-@function _assign($args...) { @return call(_assign, $args...);
-@function _at($args...) { @return call(_at, $args...);
-@function _before($args...) { @return call(_before, $args...);
-@function _bind($args...) { @return call(_bind, $args...);
-@function _bind-all($args...) { @return call(_bind-all, $args...);
-@function _bind-key($args...) { @return call(_bind-key, $args...);
-@function _callback($args...) { @return call(_callback, $args...);
-@function _chain($args...) { @return call(_chain, $args...);
-@function _chunk($args...) { @return call(_chunk, $args...);
-@function _compact($args...) { @return call(_compact, $args...);
-@function _constant($args...) { @return call(_constant, $args...);
-@function _count-by($args...) { @return call(_count-by, $args...);
-@function _create($args...) { @return call(_create, $args...);
-@function _curry($args...) { @return call(_curry, $args...);
-@function _curry-right($args...) { @return call(_curry-right, $args...);
-@function _debounce($args...) { @return call(_debounce, $args...);
-@function _defaults($args...) { @return call(_defaults, $args...);
-@function _defer($args...) { @return call(_defer, $args...);
-@function _delay($args...) { @return call(_delay, $args...);
-@function _difference($args...) { @return call(_difference, $args...);
-@function _drop($args...) { @return call(_drop, $args...);
-@function _drop-right($args...) { @return call(_drop-right, $args...);
-@function _drop-right-while($args...) { @return call(_drop-right-while, $args...);
-@function _drop-while($args...) { @return call(_drop-while, $args...);
-@function _filter($args...) { @return call(_filter, $args...);
-@function _flatten($args...) { @return call(_flatten, $args...);
-@function _flatten-deep($args...) { @return call(_flatten-deep, $args...);
-@function _flow($args...) { @return call(_flow, $args...);
-@function _flow-right($args...) { @return call(_flow-right, $args...);
-@function _for-each($args...) { @return call(_for-each, $args...);
-@function _for-each-right($args...) { @return call(_for-each-right, $args...);
-@function _for-in($args...) { @return call(_for-in, $args...);
-@function _for-in-right($args...) { @return call(_for-in-right, $args...);
-@function _for-own($args...) { @return call(_for-own, $args...);
-@function _for-own-right($args...) { @return call(_for-own-right, $args...);
-@function _functions($args...) { @return call(_functions, $args...);
-@function _group-by($args...) { @return call(_group-by, $args...);
-@function _index-by($args...) { @return call(_index-by, $args...);
-@function _initial($args...) { @return call(_initial, $args...);
-@function _intersection($args...) { @return call(_intersection, $args...);
-@function _invert($args...) { @return call(_invert, $args...);
-@function _invoke($args...) { @return call(_invoke, $args...);
-@function _keys($args...) { @return call(_keys, $args...);
-@function _keys-in($args...) { @return call(_keys-in, $args...);
-@function _map($args...) { @return call(_map, $args...);
-@function _map-values($args...) { @return call(_map-values, $args...);
-@function _matches($args...) { @return call(_matches, $args...);
-@function _memoize($args...) { @return call(_memoize, $args...);
-@function _merge($args...) { @return call(_merge, $args...);
-@function _mixin($args...) { @return call(_mixin, $args...);
-@function _negate($args...) { @return call(_negate, $args...);
-@function _omit($args...) { @return call(_omit, $args...);
-@function _once($args...) { @return call(_once, $args...);
-@function _pairs($args...) { @return call(_pairs, $args...);
-@function _partial($args...) { @return call(_partial, $args...);
-@function _partial-right($args...) { @return call(_partial-right, $args...);
-@function _partition($args...) { @return call(_partition, $args...);
-@function _pick($args...) { @return call(_pick, $args...);
-@function _pluck($args...) { @return call(_pluck, $args...);
-@function _property($args...) { @return call(_property, $args...);
-@function _property-of($args...) { @return call(_property-of, $args...);
-@function _pull($args...) { @return call(_pull, $args...);
-@function _pull-at($args...) { @return call(_pull-at, $args...);
-@function _range($args...) { @return call(_range, $args...);
-@function _rearg($args...) { @return call(_rearg, $args...);
-@function _reject($args...) { @return call(_reject, $args...);
-@function _remove($args...) { @return call(_remove, $args...);
-@function _rest($args...) { @return call(_rest, $args...);
-@function _shuffle($args...) { @return call(_shuffle, $args...);
-@function _slice($args...) { @return call(_slice, $args...);
-@function _sort-by($args...) { @return call(_sort-by, $args...);
-@function _sort-by-all($args...) { @return call(_sort-by-all, $args...);
-@function _take($args...) { @return call(_take, $args...);
-@function _take-right($args...) { @return call(_take-right, $args...);
-@function _take-right-while($args...) { @return call(_take-right-while, $args...);
-@function _take-while($args...) { @return call(_take-while, $args...);
-@function _tap($args...) { @return call(_tap, $args...);
-@function _throttle($args...) { @return call(_throttle, $args...);
-@function _thru($args...) { @return call(_thru, $args...);
-@function _times($args...) { @return call(_times, $args...);
-@function _to-list($args...) { @return call(_to-list, $args...);
-@function _to-plain-map($args...) { @return call(_to-plain-map, $args...);
-@function _transform($args...) { @return call(_transform, $args...);
-@function _union($args...) { @return call(_union, $args...);
-@function _uniq($args...) { @return call(_uniq, $args...);
-@function _unzip($args...) { @return call(_unzip, $args...);
-@function _values($args...) { @return call(_values, $args...);
-@function _values-in($args...) { @return call(_values-in, $args...);
-@function _where($args...) { @return call(_where, $args...);
-@function _without($args...) { @return call(_without, $args...);
-@function _wrap($args...) { @return call(_wrap, $args...);
-@function _xor($args...) { @return call(_xor, $args...);
-@function _zip($args...) { @return call(_zip, $args...);
-@function _zip-map($args...) { @return call(_zip-map, $args...);
+// // Add functions that return wrapped values when chaining
+@function _after($args...) { @return call(__after, $args...); }
+@function _ary($args...) { @return call(__ary, $args...); }
+@function _assign($args...) { @return call(__assign, $args...); }
+@function _at($args...) { @return call(__at, $args...); }
+@function _before($args...) { @return call(__before, $args...); }
+@function _bind($args...) { @return call(__bind, $args...); }
+@function _bind-all($args...) { @return call(__bind-all, $args...); }
+@function _bind-key($args...) { @return call(__bind-key, $args...); }
+@function _callback($args...) { @return call(__callback, $args...); }
+@function _chain($args...) { @return call(__chain, $args...); }
+@function _chunk($args...) { @return call(__chunk, $args...); }
+@function _compact($args...) { @return call(__compact, $args...); }
+@function _constant($args...) { @return call(__constant, $args...); }
+@function _count-by($args...) { @return call(__count-by, $args...); }
+@function _create($args...) { @return call(__create, $args...); }
+@function _curry($args...) { @return call(__curry, $args...); }
+@function _curry-right($args...) { @return call(__curry-right, $args...); }
+@function _debounce($args...) { @return call(__debounce, $args...); }
+@function _defaults($args...) { @return call(__defaults, $args...); }
+@function _defer($args...) { @return call(__defer, $args...); }
+@function _delay($args...) { @return call(__delay, $args...); }
+@function _difference($args...) { @return call(__difference, $args...); }
+@function _drop($args...) { @return call(__drop, $args...); }
+@function _drop-right($args...) { @return call(__drop-right, $args...); }
+@function _drop-right-while($args...) { @return call(__drop-right-while, $args...); }
+@function _drop-while($args...) { @return call(__drop-while, $args...); }
+@function _filter($args...) { @return call(__filter, $args...); }
+@function _flatten($args...) { @return call(__flatten, $args...); }
+@function _flatten-deep($args...) { @return call(__flatten-deep, $args...); }
+@function _flow($args...) { @return call(__flow, $args...); }
+@function _flow-right($args...) { @return call(__flow-right, $args...); }
+@function _for-each($args...) { @return call(__for-each, $args...); }
+@function _for-each-right($args...) { @return call(__for-each-right, $args...); }
+@function _for-in($args...) { @return call(__for-in, $args...); }
+@function _for-in-right($args...) { @return call(__for-in-right, $args...); }
+@function _for-own($args...) { @return call(__for-own, $args...); }
+@function _for-own-right($args...) { @return call(__for-own-right, $args...); }
+@function _functions($args...) { @return call(__functions, $args...); }
+@function _group-by($args...) { @return call(__group-by, $args...); }
+@function _index-by($args...) { @return call(__index-by, $args...); }
+@function _initial($args...) { @return call(__initial, $args...); }
+@function _intersection($args...) { @return call(__intersection, $args...); }
+@function _invert($args...) { @return call(__invert, $args...); }
+@function _invoke($args...) { @return call(__invoke, $args...); }
+@function _keys($args...) { @return call(__keys, $args...); }
+@function _keys-in($args...) { @return call(__keys-in, $args...); }
+@function _map($args...) { @return call(__map, $args...); }
+@function _map-values($args...) { @return call(__map-values, $args...); }
+@function _matches($args...) { @return call(__matches, $args...); }
+@function _memoize($args...) { @return call(__memoize, $args...); }
+@function _merge($args...) { @return call(__merge, $args...); }
+@function _mixin($args...) { @return call(__mixin, $args...); }
+@function _negate($args...) { @return call(__negate, $args...); }
+@function _omit($args...) { @return call(__omit, $args...); }
+@function _once($args...) { @return call(__once, $args...); }
+@function _pairs($args...) { @return call(__pairs, $args...); }
+@function _partial($args...) { @return call(__partial, $args...); }
+@function _partial-right($args...) { @return call(__partial-right, $args...); }
+@function _partition($args...) { @return call(__partition, $args...); }
+@function _pick($args...) { @return call(__pick, $args...); }
+@function _pluck($args...) { @return call(__pluck, $args...); }
+@function _property($args...) { @return call(__property, $args...); }
+@function _property-of($args...) { @return call(__property-of, $args...); }
+@function _pull($args...) { @return call(__pull, $args...); }
+@function _pull-at($args...) { @return call(__pull-at, $args...); }
+@function _range($args...) { @return call(__range, $args...); }
+@function _rearg($args...) { @return call(__rearg, $args...); }
+@function _reject($args...) { @return call(__reject, $args...); }
+@function _remove($args...) { @return call(__remove, $args...); }
+@function _rest($args...) { @return call(__rest, $args...); }
+@function _shuffle($args...) { @return call(__shuffle, $args...); }
+@function _slice($args...) { @return call(__slice, $args...); }
+@function _sort-by($args...) { @return call(__sort-by, $args...); }
+@function _sort-by-all($args...) { @return call(__sort-by-all, $args...); }
+@function _take($args...) { @return call(__take, $args...); }
+@function _take-right($args...) { @return call(__take-right, $args...); }
+@function _take-right-while($args...) { @return call(__take-right-while, $args...); }
+@function _take-while($args...) { @return call(__take-while, $args...); }
+@function _tap($args...) { @return call(__tap, $args...); }
+@function _throttle($args...) { @return call(__throttle, $args...); }
+@function _thru($args...) { @return call(__thru, $args...); }
+@function _times($args...) { @return call(__times, $args...); }
+@function _to-list($args...) { @return call(__to-list, $args...); }
+@function _to-plain-map($args...) { @return call(__to-plain-map, $args...); }
+@function _transform($args...) { @return call(__transform, $args...); }
+@function _union($args...) { @return call(__union, $args...); }
+@function _uniq($args...) { @return call(__uniq, $args...); }
+@function _unzip($args...) { @return call(__unzip, $args...); }
+@function _values($args...) { @return call(__values, $args...); }
+@function _values-in($args...) { @return call(__values-in, $args...); }
+@function _where($args...) { @return call(__where, $args...); }
+@function _without($args...) { @return call(__without, $args...); }
+@function _wrap($args...) { @return call(__wrap, $args...); }
+@function _xor($args...) { @return call(__xor, $args...); }
+@function _zip($args...) { @return call(__zip, $args...); }
+@function _zip-map($args...) { @return call(__zip-map, $args...); }
 
 // Add aliases 
-@function _collect($args) { @return call(_map, $args...); }
-@function _compose($args) { @return call(_flow-right, $args...); }
-@function _each($args) { @return call(_for-each, $args...); }
-@function _each-right($args) { @return call(_for-each-right, $args...); }
-@function _extend($args) { @return call(_assign, $args...); }
-@function _iteratee($args) { @return call(_callback, $args...); }
-@function _methods($args) { @return call(_functions, $args...); }
-@function _map($args) { @return call(_zip-map, $args...); }
-@function _select($args) { @return call(_filter, $args...); }
-@function _tail($args) { @return call(_rest, $args...); }
-@function _unique($args) { @return call(_uniq, $args...); }
+@function _collect($args...) { @return call(__map, $args...); }
+@function _compose($args...) { @return call(__flow-right, $args...); }
+@function _each($args...) { @return call(__for-each, $args...); }
+@function _each-right($args...) { @return call(__for-each-right, $args...); }
+@function _extend($args...) { @return call(__assign, $args...); }
+@function _iteratee($args...) { @return call(__callback, $args...); }
+@function _methods($args...) { @return call(__functions, $args...); }
+@function _object($args...) { @return call(__zip-map, $args...); }
+@function _select($args...) { @return call(__filter, $args...); }
+@function _tail($args...) { @return call(__rest, $args...); }
+@function _unique($args...) { @return call(__uniq, $args...); }
 
+// Add functions that return unwrapped values when chaining.
+@function _attempt($args...) { @return call(__attempt, $args...); }
+@function _camel-case($args...) { @return call(__camel-case, $args...); }
+@function _capitalize($args...) { @return call(__capitalize, $args...); }
+@function _clone($args...) { @return call(__clone, $args...); }
+@function _clone-deep($args...) { @return call(__clone-deep, $args...); }
+@function _deburr($args...) { @return call(__deburr, $args...); }
+@function _ends-with($args...) { @return call(__ends-with, $args...); }
+@function _escape($args...) { @return call(__escape, $args...); }
+@function _escape-reg-exp($args...) { @return call(__escape-reg-exp, $args...); }
+@function _every($args...) { @return call(__every, $args...); }
+@function _find($args...) { @return call(__find, $args...); }
+@function _find-index($args...) { @return call(__find-index, $args...); }
+@function _find-key($args...) { @return call(__find-key, $args...); }
+@function _find-last($args...) { @return call(__find-last, $args...); }
+@function _find-last-index($args...) { @return call(__find-last-index, $args...); }
+@function _find-last-key($args...) { @return call(__find-last-key, $args...); }
+@function _find-where($args...) { @return call(__find-where, $args...); }
+@function _first($args...) { @return call(__first, $args...); }
+@function _has($args...) { @return call(__has, $args...); }
+@function _identity($args...) { @return call(__identity, $args...); }
+@function _includes($args...) { @return call(__includes, $args...); }
+@function _index-of($args...) { @return call(__index-of, $args...); }
+@function _is-arguments($args...) { @return call(__is-arguments, $args...); }
+@function _is-list($args...) { @return call(__is-list, $args...); }
+@function _is-boolean($args...) { @return call(__is-boolean, $args...); }
+@function _is-date($args...) { @return call(__is-date, $args...); }
+@function _is-element($args...) { @return call(__is-element, $args...); }
+@function _is-empty($args...) { @return call(__is-empty, $args...); }
+@function _is-equal($args...) { @return call(__is-equal, $args...); }
+@function _is-error($args...) { @return call(__is-error, $args...); }
+@function _is-finite($args...) { @return call(__is-finite, $args...); }
+@function _is-function($args...) { @return call(__is-function, $args...); }
+@function _is-match($args...) { @return call(__is-match, $args...); }
+@function _is-nan($args...) { @return call(__is-nan, $args...); }
+@function _is-native($args...) { @return call(__is-native, $args...); }
+@function _is-null($args...) { @return call(__is-null, $args...); }
+@function _is-number($args...) { @return call(__is-number, $args...); }
+@function _is-object($args...) { @return call(__is-object, $args...); }
+@function _is-plain-object($args...) { @return call(__is-plain-object, $args...); }
+@function _is-reg-exp($args...) { @return call(__is-reg-exp, $args...); }
+@function _is-string($args...) { @return call(__is-string, $args...); }
+@function _is-typed-array($args...) { @return call(__is-typed-array, $args...); }
+@function _is-undefined($args...) { @return call(__is-undefined, $args...); }
+@function _kebab-case($args...) { @return call(__kebab-case, $args...); }
+@function _last($args...) { @return call(__last, $args...); }
+@function _last-index-of($args...) { @return call(__last-index-of, $args...); }
+@function _max($args...) { @return call(__max, $args...); }
+@function _min($args...) { @return call(__min, $args...); }
+@function _no-conflict($args...) { @return call(__no-conflict, $args...); }
+@function _noop($args...) { @return call(__noop, $args...); }
+@function _now($args...) { @return call(__now, $args...); }
+@function _pad($args...) { @return call(__pad, $args...); }
+@function _pad-left($args...) { @return call(__pad-left, $args...); }
+@function _pad-right($args...) { @return call(__pad-right, $args...); }
+@function _parse-int($args...) { @return call(__parse-int, $args...); }
+@function _random($args...) { @return call(__random, $args...); }
+@function _reduce($args...) { @return call(__reduce, $args...); }
+@function _reduce-right($args...) { @return call(__reduce-right, $args...); }
+@function _repeat($args...) { @return call(__repeat, $args...); }
+@function _result($args...) { @return call(__result, $args...); }
+@function _run-in-context($args...) { @return call(__run-in-context, $args...); }
+@function _size($args...) { @return call(__size, $args...); }
+@function _snake-case($args...) { @return call(__snake-case, $args...); }
+@function _some($args...) { @return call(__some, $args...); }
+@function _sorted-index($args...) { @return call(__sorted-index, $args...); }
+@function _sorted-last-index($args...) { @return call(__sorted-last-index, $args...); }
+@function _starts-with($args...) { @return call(__starts-with, $args...); }
+@function _template($args...) { @return call(__template, $args...); }
+@function _trim($args...) { @return call(__trim, $args...); }
+@function _trim-left($args...) { @return call(__trim-left, $args...); }
+@function _trim-right($args...) { @return call(__trim-right, $args...); }
+@function _trunc($args...) { @return call(__trunc, $args...); }
+@function _unescape($args...) { @return call(__unescape, $args...); }
+@function _unique-id($args...) { @return call(__unique-id, $args...); }
+@function _words($args...) { @return call(__words, $args...); }
 
+// Add aliases.
+@function _all($args...) { @return call(__every, $args...); }
+@function _any($args...) { @return call(__some, $args...); }
+@function _contains($args...) { @return call(__includes, $args...); }
+@function _detect($args...) { @return call(__find, $args...); }
+@function _foldl($args...) { @return call(__reduce, $args...); }
+@function _foldr($args...) { @return call(__reduce-right, $args...); }
+@function _head($args...) { @return call(__first, $args...); }
+@function _include($args...) { @return call(__includes, $args...); }
+@function _inject($args...) { @return call(__reduce, $args...); }
 
+// Add functions capable of returning wrapped and unwrapped values when chaining.
+@function _sample($args...) { @return call(__sample, $args...); }
 
+// Sassdash pseudo-chainable wrapper-value function.
+@function _($value, $method-calls...) {
+    $result: $value;
 
+    @each $method-call in $method-calls {
+        $method: __first($method-call);
+        $args: __drop($method-call);
+
+        $method: if(__starts-with($method, '_'), $method, '_' + $method);
+
+        $result: __call($method, null, $result, $args...);
+    }
+
+    @return $result;
+}
+
+@debug _((1 2 3 4 5), map double, chunk 2, map _first);

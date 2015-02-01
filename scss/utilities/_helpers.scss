@@ -66,7 +66,7 @@
 }
 
 @function __to-map($value) {
-    @if (type-of($value) == string) {
+    @if (type-of($value) == 'string') {
         $index: 1;
         $length: str-length($value);
         $result: ();
@@ -78,7 +78,7 @@
         }
 
         @return $result;
-    } @else if (type-of($value) == list) {
+    } @else if (type-of($value) == 'list') {
         $index: 1;
         $length: length($value);
         $result: ();

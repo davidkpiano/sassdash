@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 
 gulp.task('scss', function() {
-    gulp.src('scss/*.scss')
+    gulp.src('**/*.scss')
         .pipe(sass({
             style: 'expanded',
             "sourcemap=none": true,
@@ -16,9 +16,9 @@ gulp.task('default', ['scss'], function() {
 });
 
 gulp.task('test', ['scss'], function() {
-    gulp.src('tests/*.scss')
+    gulp.src('**/*.scss')
         .pipe(sass())
         .pipe(gulp.dest('css'));
 
-    gulp.watch('tests/*.scss', ['test']);
+    gulp.watch('**/*.scss', ['test']);
 });

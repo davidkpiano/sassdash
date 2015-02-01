@@ -1736,9 +1736,10 @@ $users: (
     // }
 
 @function __create-assigner-function($arguments...) {
-    $assigner: this($assigner);
+    $assigner: this('assigner');
     $length: length($arguments);
     $map: nth($arguments, 1);
+    $customizer: null;
 
     @if ($length < 2 or $map == null) {
         @return $map;
@@ -1764,13 +1765,15 @@ $users: (
         @if ($source) {
             $map: __call($assigner, null, $map, $source, $customizer);
         }
+
+        $index: $index + 1;
     }
 
     @return $map;
 }
 @function __create-assigner($assigner) {
     $_: scope-start();
-    $_: scope(assigner, $assigner);
+    $_: scope('assigner', $assigner);
 
     $scoped-function: scoped-function(__create-assigner-function);
 

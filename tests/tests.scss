@@ -124,5 +124,70 @@ $test-falsey: ('', 0, false, null);
     }
 }
 
+@include xdescribe('_attempt') {}
+
+$test-before-count: 0 !global;
+@function test-before-1() {
+    $test-before-count: $test-before-count + 1 !global;
+
+    @return $test-before-count;
+}
+@include describe('_before') {
+    @include it('should create a function that invokes func after n calls') {
+        // before(n) should invoke `func` before being called `n` times
+        $test-before-count: 0 !global;
+        $test-before: _before(5, test-before-1);
+
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+
+        @include should(expect($test-before-count), to(equal(4)));
+
+        // before(n) should not invoke `func` after being called `n - 1` times
+        $test-before-count: 0 !global;
+        $test-before: _before(5, test-before-1);
+
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+
+        @include should(expect($test-before-count), to(equal(4)));
+        
+        // before(0) should not invoke `func` immediately
+        $test-before-count: 0 !global;
+        $test-before: _before(0, test-before-1);
+
+        @include should(expect($test-before-count), to(equal(0)));
+
+        // before(0) should not invoke `func` when called
+        $test-before-count: 0 !global;
+        $test-before: _before(0, test-before-1);
+
+        $_: _call($test-before);
+
+        @include should(expect($test-before-count), to(equal(0)));
+    }
+
+    @include xit('should coerce non-finite n values to 0') {}
+
+    @include it('should allow func as the first argument') {
+        $test-before-count: 0 !global;
+
+        $test-before: _before(test-before-1, 2);
+
+        $_: _call($test-before);
+        $_: _call($test-before);
+
+        @include should(expect($test-before-count), to(equal(1)));
+    }
+
+    @include xit('should not set a this binding') {}
+}
+
 
 @include runner-end;

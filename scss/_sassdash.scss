@@ -4909,6 +4909,9 @@ $users: (
 // Add functions capable of returning wrapped and unwrapped values when chaining.
 @function _sample($args...) { @return call(__sample, $args...); }
 
+// Add custom Sassdash functions.
+@function _call($args...) { @return call(__call, $args...); }
+
 // Sassdash pseudo-chainable wrapper-value function.
 @function _($value, $method-calls...) {
     $result: $value;

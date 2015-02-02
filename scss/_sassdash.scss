@@ -4387,6 +4387,15 @@ $users: (
 // @debug __snake-case('--foo-bar');
 // @debug __snake-case('fooBar');
 
+@function __start-case-compounder($result, $word, $index) {
+    @return $result + if($index > 1, ' ', '') + to-upper-case(__char-at($word, 1)) + str-slice($word, 2);
+}
+@function __start-case($arguments...) {
+    $compounder: __create-compounder(__start-case-compounder);
+
+    @return __call($compounder, null, $arguments...);
+}
+
 @function __starts-with($string, $target, $position: 1) {
     $string: __base-to-string($string);
     $position: __native-min(if($position < 0, 1, $position), str-length($string));
@@ -4885,6 +4894,7 @@ $users: (
 @function _some($args...) { @return call(__some, $args...); }
 @function _sorted-index($args...) { @return call(__sorted-index, $args...); }
 @function _sorted-last-index($args...) { @return call(__sorted-last-index, $args...); }
+@function _start-case($args...) { @return call(__start-case, $args...); }
 @function _starts-with($args...) { @return call(__starts-with, $args...); }
 @function _template($args...) { @return call(__template, $args...); }
 @function _trim($args...) { @return call(__trim, $args...); }

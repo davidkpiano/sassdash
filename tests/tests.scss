@@ -244,12 +244,76 @@ $test-before-count: 0 !global;
     }
 }
 
-@include describe('_camel-case') {
-    @include it('should work with numbers') {
-        @include should(expect(_camel-case('too legit 2 quit')), to(equal('tooLegit2Quit')));
-        @include should(expect(_camel-case('walk 500 miles')), to(equal('walk500Miles')));
-        @include should(expect(_camel-case('xhr2 request')), to(equal('xhr2Request')));
-        
+// @include xdescribe('_camel-case') {
+//     @include it('should work with numbers') {
+//         @include should(expect(_camel-case('too legit 2 quit')), to(equal('tooLegit2Quit')));
+//         @include should(expect(_camel-case('walk 500 miles')), to(equal('walk500Miles')));
+//         @include should(expect(_camel-case('xhr2 request')), to(equal('xhr2Request')));
+//     }
+// }
+
+@include describe('_capitalize') {
+    @include it('should capitalize the first character of a string') {
+        @include should(expect(_capitalize('fred')), to(equal('Fred')));
+        @include should(expect(_capitalize('Fred')), to(equal('Fred')));
+        @include should(expect(_capitalize(' fred')), to(equal(' fred')));
+    }
+
+    @include it('should return an unwrapped value when chaining') {
+        @include should(expect(_('fred', capitalize)), to(equal('Fred')));
+    }
+}
+
+@include describe('_chain') {
+    @include it('should return a wrapped value') {
+        $actual: _chain(('a': 0));
+
+        @include should(expect(instanceof($actual, SassdashWrapper)), to(be(true)));
+    }
+
+    @include it('should return existing wrapped values') {
+        $wrapped: _chain(('a': 0));
+
+        @include should(expect(_chain($wrapped)), to(equal($wrapped)));
+        @include should(expect(_($wrapped, chain)), to(equal($wrapped)));
+    }
+
+    @include xit('should enable chaining of methods that return unwrapped values by default') {}
+
+    @include xit('should chain multiple methods') {}
+}
+
+@include describe('_chunk') {
+    $list: (0 1 2 3 4 5);
+
+    @include it('should return chunked arrays') {
+        $actual: _chunk($list, 3);
+        $expected: ((0 1 2) (3 4 5));
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should return the last chunk as remaining elements') {
+        $actual: _chunk($list, 4);
+        $expected: ((0 1 2 3) (4 5));
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should ensure the minimum chunkSize is one') {
+        @each $value in append($test-falsey, -1) {        
+            $actual: _chunk($list, $value);
+            $expected: (0,) (1,) (2,) (3,) (4,) (5,);
+
+            @include should(expect($actual), to(be($expected)));
+        }
+    }
+
+    @include it('should work as an iteratee for _map') {
+        $actual: _map(((1 2) (3 4)), _chunk);
+        $expected: (((1,) (2,)) ((3,) (4,)));
+
+        @include should(expect($actual), to(be($expected)));
     }
 }
 

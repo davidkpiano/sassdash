@@ -3,6 +3,10 @@
 $__current-scope__: null !global;
 $__undefined__: '__undefined-#{unique-id()}__' !global;
 
+@function is-undefined($value) {
+    @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
+}
+
 @function Scope($parent: $__current-scope__) {
     $scope-id: unquote('@#{unique-id()}');
     $scope-parent: $parent;
@@ -31,7 +35,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 }
 
 @function scope-get($key: $__undefined__) {
-    @if (__is-undefined($key)) {
+    @if (is-undefined($key)) {
         @return static-get($__current-scope__);
     }
 
@@ -39,7 +43,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 }
 
 @function scope($key: $__undefined__, $value: $__undefined__) {
-    @if (__is-undefined($value)) {
+    @if (is-undefined($value)) {
         @return scope-get($key);
     }
 

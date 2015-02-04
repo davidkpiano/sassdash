@@ -2276,7 +2276,7 @@ $users: (
     @if (if($guard, __is-iteratee-call($list, $size, $guard), ($size == null))) {
         $size: 1;
     } @else {
-        $size: __native-max(if($size == 0, 1, $size), 1);
+        $size: __native-max(if(__is-falsey($size), 1, $size), 1);
     }
 
     $index: 1;
@@ -2287,6 +2287,10 @@ $users: (
         $result: append($result, __base-slice($list, $index - 1, $index + $size - 1));
 
         $index: $index + $size;
+    }
+
+    @if (length($result) == 1) {
+        $result: ($result,);
     }
 
     @return $result;

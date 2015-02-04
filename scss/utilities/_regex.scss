@@ -1,0 +1,371 @@
+
+$ascii-printable: (
+    31: ' ',
+    32: '&',
+    33: '!',
+    34: '"',
+    35: '#',
+    36: '$',
+    37: '%',
+    38: '&',
+    39: '\'',
+    40: '(',
+    41: ')',
+    42: '*',
+    43: '+',
+    44: ',',
+    45: '-',
+    46: '.',
+    47: '/',
+    48: '0',
+    49: '1',
+    50: '2',
+    51: '3',
+    52: '4',
+    53: '5',
+    54: '6',
+    55: '7',
+    56: '8',
+    57: '9',
+    58: ':',
+    59: ';',
+    60: '&',
+    61: '=',
+    62: '&',
+    63: '?',
+    64: '@',
+    65: 'A',
+    66: 'B',
+    67: 'C',
+    68: 'D',
+    69: 'E',
+    70: 'F',
+    71: 'G',
+    72: 'H',
+    73: 'I',
+    74: 'J',
+    75: 'K',
+    76: 'L',
+    77: 'M',
+    78: 'N',
+    79: 'O',
+    80: 'P',
+    81: 'Q',
+    82: 'R',
+    83: 'S',
+    84: 'T',
+    85: 'U',
+    86: 'V',
+    87: 'W',
+    88: 'X',
+    89: 'Y',
+    90: 'Z',
+    91: '[',
+    92: '\\',
+    93: ']',
+    94: '^',
+    95: '_',
+    96: '`',
+    97: 'a',
+    98: 'b',
+    99: 'c',
+    100: 'd',
+    101: 'e',
+    102: 'f',
+    103: 'g',
+    104: 'h',
+    105: 'i',
+    106: 'j',
+    107: 'k',
+    108: 'l',
+    109: 'm',
+    110: 'n',
+    111: 'o',
+    112: 'p',
+    113: 'q',
+    114: 'r',
+    115: 's',
+    116: 't',
+    117: 'u',
+    118: 'v',
+    119: 'w',
+    120: 'x',
+    121: 'y',
+    122: 'z',
+    123: '{',
+    124: '|',
+    125: '}',
+    126: '~',
+    127: '<',
+);
+$ascii-extended: (
+    128: 'â‚¬',
+    129: '&',
+    130: 'â€š',
+    131: 'Æ’',
+    132: 'â€ž',
+    133: 'â€¦',
+    134: 'â€ ',
+    135: 'â€¡',
+    136: 'Ë†',
+    137: 'â€°',
+    138: 'Å ',
+    139: 'â€¹',
+    140: 'Å’',
+    141: '&',
+    142: 'Å½',
+    143: '&',
+    144: '&',
+    145: 'â€˜',
+    146: 'â€™',
+    147: 'â€œ',
+    148: 'â€',
+    149: 'â€¢',
+    150: 'â€“',
+    151: 'â€”',
+    152: 'Ëœ',
+    153: 'â„¢',
+    154: 'Å¡',
+    155: 'â€º',
+    156: 'Å“',
+    157: '&',
+    158: 'Å¾',
+    159: 'Å¸',
+    160: '&',
+    161: 'Â¡',
+    162: 'Â¢',
+    163: 'Â£',
+    164: 'Â¤',
+    165: 'Â¥',
+    166: 'Â¦',
+    167: 'Â§',
+    168: 'Â¨',
+    169: 'Â©',
+    170: 'Âª',
+    171: 'Â«',
+    172: 'Â¬',
+    173: 'Â­',
+    174: 'Â®',
+    175: 'Â¯',
+    176: 'Â°',
+    177: 'Â±',
+    178: 'Â²',
+    179: 'Â³',
+    180: 'Â´',
+    181: 'Âµ',
+    182: 'Â¶',
+    183: 'Â·',
+    184: 'Â¸',
+    185: 'Â¹',
+    186: 'Âº',
+    187: 'Â»',
+    188: 'Â¼',
+    189: 'Â½',
+    190: 'Â¾',
+    191: 'Â¿',
+    192: 'Ã€',
+    193: 'Ã',
+    194: 'Ã‚',
+    195: 'Ãƒ',
+    196: 'Ã„',
+    197: 'Ã…',
+    198: 'Ã†',
+    199: 'Ã‡',
+    200: 'Ãˆ',
+    201: 'Ã‰',
+    202: 'ÃŠ',
+    203: 'Ã‹',
+    204: 'ÃŒ',
+    205: 'Ã',
+    206: 'ÃŽ',
+    207: 'Ã',
+    208: 'Ã',
+    209: 'Ã‘',
+    210: 'Ã’',
+    211: 'Ã“',
+    212: 'Ã”',
+    213: 'Ã•',
+    214: 'Ã–',
+    215: 'Ã—',
+    216: 'Ã˜',
+    217: 'Ã™',
+    218: 'Ãš',
+    219: 'Ã›',
+    220: 'Ãœ',
+    221: 'Ã',
+    222: 'Ãž',
+    223: 'ÃŸ',
+    224: 'Ã ',
+    225: 'Ã¡',
+    226: 'Ã¢',
+    227: 'Ã£',
+    228: 'Ã¤',
+    229: 'Ã¥',
+    230: 'Ã¦',
+    231: 'Ã§',
+    232: 'Ã¨',
+    233: 'Ã©',
+    234: 'Ãª',
+    235: 'Ã«',
+    236: 'Ã¬',
+    237: 'Ã­',
+    238: 'Ã®',
+    239: 'Ã¯',
+    240: 'Ã°',
+    241: 'Ã±',
+    242: 'Ã²',
+    243: 'Ã³',
+    244: 'Ã´',
+    245: 'Ãµ',
+    246: 'Ã¶',
+    247: 'Ã·',
+    248: 'Ã¸',
+    249: 'Ã¹',
+    250: 'Ãº',
+    251: 'Ã»',
+    252: 'Ã¼',
+    253: 'Ã½',
+    254: 'Ã¾',
+    255: 'Ã¿',
+);
+
+@function RegExParser($input) {
+    @return (
+        'input': $input
+    );
+}
+
+@function regex-peek() {
+    $input: this('input');
+
+    @return str-slice($input, 1, 1);
+}
+
+@function regex-eat($char) {
+    $input: this('input');
+
+    @if (regex-peek() == $char) {
+        @return this('input', str-slice($input, 2));
+    } @else {
+        @warn 'Expected: #{$char}, got #{regex-peek($input)}';
+        @return false;
+    }
+}
+
+@function regex-next() {
+    $input: this('input');
+
+    $char: regex-peek();
+    $_: regex-eat($char);
+
+    @return $char;
+}
+
+@function regex-more() {
+    $input: this('input');
+
+    @return str-length($input) > 0;
+}
+
+@function regex() {
+    @debug this('input');
+    $term: regex-term();
+
+
+    @if (regex-more() and regex-peek() == '|') {
+        $_: regex-eat('|');
+        $regex: regex();
+        @return Choice($term, $regex);
+    } @else {
+        @return $term;
+    }
+}
+
+@function Choice($this-one, $that-one) {
+    @return (
+        '_type': Choice,
+        'this-one': $this-one,
+        'that-one': $that-one
+    );
+}
+
+@function regex-term() {
+    $factor: null;
+
+    @while (regex-more() and regex-peek() != ')' and regex-peek() != '|') {
+        $next-factor: regex-factor();
+        $factor: Sequence($factor, $next-factor);
+    }
+
+    @return $factor;
+}
+
+@function Sequence($first, $second) {
+    @return (
+        '_type': Sequence,
+        'first': $first,
+        'second': $second
+    );
+}
+
+@function regex-factor() {
+    $base: regex-base();
+
+    @while (regex-more() and regex-peek() == '*') {
+        $_: regex-eat('*');
+        $base: Repetition($base);
+    }
+
+    @return $base;
+}
+
+@function Repetition($internal) {
+    @return (
+        '_type': Repetition,
+        'internal': $internal
+    );
+}
+
+@function regex-base() {
+    $char: regex-peek();
+
+    @if ($char == '(') {
+        $_: regex-eat('(');
+
+        $regex: regex();
+
+        $_: regex-eat(')');
+
+        @return $regex;
+    }
+
+    @if ($char == '\\') {
+        $_: regex-eat('\\');
+        $esc: regex-next();
+
+        @return Primitive($esc);
+    }
+
+    @return Primitive(regex-next());
+}
+
+@function Primitive($char) {
+    @return (
+        '_type': Primitive,
+        'char': $char
+    );
+}
+
+$_: scope-start();
+$_: scope-set('input', 'abcd*efg|def{3,}');
+$result: regex();
+$_: scope-end();
+
+/* ${json-encode($result)} */
+.foo {
+    content: #{json-encode($result)};
+}
+
+
+
+

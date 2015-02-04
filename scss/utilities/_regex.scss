@@ -229,143 +229,144 @@ $ascii-extended: (
     255: 'Ã¿',
 );
 
-@function RegExParser($input) {
+@function Char($input) {}
+
+@function Group() {
+    $_: eat('(');
+    $result: '';
+
+    $char: next();
+
+    @while ($char != ')') {
+        $result: $result + $char;
+
+        $char: next();
+    }
+
+    @return (type: Group, value: regex($result), repetition: Repetition());
+}
+
+@function Repetition() {
+    $token: peek();
+    $greedy: true;
+    $min: 1;
+    $max: 1;
+
+    @if $token == '*' {
+        $min: 0;
+        $max: false;
+        $_: eat('*');
+    } @else if ($token == '+') {
+        $min: 1;
+        $max: false;
+        $_: eat('+');
+    } @else if ($token == '?') {
+        $min: 0;
+        $max: 1;
+        $_: eat('?');
+    } @else if ($token == '{') {
+        $_: eat('{');
+
+        $char: next();
+        $min: '';
+        $max: '';
+        $current: 'min';
+
+        @while ($char != '}') {
+            @if ($char == ',') {
+                $current: 'max';
+            } @else if ($current == 'min') {
+                $min: $min + $char;
+            } @else if ($current == 'max') {
+                $max: $max + $char;
+            }
+
+            $char: next();
+        }
+
+        $max: if($max == '', false, $max);
+    }
+
+    @if (peek() == '?') {
+        $greedy: false;
+        $_: eat('?');
+    }
+
     @return (
-        'input': $input
+        min: $min,
+        max: $max,
+        greedy: $greedy
     );
 }
 
-@function regex-peek() {
-    $input: this('input');
-
-    @return str-slice($input, 1, 1);
+@function peek($skip: 0) {
+    $index: $skip + 1;
+    @return str-slice(this('input'), $index, $index);
 }
 
-@function regex-eat($char) {
+@function eat($char) {
     $input: this('input');
 
-    @if (regex-peek() == $char) {
-        @return this('input', str-slice($input, 2));
+    @if (peek() == $char) {
+        $_: this('input', str-slice($input, 2));
     } @else {
-        @warn 'Expected: #{$char}, got #{regex-peek($input)}';
-        @return false;
+        @error 'Fuck';
     }
-}
-
-@function regex-next() {
-    $input: this('input');
-
-    $char: regex-peek();
-    $_: regex-eat($char);
 
     @return $char;
 }
 
-@function regex-more() {
-    $input: this('input');
-
-    @return str-length($input) > 0;
+@function next() {
+    $char: peek();
+    $_: eat($char);
+    @return $char;
 }
 
-@function regex() {
-    @debug this('input');
-    $term: regex-term();
-
-
-    @if (regex-more() and regex-peek() == '|') {
-        $_: regex-eat('|');
-        $regex: regex();
-        @return Choice($term, $regex);
-    } @else {
-        @return $term;
-    }
+@function more() {
+    @return str-length(this('input')) > 0;
 }
 
-@function Choice($this-one, $that-one) {
-    @return (
-        '_type': Choice,
-        'this-one': $this-one,
-        'that-one': $that-one
-    );
-}
+@function regex($input) {
+    $result: ();
 
-@function regex-term() {
-    $factor: null;
+    $_: scope-start();
+    $_: scope-set('input', $input);
 
-    @while (regex-more() and regex-peek() != ')' and regex-peek() != '|') {
-        $next-factor: regex-factor();
-        $factor: Sequence($factor, $next-factor);
+    @while (more()) {
+        $result: append($result, Sequence());
     }
 
-    @return $factor;
+    $_: scope-end();
+
+    @return $result;
 }
 
-@function Sequence($first, $second) {
-    @return (
-        '_type': Sequence,
-        'first': $first,
-        'second': $second
-    );
-}
+@function Sequence() {
+    $result: ();
 
-@function regex-factor() {
-    $base: regex-base();
+    @while (more() and peek() != '|') {
+        @if (peek() == '(') {
+            $result: append($result, Group());
+        }
 
-    @while (regex-more() and regex-peek() == '*') {
-        $_: regex-eat('*');
-        $base: Repetition($base);
+        $result: append($result, Literal());
     }
 
-    @return $base;
-}
-
-@function Repetition($internal) {
-    @return (
-        '_type': Repetition,
-        'internal': $internal
-    );
-}
-
-@function regex-base() {
-    $char: regex-peek();
-
-    @if ($char == '(') {
-        $_: regex-eat('(');
-
-        $regex: regex();
-
-        $_: regex-eat(')');
-
-        @return $regex;
+    @if (peek() == '|') {
+        $_: eat('|');
     }
 
-    @if ($char == '\\') {
-        $_: regex-eat('\\');
-        $esc: regex-next();
-
-        @return Primitive($esc);
-    }
-
-    @return Primitive(regex-next());
+    @return (type: Sequence, value: $result);
 }
 
-@function Primitive($char) {
-    @return (
-        '_type': Primitive,
-        'char': $char
-    );
+@function Literal() {
+    $char: next();
+
+    @return (type: Literal, value: $char, repetition: Repetition());
 }
 
-$_: scope-start();
-$_: scope-set('input', 'abcd*efg|def{3,}');
-$result: regex();
-$_: scope-end();
+// $result: regex('ab+cde*(fgh){3,4}ij+?(klm){5,}');
+$result: regex('abc|def');
 
 /* ${json-encode($result)} */
-.foo {
-    content: #{json-encode($result)};
-}
-
-
-
-
+@debug $result;

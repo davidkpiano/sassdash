@@ -6,6 +6,19 @@ $bc-setting-verbose: true;
 @include runner-start;
 
 $test-falsey: ('', 0, false, null);
+$test-empty-list: ();
+
+@function test-add($x, $y) {
+    @return $x + $y;
+}
+
+@function test-square($n) {
+    @return $n * $n;
+}
+
+@function test-fixed($n) {
+    @return __number-to-fixed($n);
+}
 
 @include describe('sassdash _after') {
     @include it('should create a function that invokes func after n calls') {
@@ -315,6 +328,67 @@ $test-before-count: 0 !global;
 
         @include should(expect($actual), to(be($expected)));
     }
+}
+
+@include xdescribe('_clone') {}
+
+@include describe('_compact') {
+    @include it('should filter falsey values') {
+        $list: join('0' '1' '2', $test-falsey);
+        $actual: _compact($list);
+        $expected: ('0' '1' '2');
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should return a wrapped value when chaining') {}
+
+    @include it('should work when in between lazy operators') {
+        $actual: _($test-falsey, slice, compact, slice, value);
+
+        @include should(expect(length($actual)), to(be(0)));
+
+        $actual: _($test-falsey, slice, push true 1, compact, push 'a', slice, value);
+        $expected: (true, 1, 'a');
+
+        @include should(expect($actual), to(be($expected)));
+    }
+}
+
+@include describe('_flow-right') {
+    @include xit('should be aliased') {}
+}
+
+@include describe('flow methods') {
+    @each $method-name in ('flow', 'flow-right') {
+        $func: unquote('_#{$method-name}');
+        $is-flow: ($method-name == 'flow');
+
+        @include it('#{$func} should supply each function with the return value of the previous') {
+            $combined: if($is-flow, call($func, test-add, test-square, test-fixed), call($func, test-fixed, test-square, test-add));
+
+            $actual: _call($combined, null, 1, 2);
+            $expected: 9.0;
+
+            @include should(expect($actual), to(be($expected)));
+        }
+
+        @include it('#{$func} should return a new function') {
+            @include should(expect(_call($func, null, _noop)), not-to(equal(_noop)));
+        }
+
+        @include it('#{$func} should return a noop function when no arguments are provided') {
+            $combined: call($func);
+
+            @include should(expect(_call($combined)), to(equal(_call(_noop))));
+        }
+
+        @include xit('#{$func} should return a wrapped value when chaining') {}
+    }
+}
+
+@include xdescribe('_constant') {
+    @include xit('should create a function that returns value') {}
 }
 
 

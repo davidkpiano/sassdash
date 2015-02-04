@@ -291,3 +291,14 @@
     @return $result;
 }
 
+@function __number-to-fixed($value, $digits: null) {
+    @if ($digits == null) {
+        @return round($value);
+    }
+
+    $value: round($value * pow(10, $digits)) / pow(10, $digits);
+
+    @return $value;
+}
+
+// @debug __number-to-fixed(1234.5678, 2);

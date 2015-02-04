@@ -628,8 +628,6 @@ $users: (
     $props-length: length($props);
     $result: ();
 
-    @debug $props;
-
     @while ($index <= $props-length) {
         $key: nth($props, $index);
 
@@ -1332,7 +1330,7 @@ $users: (
     @return $function;
 }
 
-@function __base-slice($list, $start: 1, $end: length($list)) {
+@function __base-slice($list, $start: 0, $end: length($list)) {
     $index: 1;
     $length: length($list);
 
@@ -2695,7 +2693,7 @@ $users: (
 
 // @debug __rest((1 2 3));
 
-@function __slice($list, $start: 1, $end: length($list)) {
+@function __slice($list, $start: 0, $end: length($list)) {
     $length: if($list, length($list), 0);
 
     @if (__is-falsey($length)) {
@@ -4184,6 +4182,14 @@ $users: (
 //     @return $accumulator;
 // }
 
+@function __value($value) {
+    @if instanceof($value, SassdashWrapper) {
+        @return get($value, '__wrapped__');
+    }
+
+    @return $value;
+}
+
 @function __values($map) {
     @return __base-values($map, __keys($map));
 }
@@ -4366,6 +4372,10 @@ $users: (
     }
 
     @return __native-parse-int($string, $radix);
+}
+
+@function __push($list, $items...) {
+    @return join($list, $items, $separator: auto);
 }
 
 @function __repeat($string, $value: 1) {
@@ -4925,6 +4935,9 @@ $users: (
 
 // Add custom Sassdash functions.
 @function _call($args...) { @return call(__call, $args...); }
+@function _push($args...) { @return call(__push, $args...); }
+@function _value($args...) { @return call(__value, $args...); }
+
 
 // Sassdash pseudo-chainable wrapper-value function.
 @function _($value, $method-calls...) {
@@ -4942,4 +4955,4 @@ $users: (
     @return $result;
 }
 
-@debug _((1 2 3 4 5), map double, chunk 2, map _first);
+// @debug _((1 2 3 4 5), map double, chunk 2, map _first);

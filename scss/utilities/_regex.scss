@@ -229,7 +229,15 @@ $ascii-extended: (
     255: 'Ã¿',
 );
 
-@function Char($input) {}
+@function get-char-code($char) {
+    @each $char-code, $char-value in join($ascii-printable, $ascii-extended) {
+        @if $char == $char-value {
+            @return $char-code;
+        }
+    }
+
+    @return false;
+}
 
 @function Group() {
     $_: eat('(');
@@ -246,6 +254,39 @@ $ascii-extended: (
     @return (type: Group, value: regex($result), repetition: Repetition());
 }
 
+@function Class() {
+    $_: eat('[');
+    $result: ();
+    $negation: false;
+
+    @if (peek() == '^') {
+        $negation: true;
+        $_: eat('^');
+    }
+
+    $char: next();
+
+    @while ($char != ']') {    
+        @if (peek() == '-') {
+            $_: eat('-');
+            $result: append($result, Range($char, next()));
+        } @else {
+            $result: append($result, Literal($char));
+        }
+
+        $char: next();
+    }
+
+    @return (type: Class, value: $result, negation: $negation, repetition: Repetition());
+}
+
+@function Range($min, $max) {
+    $min: get-char-code($min);
+    $max: get-char-code($max);
+
+    @return (type: Range, min: $min, max: $max);
+}
+
 @function Repetition() {
     $token: peek();
     $greedy: true;
@@ -254,11 +295,11 @@ $ascii-extended: (
 
     @if $token == '*' {
         $min: 0;
-        $max: false;
+        $max: 1000;
         $_: eat('*');
     } @else if ($token == '+') {
         $min: 1;
-        $max: false;
+        $max: 1000;
         $_: eat('+');
     } @else if ($token == '?') {
         $min: 0;
@@ -284,7 +325,7 @@ $ascii-extended: (
             $char: next();
         }
 
-        $max: if($max == '', false, $max);
+        $max: if($max == '', 1000, $max);
     }
 
     @if (peek() == '?') {
@@ -338,7 +379,7 @@ $ascii-extended: (
 
     $_: scope-end();
 
-    @return $result;
+    @return (type: Options, value: $result);
 }
 
 @function Sequence() {
@@ -347,6 +388,8 @@ $ascii-extended: (
     @while (more() and peek() != '|') {
         @if (peek() == '(') {
             $result: append($result, Group());
+        } @else if (peek() == '[') {
+            $result: append($result, Class());
         }
 
         $result: append($result, Literal());
@@ -365,8 +408,88 @@ $ascii-extended: (
     @return (type: Literal, value: $char, repetition: Repetition());
 }
 
-// $result: regex('ab+cde*(fgh){3,4}ij+?(klm){5,}');
-$result: regex('abc|def');
+@function Empty() {
+    @return (type: Empty);
+}
 
-/* ${json-encode($result)} */
-@debug $result;
+@function derivative($entity, $char) {
+    $type: map-get($entity, type);
+
+    @return call(derivative-#{$type}, $entity, $char);
+}
+
+@function derivative-Options($options, $char) {
+    $result: ();
+
+    @each $option in map-get($options, value) {
+        $result: append($result, derivative($option, $char));
+    }
+
+    @return (type: Options, value: $result);
+}
+@function derivative-Sequence($sequence, $char) {
+    $result: ();
+    $entities: map-get($sequence, value);
+    $next-entities: ();
+    $first: nth($entities, 1);
+    $second: if(length($entities) > 1, nth($entities, 2), null);
+
+    @if ($second == null) {
+        @return derivative($first, $char);
+    }
+
+    @for $index from 2 through length($entities) {
+        $next-entities: append($next-entities, nth($entities, $index));
+    }
+
+    $next-sequence: (type: Sequence, value: $next-entities);
+    $new-first: (type: Sequence, value: join((derivative($first, $char),), $next-entities));
+
+    @if (matches-empty-string($first)) {
+        $result: (type: Options, value: ($new-first, derivative($next-sequence, $char)));
+    } @else {
+        $result: join((derivative($first, $char),), $next-entities);
+    }
+
+    @debug $result;
+
+    @return $result;
+}
+@function derivative-Literal($literal, $char) {
+    $value: map-get($literal, value);
+
+    @if ($value == $char or matches-empty-string($literal)) {
+        @return (type: Empty);
+    }
+
+    @return (type: Null);
+}
+
+@function matches-empty-string($entity) {
+    $repetition: map-get($entity, 'repetition');
+
+    @return map-get($repetition, 'min') == 0;
+}
+
+@function test($char, $regex) {
+
+    $_: scope-start();
+    $_: scope('input', $regex);
+
+    $result: derivative($regex, $char);
+
+    $_: scope-end();
+
+    @return $result;
+}
+
+// $result: regex('ab+cde*(fgh){3,4}ij+?(klm){5,}');
+$regex: regex('a?bc');
+$test: test('a', $regex);
+
+.foo {
+    before: json-encode($regex);
+    bar: json-encode($test);
+}
+
+@debug $test;

@@ -239,6 +239,16 @@ $ascii-extended: (
     @return false;
 }
 
+@function list-slice($list, $start: 2, $end: length($list)) {
+    $result: ();
+
+    @for $index from $start through $end {
+        $result: append($result, nth($list, $index));
+    }
+
+    @return $result;
+}
+
 @function Group() {
     $_: eat('(');
     $result: '';
@@ -425,6 +435,10 @@ $ascii-extended: (
         $result: append($result, derivative($option, $char));
     }
 
+    @if length($result) == 1 {
+        @return nth($result, 1);
+    }
+
     @return (type: Options, value: $result);
 }
 @function derivative-Sequence($sequence, $char) {
@@ -434,8 +448,10 @@ $ascii-extended: (
     $first: nth($entities, 1);
     $second: if(length($entities) > 1, nth($entities, 2), null);
 
-    @if ($second == null) {
-        @return derivative($first, $char);
+    $first-derivative: derivative($first, $char);
+
+    @if ($second == null or map-get($first-derivative, type) == 'Null') {
+        @return $first-derivative;
     }
 
     @for $index from 2 through length($entities) {
@@ -443,23 +459,44 @@ $ascii-extended: (
     }
 
     $next-sequence: (type: Sequence, value: $next-entities);
-    $new-first: (type: Sequence, value: join((derivative($first, $char),), $next-entities));
+    $new-first: (type: Sequence, value: join(($first-derivative,), $next-entities));
 
     @if (matches-empty-string($first)) {
-        $result: (type: Options, value: ($new-first, derivative($next-sequence, $char)));
+        @if map-get($first-derivative, type) != 'Null' {
+            $result: (type: Options, value: ($new-first, derivative($next-sequence, $char)));
+        } @else {
+            @debug 'hi';
+            $result: derivative($next-sequence, $char);
+        }
     } @else {
-        $result: join((derivative($first, $char),), $next-entities);
+        $result: (type: Sequence, value: join(($first-derivative,), $next-entities));
     }
+
+    $derivative-entities: ();
 
     @debug $result;
 
-    @return $result;
+    @each $entity in map-get($result, 'value') {
+        $derivative-entities: append($derivative-entities, $entity);
+    }
+
+    @return (type: map-get($result, type), value: $derivative-entities);
 }
 @function derivative-Literal($literal, $char) {
-    $value: map-get($literal, value);
+    $value: map-get($literal, 'value');
+    $repetition: map-get($literal, 'repetition');
+    $result: ();
 
-    @if ($value == $char or matches-empty-string($literal)) {
-        @return (type: Empty);
+    @if ($value == $char) {
+        $min: map-get($repetition, 'min') - 1;
+        $max: map-get($repetition, 'max') - 1;
+        $min: if($min < 0, 0, $min);
+
+        @if ($max == 0) {
+            @return (type: Empty);
+        }
+
+        @return map-merge($literal, (repetition: (min: $min, max: $max)));
     }
 
     @return (type: Null);
@@ -471,12 +508,44 @@ $ascii-extended: (
     @return map-get($repetition, 'min') == 0;
 }
 
+@function clean($entity) {
+    $entity-type: map-get($entity, type);
+    $entity-value: map-get($entity, value);
+
+    @if type-of($entity-value) == 'list' {
+        $cleaned-entity-value: ();
+
+        @each $child in $entity-value {
+            $child: clean($child);
+            @if ($child != null) {
+                $cleaned-entity-value: append($cleaned-entity-value, $child);
+            }
+        }
+
+        @if length($cleaned-entity-value) == 1 {
+            @return nth($cleaned-entity-value, 1);
+        }
+
+        @return map-merge($entity, (value: $cleaned-entity-value));
+    }
+
+    @if $entity-type == 'Empty' or $entity-type == 'Null' {
+        @return null;
+    }
+
+    @return $entity;
+}
+
 @function test($char, $regex) {
 
     $_: scope-start();
     $_: scope('input', $regex);
 
-    $result: derivative($regex, $char);
+    @if ($regex == null) { @return false; }
+
+    @debug derivative($regex, $char);
+
+    $result: clean(derivative($regex, $char));
 
     $_: scope-end();
 
@@ -485,11 +554,12 @@ $ascii-extended: (
 
 // $result: regex('ab+cde*(fgh){3,4}ij+?(klm){5,}');
 $regex: regex('a?bc');
-$test: test('a', $regex);
 
 .foo {
     before: json-encode($regex);
-    bar: json-encode($test);
+    
+    @each $char in (b c) {
+        #{$char}: json-encode(test($char, $regex));
+        $regex: test($char, $regex);
+    }
 }
-
-@debug $test;

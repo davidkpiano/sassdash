@@ -418,50 +418,72 @@ $test-before-count: 0 !global;
 @function test-count-by-1($value, $args...) {
     @return floor($value);
 }
+@function test-count-by-2($value, $args...) {
+    @return $value > 1;
+}
 @include describe('_count-by') {
     $list: (4.2, 6.1, 6.4);
 
-    @include it('should work with an iteratee') {
-        $actual: _count-by($list, test-count-by-1);
-        $expected: (4: 1, 6: 2);
+    // @include it('should work with an iteratee') {
+    //     $actual: _count-by($list, test-count-by-1);
+    //     $expected: (4: 1, 6: 2);
 
-        @include should(expect($actual), to(equal($expected)));
-    }
+    //     @include should(expect($actual), to(equal($expected)));
+    // }
 
-    @include it('should use _identity when iteratee is null') {
-        $list: (4, 6, 6);
-        $actual: _count-by($list, null);
-        $expected: (4: 1, 6: 2);
+    // @include it('should use _identity when iteratee is null') {
+    //     $list: (4, 6, 6);
+    //     $actual: _count-by($list, null);
+    //     $expected: (4: 1, 6: 2);
 
-        @include should(expect($actual), to(be($expected)));
+    //     @include should(expect($actual), to(be($expected)));
 
-        $actual: _count-by($list);
+    //     $actual: _count-by($list);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+    //     @include should(expect($actual), to(be($expected)));
+    // }
 
-    @include xit('should provide the correct iteratee arguments') {}
+    // @include xit('should provide the correct iteratee arguments') {}
 
-    @include xit('should support the this-arg argument') {}
+    // @include xit('should support the this-arg argument') {}
 
-    @include xit('should only add values to own, not inherited, properties') {}
+    // @include xit('should only add values to own, not inherited, properties') {}
 
-    @include it('should work with a _pluck style iteratee') {
-        $map: (
-            (a: 'one', len: 3),
-            (a: 'two', len: 3),
-            (a: 'three', len: 5),
-        );
-        $actual: _count-by($map, 'len');
-        $expected: (3: 2, 5: 1);
+    // @include it('should work with a _pluck style iteratee') {
+    //     $map: (
+    //         (a: 'one', len: 3),
+    //         (a: 'two', len: 3),
+    //         (a: 'three', len: 5),
+    //     );
+    //     $actual: _count-by($map, 'len');
+    //     $expected: (3: 2, 5: 1);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+    //     @include should(expect($actual), to(be($expected)));
+    // }
 
     @include xit('should work with a number for iteratee') {
+        // todo
         $list: (1 'a', 2 'a', 2 'b');
         $actual: _count-by($list, 1);
         $expected: (1: 1, 2: 2);
+
+        @debug $actual;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work with an object for collection') {
+        $actual: _count-by(('a': 4.2, 'b': 6.1, 'c': 6.4), test-count-by-1);
+        $expected: (4: 1, 6: 2);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work in a lazy chain sequence') {
+        $list: (1 2 1 3);
+        @debug _($list, count-by _identity, map _to-string, filter test-count-by-2);
+        $actual: _($list, count-by _identity, map _to-string, filter test-count-by-2, take);
+        $expected: (2,);
 
         @include should(expect($actual), to(be($expected)));
     }

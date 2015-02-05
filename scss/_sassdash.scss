@@ -827,23 +827,24 @@ $users: (
 }
 
 @function __base-filter-iteratee($value, $index, $collection) {
-    $result: scope-get(result);
-    $predicate: scope-get(predicate);
+    $result: this(result);
+    $predicate: this(predicate);
 
-    @if (call($predicate, $value, $index, $collection)) {
-        $_: scope-set(result, append($result, $value));
+    @if (_call($predicate, null, $value, $index, $collection)) {
+        $_: this(result, append($result, $value));
     }
 
     @return null;
 }
 @function __base-filter($collection, $predicate) {
-    $_: scope-set(result, ());
-    $_: scope-set(predicate, $predicate);
+    $_: scope-start();
+    $_: scope(result, ());
+    $_: scope(predicate, $predicate);
 
     $_: __base-each($collection, __base-filter-iteratee);
 
-    $result: scope-get(result);
-    $_: scope-end;
+    $result: scope(result);
+    $_: scope-end();
 
     @return $result;
 }
@@ -1260,6 +1261,7 @@ $users: (
 
 @function __base-property-function($map: null, $args...) {
     $key: this(key);
+    $map: __to-map($map);
 
     @return if($map == null, null, get($map, $key));
 }
@@ -1679,6 +1681,8 @@ $users: (
     $_: scope(iteratee, $iteratee);
 
     $result: if($initializer, __call($initializer), ());
+
+    @debug $collection, $iteratee;
 
     @if (__is-list($collection)) {
         $index: 1;
@@ -4936,6 +4940,7 @@ $users: (
 // Add custom Sassdash functions.
 @function _call($args...) { @return call(__call, $args...); }
 @function _push($args...) { @return call(__push, $args...); }
+@function _to-string($args...) { @return call(__to-string, $args...); }
 @function _value($args...) { @return call(__value, $args...); }
 
 

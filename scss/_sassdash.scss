@@ -1671,7 +1671,7 @@ $users: (
 
     @return true;
 }
-@function __create-aggregator-function($collection, $iteratee, $this-arg: null) {
+@function __create-aggregator-function($collection, $iteratee: __identity, $this-arg: null) {
     $setter: scope(setter);
     $initializer: scope(initializer);
 
@@ -4603,7 +4603,7 @@ $users: (
 
     @return $value;
 }
-@function __constant($value) {
+@function __constant($value: null) {
     $_: scope-start();
     $_: scope('value', $value);
     $scoped-function: scoped-function(__constant-function);

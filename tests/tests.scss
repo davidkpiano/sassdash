@@ -490,6 +490,38 @@ $test-before-count: 0 !global;
     }
 }
 
+@include xdescribe('_create') {}
+
+@function test-callback-1($args...) {
+    @return join((), $args);
+}
+@include describe('_callback') {
+    @include it('should provide arguments to func') {
+        $callback: _callback(test-callback-1);
+
+        $actual: _call($callback, null, 'a', 'b', 'c', 'd', 'e', 'f');
+        $expected: ('a', 'b', 'c', 'd', 'e', 'f');
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should return _identity when func is nullish') {
+        $actual: _call(_callback());
+        $expected: null;
+
+        @include should(expect($actual), to(be($expected)));
+
+        $actual: _call(_callback(null));
+        $expected: null;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should not error when func is nullish and a thisArg is provided') {
+        // todo
+    }
+}
+
 @include describe('a') {
     @include it('a') {
         $actual: null;

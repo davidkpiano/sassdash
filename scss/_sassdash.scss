@@ -4631,7 +4631,7 @@ $users: (
 // $get-my-map: __constant($my-map);
 // @debug __call($get-my-map);
 
-@function __identity($value, $args...) {
+@function __identity($value: null, $args...) {
     @return $value;
 }
 

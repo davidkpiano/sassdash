@@ -926,8 +926,6 @@ $users: (
 
     $break: false;
 
-    // @debug $iterable, $props, $map, $iteratee;
-
     @while ($index <= $length and not $break) {
         $key: nth($props, $index);
         $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
@@ -1095,10 +1093,24 @@ $users: (
 
 // @debug __base-is-match((foo: bar, baz: 42), (baz), (43));
 
-@function __base-map($collection, $iteratee) {
-    $result: ();
+@function __base-map-iteratee($value, $key, $collection) {
+    $result: this('result');
+    $iteratee: this('iteratee');
 
-    $result: append($result, __base-each($collection, $iteratee));
+    $result: append($result, __call($iteratee, null, $value, $key, $collection));
+    $_: this('result', $result);
+
+    @return $result;
+}
+@function __base-map($collection, $iteratee) {
+    $_: scope-start();
+    $_: scope('result', ());
+    $_: scope('iteratee', $iteratee);
+
+    $_: __base-each($collection, __base-map-iteratee);
+
+    $result: scope('result');
+    $_: scope-end();
 
     @return $result;
 }
@@ -1681,8 +1693,6 @@ $users: (
     $_: scope(iteratee, $iteratee);
 
     $result: if($initializer, __call($initializer), ());
-
-    @debug $collection, $iteratee;
 
     @if (__is-list($collection)) {
         $index: 1;
@@ -3055,6 +3065,7 @@ $users: (
 
 @function __filter($collection, $predicate: __identity, $this-arg: null) {
     $function: if(__is-list($collection), __list-filter, __base-filter);
+
 
     $predicate: __get-callback($predicate, $this-arg, 3);
 

@@ -419,7 +419,7 @@ $test-before-count: 0 !global;
     @return floor($value);
 }
 @function test-count-by-2($value, $args...) {
-    @return $value > 1;
+    @return $value > 2;
 }
 @include describe('_count-by') {
     $list: (4.2, 6.1, 6.4);
@@ -481,9 +481,10 @@ $test-before-count: 0 !global;
 
     @include it('should work in a lazy chain sequence') {
         $list: (1 2 1 3);
-        @debug _($list, count-by _identity, map _to-string, filter test-count-by-2);
-        $actual: _($list, count-by _identity, map _to-string, filter test-count-by-2, take);
-        $expected: (2,);
+        $foo: _($list, count-by _identity, map double);
+        @debug $foo, type-of($foo);
+        $actual: _($list, count-by _identity, map double, filter test-count-by-2, take);
+        $expected: (4,);
 
         @include should(expect($actual), to(be($expected)));
     }

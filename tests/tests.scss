@@ -492,8 +492,69 @@ $test-before-count: 0 !global;
 
 @include xdescribe('_create') {}
 
+@function test-call-1() {
+    @return 'foo';
+}
+@function test-call-2() {
+    @return this('value');
+}
+@function test-call-3($value) {
+    @return this('value') + $value;
+}
+@include describe('_call') {
+    @include it('should be callable with only a function with no args') {
+        $actual: _call(test-call-1);
+        $expected: 'foo';
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should call a function with no args and with a thisArg') {
+        $_: scope-start();
+        $_: scope-set('value', 'foobar');
+        $actual: _call(test-call-2, this());
+        $_: scope-end();
+
+        $expected: 'foobar';
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should call a function with args and without a thisArg') {
+        $actual: _call(test-add, null, 1, 2);
+        $expected: 3;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should call a function with args and with a thisArg') {
+        $value: 'second';
+
+        $_: scope-start();
+        $_: scope-set('value', 'first');
+        $actual: _call(test-call-3, this(), $value);
+        $_: scope-end();
+
+        $expected: 'firstsecond';
+
+        @include should(expect($actual), to(be($expected)));
+    }
+}
+
 @function test-callback-1($args...) {
     @return join((), $args);
+}
+@function test-callback-2($args...) {
+    $result: this('a');
+    $result: join(($result), $args);
+
+    @return $result;
+}
+@function test-callback-3($callback, $args...) {
+    @return _call($callback);
+}
+@function test-callback-4() {
+    @return false;
 }
 @include describe('_callback') {
     @include it('should provide arguments to func') {
@@ -519,6 +580,69 @@ $test-before-count: 0 !global;
 
     @include xit('should not error when func is nullish and a thisArg is provided') {
         // todo
+    }
+
+    @include xit('should create a callback with a falsey thisArg') {
+        // todo
+    }
+
+    @include it('should return a callback created by _matches when func is an object') {
+        $callback: _callback(('a': 1));
+        $actual: _call($callback, null, ('a': 1, 'b': 2));
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should return a callback created by _property when func is a number or string') {
+        $list: ('a');
+        $callback: _callback(1);
+        $actual: _call($callback, null, $list);
+        $expected: 'a';
+
+        @include should(expect($actual), to(be($expected)));
+
+        $callback: _callback('first');
+        $actual: _call($callback, null, ('first': 'a'));
+        $expected: 'a';
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should work with functions created by _partial and _partial-right') {
+        $_: scope-start();
+        $_: scope-set('a', 1);
+        $callback: _callback(test-callback-2, _partial(test-callback-2, 2), this());
+        $_: scope-end();
+
+        $actual: _call($callback, null, 3);
+        $expected: (1 2 3);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should support binding built-in methods') {}
+
+    @include it('should return the function provided when there is no this reference') {
+        $actual: _callback(test-add);
+        $expected: test-add;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should work with bizarro _support-func-names') {
+        // not implemented
+    }
+
+    @include it('should work as an iteratee for _map') {
+        $fn: test-callback-4;
+        $list: ($fn $fn $fn);
+        $expected: _map($list, _constant(false));
+        $callbacks: _map($list, _callback);
+
+        $actual: _map($callbacks, test-callback-3);
+
+        @include should(expect($actual), to(be($expected)));
     }
 }
 

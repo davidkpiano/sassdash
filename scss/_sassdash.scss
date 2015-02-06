@@ -4613,7 +4613,7 @@ $users: (
     @return __base-callback($function, $this-arg);
 }
 
-@function __constant-function() {
+@function __constant-function($args...) {
     $value: this('value');
 
     @return $value;

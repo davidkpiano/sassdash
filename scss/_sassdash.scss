@@ -36,6 +36,17 @@
     $_: const-set('MAX_LIST_LENGTH', 999999);
     $_: const-set('DEFAULT_TRUNC_LENGTH', 30);
     $_: const-set('DEFAULT_TRUNC_OMISSION', '...');
+    $_: const-set('PLACEHOLDER', '__sassdash-placeholder__');
+
+    $_: const-set('BIND_FLAG', 1);
+    $_: const-set('BIND_KEY_FLAG', 2);
+    $_: const-set('CURRY_BOUND_FLAG', 4);
+    $_: const-set('CURRY_FLAG', 8);
+    $_: const-set('CURRY_RIGHT_FLAG', 16);
+    $_: const-set('PARTIAL_FLAG', 32);
+    $_: const-set('PARTIAL_RIGHT_FLAG', 64);
+    $_: const-set('REARG_FLAG', 128);
+    $_: const-set('ARY_FLAG', 256);
 
 }
 
@@ -176,7 +187,20 @@
 }
 
 @function __replace-holders($list, $placeholder) {
-    // TODO
+    $index: 1;
+    $length: length($list);
+    $result: ();
+
+    @while ($index <= $length) {
+        @if (nth($list, $index) == $placeholder) {
+            $list: set-nth($list, $index, const-get('PLACEHOLDER'));
+            $result: append($result, $index);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
 }
 
 @function __sorted-uniq($list, $iteratee: null) {
@@ -586,7 +610,7 @@ $users: (
     @return false;
 }
 
-@function __assign-defaults($map-value, $source-value) {
+@function __assign-defaults($map-value, $source-value, $args...) {
     @return if($map-value == null, $source-value, $map-value);
 }
 
@@ -595,24 +619,23 @@ $users: (
 }
 
 @function __base-assign($map, $source, $customizer: false) {
+    $props: __keys($source);
+
+    @if not ($customizer) {
+        @return __base-copy($source, $map, $props);
+    }
+
     $index: 1;
-    $props: map-keys($source);
     $length: length($props);
 
     @while ($index <= $length) {
         $key: nth($props, $index);
+        $value: get($map, $key);
+        $result: __call($customizer, null, $value, get($source, $key), $key, $map, $source);
 
-        @if ($customizer) {
-            $value: get($map, $key);
-            $result: call($customizer, $value, get($source, $key), $key, $map, $source);
-
-            @if ($result == if($result, not $result == $value, $value))
-                or ($value == null and not map-has-key($map, $key))
-            {
-                $map: set($map, $key, $result);
-            }
-        } @else {
-            $map: set($map, $key, get($source, $key));
+        @if ($result != $value)
+            or ($value == null and not map-has-key($map, $key)) {
+            $map: set($map, $key, $result);    
         }
 
         $index: $index + 1;
@@ -1766,7 +1789,7 @@ $users: (
         $customizer: __bind-callback(nth($arguments, $length), nth($arguments, $length - 1), 5);
     } @else if ($length > 2 and __function-exists(nth($arguments, $length))) {
         $length: $length - 1;
-        $customizer: nth($arguments, $length);
+        $customizer: nth($arguments, $length + 1);
     }
 
     $index: 1;
@@ -1781,6 +1804,8 @@ $users: (
         $index: $index + 1;
     }
 
+    // @debug $assigner, $map, $source, $customizer;
+
     @return $map;
 }
 @function __create-assigner($assigner) {
@@ -1793,6 +1818,8 @@ $users: (
 
     @return $scoped-function;
 }
+
+
 
 @function __create-bind-wrapper($function, $this-arg) {
     // todo
@@ -1890,7 +1917,21 @@ $users: (
 
 @function __create-partial-wrapper() {}
 
-@function __create-wrapper() {}
+// TODO
+@function __create-wrapper($func, $bitmask, $this-arg, $partials: null, $holders: null, $arg-pos: null, $ary: null, $arity: null) {
+    // $is-bind-key: $bitmask + const-get('BIND_KEY_FLAG');
+
+    // @if (not $is-bind-key and not __is-function($func)) {
+    //     @error 'FUNC_ERROR_TEXT';
+    // }
+
+    // $length: if($partials, length($partials), 0);
+
+    // @if ($length == 0) {
+    //     // $bitmask = TODO
+
+    // }
+}
 
 @function __equal-lists($list, $other, $equal-func, $customizer, $is-where, $stack-a, $stack-b) {
     $index: 1;
@@ -3678,7 +3719,34 @@ $users: (
     @return __before($function, 2);
 }
 
-@function __partial() {} // todo
+@function __partial-wrapper($args...) {
+    $partials: this('partials');
+    $func: this('func');
+
+    $args: join($partials, $args);
+
+    @return _call($func, null, $args...);
+}
+@function __partial($func, $args...) {
+    $partials: $args;
+
+    $_: scope-start();
+    $_: scope('partials', $partials);
+    $_: scope('func', $func);
+
+    $scoped-function: scoped-function(__partial-wrapper);
+
+    $_: scope-end();
+
+    @return $scoped-function;
+}
+
+// function partial(func) {
+//       var partials = baseSlice(arguments, 1),
+//           holders = replaceHolders(partials, partial.placeholder);
+
+//       return createWrapper(func, PARTIAL_FLAG, null, partials, holders);
+//     }
 
 @function __partial-right() {} // todo
 

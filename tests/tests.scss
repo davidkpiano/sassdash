@@ -646,6 +646,36 @@ $test-before-count: 0 !global;
     }
 }
 
+@include xdescribe('custom _callback methods') {
+    $list: ('one' 'two' 'three');
+    // todo: add once _partial is implemented
+}
+
+@include xdescribe('_curry') {}
+
+@include xdescribe('_curry-right') {}
+
+@include xdescribe('curry methods') {}
+
+@include xdescribe('_debounce') {} // not implemented
+
+@include xdescribe('_deburr') {} // todo
+
+@include describe('_defaults') {
+    @include it('should assign properties of a source object if missing on the destination object') {
+        $value: ('a': 1);
+        $defaults: ('a': 2, 'b': 2);
+        $actual: _defaults($value, $defaults);
+        $expected: ('a': 1, 'b': 2);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+}
+
+@debug __base-assign((a: 1), (b: 2));
+
+
+
 @include describe('a') {
     @include it('a') {
         $actual: null;

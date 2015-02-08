@@ -978,6 +978,180 @@ $test-before-count: 0 !global;
     @include xit('should return a wrapped value when chaining');
 }
 
+@include describe('_ends-with') {
+    $string: 'abc';
+
+    @include it('should return true if a string ends with target') {
+        $actual: _ends-with($string, 'c');
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should return false if a string does not end with target') {
+        $actual: _ends-with($string, 'b');
+        $expected: false;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work with a position argument') {
+        $actual: _ends-with($string, 'b', 2);
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work with position greater than or equal to string length') {
+        @each $position in 3, 5, 9999 {        
+            $actual: _ends-with($string, 'c', $position);
+            $expected: true;
+
+            @include should(expect($actual), to(be($expected)));
+        }
+    }
+
+    @include it('should treat falsey position values, except undefined, as zero') {
+        @each $position in $test-falsey {        
+            $actual: _ends-with($string, if(__is-undefined($position), 'c', ''), $position);
+            $expected: true;
+
+            @include should(expect($actual), to(be($expected)));
+        }
+    }
+
+    @include it('should treate a negative position as zero') {
+        @each $position in -1, -3, -9999 {
+            @each $char in ('a', 'b', 'c') {            
+                $actual: _ends-with($string, $char, $position);
+                $expected: false;
+
+                @include should(expect($actual), to(be($expected)));
+            }
+        }
+    }
+
+    @include it('should return true when target is an empty string regardless of position') {
+        @each $position in -9999, -3, -1, 0, 1, 2, 3, 5, 9999 {        
+            $actual: _ends-with($string, '', $position);
+            $expected: true;
+
+            @include should(expect($actual), to(be($expected)));
+        }
+    }
+}
+
+@include describe('_escape') {
+    $escaped: '&amp;&lt;&gt;&quot;&#39;&#96;\/';
+    $unescaped: '&<>"' + "'`/";
+
+    $escaped: $escaped + $escaped;
+    $unescaped: $unescaped + $unescaped;
+
+    @include it('should escape values') {
+        $actual: _escape($unescaped);
+        $expected: $escaped;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should not escape the forward slash character') {
+        $actual: _escape('/');
+        $expected: '/';
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should handle strings with nothing to escape') {
+        $actual: _escape('abc');
+        $expected: 'abc';
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should escape the same characters unescaped by _unescape') {
+        $actual: _escape(_unescape($escaped));
+        $expected: $escaped;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+}
+
+@include xdescribe('_escape-reg-exp') {} // not implemented
+
+@include describe('_every') {
+    @include it('should return true for empty collections') {
+        $actual: _every((), _identity);
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should return true if predicate returns truthy for all elements in the collection') {
+        $actual: _every(true 1 'a', _identity);
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should return false as soon as predicate returns falsey') {
+        $actual: _every(true null true, _identity);
+        $expected: false;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should work with collections of undefined values') {} // not implemented
+
+    @include it('should work with a _pluck style predicate') {
+        $maps: (('a': 0, 'b': 1), ('a': 1, 'b': 2));
+        $actual: _every($maps, 'a');
+        $expected: false;
+
+        @include should(expect($actual), to(be($expected)));
+
+        $actual: _every($maps, 'b');
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work with a _where style predicate') {
+        $maps: (('a': 0, 'b': 0), ('a': 0, 'b': 1));
+        $actual: _every($maps, ('a': 0));
+        $expected: true;
+
+        @include should(expect($actual), to(be($expected)));
+
+        $actual: _every($maps, ('b': 1));
+        $expected: false;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should use _identity when predicate is nullish') {
+        $list: (0,);
+
+        $actual: _every($list, null);
+        $expected: false;
+
+        @include should(expect($actual), to(be($expected)));
+
+        $actual: _every($list);
+        $expected: false;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should be aliased') {
+        $list: 1 2 3;
+        $actual: _every($list);
+        $expected: _all($list);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+}
+
 @include describe('a') {
     @include it('a') {
         $actual: null;

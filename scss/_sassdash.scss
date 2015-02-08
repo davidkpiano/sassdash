@@ -472,7 +472,9 @@
     $length: length($list);
 
     @while ($index <= $length) {
-        @if (not call($predicate, nth($list, $index), $index, $list)) {
+        $iteration: __call($predicate, null, nth($list, $index), $index, $list);
+        
+        @if (not __is-truthy($iteration)) {
             @return false;
         }
 
@@ -831,30 +833,31 @@ $users: (
 @function __base-every-iteratee($value, $index, $collection) {
     $predicate: scope-get(predicate);
 
-    $result: if(call($predicate, $value, $index, $collection), true, false);
+    $result: if(__is-truthy(__call($predicate, null, $value, $index, $collection)), true, false);
 
-    $_: scope-set(result, $result);
+    $_: this('result', $result);
 
     @return null;
 }
 @function __base-every($collection, $predicate) {
-    $_: scope-set(result, true);
-    $_: scope-set(predicate, $predicate);
+    $_: scope-start();
+    $_: scope('result', true);
+    $_: scope('predicate', $predicate);
 
     $_: __base-each($collection, __base-every-iteratee);
 
-    $result: scope-get(result);
-    $_: scope-end;
+    $result: scope('result');
+    $_: scope-end();
 
     @return if($result, true, false);
 }
 
 @function __base-filter-iteratee($value, $index, $collection) {
-    $result: this(result);
-    $predicate: this(predicate);
+    $result: this('result');
+    $predicate: this('predicate');
 
-    @if (_call($predicate, null, $value, $index, $collection)) {
-        $_: this(result, append($result, $value));
+    @if (__call($predicate, null, $value, $index, $collection)) {
+        $_: this('result', append($result, $value));
     }
 
     @return null;
@@ -3098,11 +3101,11 @@ $users: (
 @function __every($collection, $predicate: __identity, $this-arg: $__undefined__) {
     $function: if(__is-list($collection), __list-every, __base-every);
 
-    @if (not function-exists($predicate) or not __is-undefined($this-arg)) {
+    @if (not __function-exists($predicate) or not __is-undefined($this-arg)) {
         $predicate: __get-callback($predicate, $this-arg, 3);
     }
 
-    @return call($function, $collection, $predicate);
+    @return __call($function, null, $collection, $predicate);
 }
 
 // @debug __every((true 1 null 'yes'));
@@ -4368,7 +4371,9 @@ $users: (
 
     $length: str-length($string);
 
-    $position: __native-min(if($position < 0, 1, $position), $length) + 1 - str-length($target);
+    $position: if(__is-falsey($position), 0, $position);
+
+    $position: __native-min(if($position < 0, 0, $position), $length) + 1 - str-length($target);
 
     @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
 }

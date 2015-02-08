@@ -178,7 +178,7 @@
 }
 
 @function __is-map-like($value) {
-    @return $value and (type-of($value) == map or type-of($value) == list);
+    @return $value and (index('map' 'list' 'arglist', type-of($value)));
 }
 
 @function __is-space($char-code) {
@@ -740,7 +740,7 @@ $users: (
 }
 
 @function __base-difference($list, $values) {
-    $length: if(type-of($list) == list, length($list), 0);
+    $length: if(length($list), length($list), 0);
     $result: ();
 
     @if ($length == 0) {
@@ -920,7 +920,7 @@ $users: (
             @if ($is-deep) {
                 $value: __base-flatten($value, $is-deep, $is-strict);
             }
-
+            
             $value-index: 1;
             $value-length: length($value);
 
@@ -929,8 +929,7 @@ $users: (
 
                 $value-index: $value-index + 1;
             }
-        // } @else if (not $is-strict) {
-        } @else {
+        } @else if not ($is-strict) {
             $result: append($result, $value);
         }
 
@@ -2387,7 +2386,7 @@ $users: (
             $index: $index + 1;
         }
     }
-    
+
     @return __base-difference($value, __base-flatten($arguments, false, true, $index + 1));
 }
 
@@ -3778,7 +3777,7 @@ $users: (
 }
 
 @function __is-arguments($value) {
-    @return __is-list($value);
+    @return type-of($value) == 'arglist';
 }
 
 @function __is-list($value) {

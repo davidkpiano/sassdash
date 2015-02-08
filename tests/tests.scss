@@ -482,7 +482,6 @@ $test-before-count: 0 !global;
     @include it('should work in a lazy chain sequence') {
         $list: (1 2 1 3);
         $foo: _($list, count-by _identity, map double);
-        @debug $foo, type-of($foo);
         $actual: _($list, count-by _identity, map double, filter test-count-by-2, take);
         $expected: (4,);
 
@@ -731,7 +730,7 @@ $test-before-count: 0 !global;
 
     @include it('should ignore values that are not arrays or arguments objects') {
         $list: (0 1 null 3);
-        $args: test-difference-1();
+        $args: test-difference-1(1, 2, 3);
 
         @include should(
             expect(_difference($list, 3, null, ('0': 1))),
@@ -740,8 +739,8 @@ $test-before-count: 0 !global;
             expect(_difference(null, $list, null, 2 1)),
             to(be(0 null 3)));
         @include should(
-            expect(_difference(null, $list, null, $args)), to(be(0 null)));
-
+            expect(_difference(null, $list, null, $args)),
+            to(be(0 null)));
     }
 }
 

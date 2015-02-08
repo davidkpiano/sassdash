@@ -20,6 +20,10 @@ $test-empty-list: ();
     @return __number-to-fixed($n);
 }
 
+@function test-is-even($n, $args...) {
+    @return $n % 2 == 0;
+}
+
 @include describe('sassdash _after') {
     @include it('should create a function that invokes func after n calls') {
         $test-after: __after(5, length);
@@ -1149,6 +1153,131 @@ $test-before-count: 0 !global;
         $expected: _all($list);
 
         @include should(expect($actual), to(be($expected)));
+    }
+}
+
+@function test-describe-1($num, $args...) {
+    @return $num % 2;
+}
+@include describe('_filter') {
+    @include it('should return elements predicate returns truthy for') {
+        $actual: _filter(1 2 3, test-describe-1);
+        $expected: 1 3;
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should iterate correctly over an object with numeric keys') {} //irrelevant
+
+    @include it('should be aliased') {
+        $actual: _select(1 2 3, test-describe-1);
+        $expected: _filter(1 2 3, test-describe-1);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+}
+
+@function test-find-1($map, $args...) {
+    @return __is-truthy(get($map, 'a'));
+}
+@function test-find-2($map, $args...) {
+    @return get($map, 'a') == 3;
+}
+@function test-find-3($value, $args...) {
+    @return if(type-of($value) == 'number', $value < 3, false);
+}
+@function test-find-4($chr, $index, $args...) {
+    @return $index <= 2;
+}
+//, 'find-last', 'find-index', 'find-last-index', 'find-key', 'find-last-key'
+@each $method-name in 'find' {
+    @include describe('_#{$method-name}') {
+        $func: unquote('_#{$method-name}');
+
+        $maps: (
+            ('a': 0, 'b': 0),
+            ('a': 1, 'b': 1),
+            ('a': 2, 'b': 2),
+        );
+
+        $expected-values: get((
+            'find': nth($maps, 2) $__undefined__ nth($maps, 3) nth($maps, 2),
+            'find-last': nth($maps, 3) $__undefined__ nth($maps, 3) nth($maps, 3),
+            'find-index': 2 -1 3 2,
+            'find-last-index': 3 -1 3 3,
+            'find-key': '1' $__undefined__ '2' '1',
+            'find-last-key': '2' $__undefined__ '2' '2'
+        ), $method-name);
+
+        @include it('should return the correct value') {
+            $actual: _call($func, null, $maps, test-find-1);
+            $expected: nth($expected-values, 1);
+
+            @include should(expect($actual), to(be($expected)));
+        }
+
+        @include xit('should work with a this-arg') {} // todo
+
+        @include it('should return expected value if value is not found') {
+            $actual: _call($func, null, $maps, test-find-2);
+            $expected: nth($expected-values, 2);
+
+            @include should(expect($actual), to(be($expected)));
+        }
+
+        @include it('should work with a _pluck style predicate') {
+            $actual: _call($func, null, $maps, 'b');
+            $expected: nth($expected-values, 4);
+
+            @include should(expect($actual), to(be($expected))); 
+        }
+
+        @include it('should work with a _where style predicate') {
+            $actual: _call($func, null, $maps, ('b': 2));
+            $expected: nth($expected-values, 3);
+
+            @include should(expect($actual), to(be($expected))); 
+        }
+
+        @include it('should return expected value for empty collections') {
+            $actual: _call($func, null, (), ('a': 3));
+            $expected: nth($expected-values, 2);
+
+            @include should(expect($actual), to(be($expected))); 
+        }
+
+        @include it('should work with an object for collection') {
+            $actual: _call($func, null, ('a': 1, 'b': 2, 'c': 3), test-find-3);
+            $expected: get((
+                'find': 1,
+                'find-last': 2,
+                'find-index': 'a',
+                'find-last-index': 'b'
+            ), $method-name);
+
+            @include should(expect($actual), to(be($expected))); 
+        }
+
+        @include it('should work with a string for collection') {
+            $actual: _call($func, null, 'abc', test-find-4);
+            $expected: get((
+                'find': 'a',
+                'find-last': 'b',
+                'find-index': 0,
+                'find-last-index': 1
+            ), $method-name);
+
+            @include should(expect($actual), to(be($expected))); 
+        }
+
+        @if ($method-name == 'find') {
+            @include it('should be aliased') {
+                $actual: _detect(1 2 3, test-is-even);
+                $expected: _find(1 2 3, test-is-even);
+
+                @include should(expect($actual), to(be($expected))); 
+            }
+        }
     }
 }
 

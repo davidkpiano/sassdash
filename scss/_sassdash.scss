@@ -473,7 +473,7 @@
 
     @while ($index <= $length) {
         $iteration: __call($predicate, null, nth($list, $index), $index, $list);
-        
+
         @if (not __is-truthy($iteration)) {
             @return false;
         }
@@ -492,7 +492,9 @@
     @while ($index <= $length) {
         $value: nth($list, $index);
 
-        @if (__call($predicate, null, $value, $index, $list)) {
+        $iteration: __call($predicate, null, $value, $index, $list);
+
+        @if (__is-truthy($iteration)) {
             $result-list: append($result-list, $value);
         }
 
@@ -856,7 +858,9 @@ $users: (
     $result: this('result');
     $predicate: this('predicate');
 
-    @if (__call($predicate, null, $value, $index, $collection)) {
+    $iteration: __call($predicate, null, $value, $index, $collection);
+
+    @if __is-truthy($iteration) {
         $_: this('result', append($result, $value));
     }
 
@@ -864,23 +868,25 @@ $users: (
 }
 @function __base-filter($collection, $predicate) {
     $_: scope-start();
-    $_: scope(result, ());
-    $_: scope(predicate, $predicate);
+    $_: scope('result', ());
+    $_: scope('predicate', $predicate);
 
     $_: __base-each($collection, __base-filter-iteratee);
 
-    $result: scope(result);
+    $result: scope('result');
     $_: scope-end();
 
     @return $result;
 }
 
 @function __base-find-iteratee($value, $key, $collection) {
-    $predicate: scope(predicate);
-    $return-key: scope(return-key);
+    $predicate: this('predicate');
+    $return-key: this('return-key');
 
-    @if __call($predicate, null, $value, $key, $collection) {
-        $_: scope(result, if($return-key, $key, $value));
+    $iteration: __call($predicate, null, $value, $key, $collection);
+
+    @if (__is-truthy($iteration)) {
+        $_: this('result', if($return-key, $key, $value));
 
         @return false;
     }
@@ -891,15 +897,15 @@ $users: (
     $result: null;
 
     $_: scope-start();
-        $_: scope(result, null);
-        $_: scope(predicate, $predicate);
-        $_: scope(return-key, $return-key);
+        $_: scope('result', null);
+        $_: scope('predicate', $predicate);
+        $_: scope('return-key', $return-key);
 
         $iteratee: scoped-function(__base-find-iteratee);
 
-        $_: call($each-function, $collection, $iteratee);
+        $_: __call($each-function, null, $collection, $iteratee);
 
-        $result: scope(result);
+        $result: scope('result');
     $_: scope-end();
 
     @return $result;
@@ -2484,7 +2490,9 @@ $users: (
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @while ($index <= $length) {
-        @if (__call($predicate, $this-arg, nth($list, $index), $index, $list)) {
+        $iteration: __call($predicate, $this-arg, nth($list, $index), $index, $list);
+
+        @if (__is-truthy($iteration)) {
             @return $index;
         }
 
@@ -2503,7 +2511,7 @@ $users: (
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @while ($length > 0) {
-        @if (call($predicate, nth($list, $length), $length, $list)) {
+        @if (__call($predicate, $this-arg, nth($list, $length), $length, $list)) {
             @return $length;
         }
 
@@ -3114,7 +3122,6 @@ $users: (
 @function __filter($collection, $predicate: __identity, $this-arg: null) {
     $function: if(__is-list($collection), __list-filter, __base-filter);
 
-
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @return __call($function, $this-arg, $collection, $predicate);
@@ -3135,6 +3142,10 @@ $users: (
 // @debug __filter(((a: 123, bam: true), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
 
 @function __find($collection, $predicate: __identity, $this-arg: null) {
+    @if (__is-string($collection)) {
+        $collection: __to-list($collection);
+    }
+    
     @if (__is-list($collection)) {
         $index: __find-index($collection, $predicate, $this-arg);
 

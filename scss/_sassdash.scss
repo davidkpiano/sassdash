@@ -920,7 +920,7 @@ $users: (
             @if ($is-deep) {
                 $value: __base-flatten($value, $is-deep, $is-strict);
             }
-            
+
             $value-index: 1;
             $value-length: length($value);
 
@@ -2403,7 +2403,9 @@ $users: (
         $n: 1;
     }
 
-    @return __base-slice($list, if($n < 0, 0, min($n, length($list))));
+    $n: if(__is-falsey($n), 0, if($n < 0, 0, min($n, length($list))));
+
+    @return __base-slice($list, $n);
 }
 
 // @debug __drop((1 2 3));

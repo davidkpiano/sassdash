@@ -921,6 +921,61 @@ $test-before-count: 0 !global;
     @include xit('should provide the correct predicate arguments') {} // todo
 
     @include it('should support the this-arg argument') {} // todo
+
+    @include it('should work with a _pluck style predicate') {
+        $actual: _drop-right-while($maps, 'b');
+        $expected: _slice($maps, 0, 1);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work with a _where style predicate') {
+        $actual: _drop-right-while($maps, ('b': 2));
+        $expected: _slice($maps, 0, 2);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should return a wrapped value when chaining');
+}
+
+@function test-drop-while-1($num, $args...) {
+    @return $num < 3;
+}
+@include describe('_drop-while') {
+    $list: 1 2 3;
+    $maps: (
+        (a: 2, b: 2),
+        (a: 1, b: 1),
+        (a: 0, b: 0)
+    );
+
+    @include it('should drop elements while predicate returns truthy') {
+        $actual: _drop-while($list, test-drop-while-1);
+        $expected: (3,);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should provide the correct predicate arguments') {} // todo
+
+    @include it('should support the this-arg argument') {} // todo
+
+    @include it('should work with a _pluck style predicate') {
+        $actual: _drop-while($maps, 'b');
+        $expected: _slice($maps, 2);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should work with a _where style predicate') {
+        $actual: _drop-while($maps, ('b': 2));
+        $expected: _slice($maps, 1);
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include xit('should return a wrapped value when chaining');
 }
 
 @include describe('a') {

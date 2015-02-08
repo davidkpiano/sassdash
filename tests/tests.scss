@@ -647,8 +647,16 @@ $test-before-count: 0 !global;
 }
 
 @include xdescribe('custom _callback methods') {
-    $list: ('one' 'two' 'three');
-    // todo: add once _partial is implemented
+    // $list: ('one' 'two' 'three');
+    // $get-prop-a: _partial(_property, 'a');
+    // $get-prop-b: _partial(_property, 'b');
+    // $get-length: _partial(_property, 'length');
+
+    // $maps: (
+    //     ('a': 0, 'b': 0),
+    //     ('a': 1, 'b': 0),
+    //     ('a': 1, 'b': 1)
+    // );
 }
 
 @include xdescribe('_curry') {}
@@ -670,11 +678,72 @@ $test-before-count: 0 !global;
 
         @include should(expect($actual), to(be($expected)));
     }
+
+    @include it('should accept multiple source objects') {
+        $expected: ('a': 1, 'b': 2, 'c': 3);
+        $actual: _defaults(('a': 1, 'b': 2), ('b': 3), ('c': 3));
+
+        @include should(expect($actual), to(be($expected)));
+
+        $actual: _defaults(('a': 1, 'b': 2), ('b': 3, 'c': 3), ('c': 2));
+
+        @include should(expect($actual), to(be($expected)));
+    }
+
+    @include it('should not overwrite null values') {
+        $actual: _defaults(('a': null), ('a': 1));
+
+        @include should(expect(get($actual, 'a')), to(be(null)));
+    }
+
+    @include it('should overwrite undefined values') {
+        $actual: _defaults(('a': $__undefined__), ('a': 1));
+
+        @include should(expect(get($actual, 'a')), to(be(1)));
+    }
 }
 
-@debug __base-assign((a: 1), (b: 2));
+@include xdescribe('_defer') {} // not implemented
 
+@include xdescribe('_delay') {} // not implemented
 
+@function test-difference-1($args...) {
+    @return $args;
+}
+@include describe('_difference') {
+    @include it('should return the difference of the given arrays') {
+        $actual: _difference(1 2 3 4 5, 5 2 10);
+
+        @include should(expect($actual), to(be(1 3 4)));
+
+        $actual: _difference(1 2 3 4 5, 5 2 10, 8 4);
+
+        @include should(expect($actual), to(be(1 3)));
+    }
+
+    @include xit('should match NaN') {} // not implemented
+
+    @include xit('should work with large arrays') {} // irrelevant
+
+    @include xit('should work with large array of objects') {} // irrelevant
+
+    @include xit('should work with large arrays of NaN') {} // irrelevant
+
+    @include it('should ignore values that are not arrays or arguments objects') {
+        $list: (0 1 null 3);
+        $args: test-difference-1();
+
+        @include should(
+            expect(_difference($list, 3, null, ('0': 1))),
+            to(be($list)));
+        @include should(
+            expect(_difference(null, $list, null, 2 1)),
+            to(be(0 null 3)));
+        @include should(
+            expect(_difference(null, $list, null, $args)), to(be(0 null)));
+
+    }
+}
 
 @include describe('a') {
     @include it('a') {

@@ -611,7 +611,7 @@ $users: (
 }
 
 @function __assign-defaults($map-value, $source-value, $args...) {
-    @return if($map-value == null, $source-value, $map-value);
+    @return if(__is-undefined($map-value), $source-value, $map-value);
 }
 
 @function __assign-own-defaults() {
@@ -630,7 +630,7 @@ $users: (
 
     @while ($index <= $length) {
         $key: nth($props, $index);
-        $value: get($map, $key);
+        $value: if(map-has-key($map, $key), get($map, $key), $__undefined__);
         $result: __call($customizer, null, $value, get($source, $key), $key, $map, $source);
 
         @if ($result != $value)
@@ -2387,6 +2387,7 @@ $users: (
             $index: $index + 1;
         }
     }
+    
     @return __base-difference($value, __base-flatten($arguments, false, true, $index + 1));
 }
 

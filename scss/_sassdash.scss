@@ -827,7 +827,7 @@ $users: (
 @function __base-each-right($collection, $iteratee) {
     $length: if($collection, length($collection), 0);
 
-    @if not (__is-length($length)) {
+    @if not (__is-list($collection)) {
         @return __base-for-own-right($collection, $iteratee);
     }
 
@@ -934,6 +934,7 @@ $users: (
 
     @return true;
 }
+    // @return __base-find($map, $predicate, __base-for-own-right, true);
 @function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
     $result: null;
 
@@ -1024,7 +1025,7 @@ $users: (
 
     @while ($length > 0 and not $break) {
         $key: nth($props, $length);
-        $iteration: __call($iteratee, null, get($iterable, $key), $iterable);
+        $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
 
         @if ($iteration == false) {
             $break: true;

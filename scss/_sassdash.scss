@@ -2582,7 +2582,7 @@ $users: (
 // @debug __find-last-index((1 2 3 5 7 9 4 3), is-even);
 
 @function __first($list, $args...) {
-    @return if($list, nth($list, 1), $__undefined__);
+    @return if($list and length($list) > 0, nth($list, 1), $__undefined__);
 }
 
 // @debug __first((2 4 6 8));

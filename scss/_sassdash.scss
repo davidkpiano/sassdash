@@ -1198,9 +1198,9 @@ $users: (
         and (map-has-key($map, $key))
         and ($value == get($map, $key));
 }
-@function __base-matches-function-2($map) {
+@function __base-matches-function-2($map, $args...) {
     @return __base-is-match(
-        this('map'),
+        $map,
         this('props'),
         this('values'),
         this('strict-compare-flags'));
@@ -1215,8 +1215,8 @@ $users: (
         $key: nth($props, 1);
         $value: get($source, $key);
 
-        $_: scope(key, $key);
-        $_: scope(value, $value);
+        $_: scope('key', $key);
+        $_: scope('value', $value);
 
         @if (__is-strict-comparable($value)) {
             $result: scoped-function(__base-matches-function-1);
@@ -1245,9 +1245,9 @@ $users: (
     $values: __to-list($values);
     $strict-compare-flags: __to-list($strict-compare-flags);
 
-    $_: scope(props, $props);
-    $_: scope(values, $values);
-    $_: scope(strict-compare-flags, $strict-compare-flags);
+    $_: scope('props', $props);
+    $_: scope('values', $values);
+    $_: scope('strict-compare-flags', $strict-compare-flags);
 
     $result: scoped-function(__base-matches-function-2);
 
@@ -4011,7 +4011,14 @@ $users: (
 @function __to-list($value) {
     // TODO
     @if type-of($value) == 'map' {
-        @return map-values($value);
+        $result: ();
+
+        @for $index from 1 through max(map-keys($value)...) {
+            $map-value: get($value, $index);
+            $result: append($result, $map-value);
+        }
+
+        @return $result;
     }
 
     @if type-of($value) == 'string' {

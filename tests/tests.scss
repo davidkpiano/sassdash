@@ -1284,6 +1284,37 @@ $test-before-count: 0 !global;
     }
 }
 
+@include describe('_find-where') {
+    $maps: (
+        ('a': 1),
+        ('a': 1),
+        ('a': 1, 'b': 2),
+        ('a': 2, 'b': 2),
+        ('a': 3),
+    );
+
+    @include it('should filter by source properties') {
+        @include should(
+            expect(_find-where($maps, ('a': 1))),
+            to(be(nth($maps, 1))));
+        @include should(
+            expect(_find-where($maps, ('a': 2))),
+            to(be(nth($maps, 4))));
+        @include should(
+            expect(_find-where($maps, ('a': 3))),
+            to(be(nth($maps, 5))));
+        @include should(
+            expect(_find-where($maps, ('b': 1))),
+            to(be($__undefined__)));
+        @include should(
+            expect(_find-where($maps, ('b': 2))),
+            to(be(nth($maps, 3))));
+        @include should(
+            expect(_find-where($maps, ('a': 1, 'b': 2))),
+            to(be(nth($maps, 3))));
+    }
+}
+
 @include describe('a') {
     @include it('a') {
         $actual: null;

@@ -854,6 +854,28 @@ $users: (
     @return if($result, true, false);
 }
 
+@function __base-fill($list, $value, $start: null, $end: null) {
+    $length: length($list);
+
+    $start: if($start == null, 1, if(__is-number($start), $start, if($start, 2, 1)));
+
+    $end: if(__is-undefined($end) or $end > $length, $length, if(__is-number($end), $end, if($end, 2, 1)));
+
+    @if ($end < 1) {
+        $end: $end + $length;
+    }
+
+    $length: if($start > $end, 0, $end);
+
+    @while ($start <= $length) {
+        $list: set-nth($list, $start, $value);
+
+        $start: $start + 1;
+    }
+
+    @return $list;
+}
+
 @function __base-filter-iteratee($value, $index, $collection) {
     $result: this('result');
     $predicate: this('predicate');
@@ -2482,6 +2504,22 @@ $users: (
 
 // @debug __drop-while((2 4 6 8 10 12 13 14 15 16), is-even);
 
+@function __fill($list, $value, $start: null, $end: null) {
+    $length: if($list, length($list), 0);
+
+    @if not ($length) {
+        @return ();
+    }
+
+    @if ($start and __is-number($start) and __is-iteratee-call($list, $value, $start)) {
+        $start: 1;
+        $end: $length;
+    }
+
+    @return __base-fill($list, $value, $start, $end);
+}
+
+// @debug __fill(1 2 3, 'a', 2);
 
 @function __find-index($list, $predicate: __identity, $this-arg: null) {
     $index: 1;
@@ -3145,7 +3183,7 @@ $users: (
     @if (__is-string($collection)) {
         $collection: __to-list($collection);
     }
-    
+
     @if (__is-list($collection)) {
         $index: __find-index($collection, $predicate, $this-arg);
 

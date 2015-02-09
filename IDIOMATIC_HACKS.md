@@ -67,6 +67,8 @@ $or-exp: if($foo, $foo, $bar); // or __either($foo, $bar);
 
 ### Breaking a `@while` Loop
 
+The variable `$break` is used to maintain whether the loop is broken or not. Anything that shouldn't be executed after `$break: true` is called should be put in a conditional statement that is `false` whenever `$break == true`, such as `@if not ($break) { ... }` or `@else { ... }` in simple situations.
+
 ```JS
 // JS
 while (++index < length) {
@@ -78,10 +80,12 @@ while (++index < length) {
 
 ```SCSS
 // SCSS
-@while ($index <= $length) and not $break {
-    $item: call($iteratee, nth($list, $index), $index, $list);
+$break: false;
 
-    @if (call($iteratee, nth($list, $index), $index, $list) == false) {
+@while ($index <= $length) and not $break {
+    $item: __call($iteratee, null, nth($list, $index), $index, $list);
+
+    @if ($item == false) {
         $break: true;
     } @else {
         $result-list: append($result-list, $item);

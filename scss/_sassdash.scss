@@ -816,7 +816,7 @@ $users: (
         $index: $index + 1;
     }
 
-    $collection: if(type-of($collection) == list, map-values($iterable), $iterable);
+    $collection: if(__is-list($collection), map-values($iterable), $iterable);
 
     @return $collection;
 }
@@ -825,11 +825,30 @@ $users: (
 // @debug __base-each((foo: 1, bar: 3, baz: 55), double);
 
 @function __base-each-right($collection, $iteratee) {
-    $collection: __list-reverse($collection);
+    $length: if($collection, length($collection), 0);
 
-    $reversed-result: __base-each($collection, $iteratee);
+    @if not (__is-length($length)) {
+        @return __base-for-own-right($collection, $iteratee);
+    }
 
-    @return __list-reverse($collection);
+    $iterable: __to-map($collection);
+
+    $break: false;
+    @while ($length > 0 and not $break) {
+        $iteration: __call($iteratee, null, get($iterable, $length), $length, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $iterable: set($iterable, $length, $iteration);
+        }
+
+        $length: $length - 1;
+    }
+
+    $collection: if(__is-list($collection), map-values($iterable), $iterable);
+
+    @return $collection;
 }
 
 @function __base-every-iteratee($value, $index, $collection) {
@@ -3199,6 +3218,16 @@ $users: (
 // @debug __find(((a: 123, bam: false), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
 
 @function __find-last($collection, $predicate: __identity, $this-arg: null) {
+    @if (__is-string($collection)) {
+        $collection: __to-list($collection);
+    }
+
+    @if (__is-list($collection)) {
+        $index: __find-last-index($collection, $predicate, $this-arg);
+
+        @return if($index > -1, nth($collection, $index), $__undefined__);
+    }
+
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @return __base-find($collection, $predicate, __base-each-right);

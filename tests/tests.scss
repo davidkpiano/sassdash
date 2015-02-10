@@ -1385,7 +1385,11 @@ $test-before-count: 0 !global;
             $actual: _take($list, $value);
             $expected: if($value == null, (1,), ());
 
-            @include should(expect($actual), to(equal($expected)));
+            @if $value == null {
+                @include should(expect($actual), to(equal($expected)));
+            } @else {
+                @include should(expect($actual), to(be($expected)));
+            }
         }
     }
 
@@ -1408,7 +1412,7 @@ $test-before-count: 0 !global;
     }
 
     @include it('should work as an iteratee for _map') {
-        $list: (1 2 3, 4 5 6, 7 8 9)
+        $list: (1 2 3, 4 5 6, 7 8 9);
         $actual: _map($list, _take);
         $expected: ((1,), (4,), (7,));
 

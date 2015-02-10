@@ -1,0 +1,93 @@
+@import '../bower_components/true/sass/_true';
+@import '../scss/_sassdash';
+
+$true-terminal-output: true;
+
+$test-falsey: ('', 0, false, null);
+$test-empty-list: ();
+
+@function test-add($x, $y) {
+    @return $x + $y;
+}
+
+@function test-square($n) {
+    @return $n * $n;
+}
+
+@function test-fixed($n) {
+    @return __number-to-fixed($n);
+}
+
+@function test-is-even($n, $args...) {
+    @return $n % 2 == 0;
+}
+
+@mixin test-group() { @content; }
+
+@function test-take-right-1($value, $args...) {
+  @return $value < 9;
+}
+@include test-module('Sassdash') {
+  @include test('_take-right') {
+    $list: 1 2 3;
+
+    $actual: _take-right($list, 2);
+    $expected: 2 3;
+
+    @include assert-equal($actual, $expected,
+      'should take the last two elements');
+
+    @each $value in $test-falsey {
+      $actual: _take-right($list, $value);
+      $expected: if($value == null, (3,), $test-empty-list);
+
+      @include assert-equal($actual, $expected,
+        'should treat falsey n value, except nullish, as 0');
+    }
+
+    @each $value in 0, -1, -9999 {
+      @include assert-equal(_take-right($list, $value), $test-empty-list,
+        'should return an empty list when n < 1');
+    }
+
+    @each $value in 3, 4, pow(2, 32), 9999 {
+      @include assert-equal(_take-right($list, $value), $list,
+        'should return all elements when n >= list length');
+    }
+
+    @include test-group() {
+      $list: 1 2 3, 4 5 6, 7 8 9;
+      $actual: _map($list, _take-right);
+      $expected: (3,), (6,), (9,);
+
+      @include assert-equal($actual, $expected,
+        'should work as iteratee for map');
+    }
+
+    @include test-group() {
+      $list: 1 2 3 4 5 6 7 8 9 10;
+      $predicate: test-take-right-1;
+      $actual: _($list, take-right 2, take-right, value);
+
+      @include assert-equal($actual, (10,),
+        'should work in a lazy chain sequence');
+
+      $actual: _($list, filter $predicate, take-right 2, take-right, value);
+
+      @include assert-equal($actual, (8,),
+        'should work in a lazy chain sequence');
+
+      $actual: _($list, take-right 6, take 4, take-right 2, take, value);
+
+      @include assert-equal($actual, (7,),
+        'should work in a lazy chain sequence');
+
+      $actual: _($list, filter $predicate, take-right 6, take 4, take-right 2, take, value);
+
+      @include assert-equal($actual, (5,),
+        'should work in a lazy chain sequence');
+    }
+  }
+}
+
+@include report;

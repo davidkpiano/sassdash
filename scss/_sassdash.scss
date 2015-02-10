@@ -2869,8 +2869,9 @@ $users: (
         $n: 1;
     }
 
-    @return __base-slice($list, 0, if($n < 0, 0, $n));
+    $n: if(type-of($n) == 'number', $n, if(__is-truthy($n), 1, 0));
 
+    @return __base-slice($list, 0, if($n < 0, 0, $n));
 }
 
 // @debug __take((1 2 3), 5);

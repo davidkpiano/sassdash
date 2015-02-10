@@ -2903,7 +2903,8 @@ $users: (
 
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @while ($length > 0 and call($predicate, nth($list, $length), $length, $list)) {
+    
+    @while ($length > 0 and __is-truthy(__call($predicate, null, nth($list, $length), $length, $list))) {
         $length: $length - 1;
     }
 
@@ -2923,7 +2924,7 @@ $users: (
     $index: 1;
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @while ($index <= $length and call($predicate, nth($list, $index), $index, $list)) {
+    @while ($index <= $length and __is-truthy(__call($predicate, null, nth($list, $index), $index, $list))) {
         $index: $index + 1;
     }
 

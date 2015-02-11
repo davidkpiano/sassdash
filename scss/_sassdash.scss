@@ -106,8 +106,8 @@
     @return if($value == null, '', $value + '');
 }
 
-@function __char-at-callback($string) {
-    // ... 
+@function __char-at-callback($string, $args...) {
+    @return get-char-code(str-slice($string, 1, 1));
 }
 
 @function __chars-index($string, $chars, $direction) {
@@ -445,9 +445,9 @@
     $result-list: ();
 
     @while ($index <= $length) and not $break {
-        $item: call($iteratee, nth($list, $index), $index, $list);
+        $item: __call($iteratee, null, nth($list, $index), $index, $list);
 
-        @if (call($iteratee, nth($list, $index), $index, $list) == false) {
+        @if (__call($iteratee, null, nth($list, $index), $index, $list) == false) {
             $break: true;
         } @else {
             $result-list: append($result-list, $item);
@@ -539,7 +539,9 @@ $users: (
     @if (__is-map($list)) {
         $list: __values($list);
     }
-    
+
+    $list: __list-each($list, __to-comparable);
+
     $index: 1;
     $length: length($list);
     $result: const-get('NEGATIVE_INFINITY');
@@ -561,6 +563,8 @@ $users: (
     @if (__is-map($list)) {
         $list: __values($list);
     }
+
+    $list: __list-each($list, __to-comparable);
 
     $index: 1;
     $length: length($list);
@@ -2268,6 +2272,16 @@ $users: (
     // not implemented
 }
 
+@function __to-comparable($value, $customizer: null, $guard: null) {
+    @if not (__function-exists($customizer)) {
+        $customizer: if(__is-string($value), get-char-code, __identity);
+    }
+
+    $value: __call($customizer, null, $value);
+
+    @return $value;
+}
+
 @function __to-iterable($value) {
     @if ($value == null) {
         @return ();
@@ -3239,6 +3253,7 @@ $users: (
 // @debug __invoke(((3 1 2), (8 2 3 4 1 2 5 6 9)), sort-iteratee, asc);
 
 @function __map($collection, $iteratee: __identity, $this-arg: null) {
+    $collection: if(__is-string($collection), __to-list($collection), $collection);
     $function: if(__is-list($collection), __list-map, __base-map);
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);

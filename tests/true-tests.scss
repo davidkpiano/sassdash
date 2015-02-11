@@ -411,7 +411,7 @@ $test-empty-list: ();
     @include assert-equal(_min(()), const-get('POSITIVE_INFINITY'),
       'should return Infinity for empty collections');
 
-    @include assert-equal(_min('a' 'b' 'c'), const-get('POSITIVE_INFINITY'),
+    @include assert-equal(_min(('a' 'b') ('a': 'a', 'b': 'b')), const-get('POSITIVE_INFINITY'),
       'should return Infinity for non-numeric collection items');
   }
 }
@@ -439,7 +439,41 @@ $test-empty-list: ();
 
       @include assert-equal($actual, if($is-max, 3, 1),
         'should iterate a map');
+
+      @include assert-equal(_call($func, null, 'abc'), if($is-max, 'c', 'a'),
+        'should iterate a string');
+
+      $list: (2 3 1, 5 6 4, 8 9 7);
+      $actual: _map($list, $func);
+
+      @include assert-equal($actual, if($is-max, 3 6 9, 1 4 7),
+        '#{$func} should work as an iteratee for _map');
+
+      @include assert-equal(_map('abc', $func), 'a' 'b' 'c',
+        '#{$func} should work as an iteratee for _map');
+
+      @include assert-equal(_((40,), $method-name), 40,
+        'should work when chaining on a list with only one value');
     }
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_negate') {
+    $negate: _negate(test-is-even);
+
+    @include assert-equal(_call($negate, null, 1), true,
+      'should create a function that negates the result of func');
+
+    @include assert-equal(_call($negate, null, 2), false,
+      'should create a function that negates the result of func');
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_noop') {
+    @include assert-equal(_noop(1, 2, 3), null,
+      'should return null');
   }
 }
 

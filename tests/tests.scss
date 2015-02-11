@@ -1388,7 +1388,7 @@ $test-before-count: 0 !global;
             @if $value == null {
                 @include should(expect($actual), to(equal($expected)));
             } @else {
-                @include should(expect($actual), to(be($expected)));
+                @include should(expect($actual), to(equal($expected)));
             }
         }
     }

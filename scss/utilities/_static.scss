@@ -57,6 +57,9 @@ $__this__: () !global;
 }
 
 @function set($map, $properties, $value) {
+    @if ($map == null) {
+        @debug $map, $properties, $value;
+    }
     $property: nth($properties, 1);
     $properties: pop($properties);
     $child-map: map-get($map, $property);

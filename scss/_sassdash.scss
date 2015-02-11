@@ -1016,6 +1016,7 @@ $users: (
 
     $break: false;
 
+
     @while ($index <= $length and not $break) {
         $key: nth($props, $index);
         $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
@@ -1598,7 +1599,7 @@ $users: (
     @return __call($function, $this-arg, $arguments...);
 }
 @function __bind-callback($function, $this-arg: null, $arg-count: null) {
-    @if (not function-exists($function)) {
+    @if (not __function-exists($function)) {
         @return __identity;
     }
 
@@ -1607,8 +1608,8 @@ $users: (
     }
 
     $_: scope-start();
-    $_: scope-set(function, $function);
-    $_: scope-set(this-arg, $this-arg);
+    $_: scope('function', $function);
+    $_: scope('this-arg', $this-arg);
 
     $arg-count-case: (
         1: __bind-callback-1,
@@ -2214,11 +2215,13 @@ $users: (
 // @debug __pick-by-list((a: 1, b: 2, c: 3, d: 4, e: 5), (a, c, e));
 
 @function __pick-by-callback-iteratee($value, $key, $map) {
-    $result: scope(result);
-    $predicate: scope(predicate);
+    $result: this('result');
+    $predicate: this('predicate');
 
-    @if (call($predicate, $value, $key, $map)) {
-        $_: scope(result, set($result, $key, $value));
+    @debug __call($predicate, null, $value, $key, $map);
+
+    @if (__call($predicate, null, $value, $key, $map)) {
+        $_: this('result', set($result, $key, $value));
     }
 
     @return true;
@@ -2227,13 +2230,13 @@ $users: (
     $result: ();
 
     $_: scope-start();
-        $_: scope(map, $map);
-        $_: scope(predicate, $predicate);
-        $_: scope(result, $result);
+        $_: scope('map', $map);
+        $_: scope('predicate', $predicate);
+        $_: scope('result', $result);
 
         $_: __base-for-in($map, __pick-by-callback-iteratee);
 
-        $result: scope(result);
+        $result: scope('result');
     $_: scope-end();
 
     @return $result;
@@ -3589,8 +3592,8 @@ $users: (
 @function __ary() {} // todo
 
 @function __before-callback($arguments...) {
-    $n: this(n);
-    $function: this(function);
+    $n: this('n');
+    $function: this('function');
     $result: null;
 
     $n: $n - 1;
@@ -3599,7 +3602,7 @@ $users: (
     @if ($n > 0) {
         $result: __call($function, this(), $arguments...);
     } @else {
-        $_: this(function, null);
+        $_: this('function', null);
     }
 
     @return $result;
@@ -3616,8 +3619,8 @@ $users: (
     }
 
     $_: scope-start();
-    $_: scope(function, $function);
-    $_: scope(n, $n);
+    $_: scope('function', $function);
+    $_: scope('n', $n);
 
     $after-callback: scoped-function(__before-callback);
 
@@ -3998,6 +4001,36 @@ $users: (
 // @debug __to-list((10, 20, 30, 40, 50));
 // @debug __to-list(38238);
 
+@function __to-map($value) {
+    @if (__is-string($value)) {
+        $index: 1;
+        $length: str-length($value);
+        $result: ();
+
+        @while ($index <= $length) {
+            $result: set($result, $index, __char-at($value, $index));
+
+            $index: $index + 1;
+        }
+
+        @return $result;
+    } @else if (__is-list-like($value)) {
+        $index: 1;
+        $length: length($value);
+        $result: ();
+
+        @while ($index <= $length) {
+            $result: set($result, $index, nth($value, $index));
+
+            $index: $index + 1;
+        }
+
+        @return $result;
+    } @else if (__is-map($value)) {
+        @return $value;
+    }
+}
+
 @function __to-plain-map($value) {
     @return __base-copy($value, __keys-in($value));
 }
@@ -4181,17 +4214,20 @@ $users: (
 }
 
 @function __omit-callback($value, $key, $map) {
-    $predicate: this(predicate);
+    $predicate: this('predicate');
 
-    @return not __call($predicate, null, $value, $key, $map);
+    @return not (__call($predicate, null, $value, $key, $map));
 }
 @function __omit($map, $predicate, $this-arg: null, $args...) {
     @if ($map == null) {
         @return ();
     }
 
+
+    $map: __to-map($map);
+
     @if not (__function-exists($predicate)) {
-        $props: __list-map(__base-flatten(($map, $predicate, $this-arg), false, false, 1), __to-string);
+        $props: __base-flatten(($map, $predicate, $this-arg), false, false, 1);
 
         @return __pick-by-list($map, __base-difference(__keys-in($map), $props));
     }
@@ -4199,13 +4235,13 @@ $users: (
     $predicate: __bind-callback($predicate, $this-arg, 3);
 
     $_: scope-start();
-    $_: scope(predicate, $predicate);
+    $_: scope('predicate', $predicate);
 
     $scoped-callback: scoped-function(__omit-callback);
 
-    $result: __pick-by-callback($map, $scoped-callback);
-
     $_: scope-end();
+
+    $result: __pick-by-callback($map, $scoped-callback);
 
     @return $result;
 }

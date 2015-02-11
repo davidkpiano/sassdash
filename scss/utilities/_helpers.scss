@@ -69,36 +69,6 @@
     @return new(SetCache, $values);
 }
 
-@function __to-map($value) {
-    @if (type-of($value) == 'string') {
-        $index: 1;
-        $length: str-length($value);
-        $result: ();
-
-        @while ($index <= $length) {
-            $result: set($result, $index, __char-at($value, $index));
-
-            $index: $index + 1;
-        }
-
-        @return $result;
-    } @else if (type-of($value) == 'list') {
-        $index: 1;
-        $length: length($value);
-        $result: ();
-
-        @while ($index <= $length) {
-            $result: set($result, $index, nth($value, $index));
-
-            $index: $index + 1;
-        }
-
-        @return $result;
-    } @else if (type-of($value) == map) {
-        @return $value;
-    }
-}
-
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;
     $iterable: __to-map($map);

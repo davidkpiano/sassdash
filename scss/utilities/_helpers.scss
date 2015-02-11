@@ -44,7 +44,7 @@
     @return __to-number($value);
 }
 
-@function __is-list-like($value) {
+@function __is-list-like($value, $args...) {
     @return __is-list($value) or __is-arguments($value);
 }
 

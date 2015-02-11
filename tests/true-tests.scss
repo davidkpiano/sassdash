@@ -10,7 +10,7 @@ $test-empty-list: ();
     @return $x + $y;
 }
 
-@function test-square($n) {
+@function test-square($n, $args...) {
     @return $n * $n;
 }
 
@@ -234,5 +234,188 @@ $test-empty-list: ();
       'should return empty list for non list-like objects');
   }
 }
+
+@include test-module('Sassdash') {
+  @include test('_for-each') {
+    @include assert-equal(_each(1 2 3, test-square), _for-each(1 2 3, test-square),
+      'should be aliased');
+  }
+
+  @include test('_for-each-right') {
+    @include assert-equal(_each-right(1 2 3, test-square), _for-each-right(1 2 3, test-square),
+      'should be aliased');
+  }
+}
+
+// @include test-module('Sassdash iteration methods') {
+//   $methods: (
+//     'count-by',
+//     'every',
+//     'filter',
+//     'find',
+//     'find-index',
+//     'find-key',
+//     'find-last',
+//     'find-last-index',
+//     'find-last-key',
+//     'for-each-right',
+//     'for-in',
+//     'for-in-right',
+//     'for-own',
+//     'for-own-right',
+//     'group-by',
+//     'index-by',
+//     'map',
+//     'max',
+//     'min',
+//     'partition',
+//     'reject',
+//     'some'
+//   );
+
+//   $array-methods: (
+//     'find-index',
+//     'find-last-index'
+//   );
+
+//   $collection-methods: (
+//     'count-by',
+//     'every',
+//     'filter',
+//     'find',
+//     'find-last',
+//     'for-each',
+//     'for-each-right',
+//     'group-by',
+//     'index-by',
+//     'map',
+//     'max',
+//     'min',
+//     'partition',
+//     'reduce',
+//     'reduce-right',
+//     'reject',
+//     'some'
+//   );
+
+//   $for-in-methods: (
+//     'for-in',
+//     'for-in-right'
+//   );
+
+//   $iteration-methods: (
+//     'for-each',
+//     'for-each-right',
+//     'for-in',
+//     'for-in-right',
+//     'for-own',
+//     'for-own-right'
+//   );
+
+//   $map-methods: (
+//     'find-key',
+//     'find-last-key',
+//     'for-in',
+//     'for-in-right',
+//     'for-own',
+//     'for-own-right'
+//   );
+
+//   $right-methods: (
+//     'find-last',
+//     'find-last-index',
+//     'find-last-key',
+//     'for-each-right',
+//     'for-in-right',
+//     'for-own-right'
+//   );
+
+//   $unwrapped-methods: (
+//     'every',
+//     'find',
+//     'find-index',
+//     'find-key',
+//     'find-last',
+//     'find-last-index',
+//     'find-last-key',
+//     'max',
+//     'min',
+//     'some'
+//   );
+// }
+
+@include test-module('Sassdash') {
+  @include test('map assignments') {  
+    // TODO: add 'merge'
+    @each $method-name in 'assign', 'defaults' {
+      $func: unquote('_#{$method-name}');
+
+      @each $value in $test-falsey {
+        $actual: _call($func, null, $value);
+        $expected: $value;
+
+        @include assert-equal($actual, $expected,
+          '#{$func} should pass thru falsey map values');
+      }
+
+      $list: (('b': 2), ('c': 3));
+      $actual: _reduce($list, $func, ('a': 1));
+      $expected: ('a': 1, 'b': 2, 'c': 3);
+
+      @include assert-equal($actual, $expected,
+        '#{$func} should work as an iteratee for _reduce');
+    }
+  }
+}
+
+// @include test-module('Sassdash') {
+//   @include test('_merge') {
+//     $names: (
+//       'characters': (
+//         ('name': 'barney'),
+//         ('name': 'fred')
+//       )
+//     );
+
+//     $ages: (
+//       'characters': (
+//         ('age': 36),
+//         ('age': 40)
+//       )
+//     );
+
+//     $heights: (
+//       'characters': (
+//         ('height': '5ft4'),
+//         ('height': '5ft5')
+//       )
+//     );
+
+//     $expected: (
+//       'characters': (
+//         ('name': 'barney', 'age': 36, 'height': '5ft4'),
+//         ('name': 'fred', 'age': 40, 'height': '5ft5')
+//       )
+//     );
+
+//     @include assert-equal(_merge($names, $ages, $heights), $expected
+//       'should merge source into the destination object');
+//   }
+// }
+
+@include test-module('Sassdash') {
+  @include test('_min') {
+    @include assert-equal(_min(1 2 3), 1,
+      'should return the smallest value from a collection');
+
+    @include assert-equal(_min(()), const-get('POSITIVE_INFINITY'),
+      'should return Infinity for empty collections');
+
+    @include assert-equal(_min('a' 'b' 'c'), const-get('POSITIVE_INFINITY'),
+      'should return Infinity for non-numeric collection items');
+  }
+}
+
+
 
 @include report;

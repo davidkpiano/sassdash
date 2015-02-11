@@ -561,7 +561,8 @@ $users: (
     // TODO use Hugo's comparison for strings
     @while ($index <= $length) {
         $value: nth($list, $index);
-        @if ($value < $result) {
+
+        @if (__is-number($value) and $value < $result) {
             $result: $value;
         }
 
@@ -623,6 +624,10 @@ $users: (
 }
 
 @function __base-assign($map, $source, $customizer: false) {
+    @if not (__is-map-like($map)) {
+        @return $map;
+    }
+
     $props: __keys($source);
 
     @if not ($customizer) {
@@ -1256,89 +1261,12 @@ $users: (
     @return $result;
 }
 
-@function __base-merge-iteratee($src-value, $key, $source) {
-    $map: scope-get(map);
-    $source: scope-get(source);
-    $customizer: scope-get(customizer);
-    $stack-a: scope-get(stack-a);
-    $stack-b: scope-get(stack-b);
-    $is-src-list: scope-get(is-src-list);
-
-    $is-list: __is-list-like($src-value);
-    $is-map: __is-plain-map($src-value);
-    $value: get($map, $key);
-
-    @if not ($is-list or $is-map) {
-        $result: if($customizer, call($customizer, $value, $src-value, $key, $map, $source), null);
-        $is-common: ($result == null);
-
-        @if ($is-common) {
-            $result: $src-value;
-        }
-
-        @if ($is-src-list or not $result == null)
-            and ($is-common or not $result == $value)
-        {
-            $map: set($map, $key, $result);
-        }
-
-        @return $map;
-    }
-
-    $stack-a: if(length($stack-a), $stack-a, ());
-    $stack-b: if(length($stack-b), $stack-b, ());
-
-    $length: length($stack-a);
-
-    @while ($length > 0) {
-        @if (nth($stack-a, $length) == $src-value) {
-            $map: set($map, $key, nth($stack-b, $length));
-
-            @return $map;
-        }
-
-        $result: if($customizer, call($customizer, $value, $src-value, $key, $map, $source), null);
-        $is-common: ($result == null);
-
-        @if ($is-common) {
-            $result: if($is-list,
-                if(__is-list($value), $value, ()),
-                if(__is-plain-map($value), $value, ()));
-        }
-
-        $stack-a: append($stack-a, $src-value);
-        $stack-b: append($stack-b, $result);
-
-        @if ($is-common) {
-            $map: set($map, $key, __base-merge($result, $src-value, $customizer, $stack-a, $stack-b));
-        } @else if not ($result == $value) {
-            $map: set($map, $key, $result);
-        }
-
-        $length: $length - 1;
-    }
-
-    @return $map;
+@function __base-merge($map, $source, $customizer: null) {
+    // todo
 }
-@function __base-merge($map, $source, $customizer: null, $stack-a: null, $stack-b: null) {
-    $is-src-list: __is-list-like($source);
-    $result: ();
 
-    $_: scope-start();
-    $_: scope(map, $map);
-    $_: scope(source, $source);
-    $_: scope(customizer, $customizer);
-    $_: scope(stack-a, $stack-a);
-    $_: scope(stack-b, $stack-b);
-    $_: scope(is-src-list, $is-src-list);
-
-    $merge-function: if($is-src-list, __list-each, __base-for-own);
-
-    $result: call($merge-function, $source, __base-merge-iteratee);
-
-    $_: scope-end();
-
-    @return $result;
+@function __list-merge($list, $source, $customizer: null) {
+    // todo
 }
 
 // @debug __base-merge((baz: butt), (foo: bar, baz: quo));
@@ -1823,7 +1751,7 @@ $users: (
 @function __create-assigner-function($arguments...) {
     $assigner: this('assigner');
     $length: length($arguments);
-    $map: nth($arguments, 1);
+    $map: if($length >= 1, nth($arguments, 1), null);
     $customizer: null;
 
     @if ($length < 2 or $map == null) {
@@ -2099,7 +2027,7 @@ $users: (
     $result: scope(result);
 
     $current: __call($iteratee, null, $value, $index, $collection);
-    
+    @debug $current;
     @if (if($is-min, $current < $computed, $current > $computed))
         or ($current == $ex-value and $current == $result)
     {
@@ -3166,6 +3094,12 @@ $users: (
 
 // @debug __count-by((1 2 3 4 5 6 7 9 11 13 15 17), is-even);
 
+@function __either($this, $that, $predicate: __is-truthy) {
+    $this-bool: __call($predicate, null, $this);
+
+    @return if($this-bool, $this, $that);
+}
+
 @function __every($collection, $predicate: __identity, $this-arg: $__undefined__) {
     $function: if(__is-list($collection), __list-every, __base-every);
 
@@ -3926,15 +3860,15 @@ $users: (
 // @function __is-error() {} // not implemented
 
 // Sass numbers can get HUGE. Well, Ruby numbers can.
-@function __is-finite($value) {
+@function __is-finite($value, $args...) {
     @return (type-of($value) == 'number' and __native-is-finite($value));
 }
 
-@function __is-function($value) {
+@function __is-function($value, $args...) {
     @return (__function-exists($value));
 }
 
-@function __is-map($value) {
+@function __is-map($value, $args...) {
     @return (type-of($value) == 'map');
 }
 
@@ -4220,9 +4154,6 @@ $users: (
 // @debug __map-values($users, 'age');
 
 @function __merge($arguments...) {
-    $merge-assigner: __create-assigner(__base-merge);
-
-    @return __call($merge-assigner, null, $arguments...);
     // todo
 }
 
@@ -5116,6 +5047,7 @@ $users: (
 @function _push($args...) { @return call(__push, $args...); }
 @function _to-string($args...) { @return call(__to-string, $args...); }
 @function _value($args...) { @return call(__value, $args...); }
+@function _either($args...) { @return call(__either, $args...); }
 
 
 // Sassdash pseudo-chainable wrapper-value function.

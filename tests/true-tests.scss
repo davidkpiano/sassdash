@@ -154,4 +154,85 @@ $test-empty-list: ();
   }
 }
 
+@function test-flatten-1($args...) {
+  @return $args;
+}
+@include test-module('Sassdash') {
+  $args: test-flatten-1(1, 2, 3);
+
+  @include test('flatten methods') {
+    $list: ((('a',),), (('b',),));
+
+    @include assert-equal(_flatten($list), (('a',), ('b',)),
+      'should perform a shallow flatten');
+
+    $expected: ('a', 'b');
+
+    @include assert-equal(_flatten($list, true), $expected,
+      'should work with isDeep');
+
+    @include assert-equal(_flatten-deep($list), $expected,
+      'should work with isDeep');
+
+    $list: ($args, ($args,));
+    $expected: (1, 2, 3, $args);
+
+    @include assert-equal(_flatten($list), $expected,
+      'should flatten arglists');
+
+    $expected: (1, 2, 3, 1, 2, 3);
+
+    @include assert-equal(_flatten($list, true), $expected,
+      'should flatten arglists');
+
+    @include assert-equal(_flatten-deep($list), $expected,
+      'should flatten arglists');
+
+    $list: (((('a',),),), ((('b',),),));
+
+    @include assert-equal(_map($list, _flatten), ((('a',),), (('b',),)),
+      'should work as an iteratee for _map');
+
+    @include assert-equal(_map($list, _flatten-deep), (('a',), ('b',)),
+      'should work as an iteratee for _map');
+    
+    $list: ((), ((),), ((), (((),),),));
+    $expected: ((), (), (((),),));
+
+    @include assert-equal(_flatten($list), $expected,
+      'should work with empty lists');
+
+    @include assert-equal(_flatten($list, true), $test-empty-list,
+      'should work with empty lists');
+
+    @include assert-equal(_flatten-deep($list), $test-empty-list,
+      'should work with empty lists');
+
+    $list: (1, (2,), (3, (4,)));
+    $expected: (1, 2, 3, (4,));
+
+    @include assert-equal(_flatten($list), $expected,
+      'should support flattening of nested lists');
+
+    $expected: (1, 2, 3, 4);
+
+    @include assert-equal(_flatten($list, true), $expected,
+      'should support flattening of nested lists');
+
+    @include assert-equal(_flatten-deep($list), $expected,
+      'should support flattening of nested lists');
+
+    $expected: ();
+
+    @include assert-equal(_flatten(('a': 1)), $expected,
+      'should return empty list for non list-like objects');
+
+    @include assert-equal(_flatten(('a': 1), true), $expected,
+      'should return empty list for non list-like objects');
+
+    @include assert-equal(_flatten-deep(('a': 1)), $expected,
+      'should return empty list for non list-like objects');
+  }
+}
+
 @include report;

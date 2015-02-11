@@ -44,6 +44,10 @@
     @return __to-number($value);
 }
 
+@function __is-list-like($value) {
+    @return __is-list($value) or __is-arguments($value);
+}
+
 @function __is-length($value) {
     @return type-of($value) == number
         and $value > -1
@@ -127,11 +131,6 @@
 
 @function __is-strict-comparable($value) {
     @return true;
-}
-
-@function __is-list-like($value) {
-    // TODO
-    @return __is-list($value);
 }
 
 @function __get-index-of() {

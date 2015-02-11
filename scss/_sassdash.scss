@@ -1899,9 +1899,11 @@ $users: (
     }
 
     $pad-length: $length - $str-length;
-    $chars: $chars + '';
+    $chars: __to-string($chars);
+    $chars-length: length($chars);
+    $repeat-chars: if($chars-length > 0, ceil($pad-length / $chars-length), 0);
 
-    @return str-slice(__repeat($chars, ceil($pad-length / str-length($chars))), 1, $pad-length);
+    @return str-slice(__repeat($chars, $repeat-chars), 1, $pad-length);
 }
 
 // @debug __create-pad('abcd', 14);

@@ -530,5 +530,80 @@ $test-empty-list: ();
   }
 }
 
+@include test-module('Sassdash') {
+  @include test('_pad') {
+    @include assert-equal(_pad('abc', 9), '   abc   ',
+      'should pad a string to a given length');
+
+    @include assert-equal(_pad('abc', 8), '  abc   ',
+      'should truncate pad characters to fit the pad length');
+
+    @include assert-equal(_pad('abc', 8, '_-'), '_-abc_-_',
+      'should truncate pad characters to fit the pad length');
+
+    @include assert-equal(_pad(123, 9), '   123   ',
+      'should coerce to a string');
+  }
+
+  @include test('_pad-left') {
+    @include assert-equal(_pad-left('abc', 9), '      abc',
+      'should pad a string to a given length');
+
+    @include assert-equal(_pad-left('abc', 6, '_-'), '_-_abc',
+      'should truncate pad characters to fit the pad length');
+
+    @include assert-equal(_pad-left(123, 4), ' 123',
+      'should coerce to a string');
+  }
+
+  @include test('_pad-right') {
+    @include assert-equal(_pad-right('abc', 9), 'abc      ',
+      'should pad a string to a given length');
+
+    @include assert-equal(_pad-right('abc', 6, '_-'), 'abc_-_',
+      'should truncate pad characters to fit the pad length');
+
+    @include assert-equal(_pad-right(123, 4), '123 ',
+      'should coerce to a string');
+  }
+
+  @include test('_pad methods') {
+    @each $method-name in 'pad', 'pad-left', 'pad-right' {
+      $func: unquote('_#{$method-name}');
+      $is-pad-left: $method-name == 'pad-left';
+
+      @include assert-equal(_call($func, null, 'abc', 2), 'abc',
+        'should not pad if string is >= length');
+
+      @include assert-equal(_call($func, null, 'abc', 3), 'abc',
+        'should not pad if string is >= length');
+
+      @include assert-equal(_call($func, null, 'abc', 0), 'abc',
+        'should treat negative length as 0');
+
+      @include assert-equal(_call($func, null, 'abc', -3), 'abc',
+        'should treat negative length as 0');
+
+      @include assert-equal(_call($func, null, null, 0, null), '',
+        'should return an empty string when provided null or empty string and chars');
+
+      @include assert-equal(_call($func, null, null, 0, '_-'), '',
+        'should return an empty string when provided null or empty string and chars');
+
+      @include assert-equal(_call($func, null, '', 0, null), '',
+        'should return an empty string when provided null or empty string and chars');
+
+      @include assert-equal(_call($func, null, '', 0, '_-'), '',
+        'should return an empty string when provided null or empty string and chars');
+
+      @include assert-equal(_call($func, null, 'abc', 6, null), 'abc',
+        'should work with null or empty string for chars');
+
+      @include assert-equal(_call($func, null, 'abc', 6, ''), 'abc',
+        'should work with null or empty string for chars');
+    }
+  }
+}
+
 
 @include report;

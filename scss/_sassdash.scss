@@ -536,6 +536,10 @@ $users: (
 }
 
 @function __list-max($list) {
+    @if (__is-map($list)) {
+        $list: __values($list);
+    }
+    
     $index: 1;
     $length: length($list);
     $result: const-get('NEGATIVE_INFINITY');
@@ -554,6 +558,10 @@ $users: (
 }
 
 @function __list-min($list) {
+    @if (__is-map($list)) {
+        $list: __values($list);
+    }
+
     $index: 1;
     $length: length($list);
     $result: const-get(POSITIVE_INFINITY);

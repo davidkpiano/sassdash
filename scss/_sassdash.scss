@@ -726,7 +726,7 @@ $users: (
 
     @return if($type == 'map',
         __base-matches($function, __is-falsey($arg-count)),
-        __base-property(if(__is-truthy($arg-count), __base-to-string($function), $function)));
+        __base-property($function));
 }
 
 @function __base-clone($value, $is-deep: false, $customizer: null, $key: null, $map: null) {
@@ -1286,14 +1286,17 @@ $users: (
 
 
 @function __base-property-function($map: null, $args...) {
-    $key: this(key);
+    $key: this('key');
     $map: __to-map($map);
+
+    @debug $map, $key;
 
     @return if($map == null, null, get($map, $key));
 }
 @function __base-property($key) {
     $_: scope-start();
-    $_: scope(key, $key);
+    $_: scope('key', $key);
+    @debug type-of($key);
 
     $result: scoped-function(__base-property-function);
 
@@ -1689,22 +1692,22 @@ $users: (
     // }
 
 @function __create-aggregator-function-iteratee($value, $key, $collection) {
-    $result: scope(result);
-    $setter: scope(setter);
-    $iteratee: scope(iteratee);
+    $result: this('result');
+    $setter: this('setter');
+    $iteratee: this('iteratee');
 
-    $result: call($setter, $result, $value, call($iteratee, $value, $key, $collection), $collection);
+    $result: __call($setter, null, $result, $value, __call($iteratee, null, $value, $key, $collection), $collection);
 
-    $_: scope(result, $result);
+    $_: this('result', $result);
 
     @return true;
 }
 @function __create-aggregator-function($collection, $iteratee: __identity, $this-arg: null) {
-    $setter: scope(setter);
-    $initializer: scope(initializer);
+    $setter: this('setter');
+    $initializer: this('initializer');
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
-    $_: scope(iteratee, $iteratee);
+    $_: this('iteratee', $iteratee);
 
     $result: if($initializer, __call($initializer), ());
 
@@ -1714,24 +1717,24 @@ $users: (
 
         @while ($index <= $length) {
             $value: nth($collection, $index);
-            $result: call($setter, $result, $value, __call($iteratee, null, $value, $index, $collection), $collection);
+            $result: __call($setter, null, $result, $value, __call($iteratee, null, $value, $index, $collection), $collection);
 
             $index: $index + 1;
         }
     } @else {
-        $_: scope(result, $result);
+        $_: this('result', $result);
 
         $_: __base-each($collection, __create-aggregator-function-iteratee);
 
-        $result: scope(result);
+        $result: this('result');
     }
 
     @return $result;
 }
 @function __create-aggregator($setter, $initializer: null) {
     $_: scope-start();
-        $_: scope(setter, $setter);
-        $_: scope(initializer, $initializer);
+        $_: scope('setter', $setter);
+        $_: scope('initializer', $initializer);
 
         $function: scoped-function(__create-aggregator-function);
     $_: scope-end();
@@ -3290,14 +3293,14 @@ $users: (
     @return (1: (), 2: ());
 }
 @function __partition-aggregator($result, $value, $key, $args...) {
-    $result-key: if($key, 0, 1);
+    $result-key: if(__is-truthy($key), 1, 2);
     $result-value: get($result, $result-key);
     $result-value: if($result-value, $result-value, ());
 
     @return set($result, $result-key, append($result-value, $value));
 }
 @function __partition($arguments...) {
-    $function: __create-aggregator(__partition-aggregator);
+    $function: __create-aggregator(__partition-aggregator, __partition-initializer);
 
     @return __to-list(__call($function, null, $arguments...));
 }
@@ -3796,7 +3799,27 @@ $users: (
 //       return createWrapper(func, PARTIAL_FLAG, null, partials, holders);
 //     }
 
-@function __partial-right() {} // todo
+@function __partial-right-wrapper($args...) {
+    $partials: this('partials');
+    $func: this('func');
+
+    $args: join($args, $partials);
+
+    @return _call($func, null, $args...);
+}
+@function __partial-right($func, $args...) {
+    $partials: $args;
+
+    $_: scope-start();
+    $_: scope('partials', $partials);
+    $_: scope('func', $func);
+
+    $scoped-function: scoped-function(__partial-right-wrapper);
+
+    $_: scope-end();
+
+    @return $scoped-function;
+}
 
 @function __rearg() {} // todo
 

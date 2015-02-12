@@ -4296,6 +4296,8 @@ $users: (
         @return ();
     }
 
+    $map: __to-map($map);
+
     @return if(__function-exists($predicate),
         __pick-by-callback($map, __bind-callback($predicate, $this-arg, 3)),
         __pick-by-list($map, __base-flatten(($map, $predicate, $this-arg), false, false, 1)));

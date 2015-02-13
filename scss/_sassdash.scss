@@ -2736,32 +2736,8 @@ $users: (
 // @debug __pull-at((5 10 15 20), 2, 4);
 
 @function __remove($list, $predicate: __identity, $this-arg: null) {
-    $index: 1;
-    $length: if($list, length($list), 0);
-    $result: ();
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @while ($index <= $length) {
-        $value: nth($list, $index);
-
-        @if (call($predicate, $value, $index, $list)) {
-            $result: append($result, $value);
-            $list: __splice($list, $index, 1);
-
-            $index: $index - 1;
-            $length: $length - 1;
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-
-    // todo: handle mutation
+    // not implemented - mutates list. use _reject
 }
-
-// @debug __remove((1 2 3 4 5 6), is-even);
 
 @function __rest($list) {
     @return __drop($list, 1);
@@ -3342,9 +3318,9 @@ $users: (
 // @debug __reduce-right($list, reduce-right-stuff);
 
 @function __reject-iteratee($value, $index, $collection) {
-    $predicate: this(predicate);
+    $predicate: this('predicate');
 
-    @return not __call($predicate, null, $value, $index, $collection);
+    @return __is-falsey(__call($predicate, null, $value, $index, $collection));
 }
 @function __reject($collection, $predicate: __identity, $this-arg: null) {
     $function: if(__is-list($collection), __list-filter, __base-filter);
@@ -3352,7 +3328,7 @@ $users: (
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     $_: scope-start();
-    $_: scope(predicate, $predicate);
+    $_: scope('predicate', $predicate);
 
     $result: __call($function, null, $collection, __reject-iteratee);
 
@@ -4565,11 +4541,14 @@ $users: (
     @return join($list, $items, $separator: auto);
 }
 
-@function __repeat($string, $value: 1) {
+@function __repeat($string, $value: 0) {
+    $value: __to-number($value);
     $result: '';
 
-    @for $iteration from 1 through $value {
-        $result: $result + $string;
+    @if $value >= 1 {    
+        @for $iteration from 1 through $value {
+            $result: $result + $string;
+        }
     }
 
     @return $result;

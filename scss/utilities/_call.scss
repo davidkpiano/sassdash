@@ -1,14 +1,14 @@
-
-// $this-arg: pointer to scope
 @function __function-exists($function, $args...) {
-    @if (type-of($function) != 'string') {
+    @if type-of($function) != 'string' {
         @return false;
     }
 
     @return if(function-exists($function),
         true,
-        function-exists(__function-name($function)));
+        function-exists(__function-name($function))
+    );
 }
+
 
 @function __call($method, $this-arg: $__current-scope__, $args...) {
     $function-name: __function-name($method);
@@ -17,38 +17,39 @@
     $_: scope-use(if($scope-id, $scope-id, $this-arg));
         $method-name: this($function-name);
 
-        @if ($method-name != null and __function-exists(this($function-name))) {
+        @if $method-name != null and __function-exists(this($function-name)) {
             $function-name: this($function-name);
         } @else if not ($function-name and __function-exists($function-name)) {
             $_: scope-use-end();
+
             @return null;
         }
-        
-        $result: call($function-name, $args...);
 
-    $_: scope-use-end();    
+        $result: call($function-name, $args...);
+    $_: scope-use-end();
 
     @return $result;
 }
 
-// returns scope of function, if any
+
 @function __function-scope($function) {
-    @if (type-of($function) != 'string') {
+    @if type-of($function) != 'string' {
         @return null;
     }
 
     $scope-index: str-index($function, '@');
     $scope-id: false;
 
-    @if ($scope-index) {
+    @if $scope-index {
         $scope-id: str-slice($function, $scope-index);
     }
 
     @return $scope-id;
 }
 
+
 @function __function-name($function) {
-    @if (type-of($function) != 'string') {
+    @if type-of($function) != 'string' {
         @return null;
     }
 
@@ -56,30 +57,3 @@
 
     @return if($scope-index, str-slice($function, 1, $scope-index - 1), $function);
 }
-
-// @debug __function-scope('__basd-neg@abcd1234');
-
-// $_: scope-start();
-// $_: scope(foo, bar);
-
-// $closure: $__current-scope__;
-
-// $_: scope-end();
-
-// $_: scope-start();
-// $_: scope(baz, quo);
-
-// $another-closure: $__current-scope__;
-
-// $_: scope-end();
-
-
-// @function do-closure($value) {
-//     @return this(foo) + $value;
-// }
-
-// @function do-another-closure($value) {
-//     @return this(baz) + $value;
-// }
-// @debug __call(do-closure, $closure, bells);
-// @debug __call(do-another-closure, $another-closure, tients);

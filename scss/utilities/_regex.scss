@@ -1,4 +1,3 @@
-
 @function list-slice($list, $start: 2, $end: length($list)) {
     $result: ();
 
@@ -9,35 +8,39 @@
     @return $result;
 }
 
+
 @function Group() {
     $_: eat('(');
     $result: '';
-
     $char: next();
 
-    @while ($char != ')') {
+    @while $char != ')' {
         $result: $result + $char;
-
         $char: next();
     }
 
-    @return (type: Group, value: regex($result), repetition: Repetition());
+    @return (
+        'type': 'Group',
+        'value': regex($result),
+        'repetition': Repetition(),
+    );
 }
+
 
 @function Class() {
     $_: eat('[');
     $result: ();
     $negation: false;
 
-    @if (peek() == '^') {
+    @if peek() == '^' {
         $negation: true;
         $_: eat('^');
     }
 
     $char: next();
 
-    @while ($char != ']') {    
-        @if (peek() == '-') {
+    @while $char != ']' {
+        @if peek() == '-' {
             $_: eat('-');
             $result: append($result, Range($char, next()));
         } @else {
@@ -47,15 +50,23 @@
         $char: next();
     }
 
-    @return (type: Class, value: $result, negation: $negation, repetition: Repetition());
+    @return (
+        'type': 'Class',
+        'value': $result,
+        'negation': $negation,
+        'repetition': Repetition(),
+    );
 }
+
 
 @function Range($min, $max) {
-    $min: get-char-code($min);
-    $max: get-char-code($max);
-
-    @return (type: Range, min: $min, max: $max);
+    @return (
+        'type': 'Range',
+        'min': get-char-code($min),
+        'max': get-char-code($max),
+    );
 }
+
 
 @function Repetition() {
     $token: peek();
@@ -67,28 +78,27 @@
         $min: 0;
         $max: 1000;
         $_: eat('*');
-    } @else if ($token == '+') {
+    } @else if $token == '+' {
         $min: 1;
         $max: 1000;
         $_: eat('+');
-    } @else if ($token == '?') {
+    } @else if $token == '?' {
         $min: 0;
         $max: 1;
         $_: eat('?');
-    } @else if ($token == '{') {
+    } @else if $token == '{' {
         $_: eat('{');
-
         $char: next();
         $min: '';
         $max: '';
         $current: 'min';
 
-        @while ($char != '}') {
-            @if ($char == ',') {
+        @while $char != '}' {
+            @if $char == ',' {
                 $current: 'max';
-            } @else if ($current == 'min') {
+            } @else if $current == 'min' {
                 $min: $min + $char;
-            } @else if ($current == 'max') {
+            } @else if $current == 'max' {
                 $max: $max + $char;
             }
 
@@ -98,100 +108,122 @@
         $max: if($max == '', 1000, $max);
     }
 
-    @if (peek() == '?') {
+    @if peek() == '?' {
         $greedy: false;
         $_: eat('?');
     }
 
     @return (
-        min: $min,
-        max: $max,
-        greedy: $greedy
+        'min': $min,
+        'max': $max,
+        'greedy': $greedy,
     );
 }
 
+
 @function peek($skip: 0) {
-    $index: $skip + 1;
-    @return str-slice(this('input'), $index, $index);
+    @return str-slice(this('input'), $skip + 1, $skip + 1);
 }
+
 
 @function eat($char) {
     $input: this('input');
 
-    @if (peek() == $char) {
+    @if peek() == $char {
         $_: this('input', str-slice($input, 2));
     } @else {
+        // @TODO
         @error 'Fuck';
     }
 
     @return $char;
 }
 
+
 @function next() {
     $char: peek();
     $_: eat($char);
+
     @return $char;
 }
+
 
 @function more() {
     @return str-length(this('input')) > 0;
 }
 
+
 @function regex($input) {
     $result: ();
-
     $_: scope-start();
     $_: scope-set('input', $input);
 
-    @while (more()) {
+    @while more() {
         $result: append($result, Sequence());
     }
 
     $_: scope-end();
 
-    @return (type: Options, value: $result);
+    @return (
+        'type': 'Options',
+        'value': $result,
+    );
 }
+
 
 @function Sequence() {
     $result: ();
 
     @while (more() and peek() != '|') {
-        @if (peek() == '(') {
+        @if peek() == '(' {
             $result: append($result, Group());
-        } @else if (peek() == '[') {
+        } @else if peek() == '[' {
             $result: append($result, Class());
         }
 
         $result: append($result, Literal());
     }
 
-    @if (peek() == '|') {
+    @if peek() == '|' {
         $_: eat('|');
     }
 
-    @return (type: Sequence, value: $result);
+    @return (
+        'type': 'Sequence',
+        'value': $result,
+    );
 }
+
 
 @function Literal() {
     $char: next();
 
-    @return (type: Literal, value: $char, repetition: Repetition());
+    @return (
+        'type': Literal,
+        'value': $char,
+        'repetition': Repetition(),
+    );
 }
 
+
 @function Empty() {
-    @return (type: Empty);
+    @return (
+        'type': 'Empty',
+    );
 }
+
 
 @function derivative($entity, $char) {
     $type: map-get($entity, type);
 
-    @return call(derivative-#{$type}, $entity, $char);
+    @return call('derivative-#{$type}', $entity, $char);
 }
+
 
 @function derivative-Options($options, $char) {
     $result: ();
 
-    @each $option in map-get($options, value) {
+    @each $option in map-get($options, 'value') {
         $result: append($result, derivative($option, $char));
     }
 
@@ -199,18 +231,23 @@
         @return nth($result, 1);
     }
 
-    @return (type: Options, value: $result);
+    @return (
+        'type': 'Options',
+        'value': $result,
+    );
 }
+
+
 @function derivative-Sequence($sequence, $char) {
     $result: ();
-    $entities: map-get($sequence, value);
+    $entities: map-get($sequence, 'value');
     $next-entities: ();
     $first: nth($entities, 1);
     $second: if(length($entities) > 1, nth($entities, 2), null);
 
     $first-derivative: derivative($first, $char);
 
-    @if ($second == null or map-get($first-derivative, type) == 'Null') {
+    @if ($second == null or map-get($first-derivative, 'type') == 'Null') {
         @return $first-derivative;
     }
 
@@ -218,66 +255,90 @@
         $next-entities: append($next-entities, nth($entities, $index));
     }
 
-    $next-sequence: (type: Sequence, value: $next-entities);
-    $new-first: (type: Sequence, value: join(($first-derivative,), $next-entities));
+    $next-sequence: (
+        'type': 'Sequence',
+        'value': $next-entities,
+    );
+    $new-first: (
+        'type': 'Sequence',
+        'value': join(($first-derivative,), $next-entities),
+    );
 
-    @if (matches-empty-string($first)) {
-        @if map-get($first-derivative, type) != 'Null' {
-            $result: (type: Options, value: ($new-first, derivative($next-sequence, $char)));
+    @if matches-empty-string($first) {
+        @if map-get($first-derivative, 'type') != 'Null' {
+            $result: (
+                'type': 'Options',
+                'value': ($new-first, derivative($next-sequence, $char)),
+            );
         } @else {
-            @debug 'hi';
             $result: derivative($next-sequence, $char);
         }
     } @else {
-        $result: (type: Sequence, value: join(($first-derivative,), $next-entities));
+        $result: (
+            'type': 'Sequence',
+            'value': join(($first-derivative,), $next-entities),
+        );
     }
 
     $derivative-entities: ();
-
-    @debug $result;
 
     @each $entity in map-get($result, 'value') {
         $derivative-entities: append($derivative-entities, $entity);
     }
 
-    @return (type: map-get($result, type), value: $derivative-entities);
+    @return (
+        'type': map-get($result, 'type'),
+        'value': $derivative-entities,
+    );
 }
+
+
 @function derivative-Literal($literal, $char) {
     $value: map-get($literal, 'value');
     $repetition: map-get($literal, 'repetition');
     $result: ();
 
-    @if ($value == $char) {
+    @if $value == $char {
         $min: map-get($repetition, 'min') - 1;
         $max: map-get($repetition, 'max') - 1;
-        $min: if($min < 0, 0, $min);
+        $min: min(0, $min);
 
-        @if ($max == 0) {
-            @return (type: Empty);
+        @if $max == 0 {
+            @return (
+                'type': 'Empty',
+            );
         }
 
-        @return map-merge($literal, (repetition: (min: $min, max: $max)));
+        @return map-merge($literal, (
+            'repetition': (
+                'min': $min,
+                'max': $max,
+            )
+        ));
     }
 
-    @return (type: Null);
+    @return (
+        'type': 'Null'
+    );
 }
+
 
 @function matches-empty-string($entity) {
-    $repetition: map-get($entity, 'repetition');
-
-    @return map-get($repetition, 'min') == 0;
+    @return map-get(map-get($entity, 'repetition'), 'min') == 0;
 }
 
+
 @function clean($entity) {
-    $entity-type: map-get($entity, type);
-    $entity-value: map-get($entity, value);
+    $entity-type: map-get($entity, 'type');
+    $entity-value: map-get($entity, 'value');
 
     @if type-of($entity-value) == 'list' {
         $cleaned-entity-value: ();
 
         @each $child in $entity-value {
             $child: clean($child);
-            @if ($child != null) {
+
+            @if $child != null {
                 $cleaned-entity-value: append($cleaned-entity-value, $child);
             }
         }
@@ -286,7 +347,9 @@
             @return nth($cleaned-entity-value, 1);
         }
 
-        @return map-merge($entity, (value: $cleaned-entity-value));
+        @return map-merge($entity, (
+            'value': $cleaned-entity-value,
+        ));
     }
 
     @if $entity-type == 'Empty' or $entity-type == 'Null' {
@@ -296,29 +359,29 @@
     @return $entity;
 }
 
-@function test($char, $regex) {
 
+@function test($char, $regex) {
     $_: scope-start();
     $_: scope('input', $regex);
 
-    @if ($regex == null) { @return false; }
-
-    @debug derivative($regex, $char);
+    @if $regex == null {
+        @return false;
+    }
 
     $result: clean(derivative($regex, $char));
-
     $_: scope-end();
 
     @return $result;
 }
+
 
 // $result: regex('ab+cde*(fgh){3,4}ij+?(klm){5,}');
 $regex: regex('a?bc');
 
 .foo {
     before: json-encode($regex);
-    
-    @each $char in (b c) {
+
+    @each $char in b, c {
         #{$char}: json-encode(test($char, $regex));
         $regex: test($char, $regex);
     }

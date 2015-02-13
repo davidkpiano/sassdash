@@ -1,54 +1,62 @@
-
-
 $__current-scope__: null !global;
 $__undefined__: '__undefined-#{unique-id()}__' !global;
 
+
 @function is-undefined($value) {
-    @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
+    @if global-variable-exists('__undefined__') {
+        @return $value == $__undefined__;
+    }
+
+    @return false;
 }
+
 
 @function Scope($parent: $__current-scope__) {
     $scope-id: unquote('@#{unique-id()}');
     $scope-parent: $parent;
 
     @return (
-        _id: $scope-id,
-        _parent: $scope-parent
+        '_id': $scope-id,
+        '_parent': $scope-parent,
     );
 }
 
-@function scope-start($map: null) {
-    $scope: new(Scope);
-    $scope-id: get($scope, _id);
 
+@function scope-start($map: null) {
+    $scope: new('Scope');
+    $scope-id: get($scope, '_id');
     $__current-scope__: $scope-id !global;
 
-    @if ($map and type-of($map) == 'map') {
+    @if $map and type-of($map) == 'map' {
         $scope: map-merge($scope, $map);
     }
 
     @return static-set($__current-scope__, $scope);
 }
 
+
 @function scope-set($key, $value: null) {
     @return static-set($__current-scope__ $key, $value);
 }
 
+
 @function scope-get($key: $__undefined__) {
-    @if (is-undefined($key)) {
+    @if is-undefined($key) {
         @return static-get($__current-scope__);
     }
 
     @return static-get($__current-scope__ $key);
 }
 
+
 @function scope($key: $__undefined__, $value: $__undefined__) {
-    @if (is-undefined($value)) {
+    @if is-undefined($value) {
         @return scope-get($key);
     }
 
     @return scope-set($key, $value);
 }
+
 
 @function this($args...) {
     @if length($args) == 0 {
@@ -58,23 +66,25 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
     @return scope($args...);
 }
 
+
 @function scope-end() {
     $scope: static-get($__current-scope__);
-
-    $__current-scope__: get($scope, _parent) !global;
+    $__current-scope__: get($scope, '_parent') !global;
 
     @return true;
 }
 
+
 @function scope-use($scope-id) {
     $__previous-scope__: $__current-scope__ !global;
 
-    @if ($scope-id) {    
+    @if $scope-id {
         $__current-scope__: $scope-id !global;
     }
 
     @return true;
 }
+
 
 @function scope-use-end() {
     $__current-scope__: $__previous-scope__ !global;
@@ -82,23 +92,12 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
     @return true;
 }
 
+
 @function scoped-function($function, $scope: $__current-scope__) {
-    @if ($scope) {
+    @if $scope {
         @return '#{$function}#{$scope}';
     }
 
     @return $function;
 }
 
-
-// 
-
-// $_: scope-start();
-// $_: scope-set(foo, bar);
-
-// $_: scope-start();
-// $_: scope-set(childfo, childbar);
-// $_: scope-end();
-// $_: scope-end();
-
-// @debug scope(foo, baz);

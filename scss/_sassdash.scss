@@ -1289,14 +1289,11 @@ $users: (
     $key: this('key');
     $map: __to-map($map);
 
-    @debug $map, $key;
-
     @return if($map == null, null, get($map, $key));
 }
 @function __base-property($key) {
     $_: scope-start();
     $_: scope('key', $key);
-    @debug type-of($key);
 
     $result: scoped-function(__base-property-function);
 
@@ -4054,6 +4051,8 @@ $users: (
     } @else if (__is-map($value)) {
         @return $value;
     }
+
+    @return null;
 }
 
 @function __to-plain-map($value) {
@@ -4828,7 +4827,7 @@ $users: (
 }
 
 @function __property($key) {
-    @return __base-property($key + '');
+    @return __base-property($key);
 }
 
 @function __property-of-function($key, $args...) {

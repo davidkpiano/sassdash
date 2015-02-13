@@ -727,5 +727,41 @@ $test-empty-list: ();
   }
 }
 
+@include test-module('Sassdash') {
+  @include test('_pluck') {
+    $maps: (
+      ('name': 'barney', 'age': 36),
+      ('name': 'fred', 'age': 40)
+    );
+
+    @include assert-equal(_pluck($maps, 'name'), ('barney', 'fred'),
+      'should return a list of property values from each element of a collection');
+
+    $map: ('a': (1: 'one'), 'b': (1: 'two'), 'c': (1: 'three'));
+
+    @include assert-equal(_pluck($map, 1), ('one' 'two' 'three'),
+      'should work with a map for collection');
+
+    $list: (('a': 1),);
+
+    @include assert-equal(_pluck($list, 'b'), (null,),
+      'should return null for undefined properties');
+
+    $maps: (('a': 1), null, false, ('a': 4));
+
+    @include assert-equal(_pluck($maps, 'a'), (1 null null 4),
+      'should work with nullish elements');
+
+    $list: (('a': 1), null, ('a': 3), ('a': 4));
+    $actual: _($list, pluck 'a', value);
+
+    @include assert-equal($actual, 1 null 3 4,
+      'should work in a lazy chain sequence');
+
+    @include assert-equal(_($list, filter _identity, pluck 'a', value), 1 3 4,
+      'should work in a lazy chain sequence');
+  }
+}
+
 
 @include report;

@@ -6,7 +6,7 @@ $true-terminal-output: true;
 $test-falsey: ('', 0, false, null);
 $test-empty-list: ();
 
-@function test-add($x, $y) {
+@function test-add($x, $y, $args...) {
     @return $x + $y;
 }
 
@@ -846,21 +846,24 @@ $test-empty-list: ();
       'should support floats');
 
     $actual: _rand(true);
+    $actual: if($actual % 1 == 0, _rand(true), $actual);
 
     @include assert-equal($actual % 1 > 0 and $actual >= 0 and $actual <= 1, true,
       'should support providing a floating argument');
 
     $actual: _rand(2, true);
+    $actual: if($actual % 1 == 0, _rand(2, true), $actual);
 
     @include assert-equal($actual % 1 > 0 and $actual >= 0 and $actual <= 2, true,
       'should support providing a floating argument');
 
     $actual: _rand(2, 4, true);
+    $actual: if($actual % 1 == 0, _rand(2, 4, true), $actual);
 
     @include assert-equal($actual % 1 > 0 and $actual >= 2 and $actual <= 4, true,
       'should support providing a floating argument');
 
-    $list: 1 2 3;
+    $list: 1 2 3 4 5 6 7 8 9 10;
     $randoms: _map($list, _rand);
     $result: true;
 
@@ -870,6 +873,110 @@ $test-empty-list: ();
 
     @include assert-equal($result, true,
       'should work as an iteratee for _map');
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_range') {
+    @include assert-equal(_range(4), 0 1 2 3,
+      'should work with a single end argument');
+
+    @include assert-equal(_range(1, 5), 1 2 3 4,
+      'should work with start and end arguments');
+
+    @include assert-equal(_range(0, 20, 5), 0 5 10 15,
+      'should work with start, end, and step arguments');
+
+    @include assert-equal(_range(1, 4, 0), 1 1 1,
+      'should support a step of 0');
+
+    @include assert-equal(_range(1, 5, 20), (1,),
+      'should work with a step larger than end');
+
+    @include assert-equal(_range(0, -4, -1), 0 -1 -2 -3,
+      'should work with a negative step argument');
+
+    @include assert-equal(_range(21, 10, -3), 21 18 15 12,
+      'should work with a negative step argument');
+
+    @each $value in $test-falsey {
+      @include assert-equal(_range($value), (),
+        'should treat falsey arguments as 0');
+    }
+
+    $actual: _map(1 2 3, _range);
+    $expected: (0,), (0 1), (0 1 2);
+
+    @include assert-equal($actual, $expected,
+      'should work as an iteratee for _map');
+  }
+}
+
+@function test-reduce-1($a, $b, $args...) {
+  @return $a + $b + to-upper-case($b);
+}
+@include test-module('Sassdash') {
+  $list: 1 2 3;
+
+  @include test('_reduce') {  
+    @include assert-equal(_reduce($list), 1,
+      'should use the first element of a collection as the default accumulator');
+
+    @include assert-equal(_reduce($list, test-add), 6,
+      'should reduce a collection given an iterator');
+
+    @include assert-equal(_reduce('abc', test-reduce-1, ''), 'aAbBcC',
+      'should work with a string literal for collection');
+
+    @include assert-equal(_foldl($list, test-add), _reduce($list, test-add),
+      'should be aliased');
+
+    @include assert-equal(_inject($list, test-add), _reduce($list, test-add),
+      'should be aliased');
+  }
+}
+
+@include test-module('Sassdash') {
+  $list: 1 2 3;
+
+  @include test('_reduce-right') {  
+    @include assert-equal(_reduce-right($list), 3,
+      'should use the last element of a collection as the default accumulator');
+
+    @include assert-equal(_reduce-right($list, test-add), 6,
+      'should reduce a collection given an iterator');
+
+    @include assert-equal(_reduce-right('abc', test-reduce-1, ''), 'cCbBaA',
+      'should work with a string literal for collection');
+
+    @include assert-equal(_foldr($list, test-add), _reduce-right($list, test-add),
+      'should be aliased');
+  }
+}
+
+@include test-module('Sassdash') {
+  $list: 1 2 3;
+
+  @include test('_reduce methods') {  
+    @each $method-name in 'reduce', 'reduce-right' {
+      $func: unquote('_#{$method-name}');
+      $is-reduce: $method-name == 'reduce';
+
+      @include assert-equal(
+        _call($func, null, 'a' 'b' 'c', test-add, ''),
+        if($is-reduce, 'abc', 'cba'),
+        '#{$func} should reduce a collection to a single value');
+
+      @include assert-equal(
+        _call($func, null, (), _noop),
+        null,
+        '#{$func} should support empty collections without an initial accumulator value');
+
+      @include assert-equal(
+        _call($func, null, (), _noop, 'x'),
+        'x',
+        '#{$func} should support empty collections with an initial accumulator value');
+    }
   }
 }
 

@@ -1342,8 +1342,6 @@ $users: (
 
         $iteratee: scoped-function(__base-reduce-iteratee);
 
-        @debug $collection, $each-function, $iteratee;
-
         $_: __call($each-function, null, $collection, $iteratee);
 
         $accumulator: scope(accumulator);
@@ -2219,8 +2217,6 @@ $users: (
 @function __pick-by-callback-iteratee($value, $key, $map) {
     $result: this('result');
     $predicate: this('predicate');
-
-    @debug __call($predicate, null, $value, $key, $map);
 
     @if (__call($predicate, null, $value, $key, $map)) {
         $_: this('result', set($result, $key, $value));
@@ -3310,8 +3306,6 @@ $users: (
 @function __reduce($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
     $function: if(__is-list($collection), __list-reduce, __base-reduce);
 
-    @debug $function, __get-callback($iteratee, $this-arg, 4), $accumulator;
-
     @return __call($function, null,
         $collection,
         __get-callback($iteratee, $this-arg, 4),
@@ -3337,7 +3331,6 @@ $users: (
 @function __reduce-right($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
     $function: if(__is-list($collection), __list-reduce-right, __base-reduce);
 
-    @debug $collection, $iteratee, $function;
     @return __call($function, null, $collection, __get-callback($iteratee, $this-arg, 4), $accumulator, ($accumulator == null and $this-arg == null), __base-each-right);
 }
 
@@ -4853,7 +4846,7 @@ $users: (
         $step: null;
     }
 
-    $start: if(__is-integer($start), $start, if($start, 1, 0));
+    $start: if(__is-integer($start), $start, if(__is-truthy($start), 1, 0));
     $step: if($step == null, 1, if(__is-integer($step), $step, if($step, 1, 0)));
 
     @if ($end == null) {

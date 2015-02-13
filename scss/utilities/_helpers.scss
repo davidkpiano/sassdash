@@ -213,10 +213,6 @@
     @return length($list);
 }
 
-@function __native-random() {
-    @return random();
-}
-
 @function __string-index-of($string, $target, $position: 0) {
     $string: str-slice($string, $position);
 

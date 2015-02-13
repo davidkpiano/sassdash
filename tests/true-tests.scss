@@ -763,5 +763,116 @@ $test-empty-list: ();
   }
 }
 
+@include test-module('Sassdash') {
+  @include test('_property') {
+    $map: ('a': 1, 'b': 2);
+    $prop: _property('a');
+
+    @include assert-equal(_call($prop, null, $map), 1,
+      'should create a function that plucks a property value of a given map');
+
+    $prop: _property('b');
+
+    @include assert-equal(_call($prop, null, $map), 2,
+      'should create a function that plucks a property value of a given map');
+
+    $prop: _property(2);
+
+    @include assert-equal(_call($prop, null, 10 20 30), 20,
+      'should work with non-string prop arguments');
+
+    $prop: _property('a');
+
+    @include assert-equal(_call($prop, null, null), null,
+      'should work when map is nullish');
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_pull') {
+    $list: 1 200 3;
+
+    @include assert-equal(_pull($list, 1, 3), (200,),
+      'should return the modified list');
+  }
+}
+
+@include test-module('Sassdash') {
+  $list: null null null null null null null null null null null null null null null null null null null null;
+
+  @include test('_rand') {
+    $actual: _map($list, _rand);
+
+    @include assert-equal(sort(_uniq($actual)), (0, 1),
+      'should return 0 or 1 when arguments are not provided');
+
+    $min: 5;
+    $max: 10;
+
+    $is-within-range: true;
+
+    @each $item in $list {
+      $result: _rand($min, $max);
+      $is-within-range: $result >= $min and $result <= $max;
+    }
+
+    @include assert-equal($is-within-range, true,
+      'should support a min and max argument');
+
+    $min: 0;
+    $max: 5;
+
+    $is-within-range: true;
+
+    @each $item in $list {
+      $result: _rand($max);
+      $is-within-range: $result >= $min and $result <= $max;
+    }
+
+    @include assert-equal($is-within-range, true,
+      'should support not providing a max argument');
+
+    @include assert-equal(_rand('1', '1'), 1,
+      'should coerce arguments to numbers');
+
+    $min: 1.5;
+    $max: 1.6;
+    $actual: _rand($min, $max);
+
+    @include assert-equal($actual % 1 > 0, true,
+      'should support floats');
+
+    @include assert-equal($actual >= $min and $actual <= $max, true,
+      'should support floats');
+
+    $actual: _rand(true);
+
+    @include assert-equal($actual % 1 > 0 and $actual >= 0 and $actual <= 1, true,
+      'should support providing a floating argument');
+
+    $actual: _rand(2, true);
+
+    @include assert-equal($actual % 1 > 0 and $actual >= 0 and $actual <= 2, true,
+      'should support providing a floating argument');
+
+    $actual: _rand(2, 4, true);
+
+    @include assert-equal($actual % 1 > 0 and $actual >= 2 and $actual <= 4, true,
+      'should support providing a floating argument');
+
+    $list: 1 2 3;
+    $randoms: _map($list, _rand);
+    $result: true;
+
+    @each $random-index, $random-value in zip($list, $randoms) {
+      $result: $result and $random-value >= 0 and $random-value <= $random-index and $random-value % 1 == 0;
+    }
+
+    @include assert-equal($result, true,
+      'should work as an iteratee for _map');
+  }
+}
+
+
 
 @include report;

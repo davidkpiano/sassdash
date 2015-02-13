@@ -1311,11 +1311,11 @@ $users: (
     // not implementing - mutates list
 }
 
-@function __base-random($min, $max) {
+@function __base-rand($min, $max) {
     @return $min + floor(random() * ($max - $min + 1));
 }
 
-// @debug __base-random(3, 10);
+// @debug __base-rand(3, 10);
 
 @function __base-reduce-iteratee($value, $index, $collection: null) {
     $iteratee: this(iteratee);
@@ -2734,10 +2734,7 @@ $users: (
 // @debug __pull((1 2 3 1 2 3), 2, 3);
 
 @function __pull-at($arguments...) {
-    $list: nth($arguments, 1);
-
-    // TODO - implement base-pull-at!!
-    @return __base-pull-at(if($list, $list, ()), __base-flatten($arguments, false, false, 1));
+    // not implemented - modifies list. use _at
 }
 
 // @debug __pull-at((5 10 15 20), 2, 4);
@@ -3378,7 +3375,7 @@ $users: (
 @function __sample($collection, $n: null, $guard: null) {
     @if (if($guard, __is-iteratee-call($collection, $n, $guard), ($n == null))) {
         $length: length($collection);
-        @return if($length > 0, nth($collection, __base-random(1, $length)), $__undefined__);
+        @return if($length > 0, nth($collection, __base-rand(1, $length)), $__undefined__);
     }
 
     $n: if(type-of($n) == 'number', $n, if($n, 1, 0));
@@ -3398,7 +3395,7 @@ $users: (
     $result: ();
 
     @while ($index <= $length) {
-        $rand: __base-random(1, $index);
+        $rand: __base-rand(1, $index);
 
         @if ($index != $rand) {
             $result: set($result, $index, get($result, $rand));
@@ -4395,7 +4392,10 @@ $users: (
     @return __base-values($map, __keys-in($map));
 }
 
-@function __random($min: null, $max: null, $floating: null) {
+@function __rand($min: null, $max: null, $floating: null) {
+    $min: __to-number($min);
+    $max: __to-number($max);
+
     @if ($floating and __is-iteratee-call($min, $max, $floating)) {
         $max: null;
         $floating: null;
@@ -4419,7 +4419,7 @@ $users: (
         $no-max: false;
     }
 
-    $min: if($min == true, 1, if($min == false, 0, $min));
+    $min: if($min == true, 1, if(__is-falsey($min), 0, $min));
 
     @if ($no-max) {
         $max: $min;
@@ -4429,11 +4429,11 @@ $users: (
     }
 
     @if ($floating or ($min % 1 > 0) or ($max % 1 > 0)) {
-        $rand: __native-random();
+        $rand: random();
 
         @return __native-min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
     }
-    @return __base-random($min, $max);
+    @return __base-rand($min, $max);
 }
 
 // @debug __random(0, 5);
@@ -4833,7 +4833,7 @@ $users: (
 @function __property-of-function($key, $args...) {
     $map: this('map');
 
-    @return if($map == null, $__undefined__, get($map, $key));
+    @return if($map == null, null, get($map, $key));
 }
 @function __property-of($map) {
     $_: scope-start();
@@ -5091,7 +5091,7 @@ $users: (
 @function _pad-left($args...) { @return call(__pad-left, $args...); }
 @function _pad-right($args...) { @return call(__pad-right, $args...); }
 @function _parse-int($args...) { @return call(__parse-int, $args...); }
-@function _random($args...) { @return call(__random, $args...); }
+@function _rand($args...) { @return call(__rand, $args...); }
 @function _reduce($args...) { @return call(__reduce, $args...); }
 @function _reduce-right($args...) { @return call(__reduce-right, $args...); }
 @function _repeat($args...) { @return call(__repeat, $args...); }

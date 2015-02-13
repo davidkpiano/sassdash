@@ -2739,7 +2739,7 @@ $users: (
     // not implemented - mutates list. use _reject
 }
 
-@function __rest($list) {
+@function __rest($list, $args...) {
     @return __drop($list, 1);
 }
 

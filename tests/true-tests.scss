@@ -1176,7 +1176,7 @@ $test-empty-list: ();
 }
 @include test-module('Sassdash') {
   @include test('_shuffle') {
-    $list: 1 2 3;
+    $list: 1 2 3 4 5;
     $map: ('a': 1, 'b': 2, 'c': 3);
 
     @include assert-equal(_shuffle($list) != $list, true,
@@ -1342,11 +1342,75 @@ $test-empty-list: ();
   }
 }
 
-// @include test-module('Sassdash') {
-//   @include test('_shuffle') {
-    
-//   }
-// }
+@function test-sort-by-1($a, $b, $c) {
+  @return ('a': $a, 'b': $b, 'c': $c);
+}
+@function test-sort-by-2($map, $args...) {
+  @return get($map, 'b');
+}
+@function test-sort-by-3($map, $args...) {
+  @return get($map, 'a');
+}
+@include test-module('Sassdash') {
+  @include test('_sort-by') {
+    $maps: (
+      ( 'a': 'x', 'b': 3 ),
+      ( 'a': 'y', 'b': 4 ),
+      ( 'a': 'x', 'b': 1 ),
+      ( 'a': 'y', 'b': 2 )
+    );
+
+    $stable-order: (
+      test-sort-by-1(1, 1, 1), test-sort-by-1(1, 2, 1),
+      test-sort-by-1(1, 1, 1), test-sort-by-1(1, 2, 1),
+      test-sort-by-1(1, 3, 1), test-sort-by-1(1, 4, 1),
+      test-sort-by-1(1, 5, 1), test-sort-by-1(1, 6, 1),
+      test-sort-by-1(2, 1, 2), test-sort-by-1(2, 2, 2),
+      test-sort-by-1(2, 3, 2), test-sort-by-1(2, 4, 2),
+      test-sort-by-1(2, 5, 2), test-sort-by-1(2, 6, 2),
+      test-sort-by-1(3, 1, 1), test-sort-by-1(3, 2, 1),
+      test-sort-by-1(3, 3, 1), test-sort-by-1(3, 4, 1),
+      test-sort-by-1(3, 5, 1), test-sort-by-1(3, 6, 1)
+    );
+
+    $actual: _pluck(_sort-by($maps, test-sort-by-2), 'b');
+
+    @include assert-equal($actual, 1 2 3 4,
+      'should sort in ascending order');
+
+    $actual: _sort-by($stable-order, test-sort-by-3);
+
+    @include assert-equal($actual, $stable-order,
+      'should perform a stable sort');
+
+    $list: 3 2 1;
+
+    @include assert-equal(_sort-by($list), 1 2 3,
+      'should use _identity when iteratee is nullish');
+
+    @include assert-equal(_sort-by($list, null), 1 2 3,
+      'should use _identity when iteratee is nullish');
+
+    $list: null 4 1 null 3 null 2;
+
+    // @include assert-equal(_sort-by($list), 1 2 3 4 null null null,
+    //   'should move null values to the end');
+
+    @include assert-equal(_pluck(_sort-by($maps, 'b'), 'b'), (1 2 3 4),
+      'should work with a _pluck style iteratee');
+
+    @include assert-equal(_sort-by(('a': 3, 'b': 1, 'c': 2)), 1 2 3,
+      'should work with a map for collection');
+
+    @include assert-equal(_sort-by(1), (),
+      'should treat number values for collection as empty');
+
+    $actual: _map((2 1 3, 3 2 1), _sort-by);
+
+    @include assert-equal($actual, (1 2 3, 1 2 3),
+      'should work as an iteratee for _map');
+  }
+}
 
 // @include test-module('Sassdash') {
 //   @include test('_shuffle') {

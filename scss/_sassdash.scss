@@ -3439,8 +3439,12 @@ $users: (
 }
 @function __sort-by($collection, $iteratee: __identity, $this-arg: $__undefined__) {
     $index: 1;
-    $length: if($collection, length($collection), 0);
+    $length: if(__is-map-like($collection), length($collection), 0);
     $result: ();
+
+    @if $length == 0 {
+        @return $result;
+    }
 
     @if (__is-truthy($this-arg) and __is-iteratee-call($collection, $iteratee, $this-arg)) {
         $iteratee: null;

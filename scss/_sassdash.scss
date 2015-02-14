@@ -616,8 +616,11 @@ $users: (
 
     @while ($index <= $length) {
         $value: nth($list, $index);
+        $iteration: __call($predicate, null, $value, $index, $list);
 
-        @if (__call($predicate, null, $value, $index, $list)) {
+        @debug $value, $iteration;
+
+        @if (__is-truthy($iteration)) {
             @return true;
         }
 

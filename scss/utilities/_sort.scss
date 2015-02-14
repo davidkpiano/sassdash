@@ -34,7 +34,7 @@
 }
 
 
-@function sort($list, $predicate: _identity, $args...) {
+@function sort($list, $predicate: asc, $args...) {
   @return quick-sort($list, $predicate);
 }
 

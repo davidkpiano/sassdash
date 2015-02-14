@@ -1116,5 +1116,62 @@ $test-empty-list: ();
   }
 }
 
+@include test-module('Sassdash') {
+  @include test('_sample') {
+    $list: 1 2 3;
+
+    $actual: _sample($list);
+    @include assert-equal(_includes($list, $actual), true,
+      'should return a random element');
+
+    $actual: _sample($list, 2);
+
+    @include assert-equal(_includes($list, nth($actual, 1)) and _includes($list, nth($actual, 2)) and length($actual) == 2, true,
+      'should return two random elements');
+
+    $actual: _sample($list, length($list));
+
+    @include assert-equal(sort($actual), $list,
+      'should contain elements of the collection');
+
+    @each $value in $test-falsey {
+      @include assert-equal(_sample((1,), $value), if($value == null, 1, ()),
+        'should treat falsey n values, except null, as 0');
+    }
+
+    @each $value in 0, -1, -9999 {
+      @include assert-equal(_sample($list, $value), (),
+        'should return an empty list when n < 1 or NaN');
+    }
+
+    @each $value in 3, 4, pow(2, 32), 9999 {
+      @include assert-equal(sort(_sample($list, $value)), $list,
+        'should return all elements when n >= list length');
+    }
+
+    @include assert-equal(_sample(()), null,
+      'should return null when sampling an empty list');
+
+    $values: (1 2 3, 4 5 6, 7 8 9);
+    $actual: _map($values, _sample);
+
+    @debug $actual;
+
+    @include assert-equal(_includes(nth($values, 1), nth($actual, 1)) and _includes(nth($values, 2), nth($actual, 2)) and _includes(nth($values, 3), nth($actual, 3)), true,
+      'should work as an iteratee for _map');
+
+    $values: ('abc', 'def', 'ghi');
+    $actual: _map($values, _sample);
+
+    @include assert-equal(_includes($values, nth($actual, 1)) and _includes($values, nth($actual, 2)) and _includes($values, nth($actual, 3)), true,
+      'should work as an iteratee for _map');
+
+    $actual: _sample('abc', 2);
+
+    @include assert-equal(length($actual) == 2 and nth($actual, 1) != nth($actual, 2) and _includes('abc', nth($actual, 1)), true,
+      'should work with a string literal for collection');
+  }
+}
+
 
 @include report;

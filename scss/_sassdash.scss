@@ -2288,12 +2288,12 @@ $users: (
         @return ();
     }
 
-    @if not (__is-length(length($value))) {
-        @return __values($value);
-    }
-
     @if (__is-string($value)) {
         @return __to-map(__string-split($value, ''));
+    }
+
+    @if not (__is-length(length($value))) {
+        @return __values($value);
     }
 
     @return if(__is-map($value), $value, __to-map($value));
@@ -3052,6 +3052,8 @@ $users: (
 // @debug __at((a b c d e f g), 1, 3, 5);
 
 @function __includes($collection, $target, $from-index: 1) {
+    $collection: __to-list($collection);
+
     $length: if($collection, length($collection), 0);
 
     @if not(__is-length($length)) {
@@ -3344,10 +3346,10 @@ $users: (
 @function __sample($collection, $n: null, $guard: null) {
     @if (if($guard, __is-iteratee-call($collection, $n, $guard), ($n == null))) {
         $length: length($collection);
-        @return if($length > 0, nth($collection, __base-rand(1, $length)), $__undefined__);
+        @return if($length > 0, nth($collection, __base-rand(1, $length)), null);
     }
 
-    $n: if(type-of($n) == 'number', $n, if($n, 1, 0));
+    $n: if(type-of($n) == 'number', $n, if(__is-truthy($n), 1, 0));
     $result: __shuffle($collection);
     $result: __take($result, __native-min(if($n < 0, 0, $n), length($result)));
 

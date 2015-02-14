@@ -1359,11 +1359,14 @@ $users: (
 @function __base-slice($list, $start: 0, $end: length($list)) {
     $index: 1;
     $length: length($list);
+    $start: __to-number($start);
+    $start: if(__is-number($start), floor($start), if(__is-truthy($start), 1, 0));
 
     @if ($start < 0) {
         $start: if(-$start > $length, 0, ($length + $start));
     }
 
+    $end: if(__is-number($end), floor($end), if(__is-truthy($end), 1, 0));
     $end: if($end > $length, $length, if($end, $end, 0));
 
     @if ($end < 0) {
@@ -2154,9 +2157,10 @@ $users: (
 
 @function __init-clone-by-tag() {}
 
-@function x__is-list-like($value) {
-    // _helpers
+@function __is-list-like($value, $args...) {
+    @return __is-list($value) or __is-arguments($value);
 }
+
 @function __is-bindable($function) {
     // Can't check for this(); there's no toString in Sass for functions
     @return function-exists($function);
@@ -2749,14 +2753,14 @@ $users: (
 // @debug __rest((1 2 3));
 
 @function __slice($list, $start: 0, $end: length($list)) {
-    $length: if($list, length($list), 0);
+    $length: if(__is-list-like($list), length($list), 0);
 
     @if (__is-falsey($length)) {
         @return ();
     }
 
-    @if ($end and type-of($end) == 'number' and __is-iteratee-call($list, $start, $end)) {
-        $start: 1;
+    @if ($end and type-of($end) != 'number' and __is-iteratee-call($list, $start, $end)) {
+        $start: 0;
         $end: $length;
     }
 

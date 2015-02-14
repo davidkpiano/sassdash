@@ -38,11 +38,6 @@
     @return __to-number($value);
 }
 
-
-@function __is-list-like($value, $args...) {
-    @return __is-list($value) or __is-arguments($value);
-}
-
 @function __is-index($value, $length: null) {
     $value: __parse-float($value);
 

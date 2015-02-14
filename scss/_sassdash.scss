@@ -2180,8 +2180,11 @@ $users: (
     @return if($prereq, get($map, $index) == $value, false);
 }
 
-@function x__is-length() {
-    // _helpers
+@function __is-length($value) {
+    @return type-of($value) == 'number'
+        and $value > -1
+        and $value % 1 == 0
+        and $value < (pow(2, 53) - 1);
 }
 
 @function x__is-strict-comparable() {
@@ -3384,7 +3387,11 @@ $users: (
 // @debug __sample((1 2 3 4 5), 4);
 
 @function __size($collection: null) {
-    $length: if($collection, length($collection), 0);
+    @if __is-string($collection) {
+        $collection: __to-list($collection);
+    }
+
+    $length: if(__is-map-like($collection), length($collection), 0);
 
     @return if(__is-length($length), $length, length(__keys($collection)));
 }
@@ -3976,8 +3983,10 @@ $users: (
     @if type-of($value) == 'string' {
         $result: ();
 
-        @for $index from 1 through str-length($value) {
-            $result: append($result, str-slice($value, $index, $index));
+        @if str-length($value) >= 1 {        
+            @for $index from 1 through str-length($value) {
+                $result: append($result, str-slice($value, $index, $index));
+            }
         }
 
         @return $result;

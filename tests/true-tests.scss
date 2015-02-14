@@ -1173,5 +1173,66 @@ $test-empty-list: ();
   }
 }
 
+@function test-shuffle-1($args...) {
+  @return _shuffle(1 2);
+}
+@include test-module('Sassdash') {
+  @include test('_shuffle') {
+    $list: 1 2 3;
+    $map: ('a': 1, 'b': 2, 'c': 3);
+
+    @include assert-equal(_shuffle($list) != $list, true,
+      'should return a new list');
+
+    @include assert-equal(sort(_shuffle($list)), $list,
+      'should contain the same elements after a collection is shuffled');
+
+    @include assert-equal(length(_shuffle($map)), length($map),
+      'should contain the same elements after a collection is shuffled');
+
+    $actual: _times(10, test-shuffle-1);
+
+    @include assert-equal(_sort-by(_uniq($actual), 1), (1 2, 2 1),
+      'should shuffle small collections');
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_size') {
+    $list: 1 2 3;
+
+    @include assert-equal(_size(('one': 1, 'two': 2, 'three': 3)), 3,
+      'should return the number of own enumerable properties of a map');
+
+    @include assert-equal(_size($list), 3,
+      'should return the length of a list');
+
+    @each $value in $test-falsey {
+      @include assert-equal(_size($value), 0,
+        'should accept a falsey map arg');
+    }
+
+    $args: test-args(1, 2, 3);
+
+    @include assert-equal(_size($args), 3,
+      'should work with arglist object');
+
+    @include assert-equal(_size('abc'), 3,
+      'should work with a string for collection');
+  }
+}
+
+// @include test-module('Sassdash') {
+//   @include test('_shuffle') {
+    
+//   }
+// }
+
+// @include test-module('Sassdash') {
+//   @include test('_shuffle') {
+    
+//   }
+// }
+
 
 @include report;

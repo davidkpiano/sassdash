@@ -43,15 +43,6 @@
     @return __is-list($value) or __is-arguments($value);
 }
 
-
-@function __is-length($value) {
-    @return type-of($value) == 'number'
-        and $value > -1
-        and $value % 1 == 0
-        and $value < (pow(2, 53) - 1);
-}
-
-
 @function __is-index($value, $length: null) {
     $value: __parse-float($value);
 

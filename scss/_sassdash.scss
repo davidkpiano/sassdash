@@ -4726,8 +4726,26 @@ $users: (
 
 @function __unescape($string) {
     $string: __base-to-string($string);
+    $escapes: ();
 
     @each $escaped, $unescaped in const-get('html-unescapes') {
+        $escaped-index: str-index($string, $escaped);
+
+        @if $escaped-index {
+            $escapes: append($escapes, (
+                    'escaped': $escaped,
+                    'unescaped': $unescaped,
+                    'index': $escaped-index
+                ));
+        }
+    }
+
+    $escapes: __sort-by($escapes, __property('index'));
+
+    @each $escaped-map in $escapes {
+        $escaped: get($escaped-map, 'escaped');
+        $unescaped: get($escaped-map, 'unescaped');
+
         $string: __string-replace($string, $escaped, $unescaped);
     }
 

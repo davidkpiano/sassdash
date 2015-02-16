@@ -55,6 +55,9 @@
 
 
 @function __base-compare-ascending($value, $other) {
+    $value: if(__is-falsey($value), 0, $value);
+    $other: if(__is-falsey($other), 0, $other);
+
     @if $value > $other {
         @return 1;
     }
@@ -617,8 +620,6 @@ $users: (
     @while ($index <= $length) {
         $value: nth($list, $index);
         $iteration: __call($predicate, null, $value, $index, $list);
-
-        @debug $value, $iteration;
 
         @if (__is-truthy($iteration)) {
             @return true;
@@ -3441,7 +3442,7 @@ $users: (
     $index: 1;
     $length: if(__is-map-like($collection), length($collection), 0);
     $result: ();
-
+// 
     @if $length == 0 {
         @return $result;
     }

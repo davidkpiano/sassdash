@@ -1409,14 +1409,16 @@ $test-empty-list: ();
 
     @include assert-equal($actual, (1 2 3, 1 2 3),
       'should work as an iteratee for _map');
+
+    // @include assert-equal(
+    //   _sort-by-all($maps, 'a' 'b'),
+    //   nth($maps, 3) nth($maps, 1) nth($maps, 4) nth($maps, 2),
+    //   '_sort-by-all should sort multiple properties in ascending order');
+
+    @include assert-equal(_sort-by-all($stable-order, 'a' 'c'), $stable-order,
+      '_sort-by-all should perform a stable sort');
   }
 }
-
-// @include test-module('Sassdash') {
-//   @include test('_shuffle') {
-    
-//   }
-// }
 
 // @include test-module('Sassdash') {
 //   @include test('_shuffle') {

@@ -4040,10 +4040,6 @@ $users: (
     @return null;
 }
 
-@function __to-plain-map($value) {
-    @return __base-copy($value, __keys-in($value));
-}
-
 @function __assign($arguments...) {
     $assigner: __create-assigner(__base-assign);
 
@@ -4887,7 +4883,7 @@ $users: (
 // @debug __range(0);
 
 @function __times($n, $iteratee: __identity, $this-arg: null) {
-    // $n: __to-number($n); // todo
+    $n: if(__is-falsey($n), 0, $n);
 
     $index: 1;
     $result: ();
@@ -5000,8 +4996,8 @@ $users: (
 @function _thru($args...) { @return call(__thru, $args...); }
 @function _times($args...) { @return call(__times, $args...); }
 @function _to-list($args...) { @return call(__to-list, $args...); }
-@function _to-plain-map($args...) { @return call(__to-plain-map, $args...); }
-@function _transform($args...) { @return call(__transform, $args...); }
+// @function _to-plain-map($args...) { @return call(__to-plain-map, $args...); }
+// @function _transform($args...) { @return call(__transform, $args...); }
 @function _union($args...) { @return call(__union, $args...); }
 @function _uniq($args...) { @return call(__uniq, $args...); }
 @function _unzip($args...) { @return call(__unzip, $args...); }

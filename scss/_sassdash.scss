@@ -3001,11 +3001,7 @@ $users: (
 
 
 @function __tap($value, $interceptor, $this-arg: null) {
-    $value: __call($interceptor, $this-arg, $value);
-
-    @return $value;
-
-    // TODO mutation
+    // not implemented
 }
 
 // @debug __tap(42, double);
@@ -4601,9 +4597,10 @@ $users: (
 
 @function __starts-with($string, $target, $position: 1) {
     $string: __base-to-string($string);
-    $position: __native-min(if($position < 0, 1, $position), str-length($string));
+    $position: if(__is-falsey($position), 0, $position);
+    $position: __native-min(if($position <= 0, 1, $position), str-length($string));
 
-    @return __string-last-index-of($string, $target, $position) == $position;
+    @return if($target == '', true, __string-last-index-of($string, $target, $position) == $position);
 }
 
 // @debug __starts-with('abc', 'a');
@@ -4669,14 +4666,14 @@ $users: (
 
 // @debug __trim-right('abc       ') + 'def';
 
-@function __trunc($string, $options: null, $guard: null) {
+@function __trunc($string, $options: null, $guard: null, $omission: null, $length: null, $separator: null) {
     @if ($guard and __is-iteratee-call($string, $options, $guard)) {
         $options: null;
     }
 
-    $length: const-get('DEFAULT_TRUNC_LENGTH');
-    $omission: const-get('DEFAULT_TRUNC_OMISSION');
-    $separator: null;
+    $length: either($length, const-get('DEFAULT_TRUNC_LENGTH'));
+    $omission: either($omission, const-get('DEFAULT_TRUNC_OMISSION'));
+    $separator: either($separator, null);
 
     @if ($options != null) {
         @if (__is-map($options)) {
@@ -4684,7 +4681,7 @@ $users: (
             $length: if(map-has-key($options, 'length'), get($options, 'length'), $length);
             $omission: if(map-has-key($options, 'omission'), __base-to-string(get($options, 'omission')), $omission);
         } @else {
-            $length: if(__is-number($options), $options, if($options, 1, 0));
+            $length: __to-number($options);
         }
     }
 

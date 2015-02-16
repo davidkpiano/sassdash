@@ -3978,6 +3978,10 @@ $users: (
 @function __to-list($value) {
     // TODO
     @if type-of($value) == 'map' {
+        @if __list-some(map-keys($value), __is-string) {
+            @return map-values($value);
+        }
+
         $result: ();
 
         @for $index from 1 through max(map-keys($value)...) {
@@ -4609,7 +4613,7 @@ $users: (
     $value: $string;
     $string: __base-to-string($string);
 
-    @if not ($string) or ($string == '') {
+    @if not ($string) or ($string == '') or ($chars == '') {
         @return $string;
     }
 
@@ -4630,7 +4634,7 @@ $users: (
     $value: $string;
     $string: __base-to-string($string);
 
-    @if not ($string) or ($string == '') {
+    @if not ($string) or ($string == '') or ($chars == '') {
         @return $string;
     }
 
@@ -4647,7 +4651,7 @@ $users: (
     $value: $string;
     $string: __base-to-string($string);
 
-    @if not ($string) or ($string == '') {
+    @if not ($string) or ($string == '') or ($chars == '') {
         @return $string;
     }
 

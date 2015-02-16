@@ -246,11 +246,23 @@
         );
 }
 
-
 @function __number-to-fixed($value, $digits: null) {
     @if $digits == null {
         @return round($value);
     }
 
     @return round($value * pow(10, $digits)) / pow(10, $digits);
+}
+
+@function __string-join($list, $separator: '') {
+    $length: length($list);
+    $result: nth($list, 1);
+
+    @if $length > 1 {
+        @for $index from 2 through $length {
+            $result: $result + nth($list, $index);
+        }
+    }
+
+    @return $result;
 }

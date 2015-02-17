@@ -527,6 +527,8 @@ $users: (
     $length: length($list);
     $result-list: ();
 
+    @debug $list, $iteratee;
+
     @while ($index <= $length) {
         $value: nth($list, $index);
 
@@ -1425,60 +1427,19 @@ $users: (
 // @debug __base-some((1 3 5 7 9), is-even);
 // @debug __base-some((2 3 5 7 9), is-even);
 
-@function __base-uniq($list, $iteratee: null) {
-    $index: 1;
-    $index-of: __get-index-of();
-    $length: length($list);
-    $is-common: ($index-of == '__base-index-of');
-    $is-large: ($is-common and $length >= 200);
-    $seen: if($is-large, __create-cache(), false);
+@function __base-uniq($list, $iteratee: __identity, $guard: null) {
     $result: ();
 
-    @if ($seen) {
-        $index-of: '__cache-index-of';
-        $is-common: false;
-    } @else {
-        $is-large: false;
-        $seen: if($iteratee, (), $result);
+    $iteratee: if(__is-iteratee-call($list, $iteratee, $guard), __identity, $iteratee);
+
+    @each $item in $list {
+        $iteration: __call($iteratee, null, $item);
+        $result: map-merge($result, ($iteration: $item));
     }
 
-    @while ($index <= $length) {
-        $continue-outer: false;
-        $value: nth($list, $index);
-        $computed: if($iteratee, call($iteratee, $value, $index, $list), $value);
+    @debug $iteratee, $result, __is-iteratee-call($list, $iteratee, $guard);
 
-        @if ($is-common) {
-            $seen-index: length($seen);
-
-            @while ($seen-index > 0 and not $continue-outer) {
-                @if (nth($seen, $seen-index) == $computed) {
-                    $continue-outer: true;
-                } @else {
-                    $seen-index: $seen-index - 1;
-                }
-            }
-
-            @if (not $continue-outer) {
-                @if ($iteratee) {
-                    $seen: append($seen, $computed);
-                }
-
-                $result: append($result, $value);
-                $seen: $result;
-            }
-        } @else if (call($index-of, $seen, $computed) < 0) {
-            @if ($iteratee or $is-large) {
-                $seen: append($seen, $computed);
-            }
-
-            $result: append($result, $value);
-            $seen: $result;
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
+    @return map-values($result);
 }
 
 // @function flr($val, $idx, $lis) {
@@ -2083,11 +2044,7 @@ $users: (
 // @debug __extremum-by((1 3 4 5 6 9 2 4 3), __identity, true);
 
 @function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
-    $result: __callback;
-
-    $result: if($result == __callback, __base-callback, $result);
-
-    @return if($arg-count, call($result, $function, $this-arg, $arg-count), $result);
+    @return if($arg-count, __call(__base-callback, null, $function, $this-arg, $arg-count), __base-callback);
 }
 
 @function __get-data($function) {
@@ -2101,7 +2058,7 @@ $users: (
 @function __get-index-of($collection: null, $target: $__undefined__, $from-index: $__undefined__) {
     $result: __base-index-of;
 
-    @return if($collection, call($result, $collection, $target, $from-index), $result);
+    @return if($collection, __call($result, null, $collection, $target, $from-index), $result);
 }
 
 @function __get-view($start, $end, $transforms) {
@@ -2874,29 +2831,21 @@ $users: (
 
 // @debug __union((1 2 3), (5 2 1 4), (2 1));
 
-@function __uniq($list, $is-sorted: false, $iteratee: null, $this-arg: null) {
+@function __uniq($list, $iteratee: __identity, $this-arg: null) {
     $length: if($list, length($list), 0);
 
     @if (__is-falsey($length)) {
         @return ();
     }
 
-    // Juggle arguments
-    @if (type-of($is-sorted) != 'bool' and $is-sorted != null) {
-        $this-arg: $iteratee;
-        $iteratee: if(__is-iteratee-call($list, $is-sorted, $this-arg), null, $is-sorted);
-        $is-sorted: false;
+    @if __is-iteratee-call($list, $iteratee, $this-arg) {
+        $iteratee: __identity;
+        $this-arg: null;
     }
 
-    $function: __get-callback();
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
 
-    @if not ($function == __base-callback and $iteratee == null) {
-        $iteratee: call($function, $iteratee, $this-arg, 3);
-    }
-
-    @return if($is-sorted and __get-index-of() == __base-index-of,
-        __sorted-uniq($list, $iteratee),
-        __base-uniq($list, $iteratee));
+    @return __base-uniq($list, $iteratee);
 }
 
 // @debug __uniq((1 2 3 1 4 1 3));

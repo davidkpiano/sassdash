@@ -767,48 +767,12 @@ $users: (
 }
 
 @function __base-difference($list, $values) {
-    $length: if(length($list), length($list), 0);
     $result: ();
 
-    @if ($length == 0) {
-        @return $result;
-    }
-
-    $index: 1;
-    $index-of: __base-index-of; // getIndexOf()
-    $is-common: ($index-of == __base-index-of);
-    $cache: if($is-common and length($values) >= 200, __create-cache($values), false);
-    $values-length: length($values);
-
-    @if ($cache) {
-        $index-of: __cache-index-of;
-        $is-common: false;
-        $values: $cache;
-    }
-
-    @while ($index <= $length) {
-        $continue-outer: false;
-        $value: nth($list, $index);
-
-        @if ($is-common) {
-            $values-index: $values-length;
-
-            @while ($values-index > 0 and not $continue-outer) {
-                @if (nth($values, $values-index) == $value) {
-                    $continue-outer: true;
-                } @else {
-                    $values-index: $values-index - 1;
-                }
-            }
-
-            @if (not $continue-outer) {
-                $result: append($result, $value);
-            }
-        } @else if (call($index-of, $values, $value) < 0) {
-            $result: append($result, $value);
+    @each $item in $list {
+        @if not index($values, $item) {
+            $result: append($result, $item);
         }
-
-        $index: $index + 1;
     }
 
     @return $result;
@@ -2864,7 +2828,7 @@ $users: (
 // todo fix null == false
 
 @function __without($list, $args...) {
-    @return __base-difference($list, $args);
+    @return __base-difference($list, join((), $args));
 }
 
 // @debug __without((1 2 3 4 5 0 1 4 29 0 1), 0, 1);

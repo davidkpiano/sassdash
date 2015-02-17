@@ -1701,17 +1701,76 @@ $test-empty-list: ();
   }
 }
 
-// @include test-module('Sassdash') {
-//   @include test('_shuffle') {
-    
-//   }
-// }
+@include test-module('Sassdash') {
+  @include test('_unique-id') {
+    $actual: _times(500, _unique-id);
 
-// @include test-module('Sassdash') {
-//   @include test('_shuffle') {
-    
-//   }
-// }
+    @include assert-equal(length(_uniq($actual)), length($actual),
+      'should generate unique ids');
+
+    $actual: _unique-id('test-');
+
+    @include assert-equal(_starts-with($actual, 'test-'), true,
+      'should prepend prefix to unique id if specified');
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_values') {
+    $map: ('a': 1, 'b': 2);
+
+    @include assert-equal(_values($map), 1 2,
+      'should get the values of a map');
+  }
+}
+
+@include test-module('Sassdash') {
+  @include test('_where') {
+    $maps: (
+      ( 'a': 1 ),
+      ( 'a': 1 ),
+      ( 'a': 1, 'b': 2 ),
+      ( 'a': 2, 'b': 2 ),
+      ( 'a': 3 )
+    );
+
+    $pairs: (
+      (( 'a': 1 ), (( 'a': 1 ), ( 'a': 1 ), ( 'a': 1, 'b': 2 ))),
+      (( 'a': 2 ), (( 'a': 2, 'b': 2 ),)),
+      (( 'a': 3 ), (( 'a': 3 ),)),
+      (( 'b': 1 ), ()),
+      (( 'b': 2 ), (( 'a': 1, 'b': 2 ), ( 'a': 2, 'b': 2 ))),
+      (( 'a': 1, 'b': 2 ), (( 'a': 1, 'b': 2 ),))
+    );
+
+    @each $pair in $pairs {
+      $actual: _where($maps, nth($pair, 1));
+
+      @include assert-equal($actual, nth($pair, 2),
+        'should filter by source properties');
+    }
+
+    $map: (
+      'x': ( 'a': 1 ),
+      'y': ( 'a': 3 ),
+      'z': ( 'a': 1, 'b': 2 )
+    );
+
+    @include assert-equal(_where($map, ('a': 1)), get($map, 'x') get($map, 'z'),
+      'should work with a map for collection');
+
+    $list: (
+      ('a': 1),
+      ('a': 3),
+      ('a': 1, 'b': 2)
+    );
+
+    $actual: _($list, where ('a': 1), value);
+
+    @include assert-equal($actual, nth($list, 1) nth($list, 3),
+      'should work in a lazy chain sequence');
+  }
+}
 
 // @include test-module('Sassdash') {
 //   @include test('_shuffle') {

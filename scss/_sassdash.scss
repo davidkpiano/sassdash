@@ -1142,6 +1142,8 @@ $users: (
     $length: length($props);
     $result: null;
 
+    @debug $map, $props, $values;
+
     @if ($map == null) {
         @return if($length == 0 or $length == null, false, true);
     }
@@ -1165,17 +1167,13 @@ $users: (
     @while ($index <= $length) {
         $key: nth($props, $index);
 
-        @if ($no-customizer and length($strict-compare-flags) > 0 and nth($strict-compare-flags, $index)) {
-            $result: map-has-key($map, $key);
-        } @else {
-            $map-value: get($map, $key);
-            $src-value: get($values, $index);
+        $map-value: get($map, $key);
+        $src-value: nth($values, $index);
 
-            $result: if($customizer, __call($customizer, null, $map-value, $src-value, $key), null);
+        $result: if($customizer, __call($customizer, null, $map-value, $src-value, $key), null);
 
-            @if ($result == null) {
-                $result: __call(__base-is-equal, null, $src-value, $map-value, $customizer, true);
-            }
+        @if ($result == null) {
+            $result: __call(__base-is-equal, null, $src-value, $map-value, $customizer, true);
         }
 
         @if (not $result) {
@@ -1436,8 +1434,6 @@ $users: (
         $iteration: __call($iteratee, null, $item);
         $result: map-merge($result, ($iteration: $item));
     }
-
-    @debug $iteratee, $result, __is-iteratee-call($list, $iteratee, $guard);
 
     @return map-values($result);
 }

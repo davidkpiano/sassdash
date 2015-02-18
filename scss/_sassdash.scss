@@ -2877,6 +2877,10 @@ $users: (
     $length: if($props, length($props), 0);
     $result: ();
 
+    @if not __is-list-like($props) {
+        @return ();
+    }
+
     @if ($length > 0 and not $values and not __is-list(nth($props, 1))) {
         $values: ();
     }
@@ -2884,10 +2888,12 @@ $users: (
     @while ($index <= $length) {
         $key: nth($props, $index);
 
-        @if ($values) {
+        @if ($values and length($values) > 0) {
             $result: set($result, $key, nth($values, $index));
         } @else if ($key) {
-            $result: set($result, nth($key, 1), nth($key, 2));
+            $result-key: nth($key, 1);
+            $result-value: if(length($key) > 1, nth($key, 2), null);
+            $result: set($result, $result-key, $result-value);
         }
 
         $index: $index + 1;

@@ -1860,11 +1860,47 @@ $test-empty-list: ();
   }
 }
 
-// @include test-module('Sassdash') {
-//   @include test('_shuffle') {
-    
-//   }
-// }
+@function test-zip-map-1($value, $args...) {
+  @return __to-number($value) > 1;
+}
+
+@include test-module('Sassdash') {
+  @include test('_zip-map') {
+    $map: ('barney': 36, 'fred': 40);
+    $list: (('barney', 36), ('fred', 40));
+
+    $actual: _zip-map('barney' 'fred', 36 40);
+    @include assert-equal($actual, $map,
+      'should zip together key/value lists into a map');
+
+    @include assert-equal(_zip-map(('a',), 1 2), ('a': 1),
+      'should ignore extra values');
+
+    @include assert-equal(_zip-map($list), $map,
+      'should accept a two dimensional list');
+
+    @include assert-equal(_zip-map('barney' 'fred'), ('barney': null, 'fred': null),
+      'should not assume keys is two dimensional if values argument is not provided');
+
+    @each $value in $test-falsey {
+      @include assert-equal(_zip-map($value), (),
+        'should accept a falsey list argument');
+    }
+
+    @include assert-equal(_zip-map(_pairs($map)), $map,
+      'should support consuming the return value of _pairs');
+
+    $list: ('a' 1, 'b' 2);
+    $predicate: test-zip-map-1;
+    $actual: _($list, zip-map, map _to-string, filter $predicate, take, value);
+
+    @include assert-equal($actual, ('2',),
+      'should work in a lazy chain sequence');
+
+    @include assert-equal(_object($list), _zip-map($list),
+      'should be aliased');
+  }
+}
 
 // @include test-module('Sassdash') {
 //   @include test('_shuffle') {

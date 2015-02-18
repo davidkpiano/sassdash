@@ -527,8 +527,6 @@ $users: (
     $length: length($list);
     $result-list: ();
 
-    @debug $list, $iteratee;
-
     @while ($index <= $length) {
         $value: nth($list, $index);
 
@@ -4677,7 +4675,7 @@ $users: (
     $temp: '';
 
     $lowercase-letters: 'abcdefghijklmnopqrstuvwxyz';
-    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ';
 
     @for $index from 1 through str-length($string) {
         $letter: __char-at($string, $index);
@@ -4694,7 +4692,7 @@ $users: (
                 $temp: '';
             }
 
-            @if (str-index($uppercase-letters, $letter)) {
+            @if (str-index($uppercase-letters, $letter) and $letter != ' ') {
                 $temp: $temp + $letter;
             }
         } @else {
@@ -4705,6 +4703,8 @@ $users: (
     @if (str-length($temp) > 0) {
         $result: append($result, $temp);
     }
+
+    @debug $result;
 
     @return $result;
 }
@@ -4864,7 +4864,7 @@ $users: (
 @function _bind-all($args...) { @return call(__bind-all, $args...); }
 @function _bind-key($args...) { @return call(__bind-key, $args...); }
 @function _callback($args...) { @return call(__callback, $args...); }
-@function _chain($args...) { @return call(__chain, $args...); }
+// @function _chain($args...) { @return call(__chain, $args...); }
 @function _chunk($args...) { @return call(__chunk, $args...); }
 @function _compact($args...) { @return call(__compact, $args...); }
 @function _constant($args...) { @return call(__constant, $args...); }

@@ -24,187 +24,187 @@ $test-empty-list: ();
     @return $n % 2 == 0;
 }
 
-@include describe('sassdash _after') {
-    @include it('should create a function that invokes func after n calls') {
-        $test-after: __after(5, length);
+// @include test-module('sassdash _after') {
+//     @include test('should create a function that invokes func after n calls') {
+//         $test-after: __after(5, length);
 
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
 
-        @include should(expect($result), to(equal(2)));
+//         @include assert-equal($result, 2);
 
-        $test-after: __after(5, length);
+//         $test-after: __after(5, length);
 
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
-        $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
 
-        @include should(expect($result), to(equal(null)));
+//         @include assert-equal($result, null);
 
-        $test-after: __after(0, length);
+//         $test-after: __after(0, length);
 
-        $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
 
-        @include should(expect($result), to(equal(2)));
-    }
+//         @include assert-equal($result, 2);
+//     }
 
-    @include it('should allow func as the first argument') {
-        $test-after: __after(length, 0);
+//     @include test('should allow func as the first argument') {
+//         $test-after: __after(length, 0);
 
-        $result: __call($test-after, null, (1, 2));
+//         $result: __call($test-after, null, (1, 2));
 
-        @include should(expect($result), to(equal(2)));
-    }
-}
+//         @include assert-equal($result, 2);
+//     }
+// }
 
-@function test-assign-1($a, $b) {
-    @return if($a == null, $b, $a);
-}
-@include describe('_assign') {
-    @include it('should assign properties of a source object to the destination object') {
-        @include should(expect(_assign(('a': 1), ('b': 2))), to(equal(('a': 1, 'b': 2))));
-    }
+// @function test-assign-1($a, $b) {
+//     @return if($a == null, $b, $a);
+// }
+// @include test-module('_assign') {
+//     @include test('should assign properties of a source object to the destination object') {
+//         @include assert-equal(_assign(('a': 1), ('b': 2)), ('a': 1, 'b': 2));
+//     }
 
-    @include it('should accept multiple source objects') {
-        $expected: ('a': 1, 'b': 2, 'c': 3);
+//     @include test('should accept multiple source objects') {
+//         $expected: ('a': 1, 'b': 2, 'c': 3);
 
-        @include should(expect(_assign(('a': 1), ('b': 2), ('c': 3))), to(equal($expected)));
-        @include should(expect(_assign(('a': 1), ('b': 2, 'c': 2), ('c': 3))), to(equal($expected)));
-    }
+//         @include assert-equal(_assign(('a': 1), ('b': 2), ('c': 3)), $expected);
+//         @include assert-equal(_assign(('a': 1), ('b': 2, 'c': 2), ('c': 3)), $expected);
+//     }
 
-    @include it('should overwrite destination properties') {
-        $expected: ('a': 3, 'b': 2, 'c': 1);
+//     @include test('should overwrite destination properties') {
+//         $expected: ('a': 3, 'b': 2, 'c': 1);
 
-        @include should(expect(_assign(('a': 1, 'b': 2), $expected)), to(equal($expected)));
-    }
+//         @include assert-equal(_assign(('a': 1, 'b': 2), $expected), $expected);
+//     }
 
-    @include xit('should work with a customizer callback') {
-        $actual: _assign(('a': 1, 'b': 2), ('a': 3, 'c': 3), test-assign-1);
-        $expected: ('a': 1, 'b': 2, 'c': 3);
+//     @include xit('should work with a customizer callback') {
+//         $actual: _assign(('a': 1, 'b': 2), ('a': 3, 'c': 3), test-assign-1);
+//         $expected: ('a': 1, 'b': 2, 'c': 3);
 
-        @include should(expect($actual), to(equal($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should work with a customizer that returns undefined') {
-        $expected: ('a': $__undefined__);
-        @include should(expect(_assign((), $expected, _identity)), to(equal($expected)));
-    }
-}
+//     @include xit('should work with a customizer that returns undefined') {
+//         $expected: ('a': $__undefined__);
+//         @include assert-equal(_assign((), $expected, _identity), $expected);
+//     }
+// }
 
-@include describe('_at') {
-    $list: ('a', 'b', 'c');
-    $map-list: __to-map($list);
-    $empty-list: ();
+// @include test-module('_at') {
+//     $list: ('a', 'b', 'c');
+//     $map-list: __to-map($list);
+//     $empty-list: ();
 
-    $map-list: set($map-list, 1.1, 1);
+//     $map-list: set($map-list, 1.1, 1);
 
-    @include it('should return the elements corresponding to the specified keys') {
-        $actual: _at($list, (1 3));
-        @include should(expect($actual), to(be(('a' 'c'))));
-    }
+//     @include test('should return the elements corresponding to the specified keys') {
+//         $actual: _at($list, (1 3));
+//         @include assert-equal($actual, ('a' 'c'));
+//     }
 
-    @include it('should return null for nonexistent keys') {
-        $actual: _at($list, (3 5 1));
-        @include should(expect($actual), to(be(('c', null, 'a'))));
-    }
+//     @include test('should return null for nonexistent keys') {
+//         $actual: _at($list, (3 5 1));
+//         @include assert-equal($actual, ('c', null, 'a'));
+//     }
 
-    @include it('should return an empty list when no keys are provided') {
-        @include should(expect(_at($list)), to(equal($empty-list)));
-        @include should(expect(_at($list, (), ())), to(equal($empty-list)));
-    }
+//     @include test('should return an empty list when no keys are provided') {
+//         @include assert-equal(_at($list), $empty-list);
+//         @include assert-equal(_at($list, (), ()), $empty-list);
+//     }
 
-    @include it('should accept multiple key arguments') {
-        $actual: _at(('a' 'b' 'c' 'd'), 4, 1, 3);
+//     @include test('should accept multiple key arguments') {
+//         $actual: _at(('a' 'b' 'c' 'd'), 4, 1, 3);
 
-        @include should(expect($actual), to(equal('d' 'a' 'c')));
-    }
+//         @include assert-equal($actual, 'd' 'a' 'c');
+//     }
 
-    @include xit('should work with a falsey collection argument when keys are provided') {}
+//     @include xit('should work with a falsey collection argument when keys are provided') {}
 
-    @include xit('should work with an arguments object for collection') {}
+//     @include xit('should work with an arguments object for collection') {}
 
-    @include it('should work with an object for collection') {
-        $actual: _at(('a': 1, 'b': 2, 'c': 3), ('c' 'a'));
+//     @include test('should work with an object for collection') {
+//         $actual: _at(('a': 1, 'b': 2, 'c': 3), ('c' 'a'));
         
-        @include should(expect($actual), to(be(3 1)));
-    }
+//         @include assert-equal($actual, 3 1);
+//     }
 
-    @include xit('should pluck inherited property values') {}
+//     @include xit('should pluck inherited property values') {}
 
-    @include it('should work with a string literal for collection') {
-        @include should(expect(_at('abc', 3 1)), to(be('c' 'a')));
-    }
-}
+//     @include test('should work with a string literal for collection') {
+//         @include assert-equal(_at('abc', 3 1), 'c' 'a');
+//     }
+// }
 
 @include xdescribe('_attempt') {}
 
-$test-before-count: 0 !global;
-@function test-before-1() {
-    $test-before-count: $test-before-count + 1 !global;
+// $test-before-count: 0 !global;
+// @function test-before-1() {
+//     $test-before-count: $test-before-count + 1 !global;
 
-    @return $test-before-count;
-}
-@include describe('_before') {
-    @include it('should create a function that invokes func after n calls') {
-        // before(n) should invoke `func` before being called `n` times
-        $test-before-count: 0 !global;
-        $test-before: _before(5, test-before-1);
+//     @return $test-before-count;
+// }
+// @include test-module('_before') {
+//     @include test('should create a function that invokes func after n calls') {
+//         // before(n) should invoke `func` before being called `n` times
+//         $test-before-count: 0 !global;
+//         $test-before: _before(5, test-before-1);
 
-        $_: _call($test-before);
-        $_: _call($test-before);
-        $_: _call($test-before);
-        $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
 
-        @include should(expect($test-before-count), to(equal(4)));
+//         @include assert-equal($test-before-count, 4);
 
-        // before(n) should not invoke `func` after being called `n - 1` times
-        $test-before-count: 0 !global;
-        $test-before: _before(5, test-before-1);
+//         // before(n) should not invoke `func` after being called `n - 1` times
+//         $test-before-count: 0 !global;
+//         $test-before: _before(5, test-before-1);
 
-        $_: _call($test-before);
-        $_: _call($test-before);
-        $_: _call($test-before);
-        $_: _call($test-before);
-        $_: _call($test-before);
-        $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
 
-        @include should(expect($test-before-count), to(equal(4)));
+//         @include assert-equal($test-before-count, 4);
         
-        // before(0) should not invoke `func` immediately
-        $test-before-count: 0 !global;
-        $test-before: _before(0, test-before-1);
+//         // before(0) should not invoke `func` immediately
+//         $test-before-count: 0 !global;
+//         $test-before: _before(0, test-before-1);
 
-        @include should(expect($test-before-count), to(equal(0)));
+//         @include assert-equal($test-before-count, 0);
 
-        // before(0) should not invoke `func` when called
-        $test-before-count: 0 !global;
-        $test-before: _before(0, test-before-1);
+//         // before(0) should not invoke `func` when called
+//         $test-before-count: 0 !global;
+//         $test-before: _before(0, test-before-1);
 
-        $_: _call($test-before);
+//         $_: _call($test-before);
 
-        @include should(expect($test-before-count), to(equal(0)));
-    }
+//         @include assert-equal($test-before-count, 0);
+//     }
 
-    @include xit('should coerce non-finite n values to 0') {}
+//     @include xit('should coerce non-finite n values to 0') {}
 
-    @include it('should allow func as the first argument') {
-        $test-before-count: 0 !global;
+//     @include test('should allow func as the first argument') {
+//         $test-before-count: 0 !global;
 
-        $test-before: _before(test-before-1, 2);
+//         $test-before: _before(test-before-1, 2);
 
-        $_: _call($test-before);
-        $_: _call($test-before);
+//         $_: _call($test-before);
+//         $_: _call($test-before);
 
-        @include should(expect($test-before-count), to(equal(1)));
-    }
+//         @include assert-equal($test-before-count, 1);
+//     }
 
-    @include xit('should not set a this binding') {}
-}
+//     @include xit('should not set a this binding') {}
+// }
 
 @include xdescribe('_bind') {}
 
@@ -212,7 +212,7 @@ $test-before-count: 0 !global;
 
 @include xdescribe('_bind-key') {}
 
-@include describe('case methods') {
+@include test-module('case methods') {
     $strings: (
         'foo bar', 'Foo bar', 'foo Bar', 'Foo Bar',
         'FOO BAR', 'fooBar', '--foo-bar', '__foo_bar__'
@@ -228,21 +228,21 @@ $test-before-count: 0 !global;
     @each $case-name in ('camel' 'kebab' 'snake' 'start') {
         $method-name: '_' + $case-name + '-case';
         
-        @include it('should convert string to #{$case-name} case') {
+        @include test('should convert string to #{$case-name} case') {
             @each $string in $strings {
                 $actual: call($method-name, $string);
                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, get($converted, $case-name));
 
-                @include should(expect($actual), to(equal($expected)));
+                @include assert-equal($actual, $expected);
             }
         }
 
-        @include it('#{$method-name} should handle double-converting strings') {
+        @include test('#{$method-name} should handle double-converting strings') {
             @each $string in $strings {
                 $actual: call($method-name, call($method-name, $string));
                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, get($converted, $case-name));
 
-                @include should(expect($actual), to(equal($expected)));
+                @include assert-equal($actual, $expected);
             }
         }
 
@@ -252,402 +252,402 @@ $test-before-count: 0 !global;
 
         @include xit('#{$method-name} should coerce string to a string') {}
 
-        @include it('#{$method-name} should return an unwrapped value when chaining') {
+        @include test('#{$method-name} should return an unwrapped value when chaining') {
             $actual: _('foo bar', $case-name + '-case');
             $expected: get($converted, $case-name);
 
-            @include should(expect($actual), to(equal($expected)));
+            @include assert-equal($actual, $expected);
         }
     }
 }
 
 // @include xdescribe('_camel-case') {
-//     @include it('should work with numbers') {
-//         @include should(expect(_camel-case('too legit 2 quit')), to(equal('tooLegit2Quit')));
-//         @include should(expect(_camel-case('walk 500 miles')), to(equal('walk500Miles')));
-//         @include should(expect(_camel-case('xhr2 request')), to(equal('xhr2Request')));
+//     @include test('should work with numbers') {
+//         @include assert-equal(_camel-case('too legit 2 quit'), 'tooLegit2Quit');
+//         @include assert-equal(_camel-case('walk 500 miles'), 'walk500Miles');
+//         @include assert-equal(_camel-case('xhr2 request'), 'xhr2Request');
 //     }
 // }
 
-@include describe('_capitalize') {
-    @include it('should capitalize the first character of a string') {
-        @include should(expect(_capitalize('fred')), to(equal('Fred')));
-        @include should(expect(_capitalize('Fred')), to(equal('Fred')));
-        @include should(expect(_capitalize(' fred')), to(equal(' fred')));
-    }
+// @include test-module('_capitalize') {
+//     @include test('should capitalize the first character of a string') {
+//         @include assert-equal(_capitalize('fred'), 'Fred');
+//         @include assert-equal(_capitalize('Fred'), 'Fred');
+//         @include assert-equal(_capitalize(' fred'), ' fred');
+//     }
 
-    @include it('should return an unwrapped value when chaining') {
-        @include should(expect(_('fred', capitalize)), to(equal('Fred')));
-    }
-}
+//     @include test('should return an unwrapped value when chaining') {
+//         @include assert-equal(_('fred', capitalize), 'Fred');
+//     }
+// }
 
-@include describe('_chain') {
-    @include it('should return a wrapped value') {
-        $actual: _chain(('a': 0));
+// @include test-module('_chain') {
+//     @include test('should return a wrapped value') {
+//         $actual: _chain(('a': 0));
 
-        @include should(expect(instanceof($actual, SassdashWrapper)), to(be(true)));
-    }
+//         @include assert-equal(instanceof($actual, SassdashWrapper), true);
+//     }
 
-    @include it('should return existing wrapped values') {
-        $wrapped: _chain(('a': 0));
+//     @include test('should return existing wrapped values') {
+//         $wrapped: _chain(('a': 0));
 
-        @include should(expect(_chain($wrapped)), to(equal($wrapped)));
-        @include should(expect(_($wrapped, chain)), to(equal($wrapped)));
-    }
+//         @include assert-equal(_chain($wrapped), $wrapped);
+//         @include assert-equal(_($wrapped, chain), $wrapped);
+//     }
 
-    @include xit('should enable chaining of methods that return unwrapped values by default') {}
+//     @include xit('should enable chaining of methods that return unwrapped values by default') {}
 
-    @include xit('should chain multiple methods') {}
-}
+//     @include xit('should chain multiple methods') {}
+// }
 
-@include describe('_chunk') {
-    $list: (0 1 2 3 4 5);
+// @include test-module('_chunk') {
+//     $list: (0 1 2 3 4 5);
 
-    @include it('should return chunked arrays') {
-        $actual: _chunk($list, 3);
-        $expected: ((0 1 2) (3 4 5));
+//     @include test('should return chunked arrays') {
+//         $actual: _chunk($list, 3);
+//         $expected: ((0 1 2) (3 4 5));
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should return the last chunk as remaining elements') {
-        $actual: _chunk($list, 4);
-        $expected: ((0 1 2 3) (4 5));
+//     @include test('should return the last chunk as remaining elements') {
+//         $actual: _chunk($list, 4);
+//         $expected: ((0 1 2 3) (4 5));
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should ensure the minimum chunkSize is one') {
-        @each $value in append($test-falsey, -1) {        
-            $actual: _chunk($list, $value);
-            $expected: (0,) (1,) (2,) (3,) (4,) (5,);
+//     @include test('should ensure the minimum chunkSize is one') {
+//         @each $value in append($test-falsey, -1) {        
+//             $actual: _chunk($list, $value);
+//             $expected: (0,) (1,) (2,) (3,) (4,) (5,);
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should work as an iteratee for _map') {
-        $actual: _map(((1 2) (3 4)), _chunk);
-        $expected: (((1,) (2,)) ((3,) (4,)));
+//     @include test('should work as an iteratee for _map') {
+//         $actual: _map(((1 2) (3 4)), _chunk);
+//         $expected: (((1,) (2,)) ((3,) (4,)));
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
 @include xdescribe('_clone') {}
 
-@include describe('_compact') {
-    @include it('should filter falsey values') {
-        $list: join('0' '1' '2', $test-falsey);
-        $actual: _compact($list);
-        $expected: ('0' '1' '2');
+// @include test-module('_compact') {
+//     @include test('should filter falsey values') {
+//         $list: join('0' '1' '2', $test-falsey);
+//         $actual: _compact($list);
+//         $expected: ('0' '1' '2');
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should return a wrapped value when chaining') {}
+//     @include xit('should return a wrapped value when chaining') {}
 
-    @include it('should work when in between lazy operators') {
-        $actual: _($test-falsey, slice, compact, slice, value);
+//     @include test('should work when in between lazy operators') {
+//         $actual: _($test-falsey, slice, compact, slice, value);
 
-        @include should(expect(length($actual)), to(be(0)));
+//         @include assert-equal(length($actual), 0);
 
-        $actual: _($test-falsey, slice, push true 1, compact, push 'a', slice, value);
-        $expected: (true, 1, 'a');
+//         $actual: _($test-falsey, slice, push true 1, compact, push 'a', slice, value);
+//         $expected: (true, 1, 'a');
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@include describe('_flow-right') {
+@include test-module('_flow-right') {
     @include xit('should be aliased') {}
 }
 
-@include describe('flow methods') {
-    @each $method-name in ('flow', 'flow-right') {
-        $func: unquote('_#{$method-name}');
-        $is-flow: ($method-name == 'flow');
+// @include test-module('flow methods') {
+//     @each $method-name in ('flow', 'flow-right') {
+//         $func: unquote('_#{$method-name}');
+//         $is-flow: ($method-name == 'flow');
 
-        @include it('#{$func} should supply each function with the return value of the previous') {
-            $combined: if($is-flow, call($func, test-add, test-square, test-fixed), call($func, test-fixed, test-square, test-add));
+//         @include test('#{$func} should supply each function with the return value of the previous') {
+//             $combined: if($is-flow, call($func, test-add, test-square, test-fixed), call($func, test-fixed, test-square, test-add));
 
-            $actual: _call($combined, null, 1, 2);
-            $expected: 9.0;
+//             $actual: _call($combined, null, 1, 2);
+//             $expected: 9.0;
 
-            @include should(expect($actual), to(be($expected)));
-        }
+//             @include assert-equal($actual, $expected);
+//         }
 
-        @include it('#{$func} should return a new function') {
-            @include should(expect(_call($func, null, _noop)), not-to(equal(_noop)));
-        }
+//         @include test('#{$func} should return a new function') {
+//             @include should(expect(_call($func, null, _noop)), not-to(equal(_noop)));
+//         }
 
-        @include it('#{$func} should return a noop function when no arguments are provided') {
-            $combined: call($func);
+//         @include test('#{$func} should return a noop function when no arguments are provided') {
+//             $combined: call($func);
 
-            @include should(expect(_call($combined)), to(equal(_call(_noop))));
-        }
+//             @include assert-equal(_call($combined), _call(_noop));
+//         }
 
-        @include xit('#{$func} should return a wrapped value when chaining') {}
-    }
-}
+//         @include xit('#{$func} should return a wrapped value when chaining') {}
+//     }
+// }
 
-@include describe('_constant') {
-    @include it('should create a function that returns value') {
-        $constant: _constant(('a': 1));
-        $actual: _call($constant);
-        $expected: ('a': 1);
+// @include test-module('_constant') {
+//     @include test('should create a function that returns value') {
+//         $constant: _constant(('a': 1));
+//         $actual: _call($constant);
+//         $expected: ('a': 1);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with falsey values') {
-        @each $value in $test-falsey {        
-            $constant: _constant($value);
-            $actual: _call($constant);
-            $expected: $value;
+//     @include test('should work with falsey values') {
+//         @each $value in $test-falsey {        
+//             $constant: _constant($value);
+//             $actual: _call($constant);
+//             $expected: $value;
 
-            @include should(expect($actual), to(be($expected)));
-        }
+//             @include assert-equal($actual, $expected);
+//         }
 
-        $constant: _constant();
-        $actual: _call($constant);
-        $expected: null;
+//         $constant: _constant();
+//         $actual: _call($constant);
+//         $expected: null;
 
-        @include should(expect($actual), to(be($expected)));    
-    }
+//         @include assert-equal($actual, $expected);    
+//     }
 
-    @include xit('should return a wrapped value when chaining') {}
-}
+//     @include xit('should return a wrapped value when chaining') {}
+// }
 
-@function test-count-by-1($value, $args...) {
-    @return floor($value);
-}
-@function test-count-by-2($value, $args...) {
-    @return $value > 2;
-}
-@include describe('_count-by') {
-    $list: (4.2, 6.1, 6.4);
+// @function test-count-by-1($value, $args...) {
+//     @return floor($value);
+// }
+// @function test-count-by-2($value, $args...) {
+//     @return $value > 2;
+// }
+// @include test-module('_count-by') {
+//     $list: (4.2, 6.1, 6.4);
 
-    // @include it('should work with an iteratee') {
-    //     $actual: _count-by($list, test-count-by-1);
-    //     $expected: (4: 1, 6: 2);
+//     // @include test('should work with an iteratee') {
+//     //     $actual: _count-by($list, test-count-by-1);
+//     //     $expected: (4: 1, 6: 2);
 
-    //     @include should(expect($actual), to(equal($expected)));
-    // }
+//     //     @include assert-equal($actual, $expected);
+//     // }
 
-    // @include it('should use _identity when iteratee is null') {
-    //     $list: (4, 6, 6);
-    //     $actual: _count-by($list, null);
-    //     $expected: (4: 1, 6: 2);
+//     // @include test('should use _identity when iteratee is null') {
+//     //     $list: (4, 6, 6);
+//     //     $actual: _count-by($list, null);
+//     //     $expected: (4: 1, 6: 2);
 
-    //     @include should(expect($actual), to(be($expected)));
+//     //     @include assert-equal($actual, $expected);
 
-    //     $actual: _count-by($list);
+//     //     $actual: _count-by($list);
 
-    //     @include should(expect($actual), to(be($expected)));
-    // }
+//     //     @include assert-equal($actual, $expected);
+//     // }
 
-    // @include xit('should provide the correct iteratee arguments') {}
+//     // @include xit('should provide the correct iteratee arguments') {}
 
-    // @include xit('should support the this-arg argument') {}
+//     // @include xit('should support the this-arg argument') {}
 
-    // @include xit('should only add values to own, not inherited, properties') {}
+//     // @include xit('should only add values to own, not inherited, properties') {}
 
-    // @include it('should work with a _pluck style iteratee') {
-    //     $map: (
-    //         (a: 'one', len: 3),
-    //         (a: 'two', len: 3),
-    //         (a: 'three', len: 5),
-    //     );
-    //     $actual: _count-by($map, 'len');
-    //     $expected: (3: 2, 5: 1);
+//     // @include test('should work with a _pluck style iteratee') {
+//     //     $map: (
+//     //         (a: 'one', len: 3),
+//     //         (a: 'two', len: 3),
+//     //         (a: 'three', len: 5),
+//     //     );
+//     //     $actual: _count-by($map, 'len');
+//     //     $expected: (3: 2, 5: 1);
 
-    //     @include should(expect($actual), to(be($expected)));
-    // }
+//     //     @include assert-equal($actual, $expected);
+//     // }
 
-    @include xit('should work with a number for iteratee') {
-        // todo
-        $list: (1 'a', 2 'a', 2 'b');
-        $actual: _count-by($list, 1);
-        $expected: (1: 1, 2: 2);
+//     @include xit('should work with a number for iteratee') {
+//         // todo
+//         $list: (1 'a', 2 'a', 2 'b');
+//         $actual: _count-by($list, 1);
+//         $expected: (1: 1, 2: 2);
 
-        @debug $actual;
+//         @debug $actual;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with an object for collection') {
-        $actual: _count-by(('a': 4.2, 'b': 6.1, 'c': 6.4), test-count-by-1);
-        $expected: (4: 1, 6: 2);
+//     @include test('should work with an object for collection') {
+//         $actual: _count-by(('a': 4.2, 'b': 6.1, 'c': 6.4), test-count-by-1);
+//         $expected: (4: 1, 6: 2);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work in a lazy chain sequence') {
-        $list: (1 2 1 3);
-        $foo: _($list, count-by _identity, map double);
-        $actual: _($list, count-by _identity, map double, filter test-count-by-2, take);
-        $expected: (4,);
+//     @include test('should work in a lazy chain sequence') {
+//         $list: (1 2 1 3);
+//         $foo: _($list, count-by _identity, map double);
+//         $actual: _($list, count-by _identity, map double, filter test-count-by-2, take);
+//         $expected: (4,);
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
 @include xdescribe('_create') {}
 
-@function test-call-1() {
-    @return 'foo';
-}
-@function test-call-2() {
-    @return this('value');
-}
-@function test-call-3($value) {
-    @return this('value') + $value;
-}
-@include describe('_call') {
-    @include it('should be callable with only a function with no args') {
-        $actual: _call(test-call-1);
-        $expected: 'foo';
+// @function test-call-1() {
+//     @return 'foo';
+// }
+// @function test-call-2() {
+//     @return this('value');
+// }
+// @function test-call-3($value) {
+//     @return this('value') + $value;
+// }
+// @include test-module('_call') {
+//     @include test('should be callable with only a function with no args') {
+//         $actual: _call(test-call-1);
+//         $expected: 'foo';
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should call a function with no args and with a thisArg') {
-        $_: scope-start();
-        $_: scope-set('value', 'foobar');
-        $actual: _call(test-call-2, this());
-        $_: scope-end();
+//     @include test('should call a function with no args and with a thisArg') {
+//         $_: scope-start();
+//         $_: scope-set('value', 'foobar');
+//         $actual: _call(test-call-2, this());
+//         $_: scope-end();
 
-        $expected: 'foobar';
+//         $expected: 'foobar';
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should call a function with args and without a thisArg') {
-        $actual: _call(test-add, null, 1, 2);
-        $expected: 3;
+//     @include test('should call a function with args and without a thisArg') {
+//         $actual: _call(test-add, null, 1, 2);
+//         $expected: 3;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should call a function with args and with a thisArg') {
-        $value: 'second';
+//     @include test('should call a function with args and with a thisArg') {
+//         $value: 'second';
 
-        $_: scope-start();
-        $_: scope-set('value', 'first');
-        $actual: _call(test-call-3, this(), $value);
-        $_: scope-end();
+//         $_: scope-start();
+//         $_: scope-set('value', 'first');
+//         $actual: _call(test-call-3, this(), $value);
+//         $_: scope-end();
 
-        $expected: 'firstsecond';
+//         $expected: 'firstsecond';
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@function test-callback-1($args...) {
-    @return join((), $args);
-}
-@function test-callback-2($args...) {
-    $result: this('a');
-    $result: join(($result), $args);
+// @function test-callback-1($args...) {
+//     @return join((), $args);
+// }
+// @function test-callback-2($args...) {
+//     $result: this('a');
+//     $result: join(($result), $args);
 
-    @return $result;
-}
-@function test-callback-3($callback, $args...) {
-    @return _call($callback);
-}
-@function test-callback-4() {
-    @return false;
-}
-@include describe('_callback') {
-    @include it('should provide arguments to func') {
-        $callback: _callback(test-callback-1);
+//     @return $result;
+// }
+// @function test-callback-3($callback, $args...) {
+//     @return _call($callback);
+// }
+// @function test-callback-4() {
+//     @return false;
+// }
+// @include test-module('_callback') {
+//     @include test('should provide arguments to func') {
+//         $callback: _callback(test-callback-1);
 
-        $actual: _call($callback, null, 'a', 'b', 'c', 'd', 'e', 'f');
-        $expected: ('a', 'b', 'c', 'd', 'e', 'f');
+//         $actual: _call($callback, null, 'a', 'b', 'c', 'd', 'e', 'f');
+//         $expected: ('a', 'b', 'c', 'd', 'e', 'f');
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should return _identity when func is nullish') {
-        $actual: _call(_callback());
-        $expected: null;
+//     @include test('should return _identity when func is nullish') {
+//         $actual: _call(_callback());
+//         $expected: null;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _call(_callback(null));
-        $expected: null;
+//         $actual: _call(_callback(null));
+//         $expected: null;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should not error when func is nullish and a thisArg is provided') {
-        // todo
-    }
+//     @include xit('should not error when func is nullish and a thisArg is provided') {
+//         // todo
+//     }
 
-    @include xit('should create a callback with a falsey thisArg') {
-        // todo
-    }
+//     @include xit('should create a callback with a falsey thisArg') {
+//         // todo
+//     }
 
-    @include it('should return a callback created by _matches when func is an object') {
-        $callback: _callback(('a': 1));
-        $actual: _call($callback, null, ('a': 1, 'b': 2));
-        $expected: true;
+//     @include test('should return a callback created by _matches when func is an object') {
+//         $callback: _callback(('a': 1));
+//         $actual: _call($callback, null, ('a': 1, 'b': 2));
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should return a callback created by _property when func is a number or string') {
-        $list: ('a');
-        $callback: _callback(1);
-        $actual: _call($callback, null, $list);
-        $expected: 'a';
+//     @include test('should return a callback created by _property when func is a number or string') {
+//         $list: ('a');
+//         $callback: _callback(1);
+//         $actual: _call($callback, null, $list);
+//         $expected: 'a';
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $callback: _callback('first');
-        $actual: _call($callback, null, ('first': 'a'));
-        $expected: 'a';
+//         $callback: _callback('first');
+//         $actual: _call($callback, null, ('first': 'a'));
+//         $expected: 'a';
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should work with functions created by _partial and _partial-right') {
-        $_: scope-start();
-        $_: scope-set('a', 1);
-        $callback: _callback(test-callback-2, _partial(test-callback-2, 2), this());
-        $_: scope-end();
+//     @include xit('should work with functions created by _partial and _partial-right') {
+//         $_: scope-start();
+//         $_: scope-set('a', 1);
+//         $callback: _callback(test-callback-2, _partial(test-callback-2, 2), this());
+//         $_: scope-end();
 
-        $actual: _call($callback, null, 3);
-        $expected: (1 2 3);
+//         $actual: _call($callback, null, 3);
+//         $expected: (1 2 3);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should support binding built-in methods') {}
+//     @include xit('should support binding built-in methods') {}
 
-    @include it('should return the function provided when there is no this reference') {
-        $actual: _callback(test-add);
-        $expected: test-add;
+//     @include test('should return the function provided when there is no this reference') {
+//         $actual: _callback(test-add);
+//         $expected: test-add;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should work with bizarro _support-func-names') {
-        // not implemented
-    }
+//     @include xit('should work with bizarro _support-func-names') {
+//         // not implemented
+//     }
 
-    @include it('should work as an iteratee for _map') {
-        $fn: test-callback-4;
-        $list: ($fn $fn $fn);
-        $expected: _map($list, _constant(false));
-        $callbacks: _map($list, _callback);
+//     @include test('should work as an iteratee for _map') {
+//         $fn: test-callback-4;
+//         $list: ($fn $fn $fn);
+//         $expected: _map($list, _constant(false));
+//         $callbacks: _map($list, _callback);
 
-        $actual: _map($callbacks, test-callback-3);
+//         $actual: _map($callbacks, test-callback-3);
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
 @include xdescribe('custom _callback methods') {
     // $list: ('one' 'two' 'three');
@@ -662,796 +662,796 @@ $test-before-count: 0 !global;
     // );
 }
 
-@include xdescribe('_curry') {}
+// @include xdescribe('_curry') {}
 
-@include xdescribe('_curry-right') {}
+// @include xdescribe('_curry-right') {}
 
-@include xdescribe('curry methods') {}
+// @include xdescribe('curry methods') {}
 
-@include xdescribe('_debounce') {} // not implemented
+// @include xdescribe('_debounce') {} // not implemented
 
-@include xdescribe('_deburr') {} // todo
+// @include xdescribe('_deburr') {} // todo
 
-@include describe('_defaults') {
-    @include it('should assign properties of a source object if missing on the destination object') {
-        $value: ('a': 1);
-        $defaults: ('a': 2, 'b': 2);
-        $actual: _defaults($value, $defaults);
-        $expected: ('a': 1, 'b': 2);
+// @include test-module('_defaults') {
+//     @include test('should assign properties of a source object if missing on the destination object') {
+//         $value: ('a': 1);
+//         $defaults: ('a': 2, 'b': 2);
+//         $actual: _defaults($value, $defaults);
+//         $expected: ('a': 1, 'b': 2);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should accept multiple source objects') {
-        $expected: ('a': 1, 'b': 2, 'c': 3);
-        $actual: _defaults(('a': 1, 'b': 2), ('b': 3), ('c': 3));
+//     @include test('should accept multiple source objects') {
+//         $expected: ('a': 1, 'b': 2, 'c': 3);
+//         $actual: _defaults(('a': 1, 'b': 2), ('b': 3), ('c': 3));
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _defaults(('a': 1, 'b': 2), ('b': 3, 'c': 3), ('c': 2));
+//         $actual: _defaults(('a': 1, 'b': 2), ('b': 3, 'c': 3), ('c': 2));
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should not overwrite null values') {
-        $actual: _defaults(('a': null), ('a': 1));
+//     @include test('should not overwrite null values') {
+//         $actual: _defaults(('a': null), ('a': 1));
 
-        @include should(expect(get($actual, 'a')), to(be(null)));
-    }
+//         @include assert-equal(get($actual, 'a'), null);
+//     }
 
-    @include it('should overwrite undefined values') {
-        $actual: _defaults(('a': $__undefined__), ('a': 1));
+//     @include test('should overwrite undefined values') {
+//         $actual: _defaults(('a': $__undefined__), ('a': 1));
 
-        @include should(expect(get($actual, 'a')), to(be(1)));
-    }
-}
+//         @include assert-equal(get($actual, 'a'), 1);
+//     }
+// }
 
 @include xdescribe('_defer') {} // not implemented
 
 @include xdescribe('_delay') {} // not implemented
 
-@function test-difference-1($args...) {
-    @return $args;
-}
-@include describe('_difference') {
-    @include it('should return the difference of the given arrays') {
-        $actual: _difference(1 2 3 4 5, 5 2 10);
+// @function test-difference-1($args...) {
+//     @return $args;
+// }
+// @include test-module('_difference') {
+//     @include test('should return the difference of the given arrays') {
+//         $actual: _difference(1 2 3 4 5, 5 2 10);
 
-        @include should(expect($actual), to(be(1 3 4)));
+//         @include assert-equal($actual, 1 3 4);
 
-        $actual: _difference(1 2 3 4 5, 5 2 10, 8 4);
+//         $actual: _difference(1 2 3 4 5, 5 2 10, 8 4);
 
-        @include should(expect($actual), to(be(1 3)));
-    }
+//         @include assert-equal($actual, 1 3);
+//     }
 
-    @include xit('should match NaN') {} // not implemented
+//     @include xit('should match NaN') {} // not implemented
 
-    @include xit('should work with large arrays') {} // irrelevant
+//     @include xit('should work with large arrays') {} // irrelevant
 
-    @include xit('should work with large array of objects') {} // irrelevant
+//     @include xit('should work with large array of objects') {} // irrelevant
 
-    @include xit('should work with large arrays of NaN') {} // irrelevant
+//     @include xit('should work with large arrays of NaN') {} // irrelevant
 
-    @include it('should ignore values that are not arrays or arguments objects') {
-        $list: (0 1 null 3);
-        $args: test-difference-1(1, 2, 3);
+//     @include test('should ignore values that are not arrays or arguments objects') {
+//         $list: (0 1 null 3);
+//         $args: test-difference-1(1, 2, 3);
 
-        @include should(
-            expect(_difference($list, 3, null, ('0': 1))),
-            to(be($list)));
-        @include should(
-            expect(_difference(null, $list, null, 2 1)),
-            to(be(0 null 3)));
-        @include should(
-            expect(_difference(null, $list, null, $args)),
-            to(be(0 null)));
-    }
-}
+//         @include should(
+//             expect(_difference($list, 3, null, ('0': 1))),
+//             to(be($list)));
+//         @include should(
+//             expect(_difference(null, $list, null, 2 1)),
+//             to(be(0 null 3)));
+//         @include should(
+//             expect(_difference(null, $list, null, $args)),
+//             to(be(0 null)));
+//     }
+// }
 
-@function test-drop-1($value, $args...) {
-    @return $value > 2;
-}
-@include describe('_drop') {
-    $list: 1 2 3;
+// @function test-drop-1($value, $args...) {
+//     @return $value > 2;
+// }
+// @include test-module('_drop') {
+//     $list: 1 2 3;
 
-    @include it('should drop the first two elements') {
-        $actual: _drop($list, 2);
-        $expected: (3,);
+//     @include test('should drop the first two elements') {
+//         $actual: _drop($list, 2);
+//         $expected: (3,);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should treat falsey n values, except nullish, as \0') {
-        @each $value in $test-falsey {        
-            $actual: _drop($list, $value);
-            $expected: if($value == null, (2, 3), $list);
+//     @include test('should treat falsey n values, except nullish, as \0') {
+//         @each $value in $test-falsey {        
+//             $actual: _drop($list, $value);
+//             $expected: if($value == null, (2, 3), $list);
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should return all elements when n is less than one') {
-        @each $value in 0, -1, -9999 {
-            $actual: _drop($list, $value);
-            $expected: $list;
+//     @include test('should return all elements when n is less than one') {
+//         @each $value in 0, -1, -9999 {
+//             $actual: _drop($list, $value);
+//             $expected: $list;
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should return an empty list when n is greater than or equal to length of list') {
-        @each $value in 3, 4, pow(2, 32), 9999 {
-            $actual: _drop($list, $value);
-            $expected: ();
+//     @include test('should return an empty list when n is greater than or equal to length of list') {
+//         @each $value in 3, 4, pow(2, 32), 9999 {
+//             $actual: _drop($list, $value);
+//             $expected: ();
 
-            @include should(expect($actual), to(equal($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should work as an iteratee for _map') {
-        $list: (1 2 3, 4 5 6, 7 8 9);
-        $actual: _map($list, _drop);
-        $expected: (2 3, 5 6, 8 9);
+//     @include test('should work as an iteratee for _map') {
+//         $list: (1 2 3, 4 5 6, 7 8 9);
+//         $actual: _map($list, _drop);
+//         $expected: (2 3, 5 6, 8 9);
 
-        @include should(expect($actual), to(be($expected)));    
-    }
+//         @include assert-equal($actual, $expected);    
+//     }
 
-    @include xit('should return a wrapped value when chaining') {} // todo
+//     @include xit('should return a wrapped value when chaining') {} // todo
 
-    @include it('should work in a lazy chain sequence') {
-        $list: 1 2 3 4 5 6 7 8 9 10;
-        $predicate: test-drop-1;
+//     @include test('should work in a lazy chain sequence') {
+//         $list: 1 2 3 4 5 6 7 8 9 10;
+//         $predicate: test-drop-1;
 
-        $actual: _($list, drop 2, drop, value);
-        $expected: 4 5 6 7 8 9 10;
+//         $actual: _($list, drop 2, drop, value);
+//         $expected: 4 5 6 7 8 9 10;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _($list, filter $predicate, drop 2, drop, value);
-        $expected: 6 7 8 9 10;
+//         $actual: _($list, filter $predicate, drop 2, drop, value);
+//         $expected: 6 7 8 9 10;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop 2, drop-right, drop, drop-right 2, value);
-        $expected: 4 5 6 7;
+//         $actual: _($list, drop 2, drop-right, drop, drop-right 2, value);
+//         $expected: 4 5 6 7;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop, filter $predicate, drop 2, drop-right, drop, drop-right 2, value);
-        $expected: 6 7;
+//         $actual: _($list, drop, filter $predicate, drop 2, drop-right, drop, drop-right 2, value);
+//         $expected: 6 7;
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@function test-drop-right-1($value, $args...) {
-    @return $value < 9;
-}
-@include describe('_drop-right') {
-    $list: 1 2 3;
+// @function test-drop-right-1($value, $args...) {
+//     @return $value < 9;
+// }
+// @include test-module('_drop-right') {
+//     $list: 1 2 3;
 
-    @include it('should drop the first two elements') {
-        $actual: _drop-right($list, 2);
-        $expected: (1,);
+//     @include test('should drop the first two elements') {
+//         $actual: _drop-right($list, 2);
+//         $expected: (1,);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should treat falsey n values, except nullish, as zero') {
-        @each $value in $test-falsey {        
-            $actual: _drop-right($list, $value);
-            $expected: if($value == null, (1, 2), $list);
+//     @include test('should treat falsey n values, except nullish, as zero') {
+//         @each $value in $test-falsey {        
+//             $actual: _drop-right($list, $value);
+//             $expected: if($value == null, (1, 2), $list);
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should return all elements when n is less than one') {
-        @each $value in 0, -1, -9999 {
-            $actual: _drop-right($list, $value);
-            $expected: $list;
+//     @include test('should return all elements when n is less than one') {
+//         @each $value in 0, -1, -9999 {
+//             $actual: _drop-right($list, $value);
+//             $expected: $list;
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should return an empty list when n is greater than or equal to length of list') {
-        @each $value in 3, 4, pow(2, 32), 9999 {
-            $actual: _drop-right($list, $value);
-            $expected: ();
+//     @include test('should return an empty list when n is greater than or equal to length of list') {
+//         @each $value in 3, 4, pow(2, 32), 9999 {
+//             $actual: _drop-right($list, $value);
+//             $expected: ();
 
-            @include should(expect($actual), to(equal($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should work as an iteratee for _map') {
-        $list: (1 2 3, 4 5 6, 7 8 9);
-        $actual: _map($list, _drop-right);
-        $expected: (1 2, 4 5, 7 8);
+//     @include test('should work as an iteratee for _map') {
+//         $list: (1 2 3, 4 5 6, 7 8 9);
+//         $actual: _map($list, _drop-right);
+//         $expected: (1 2, 4 5, 7 8);
 
-        @include should(expect($actual), to(be($expected)));    
-    }
+//         @include assert-equal($actual, $expected);    
+//     }
 
-    @include xit('should return a wrapped value when chaining') {} // todo
+//     @include xit('should return a wrapped value when chaining') {} // todo
 
-    @include it('should work in a lazy chain sequence') {
-        $list: 1 2 3 4 5 6 7 8 9 10;
-        $predicate: test-drop-right-1;
+//     @include test('should work in a lazy chain sequence') {
+//         $list: 1 2 3 4 5 6 7 8 9 10;
+//         $predicate: test-drop-right-1;
 
-        $actual: _($list, drop-right 2, drop-right, value);
-        $expected: 1 2 3 4 5 6 7;
+//         $actual: _($list, drop-right 2, drop-right, value);
+//         $expected: 1 2 3 4 5 6 7;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _($list, filter $predicate, drop-right 2, drop-right, value);
-        $expected: 1 2 3 4 5;
+//         $actual: _($list, filter $predicate, drop-right 2, drop-right, value);
+//         $expected: 1 2 3 4 5;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop-right 2, drop, drop-right, drop 2, value);
-        $expected: 4 5 6 7;
+//         $actual: _($list, drop-right 2, drop, drop-right, drop 2, value);
+//         $expected: 4 5 6 7;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop-right, filter $predicate, drop-right 2, drop, drop-right, drop 2, value);
-        $expected: 4 5;
+//         $actual: _($list, drop-right, filter $predicate, drop-right 2, drop, drop-right, drop 2, value);
+//         $expected: 4 5;
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@function test-drop-right-while-1($value, $args...) {
-    @return $value > 1;
-}
-@function test-drop-right-while-2($num, $index, $args...) {
-    @debug this('list');
-    @return nth(this('list'), $index) > 1;
-}
-@include describe('_drop-right-while') {
-    $list: 1 2 3;
-    $maps: (
-        (a: 0, b: 0),
-        (a: 1, b: 1),
-        (a: 2, b: 2)
-    );
+// @function test-drop-right-while-1($value, $args...) {
+//     @return $value > 1;
+// }
+// @function test-drop-right-while-2($num, $index, $args...) {
+//     @debug this('list');
+//     @return nth(this('list'), $index) > 1;
+// }
+// @include test-module('_drop-right-while') {
+//     $list: 1 2 3;
+//     $maps: (
+//         (a: 0, b: 0),
+//         (a: 1, b: 1),
+//         (a: 2, b: 2)
+//     );
 
-    @include it('should drop elements while predicate returns truthy') {
-        $actual: _drop-right-while($list, test-drop-right-while-1);
-        $expected: (1,);
+//     @include test('should drop elements while predicate returns truthy') {
+//         $actual: _drop-right-while($list, test-drop-right-while-1);
+//         $expected: (1,);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should provide the correct predicate arguments') {} // todo
+//     @include xit('should provide the correct predicate arguments') {} // todo
 
-    @include it('should support the this-arg argument') {} // todo
+//     @include test('should support the this-arg argument') {} // todo
 
-    @include it('should work with a _pluck style predicate') {
-        $actual: _drop-right-while($maps, 'b');
-        $expected: _slice($maps, 0, 1);
+//     @include test('should work with a _pluck style predicate') {
+//         $actual: _drop-right-while($maps, 'b');
+//         $expected: _slice($maps, 0, 1);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with a _where style predicate') {
-        $actual: _drop-right-while($maps, ('b': 2));
-        $expected: _slice($maps, 0, 2);
+//     @include test('should work with a _where style predicate') {
+//         $actual: _drop-right-while($maps, ('b': 2));
+//         $expected: _slice($maps, 0, 2);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should return a wrapped value when chaining');
-}
+//     @include xit('should return a wrapped value when chaining');
+// }
 
-@function test-drop-while-1($num, $args...) {
-    @return $num < 3;
-}
-@include describe('_drop-while') {
-    $list: 1 2 3;
-    $maps: (
-        (a: 2, b: 2),
-        (a: 1, b: 1),
-        (a: 0, b: 0)
-    );
+// @function test-drop-while-1($num, $args...) {
+//     @return $num < 3;
+// }
+// @include test-module('_drop-while') {
+//     $list: 1 2 3;
+//     $maps: (
+//         (a: 2, b: 2),
+//         (a: 1, b: 1),
+//         (a: 0, b: 0)
+//     );
 
-    @include it('should drop elements while predicate returns truthy') {
-        $actual: _drop-while($list, test-drop-while-1);
-        $expected: (3,);
+//     @include test('should drop elements while predicate returns truthy') {
+//         $actual: _drop-while($list, test-drop-while-1);
+//         $expected: (3,);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should provide the correct predicate arguments') {} // todo
+//     @include xit('should provide the correct predicate arguments') {} // todo
 
-    @include it('should support the this-arg argument') {} // todo
+//     @include test('should support the this-arg argument') {} // todo
 
-    @include it('should work with a _pluck style predicate') {
-        $actual: _drop-while($maps, 'b');
-        $expected: _slice($maps, 2);
+//     @include test('should work with a _pluck style predicate') {
+//         $actual: _drop-while($maps, 'b');
+//         $expected: _slice($maps, 2);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with a _where style predicate') {
-        $actual: _drop-while($maps, ('b': 2));
-        $expected: _slice($maps, 1);
+//     @include test('should work with a _where style predicate') {
+//         $actual: _drop-while($maps, ('b': 2));
+//         $expected: _slice($maps, 1);
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should return a wrapped value when chaining');
-}
+//     @include xit('should return a wrapped value when chaining');
+// }
 
-@include describe('_ends-with') {
-    $string: 'abc';
+// @include test-module('_ends-with') {
+//     $string: 'abc';
 
-    @include it('should return true if a string ends with target') {
-        $actual: _ends-with($string, 'c');
-        $expected: true;
+//     @include test('should return true if a string ends with target') {
+//         $actual: _ends-with($string, 'c');
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should return false if a string does not end with target') {
-        $actual: _ends-with($string, 'b');
-        $expected: false;
+//     @include test('should return false if a string does not end with target') {
+//         $actual: _ends-with($string, 'b');
+//         $expected: false;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with a position argument') {
-        $actual: _ends-with($string, 'b', 2);
-        $expected: true;
+//     @include test('should work with a position argument') {
+//         $actual: _ends-with($string, 'b', 2);
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with position greater than or equal to string length') {
-        @each $position in 3, 5, 9999 {        
-            $actual: _ends-with($string, 'c', $position);
-            $expected: true;
+//     @include test('should work with position greater than or equal to string length') {
+//         @each $position in 3, 5, 9999 {        
+//             $actual: _ends-with($string, 'c', $position);
+//             $expected: true;
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should treat falsey position values, except undefined, as zero') {
-        @each $position in $test-falsey {        
-            $actual: _ends-with($string, if(__is-undefined($position), 'c', ''), $position);
-            $expected: true;
+//     @include test('should treat falsey position values, except undefined, as zero') {
+//         @each $position in $test-falsey {        
+//             $actual: _ends-with($string, if(__is-undefined($position), 'c', ''), $position);
+//             $expected: true;
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
 
-    @include it('should treate a negative position as zero') {
-        @each $position in -1, -3, -9999 {
-            @each $char in ('a', 'b', 'c') {            
-                $actual: _ends-with($string, $char, $position);
-                $expected: false;
+//     @include test('should treate a negative position as zero') {
+//         @each $position in -1, -3, -9999 {
+//             @each $char in ('a', 'b', 'c') {            
+//                 $actual: _ends-with($string, $char, $position);
+//                 $expected: false;
 
-                @include should(expect($actual), to(be($expected)));
-            }
-        }
-    }
+//                 @include assert-equal($actual, $expected);
+//             }
+//         }
+//     }
 
-    @include it('should return true when target is an empty string regardless of position') {
-        @each $position in -9999, -3, -1, 0, 1, 2, 3, 5, 9999 {        
-            $actual: _ends-with($string, '', $position);
-            $expected: true;
+//     @include test('should return true when target is an empty string regardless of position') {
+//         @each $position in -9999, -3, -1, 0, 1, 2, 3, 5, 9999 {        
+//             $actual: _ends-with($string, '', $position);
+//             $expected: true;
 
-            @include should(expect($actual), to(be($expected)));
-        }
-    }
-}
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
+// }
 
-@include describe('_escape') {
-    $escaped: '&amp;&lt;&gt;&quot;&#39;&#96;\/';
-    $unescaped: '&<>"' + "'`/";
+// @include test-module('_escape') {
+//     $escaped: '&amp;&lt;&gt;&quot;&#39;&#96;\/';
+//     $unescaped: '&<>"' + "'`/";
 
-    $escaped: $escaped + $escaped;
-    $unescaped: $unescaped + $unescaped;
+//     $escaped: $escaped + $escaped;
+//     $unescaped: $unescaped + $unescaped;
 
-    @include it('should escape values') {
-        $actual: _escape($unescaped);
-        $expected: $escaped;
+//     @include test('should escape values') {
+//         $actual: _escape($unescaped);
+//         $expected: $escaped;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should not escape the forward slash character') {
-        $actual: _escape('/');
-        $expected: '/';
+//     @include test('should not escape the forward slash character') {
+//         $actual: _escape('/');
+//         $expected: '/';
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should handle strings with nothing to escape') {
-        $actual: _escape('abc');
-        $expected: 'abc';
+//     @include test('should handle strings with nothing to escape') {
+//         $actual: _escape('abc');
+//         $expected: 'abc';
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should escape the same characters unescaped by _unescape') {
-        $actual: _escape(_unescape($escaped));
-        $expected: $escaped;
+//     @include test('should escape the same characters unescaped by _unescape') {
+//         $actual: _escape(_unescape($escaped));
+//         $expected: $escaped;
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@include xdescribe('_escape-reg-exp') {} // not implemented
+// @include xdescribe('_escape-reg-exp') {} // not implemented
 
-@include describe('_every') {
-    @include it('should return true for empty collections') {
-        $actual: _every((), _identity);
-        $expected: true;
+// @include test-module('_every') {
+//     @include test('should return true for empty collections') {
+//         $actual: _every((), _identity);
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should return true if predicate returns truthy for all elements in the collection') {
-        $actual: _every(true 1 'a', _identity);
-        $expected: true;
+//     @include test('should return true if predicate returns truthy for all elements in the collection') {
+//         $actual: _every(true 1 'a', _identity);
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should return false as soon as predicate returns falsey') {
-        $actual: _every(true null true, _identity);
-        $expected: false;
+//     @include test('should return false as soon as predicate returns falsey') {
+//         $actual: _every(true null true, _identity);
+//         $expected: false;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should work with collections of undefined values') {} // not implemented
+//     @include xit('should work with collections of undefined values') {} // not implemented
 
-    @include it('should work with a _pluck style predicate') {
-        $maps: (('a': 0, 'b': 1), ('a': 1, 'b': 2));
-        $actual: _every($maps, 'a');
-        $expected: false;
+//     @include test('should work with a _pluck style predicate') {
+//         $maps: (('a': 0, 'b': 1), ('a': 1, 'b': 2));
+//         $actual: _every($maps, 'a');
+//         $expected: false;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _every($maps, 'b');
-        $expected: true;
+//         $actual: _every($maps, 'b');
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should work with a _where style predicate') {
-        $maps: (('a': 0, 'b': 0), ('a': 0, 'b': 1));
-        $actual: _every($maps, ('a': 0));
-        $expected: true;
+//     @include test('should work with a _where style predicate') {
+//         $maps: (('a': 0, 'b': 0), ('a': 0, 'b': 1));
+//         $actual: _every($maps, ('a': 0));
+//         $expected: true;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _every($maps, ('b': 1));
-        $expected: false;
+//         $actual: _every($maps, ('b': 1));
+//         $expected: false;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should use _identity when predicate is nullish') {
-        $list: (0,);
+//     @include test('should use _identity when predicate is nullish') {
+//         $list: (0,);
 
-        $actual: _every($list, null);
-        $expected: false;
+//         $actual: _every($list, null);
+//         $expected: false;
 
-        @include should(expect($actual), to(be($expected)));
+//         @include assert-equal($actual, $expected);
 
-        $actual: _every($list);
-        $expected: false;
+//         $actual: _every($list);
+//         $expected: false;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include it('should be aliased') {
-        $list: 1 2 3;
-        $actual: _every($list);
-        $expected: _all($list);
+//     @include test('should be aliased') {
+//         $list: 1 2 3;
+//         $actual: _every($list);
+//         $expected: _all($list);
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@function test-describe-1($num, $args...) {
-    @return $num % 2;
-}
-@include describe('_filter') {
-    @include it('should return elements predicate returns truthy for') {
-        $actual: _filter(1 2 3, test-describe-1);
-        $expected: 1 3;
+// @function test-describe-1($num, $args...) {
+//     @return $num % 2;
+// }
+// @include test-module('_filter') {
+//     @include test('should return elements predicate returns truthy for') {
+//         $actual: _filter(1 2 3, test-describe-1);
+//         $expected: 1 3;
 
-        @include should(expect($actual), to(be($expected)));
-    }
+//         @include assert-equal($actual, $expected);
+//     }
 
-    @include xit('should iterate correctly over an object with numeric keys') {} //irrelevant
+//     @include xit('should iterate correctly over an object with numeric keys') {} //irrelevant
 
-    @include it('should be aliased') {
-        $actual: _select(1 2 3, test-describe-1);
-        $expected: _filter(1 2 3, test-describe-1);
+//     @include test('should be aliased') {
+//         $actual: _select(1 2 3, test-describe-1);
+//         $expected: _filter(1 2 3, test-describe-1);
 
-        @include should(expect($actual), to(be($expected)));
-    }
-}
+//         @include assert-equal($actual, $expected);
+//     }
+// }
 
-@function test-find-1($map, $args...) {
-    @return __is-truthy(get($map, 'a'));
-}
-@function test-find-2($map, $args...) {
-    @return get($map, 'a') == 3;
-}
-@function test-find-3($value, $args...) {
-    @return if(type-of($value) == 'number', $value < 3, false);
-}
-@function test-find-4($chr, $index, $args...) {
-    @return $index <= 2;
-}
-@each $method-name in 'find', 'find-last', 'find-index', 'find-last-index', 'find-key', 'find-last-key' {
-    @include describe('_#{$method-name}') {
-        $func: unquote('_#{$method-name}');
-
-        $maps: (
-            ('a': 0, 'b': 0),
-            ('a': 1, 'b': 1),
-            ('a': 2, 'b': 2),
-        );
-
-        $expected-values: get((
-            'find': nth($maps, 2) $__undefined__ nth($maps, 3) nth($maps, 2),
-            'find-last': nth($maps, 3) $__undefined__ nth($maps, 3) nth($maps, 3),
-            'find-index': 2 -1 3 2,
-            'find-last-index': 3 -1 3 3,
-            'find-key': 2 null 3 2,
-            'find-last-key': 3 null 3 3
-        ), $method-name);
-
-        @include it('should return the correct value') {
-            $actual: _call($func, null, $maps, test-find-1);
-            $expected: nth($expected-values, 1);
-
-            @include should(expect($actual), to(be($expected)));
-        }
-
-        @include xit('should work with a this-arg') {} // todo
-
-        @include it('should return expected value if value is not found') {
-            $actual: _call($func, null, $maps, test-find-2);
-            $expected: nth($expected-values, 2);
-
-            @include should(expect($actual), to(be($expected)));
-        }
-
-        @include it('should work with a _pluck style predicate') {
-            $actual: _call($func, null, $maps, 'b');
-            $expected: nth($expected-values, 4);
-
-            @include should(expect($actual), to(be($expected))); 
-        }
-
-        @include it('should work with a _where style predicate') {
-            $actual: _call($func, null, $maps, ('b': 2));
-            $expected: nth($expected-values, 3);
-
-            @include should(expect($actual), to(be($expected))); 
-        }
-
-        @include it('should return expected value for empty collections') {
-            $actual: _call($func, null, (), ('a': 3));
-            $expected: nth($expected-values, 2);
-
-            @include should(expect($actual), to(be($expected))); 
-        }
-
-        @include it('should work with an object for collection') {
-            $actual: _call($func, null, ('a': 1, 'b': 2, 'c': 3), test-find-3);
-            $expected: get((
-                'find': 1,
-                'find-last': 2,
-                'find-key': 'a',
-                'find-last-key': 'b'
-            ), $method-name);
-
-            @if ($expected != null) {
-                @include should(expect($actual), to(be($expected))); 
-            }
-        }
-
-        @include it('should work with a string for collection') {
-            $actual: _call($func, null, 'abc', test-find-4);
-            $expected: get((
-                'find': 'a',
-                'find-last': 'b',
-                'find-index': 1,
-                'find-last-index': 1
-            ), $method-name);
-
-            @if ($expected != null) {
-                @include should(expect($actual), to(be($expected))); 
-            }
-        }
-
-        @if ($method-name == 'find') {
-            @include it('should be aliased') {
-                $actual: _detect(1 2 3, test-is-even);
-                $expected: _find(1 2 3, test-is-even);
-
-                @include should(expect($actual), to(be($expected))); 
-            }
-        }
-    }
-}
-
-@include describe('_find-where') {
-    $maps: (
-        ('a': 1),
-        ('a': 1),
-        ('a': 1, 'b': 2),
-        ('a': 2, 'b': 2),
-        ('a': 3),
-    );
-
-    @include it('should filter by source properties') {
-        @include should(
-            expect(_find-where($maps, ('a': 1))),
-            to(be(nth($maps, 1))));
-        @include should(
-            expect(_find-where($maps, ('a': 2))),
-            to(be(nth($maps, 4))));
-        @include should(
-            expect(_find-where($maps, ('a': 3))),
-            to(be(nth($maps, 5))));
-        @include should(
-            expect(_find-where($maps, ('b': 1))),
-            to(be($__undefined__)));
-        @include should(
-            expect(_find-where($maps, ('b': 2))),
-            to(be(nth($maps, 3))));
-        @include should(
-            expect(_find-where($maps, ('a': 1, 'b': 2))),
-            to(be(nth($maps, 3))));
-    }
-
-    @include xit('should work with a function for source') {} // not applicable
-
-    @include it('should match all elements when provided an empty source') {
-        $actual: _find-where($maps, ());
-        $expected: nth($maps, 1);
-
-        @include should(expect($actual), to(be($expected)));
-    }
-}
-
-@include describe('_first') {
-    $list: 1 2 3;
-
-    @include it('should return the first element') {
-        $actual: _first($list);
-        $expected: 1;
-
-        @include should(expect($actual), to(be($expected)));
-    }
-
-    @include it('should return undefined when querying empty arrays') {
-        $actual: _first(());
-        $expected: $__undefined__;
-
-        @include should(expect($actual), to(be($expected)));
-    }
-
-    @include it('should work as an iteratee for _map') {
-        $list: (1 2 3, 4 5 6, 7 8 9);
-        $actual: _map($list, _first);
-        $expected: 1 4 7;
-
-        @include should(expect($actual), to(be($expected)));
-    }
-
-    @include xit('should return an unwrapped value for chaining') {} // todo
-
-    @include it('should work in a lazy chain sequence') {
-        $list: 1 2 3 4;
-        $actual: _($list, filter test-is-even, first);
-        $expected: 2;
-
-        @include should(expect($actual), to(be($expected)));
-    }
-
-    @include it('should be aliased') {
-        $actual: _head($list);
-        $expected: _first($list);
-
-        @include should(expect($actual), to(be($expected)));
-    }
-}
-
-@function test-take-1($value, $args...) {
-    @return $value > 2;
-}
-@include describe('_take') {
-    $list: 1 2 3;
-
-    @include it('should take the first two elements') {
-        $actual: _take($list, 2);
-        $expected: 1 2;
-
-        @include should(expect($actual), to(be($expected)));
-    }
-
-    @include it('should treat falsey n values, except nullish, as zero') {
-        @each $value in $test-falsey {        
-            $actual: _take($list, $value);
-            $expected: if($value == null, (1,), ());
-
-            @if $value == null {
-                @include should(expect($actual), to(equal($expected)));
-            } @else {
-                @include should(expect($actual), to(equal($expected)));
-            }
-        }
-    }
-
-    @include it('should return an empty list when n is less than one') {
-        @each $value in 0, -1, -9999 {        
-            $actual: _take($list, $value);
-            $expected: ();
-
-            @include should(expect($actual), to(equal($expected)));
-        }
-    }
-
-    @include it('should return all elements when n is greater than list length') {
-        @each $value in 3, 4, pow(2, 32), 9999 {        
-            $actual: _take($list, $value);
-            $expected: $list;
-
-            @include should(expect($actual), to(equal($expected)));
-        }
-    }
-
-    @include it('should work as an iteratee for _map') {
-        $list: (1 2 3, 4 5 6, 7 8 9);
-        $actual: _map($list, _take);
-        $expected: ((1,), (4,), (7,));
-
-        @include should(expect($actual), to(be($expected)));
-    }
-
-    @include xit('should return a wrapped value when chaining') {} // todo
-
-    @include it('should work in a lazy chain sequence') {
-        $list: 1 2 3 4 5 6 7 8 9 10;
-
-        $actual: _($list, take 2, take, value);
-        $expected: (1,);
-
-        @include should(expect($actual), to(be($expected)));
-
-        $actual: _($list, filter test-take-1, take 2, take, value);
-        $expected: (3,);
-
-        @include should(expect($actual), to(be($expected)));
-
-        $actual: _($list, take 6, take-right 4, take 2, take-right, value);
-        $expected: (4,);
-
-        @include should(expect($actual), to(be($expected)));
-
-        $actual: _($list, take (length($list) - 1), filter test-take-1, take 6, take-right 4, take 2, take-right, value);
-        $expected: (6,);
-
-        @include should(expect($actual), to(be($expected)));
-    }
-}
-
-@include describe('a') {
-    @include it('a') {
+// @function test-find-1($map, $args...) {
+//     @return __is-truthy(get($map, 'a'));
+// }
+// @function test-find-2($map, $args...) {
+//     @return get($map, 'a') == 3;
+// }
+// @function test-find-3($value, $args...) {
+//     @return if(type-of($value) == 'number', $value < 3, false);
+// }
+// @function test-find-4($chr, $index, $args...) {
+//     @return $index <= 2;
+// }
+// @each $method-name in 'find', 'find-last', 'find-index', 'find-last-index', 'find-key', 'find-last-key' {
+//     @include test-module('_#{$method-name}') {
+//         $func: unquote('_#{$method-name}');
+
+//         $maps: (
+//             ('a': 0, 'b': 0),
+//             ('a': 1, 'b': 1),
+//             ('a': 2, 'b': 2),
+//         );
+
+//         $expected-values: get((
+//             'find': nth($maps, 2) $__undefined__ nth($maps, 3) nth($maps, 2),
+//             'find-last': nth($maps, 3) $__undefined__ nth($maps, 3) nth($maps, 3),
+//             'find-index': 2 -1 3 2,
+//             'find-last-index': 3 -1 3 3,
+//             'find-key': 2 null 3 2,
+//             'find-last-key': 3 null 3 3
+//         ), $method-name);
+
+//         @include test('should return the correct value') {
+//             $actual: _call($func, null, $maps, test-find-1);
+//             $expected: nth($expected-values, 1);
+
+//             @include assert-equal($actual, $expected);
+//         }
+
+//         @include xit('should work with a this-arg') {} // todo
+
+//         @include test('should return expected value if value is not found') {
+//             $actual: _call($func, null, $maps, test-find-2);
+//             $expected: nth($expected-values, 2);
+
+//             @include assert-equal($actual, $expected);
+//         }
+
+//         @include test('should work with a _pluck style predicate') {
+//             $actual: _call($func, null, $maps, 'b');
+//             $expected: nth($expected-values, 4);
+
+//             @include assert-equal($actual, $expected); 
+//         }
+
+//         @include test('should work with a _where style predicate') {
+//             $actual: _call($func, null, $maps, ('b': 2));
+//             $expected: nth($expected-values, 3);
+
+//             @include assert-equal($actual, $expected); 
+//         }
+
+//         @include test('should return expected value for empty collections') {
+//             $actual: _call($func, null, (), ('a': 3));
+//             $expected: nth($expected-values, 2);
+
+//             @include assert-equal($actual, $expected); 
+//         }
+
+//         @include test('should work with an object for collection') {
+//             $actual: _call($func, null, ('a': 1, 'b': 2, 'c': 3), test-find-3);
+//             $expected: get((
+//                 'find': 1,
+//                 'find-last': 2,
+//                 'find-key': 'a',
+//                 'find-last-key': 'b'
+//             ), $method-name);
+
+//             @if ($expected != null) {
+//                 @include assert-equal($actual, $expected); 
+//             }
+//         }
+
+//         @include test('should work with a string for collection') {
+//             $actual: _call($func, null, 'abc', test-find-4);
+//             $expected: get((
+//                 'find': 'a',
+//                 'find-last': 'b',
+//                 'find-index': 1,
+//                 'find-last-index': 1
+//             ), $method-name);
+
+//             @if ($expected != null) {
+//                 @include assert-equal($actual, $expected); 
+//             }
+//         }
+
+//         @if ($method-name == 'find') {
+//             @include test('should be aliased') {
+//                 $actual: _detect(1 2 3, test-is-even);
+//                 $expected: _find(1 2 3, test-is-even);
+
+//                 @include assert-equal($actual, $expected); 
+//             }
+//         }
+//     }
+// }
+
+// @include test-module('_find-where') {
+//     $maps: (
+//         ('a': 1),
+//         ('a': 1),
+//         ('a': 1, 'b': 2),
+//         ('a': 2, 'b': 2),
+//         ('a': 3),
+//     );
+
+//     @include test('should filter by source properties') {
+//         @include should(
+//             expect(_find-where($maps, ('a': 1))),
+//             to(be(nth($maps, 1))));
+//         @include should(
+//             expect(_find-where($maps, ('a': 2))),
+//             to(be(nth($maps, 4))));
+//         @include should(
+//             expect(_find-where($maps, ('a': 3))),
+//             to(be(nth($maps, 5))));
+//         @include should(
+//             expect(_find-where($maps, ('b': 1))),
+//             to(be($__undefined__)));
+//         @include should(
+//             expect(_find-where($maps, ('b': 2))),
+//             to(be(nth($maps, 3))));
+//         @include should(
+//             expect(_find-where($maps, ('a': 1, 'b': 2))),
+//             to(be(nth($maps, 3))));
+//     }
+
+//     @include xit('should work with a function for source') {} // not applicable
+
+//     @include test('should match all elements when provided an empty source') {
+//         $actual: _find-where($maps, ());
+//         $expected: nth($maps, 1);
+
+//         @include assert-equal($actual, $expected);
+//     }
+// }
+
+// @include test-module('_first') {
+//     $list: 1 2 3;
+
+//     @include test('should return the first element') {
+//         $actual: _first($list);
+//         $expected: 1;
+
+//         @include assert-equal($actual, $expected);
+//     }
+
+//     @include test('should return undefined when querying empty arrays') {
+//         $actual: _first(());
+//         $expected: $__undefined__;
+
+//         @include assert-equal($actual, $expected);
+//     }
+
+//     @include test('should work as an iteratee for _map') {
+//         $list: (1 2 3, 4 5 6, 7 8 9);
+//         $actual: _map($list, _first);
+//         $expected: 1 4 7;
+
+//         @include assert-equal($actual, $expected);
+//     }
+
+//     @include xit('should return an unwrapped value for chaining') {} // todo
+
+//     @include test('should work in a lazy chain sequence') {
+//         $list: 1 2 3 4;
+//         $actual: _($list, filter test-is-even, first);
+//         $expected: 2;
+
+//         @include assert-equal($actual, $expected);
+//     }
+
+//     @include test('should be aliased') {
+//         $actual: _head($list);
+//         $expected: _first($list);
+
+//         @include assert-equal($actual, $expected);
+//     }
+// }
+
+// @function test-take-1($value, $args...) {
+//     @return $value > 2;
+// }
+// @include test-module('_take') {
+//     $list: 1 2 3;
+
+//     @include test('should take the first two elements') {
+//         $actual: _take($list, 2);
+//         $expected: 1 2;
+
+//         @include assert-equal($actual, $expected);
+//     }
+
+//     @include test('should treat falsey n values, except nullish, as zero') {
+//         @each $value in $test-falsey {        
+//             $actual: _take($list, $value);
+//             $expected: if($value == null, (1,), ());
+
+//             @if $value == null {
+//                 @include assert-equal($actual, $expected);
+//             } @else {
+//                 @include assert-equal($actual, $expected);
+//             }
+//         }
+//     }
+
+//     @include test('should return an empty list when n is less than one') {
+//         @each $value in 0, -1, -9999 {        
+//             $actual: _take($list, $value);
+//             $expected: ();
+
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
+
+//     @include test('should return all elements when n is greater than list length') {
+//         @each $value in 3, 4, pow(2, 32), 9999 {        
+//             $actual: _take($list, $value);
+//             $expected: $list;
+
+//             @include assert-equal($actual, $expected);
+//         }
+//     }
+
+//     @include test('should work as an iteratee for _map') {
+//         $list: (1 2 3, 4 5 6, 7 8 9);
+//         $actual: _map($list, _take);
+//         $expected: ((1,), (4,), (7,));
+
+//         @include assert-equal($actual, $expected);
+//     }
+
+//     @include xit('should return a wrapped value when chaining') {} // todo
+
+//     @include test('should work in a lazy chain sequence') {
+//         $list: 1 2 3 4 5 6 7 8 9 10;
+
+//         $actual: _($list, take 2, take, value);
+//         $expected: (1,);
+
+//         @include assert-equal($actual, $expected);
+
+//         $actual: _($list, filter test-take-1, take 2, take, value);
+//         $expected: (3,);
+
+//         @include assert-equal($actual, $expected);
+
+//         $actual: _($list, take 6, take-right 4, take 2, take-right, value);
+//         $expected: (4,);
+
+//         @include assert-equal($actual, $expected);
+
+//         $actual: _($list, take (length($list) - 1), filter test-take-1, take 6, take-right 4, take 2, take-right, value);
+//         $expected: (6,);
+
+//         @include assert-equal($actual, $expected);
+//     }
+// }
+
+@include test-module('a') {
+    @include test('a') {
         $actual: null;
         $expected: null;
 
-        @include should(expect($actual), to(be($expected)));
+        @include assert-equal($actual, $expected);
     }
 }
 

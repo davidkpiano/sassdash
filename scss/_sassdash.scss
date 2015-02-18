@@ -2841,7 +2841,7 @@ $users: (
     @while ($index <= $length) {
         $list: nth($arguments, $index);
 
-        @if (__is-list($list) or __is-arguments($list)) {
+        @if (__is-list-like($list)) {
             $result: if($result,
                 join(__base-difference($result, $list), __base-difference($list, $result)),
                 $list);

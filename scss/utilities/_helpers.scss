@@ -3,7 +3,7 @@
 }
 
 
-@function __list-reverse($list) {
+@function __list-reverse($list, $args...) {
     $length: length($list);
     $result-list: ();
     $index: $length;
@@ -16,6 +16,21 @@
     @return $result-list;
 }
 
+@function __str-reverse($string, $args...) {
+    $string-list: __to-list($string);
+
+    $result: __list-reverse($string-list);
+
+    @return __join($result, '');
+}
+
+@function __reverse($value, $args...) {
+    @if __is-string($value) {
+        @return __str-reverse($value);
+    }
+
+    @return __list-reverse($value);
+}
 
 @function pow($number, $exp) {
     $value: 1;
@@ -254,15 +269,53 @@
     @return round($value * pow(10, $digits)) / pow(10, $digits);
 }
 
-@function __string-join($list, $separator: '') {
+@function __list-join($list, $separator: '') {
     $length: length($list);
     $result: nth($list, 1);
 
     @if $length > 1 {
         @for $index from 2 through $length {
-            $result: $result + nth($list, $index);
+            $result: $result + $separator + nth($list, $index);
         }
     }
 
     @return $result;
+}
+
+@function __str-concat($source, $args...) {
+    @if __is-iteratee-call($args...) {
+        $args: nth($args, 1);
+    }
+
+    $source: __to-string($source);
+
+    @each $string in $args {
+        $source: $source + $string;
+    }
+
+    @return $source;
+}
+
+@function __concat($source, $args...) {
+    $separator: list-separator($source);
+
+    $source: if(not __is-list-like($source), ($source,), $source);
+
+    @each $list in $args {
+        $source: join($source, $list, $separator);
+    }
+
+    @return $source;
+}
+
+@function __join($list, $separator: '', $guard: null) {
+    @if __is-iteratee-call($list, $separator, $guard) {
+        $separator: '';
+    }
+
+    @if __is-list-like($separator) {
+        @return join($list, $separator);
+    }
+    
+    @return __list-join($list, $separator);
 }

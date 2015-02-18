@@ -2087,7 +2087,7 @@ $users: (
     @return function-exists($function);
 }
 
-@function __is-iteratee-call($value, $index, $map) {
+@function __is-iteratee-call($value: null, $index: null, $map: null) {
     @if not (__is-map-like($map)) {
         @return false;
     }
@@ -5063,6 +5063,12 @@ $users: (
 @function _to-string($args...) { @return call(__to-string, $args...); }
 @function _value($args...) { @return call(__value, $args...); }
 @function _either($args...) { @return call(__either, $args...); }
+@function _concat($args...) { @return call(__concat, $args...); }
+@function _str-concat($args...) { @return call(__str-concat, $args...); }
+@function _join($args...) { @return call(__join, $args...); }
+@function _reverse($args...) { @return call(__reverse, $args...); }
+@function _str-reverse($args...) { @return call(__str-reverse, $args...); }
+
 
 
 // Sassdash pseudo-chainable wrapper-value function.

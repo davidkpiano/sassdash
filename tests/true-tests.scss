@@ -1823,11 +1823,42 @@ $test-empty-list: ();
   }
 }
 
-// @include test-module('Sassdash') {
-//   @include test('_shuffle') {
-    
-//   }
-// }
+@include test-module('Sassdash') {
+  @include test('_zip methods') {
+    @each $method-name in 'unzip', 'zip' {
+      $func: unquote('_#{$method-name}');
+      $is-zip: $method-name == 'zip';
+
+      $map: (
+        'an empty array': (
+          (),
+          ()
+        ),
+        '0-tuples': (
+          ((), ()),
+          ()
+        ),
+        '2-tuples': (
+          (('barney', 'fred'), (36, 40)),
+          (('barney', 36), ('fred', 40))
+        ),
+        '3-tuples': (
+          (('barney', 'fred'), (36, 40), (true, false)),
+          (('barney', 36, true), ('fred', 40, false))
+        )
+      );
+
+      @each $key, $pair in $map {
+        $lists: if($is-zip, nth($pair, 1), nth($pair, 2));
+        $actual: if($is-zip, _call($func, null, $lists...), _call($func, null, $lists));
+        $expected: if($is-zip, nth($pair, 2), if(length($actual) == 0, (), nth($pair, 1)));
+
+        @include assert-equal($actual, $expected,
+          '#{$func} should work with #{$key}');
+      }
+    }
+  }
+}
 
 // @include test-module('Sassdash') {
 //   @include test('_shuffle') {

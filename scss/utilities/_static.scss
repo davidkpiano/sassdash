@@ -39,7 +39,7 @@ $__this__: () !global;
 
         $map: nth($map, $index);
     } @else {
-        $map: map-get($map, unquote(nth($properties, 1)));
+        $map: map-get($map, nth($properties, 1));
     }
 
     $properties: pop($properties);

@@ -4671,13 +4671,18 @@ $users: (
     $temp: '';
 
     $lowercase-letters: 'abcdefghijklmnopqrstuvwxyz';
-    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
     @for $index from 1 through str-length($string) {
-        $letter: str-slice($string, $index, $index);
+        $letter: __char-at($string, $index);
+        $letter-prev: __char-at($string, $index - 1);
+        $letter-next: __char-at($string, $index + 1);
 
-        // TODO fix and remove to-lower-case
-        @if not (str-index($lowercase-letters, $letter)) {
+        @if not (str-index($lowercase-letters, $letter))
+            and not (
+                str-index($uppercase-letters, $letter-prev)
+                and str-index($uppercase-letters, $letter-next)
+            ) {
             @if (str-length($temp) > 0) {
                 $result: append($result, $temp);
                 $temp: '';

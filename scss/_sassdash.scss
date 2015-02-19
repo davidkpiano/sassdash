@@ -73,6 +73,10 @@
     $length: length($list);
     $index: $from-index;
 
+    @if __is-falsey($index) {
+        $index: 1;
+    }
+
     @while $index <= $length {
         @if (nth($list, $index) == $value) {
             @return $index;
@@ -1964,7 +1968,7 @@ $users: (
     $result: scope(result);
 
     $current: __call($iteratee, null, $value, $index, $collection);
-    
+
     @if (if($is-min, $current < $computed, $current > $computed))
         or ($current == $ex-value and $current == $result)
     {
@@ -2491,8 +2495,8 @@ $users: (
         @return -1;
     }
 
-    @if (type-of($from-index) == 'number') {
-        $from-index: if($from-index < 0, __native-max($length + $from-index, 0), $from-index);
+    @if __is-number($from-index) {
+        $from-index: if($from-index < 0, max($length + $from-index, 0), $from-index);
     } @else if not (__is-falsey($from-index)) {
         $index: __binary-index($list, $value);
         $other: nth($list, $index);

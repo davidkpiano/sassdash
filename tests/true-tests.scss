@@ -1771,6 +1771,53 @@ $test-before-count: 0 !global;
   }
 }
 
+@function TestHas($a) {
+  @return ('a': $a);
+}
+@include test-module('_has') {
+  @include test('should check for own properties') {
+    $map: ('a': 1);
+
+    @include assert-equal(_has($map, 'a'), true);
+    @include assert-equal(_has($map, 'b'), false);
+  }
+
+  @include test('should not check for inherited properties') {
+    $map: new(TestHas, ('a': 1));
+
+    @include assert-equal(_has($map, '_type'), false);
+    @include assert-equal(_has($map, 'a'), true);
+  }
+
+  @include test('should return false for non-maps') {
+    @each $value in join($test-falsey, true 1 'a') {
+      @include assert-equal(_has($value, 'a'), false);
+    }
+  }
+}
+
+@include test-module('_identity') {
+  @include test('should return the first argument provided') {
+    $map: ('name': 'fred');
+
+    @include assert-equal(_identity($map), $map);
+  }
+}
+
+@include test-module('_includes') {
+  $map: ('a': 1, 'b': 2, 'c': 3, 'd': 4);
+
+  @each $item in ('an arglist': test-args(1, 2, 3)), ('a list': 1 2 3 4), ('a map': $map), ('a string': '1234') {
+    @each $key, $collection in $item {    
+      $values: __to-list($collection);
+
+      @include test('should work with #{$key} and return true for matched values') {
+        @include assert-equal(_includes($collection, if($key == 'a string', '3', 3)), true);
+      }
+    }
+  }
+}
+
 // @include test-module('Sassdash') {
 //   @include test('_merge') {
 //     $names: (

@@ -3917,7 +3917,7 @@ $users: (
         @return $result;
     }
 
-    @return if(__is-list($value), $value, ());
+    @return if(__is-list-like($value), join((), $value), ());
 }
 // @debug __to-list('abcde');
 // @debug __to-list($users);
@@ -4047,7 +4047,15 @@ $users: (
 // @debug __functions((1: length, 2: str-length, 3: __identity, 4: bogus));
 
 @function __has($map, $key) {
-    @return if($map, map-has-key($map, $key), false);
+    $skip-keys: ('_type', '_constructor', '_extends', '_prototype');
+
+    @if __is-map($map) {    
+        $map: __omit($map, $skip-keys);
+
+        @return if(__is-map($map), map-has-key($map, $key), false);
+    }
+
+    @return false;
 }
 // @debug __has((foo: bar, baz: quo), 'foo');
 

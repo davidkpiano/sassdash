@@ -1104,8 +1104,6 @@ $users: (
     $length: length($props);
     $result: null;
 
-    @debug $map, $props, $values;
-
     @if ($map == null) {
         @return if($length == 0 or $length == null, false, true);
     }
@@ -2971,7 +2969,21 @@ $users: (
 
 // @debug __at((a b c d e f g), 1, 3, 5);
 
-@function __includes($collection, $target, $from-index: 1) {
+@function __includes($collection, $target: null, $from-index: 1) {
+    @if __is-string($collection) {
+        @if not __is-number($from-index)
+            or -$from-index >= str-length($collection) {
+            $from-index: 0;
+        } @else if $from-index < 0 {
+            $from-index: str-length($collection) + $from-index;
+        }
+
+
+        $collection: str-slice($collection, $from-index);
+
+        @return if(str-index($collection, __to-string($target)), true, false);
+    }
+
     $collection: __to-list($collection);
 
     $length: if($collection, length($collection), 0);
@@ -2985,15 +2997,13 @@ $users: (
         @return false;
     }
 
-    @if (type-of($from-index) == 'number') {
-        $from-index: if($from-index < 0, __native-max($length + $from-index, 0), $from-index);
+    @if __is-number($from-index) {
+        $from-index: if($from-index <= 0, __native-max($length + $from-index, 1), $from-index);
     } @else {
-        $from-index: 0;
+        $from-index: 1;
     }
 
-    @return if(type-of($collection) == 'string' or not __is-list($collection) and __is-string($collection),
-        ($from-index < $length and __index-of($collection, $target, $from-index) > 1),
-        (__get-index-of($collection, $target, $from-index) > -1));
+    @return __get-index-of($collection, $target, $from-index) > -1;
 }
 
 // @debug __includes((a b c d e f g), d, 4);

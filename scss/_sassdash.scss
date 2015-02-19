@@ -1964,7 +1964,7 @@ $users: (
     $result: scope(result);
 
     $current: __call($iteratee, null, $value, $index, $collection);
-    @debug $current;
+    
     @if (if($is-min, $current < $computed, $current > $computed))
         or ($current == $ex-value and $current == $result)
     {
@@ -4721,8 +4721,6 @@ $users: (
     @if (str-length($temp) > 0) {
         $result: append($result, $temp);
     }
-
-    @debug $result;
 
     @return $result;
 }

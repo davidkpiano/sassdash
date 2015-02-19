@@ -3115,7 +3115,7 @@ $users: (
     @if (map-has-key($result, $key)) {
         $result: set($result, $key, append(get($result, $key), $value));
     } @else {
-        $result: set($result, $key, $value);
+        $result: set($result, $key, ($value,));
     }
 
     @return $result;

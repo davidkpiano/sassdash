@@ -1066,7 +1066,7 @@ $users: (
 
     $result: __call($function, null, $value, $index, $collection, $args...);
 
-    $_: this(result, set(this(result), $index, $result));
+    $_: this(result, append(this(result), $result));
     $_: this(index, this(index) + 1);
 
     @return true;
@@ -1074,9 +1074,13 @@ $users: (
 @function __base-invoke($collection, $method-name, $args...) {
     $index: 1;
     $is-func: __function-exists($method-name);
-    $length: if($collection, length($collection), 0);
+    $length: if(__is-map-like($collection), length($collection), 0);
     $result: ();
     $function: if($is-func, $method-name, if($value != null, get($value, $method-name), false));
+
+    @if $length == 0 {
+        @return $result;
+    }
 
     $_: scope-start();
 
@@ -3156,7 +3160,7 @@ $users: (
 
 // @debug __index-by(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
 
-@function __invoke($collection, $method-name, $args...) {
+@function __invoke($collection, $method-name: _identity, $args...) {
     @return __base-invoke($collection, $method-name, $args...);
 }
 

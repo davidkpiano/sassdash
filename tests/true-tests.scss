@@ -2037,6 +2037,24 @@ $test-before-count: 0 !global;
     }
 }
 
+@include test-module('_invoke') {
+    @include test('should invoke a function per item in list') {
+        $list: 1 2 3;
+
+        @include assert-equal(_invoke($list, test-square), 1 4 9);
+    }
+
+    @include test('should work with a map for collection') {
+        $map: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal(_invoke($map, test-square), 1 4 9);
+    }
+
+    @include test('should treat number values for collection as empty') {
+        @include assert-equal(_invoke(1), ());
+    }
+}
+
 // @include test-module('Sassdash') {
 //   @include test('_merge') {
 //     $names: (

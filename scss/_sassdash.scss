@@ -3809,7 +3809,7 @@ $users: (
 
     $result: if($customizer, __call($customizer, null, $value, $other), $__undefined__);
 
-    @return if(__is-undefined($result), __base-is-equal($value, $other, $customizer), ($result and true));
+    @return if(__is-undefined($result) or __is-null($result), __base-is-equal($value, $other, $customizer), ($result and true));
 }
 
 // @debug (foo: bar, baz: 3) == (baz: 3, foo: bar);

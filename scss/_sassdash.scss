@@ -2523,7 +2523,6 @@ $users: (
     $args: ();
     $args-index: 1;
     $args-length: length($arguments);
-    $caches: ();
     $index-of: __get-index-of();
     $is-common: $index-of == '__base-index-of';
 
@@ -2532,12 +2531,6 @@ $users: (
 
         @if (__is-list($value) or __is-arglist($value)) {
             $args: append($args, $value);
-
-            @if ($is-common and length($value) >= 120) {
-                $caches: append($caches, __create-cache(if($args-index, $value, false)));
-            } @else {
-                $caches: append($caches, false);
-            }
         }
 
         $args-index: $args-index + 1;
@@ -2549,7 +2542,7 @@ $users: (
     $index: 1;
     $length: if($list, length($list), 0);
     $result: ();
-    $seen: nth($caches, 1);
+    $seen: false;
 
     $continue-outer: false;
     @while ($index <= $length) {
@@ -2560,15 +2553,8 @@ $users: (
             $args-index: $args-length;
 
             @while ($args-index > 0 and not $continue-outer) {
-                $cache: nth($caches, $args-index);
 
-                @debug $value, __index-of($result, $value), __index-of(nth($args, $args-index), $value);
-
-                @if (if($cache,
-                        __cache-index-of($cache, $value),
-                        __index-of(nth($args, $args-index), $value))
-                    < 0)
-                {
+                @if __index-of(nth($args, $args-index), $value) < 0 {
                     $continue-outer: true;
                 }
 

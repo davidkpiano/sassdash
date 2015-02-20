@@ -1943,7 +1943,6 @@ $test-before-count: 0 !global;
 }
 
 @function test-initial-1($value, $args...) {
-    @debug $value;
     @return $value < 3;
 }
 @include test-module('_initial') {
@@ -2208,6 +2207,26 @@ $test-before-count: 0 !global;
         $actual: _('a', is-equal 'a');
 
         @include assert-equal($actual, true);
+    }
+}
+
+@include test-module('_is-function') {
+    @include test('should return true for functions') {
+        @include assert-equal(_is-function(_), true);
+        @include assert-equal(_is-function(to-upper-case), true);
+        @include assert-equal(_is-function(_partial), true);
+    }
+
+    @include test('should return false for non-functions') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-function($value), false);
+        }
+    }
+
+    @include test('should return true for scoped, non-native-callable functions') {
+        $scoped-function: _partial(min, 3);
+
+        @include assert-equal(_is-function($scoped-function), true);
     }
 }
 

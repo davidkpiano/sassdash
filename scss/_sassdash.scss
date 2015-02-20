@@ -955,7 +955,7 @@ $users: (
 
         @if __is-map-like($value)
             and __is-length(length($value))
-            and (__is-list($value) or __is-arguments($value))
+            and (__is-list($value) or __is-arglist($value))
         {
             @if ($is-deep) {
                 $value: __base-flatten($value, $is-deep, $is-strict);
@@ -2083,7 +2083,7 @@ $users: (
 @function __init-clone-by-tag() {}
 
 @function __is-list-like($value, $args...) {
-    @return __is-list($value) or __is-arguments($value);
+    @return __is-list($value) or __is-arglist($value);
 }
 
 @function __is-bindable($function) {
@@ -2314,7 +2314,7 @@ $users: (
     @while ($index <= $length and not $break) {
         $value: nth($arguments, $index);
 
-        @if (__is-list($value)) or (__is-arguments($value)) {
+        @if (__is-list($value)) or (__is-arglist($value)) {
             $break: true;
         } @else {
             $index: $index + 1;
@@ -2530,7 +2530,7 @@ $users: (
     @while ($args-index <= $args-length) {
         $value: nth($arguments, $args-index);
 
-        @if (__is-list($value) or __is-arguments($value)) {
+        @if (__is-list($value) or __is-arglist($value)) {
             $args: append($args, $value);
 
             @if ($is-common and length($value) >= 120) {
@@ -3758,7 +3758,7 @@ $users: (
     @return __base-clone($value, true, $customizer);
 }
 
-@function __is-arguments($value) {
+@function __is-arglist($value) {
     @return type-of($value) == 'arglist';
 }
 
@@ -5012,7 +5012,7 @@ $users: (
 @function _identity($args...) { @return call(__identity, $args...); }
 @function _includes($args...) { @return call(__includes, $args...); }
 @function _index-of($args...) { @return call(__index-of, $args...); }
-@function _is-arguments($args...) { @return call(__is-arguments, $args...); }
+@function _is-arglist($args...) { @return call(__is-arglist, $args...); }
 @function _is-list($args...) { @return call(__is-list, $args...); }
 @function _is-boolean($args...) { @return call(__is-boolean, $args...); }
 @function _is-date($args...) { @return call(__is-date, $args...); }

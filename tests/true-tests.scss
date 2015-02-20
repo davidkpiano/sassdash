@@ -1942,6 +1942,101 @@ $test-before-count: 0 !global;
     }
 }
 
+@function test-initial-1($value, $args...) {
+    @debug $value;
+    @return $value < 3;
+}
+@include test-module('_initial') {
+    $list: 1 2 3;
+
+    @include test('should accept a falsey list argument') {
+        @each $value in $test-falsey {
+            @include assert-equal(_initial($value), ());
+        }
+    }
+
+    @include test('should exclude last element') {
+        @include assert-equal(_initial($list), 1 2);
+    }
+
+    @include test('should return an empty list when querying empty lists') {
+        @include assert-equal(_initial(()), ());
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+
+        @include assert-equal(_map($list, _initial), (1 2, 4 5, 7 8));
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3;
+
+        @include assert-equal(_($list, filter test-initial-1, initial, value), (1,));
+    }
+}
+
+@include test-module('_intersection') {
+    @include test('should return the intersection of the given lists') {
+        @include assert-equal(_intersection(1 2 3, 5 2 1 4, 2 1), 1 2);
+    }
+
+    @include test('should return a list of unique values') {
+        $list: 1 1 3 2 2;
+
+        @include assert-equal(_intersection($list, 5 2 2 1 4, 2 1 1), 1 2);
+        @include assert-equal(_intersection($list), 1 3 2);
+    }
+
+    @include test('should work with arglists') {
+        @include assert-equal(_intersection(test-args(1, 2, 3), 2 3 4), 2 3);
+    }
+
+    @include test('should ignore values that are not lists or arglists') {
+        $list: 0 1 null 3;
+        $args: test-args(1, 2, 3);
+
+        @include assert-equal(_intersection($list, 3, null, (0: 1)), $list);
+        @include assert-equal(_intersection(null, $list, null, 2 1), (1,));
+        @include assert-equal(_intersection(null, $list, null, $args), 1 3);
+    }
+
+    @include test('should be chainable') {
+        @include assert-equal(_(1 2 3, map test-square, intersection (9 4 7), value), 4 9);
+    }
+}
+
+@include test-module('_invert') {
+    @include test('should invert a map') {
+        $map: ('a': 1, 'b': 2);
+        $actual: _invert($map);
+
+        @include assert-equal($actual, (1: 'a', 2: 'b'));
+        @include assert-equal(_invert($actual), $map);
+    }
+
+    @include test('should accept a multi-value flag') {
+        $map: ('a': 1, 'b': 2, 'c': 1);
+
+        @include assert-equal(_invert($map, true), (1: ('a', 'c'), 2: ('b',)));
+    }
+
+    @include test('should work as iteratee for _map') {
+        $map: ('a': 1, 'b': 2, 'c': 1);
+        $inverted: (1: 'c', 2: 'b');
+        $actual: _map($map $map $map, _invert);
+
+        @include assert-equal($actual, $inverted $inverted $inverted);
+    }
+
+    @include test('should be chainable') {
+        $map: ('a': 1, 'b': 2, 'c': 1);
+        $actual: _($map, map-values test-square, invert true);
+
+        @include assert-equal($actual, (1: ('a', 'c'), 4: ('b',)));
+    }
+}
+
 // @include test-module('Sassdash') {
 //   @include test('_merge') {
 //     $names: (

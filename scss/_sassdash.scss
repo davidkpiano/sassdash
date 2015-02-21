@@ -1121,7 +1121,7 @@ $users: (
 
     @while ($index <= $length) {
         @if if(($no-customizer and length($strict-compare-flags) > 0 and nth($strict-compare-flags, $index)),
-                (not nth($values, $index) == get($map, nth($props, $index))),
+                (nth($values, $index) != get($map, nth($props, $index))),
                 (not map-has-key($map, nth($props, $index)))
             ) {
             @return false;
@@ -3823,6 +3823,10 @@ $users: (
 @function __is-match($map, $source, $customizer: null, $this-arg: null) {
     $props: __keys($source);
     $length: length($props);
+
+    @if __is-falsey($map) {
+        @return false;
+    }
 
     $customizer: if(__is-function($customizer), __bind-callback($customizer, $this-arg, 3), false);
 

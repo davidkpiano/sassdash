@@ -2271,6 +2271,48 @@ $test-before-count: 0 !global;
             @include assert-equal(_is-match($value, ('a': 1)), false);
         }
     }
+
+    @include test('should return true when comparing an empty source to a falsey map') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-match($value, ()), true);
+        }
+    }
+
+    @include test('should search lists of source for values') {
+        $maps: (('a': ('b',)), ('a': ('c', 'd')));
+        $source: ('a': ('d',));
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-equal($actual, (nth($maps, 2),));
+
+        $source: ('a': ('d', 'b'));
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-equal($actual, ());
+
+        $source: ('a': ('b', 'd'));
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-equal($actual, ());
+    }
 }
 
 // @include test-module('Sassdash') {

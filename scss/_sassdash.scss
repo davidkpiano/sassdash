@@ -1135,13 +1135,19 @@ $users: (
     @while ($index <= $length) {
         $key: nth($props, $index);
 
-        $map-value: get($map, $key);
-        $src-value: nth($values, $index);
+        @if $no-customizer and nth($strict-compare-flags, $index) {
+            $result: map-has-key($map, $key);
+        } @else {        
+            $map-value: get($map, $key);
+            $src-value: nth($values, $index);
 
-        $result: if($customizer, __call($customizer, null, $map-value, $src-value, $key), null);
+            $result: if($customizer,
+                __call($customizer, null, $map-value, $src-value, $key),
+                null);
 
-        @if ($result == null) {
-            $result: __call(__base-is-equal, null, $src-value, $map-value, $customizer, true);
+            @if ($result == null) {
+                $result: __call(__base-is-equal, null, $src-value, $map-value, $customizer, true);
+            }
         }
 
         @if (not $result) {
@@ -1153,6 +1159,7 @@ $users: (
 
     @return true;
 }
+
 
 // @debug __base-is-match((foo: bar, baz: 42), (baz), (43));
 
@@ -3825,7 +3832,7 @@ $users: (
     $length: length($props);
 
     @if __is-falsey($map) {
-        @return false;
+        @return __is-empty($source);
     }
 
     $customizer: if(__is-function($customizer), __bind-callback($customizer, $this-arg, 3), false);
@@ -3852,6 +3859,7 @@ $users: (
 
     $values: __to-list($values);
     $strict-compare-flags: __to-list($strict-compare-flags);
+
 
     @return __base-is-match($map, $props, $values, $strict-compare-flags, $customizer);
 }

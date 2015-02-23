@@ -97,7 +97,7 @@
 
 
 @function __is-strict-comparable($value) {
-    @return true;
+    @return not __is-list($value);
 }
 
 

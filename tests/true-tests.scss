@@ -2278,41 +2278,60 @@ $test-before-count: 0 !global;
         }
     }
 
-    @include test('should search lists of source for values') {
-        $maps: (('a': ('b',)), ('a': ('c', 'd')));
-        $source: ('a': ('d',));
-        $actual: ();
+    // @include test('should search lists of source for values') {
+    //     $maps: (('a': ('b',)), ('a': ('c', 'd')));
+    //     $source: ('a': ('d',));
+    //     $actual: ();
 
-        @each $map in $maps {
-            @if _is-match($map, $source) {
-                $actual: append($actual, $map);
-            }
-        }
+    //     @each $map in $maps {
+    //         @if _is-match($map, $source) {
+    //             $actual: append($actual, $map);
+    //         }
+    //     }
 
-        @include assert-equal($actual, (nth($maps, 2),));
+    //     @include assert-equal($actual, (nth($maps, 2),));
 
-        $source: ('a': ('d', 'b'));
-        $actual: ();
+    //     $source: ('a': ('d', 'b'));
+    //     $actual: ();
 
-        @each $map in $maps {
-            @if _is-match($map, $source) {
-                $actual: append($actual, $map);
-            }
-        }
+    //     @each $map in $maps {
+    //         @if _is-match($map, $source) {
+    //             $actual: append($actual, $map);
+    //         }
+    //     }
 
-        @include assert-equal($actual, ());
+    //     @include assert-equal($actual, ());
 
-        $source: ('a': ('b', 'd'));
-        $actual: ();
+    //     $source: ('a': ('b', 'd'));
+    //     $actual: ();
 
-        @each $map in $maps {
-            @if _is-match($map, $source) {
-                $actual: append($actual, $map);
-            }
-        }
+    //     @each $map in $maps {
+    //         @if _is-match($map, $source) {
+    //             $actual: append($actual, $map);
+    //         }
+    //     }
 
-        @include assert-equal($actual, ());
-    }
+    //     @include assert-equal($actual, ());
+    // }
+
+    // @include test('should perform a partial comparison of all maps within lists of source') {
+    //     $source: ('a': (('b': 1), ('b': 4, 'c': 5)));
+
+    //     $maps: (
+    //         ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 5, 'd': 6 ))),
+    //         ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 6, 'd': 7 )))
+    //     );
+
+    //     $actual: ();
+
+    //     @each $map in $maps {
+    //         @if _is-match($map, $source) {
+    //             $actual: append($actual, $map);
+    //         }
+    //     }
+
+    //     @include assert-equal($actual, (nth($maps, 1),));
+    // }
 }
 
 // @include test-module('Sassdash') {

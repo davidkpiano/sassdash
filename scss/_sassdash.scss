@@ -5013,8 +5013,8 @@ $users: (
 @function _is-arglist($args...) { @return call(__is-arglist, $args...); }
 @function _is-list($args...) { @return call(__is-list, $args...); }
 @function _is-boolean($args...) { @return call(__is-boolean, $args...); }
-@function _is-date($args...) { @return call(__is-date, $args...); }
-@function _is-element($args...) { @return call(__is-element, $args...); }
+// @function _is-date($args...) { @return call(__is-date, $args...); }
+// @function _is-element($args...) { @return call(__is-element, $args...); }
 @function _is-empty($args...) { @return call(__is-empty, $args...); }
 @function _is-equal($args...) { @return call(__is-equal, $args...); }
 @function _is-error($args...) { @return call(__is-error, $args...); }
@@ -5025,11 +5025,11 @@ $users: (
 @function _is-native($args...) { @return call(__is-native, $args...); }
 @function _is-null($args...) { @return call(__is-null, $args...); }
 @function _is-number($args...) { @return call(__is-number, $args...); }
-@function _is-object($args...) { @return call(__is-object, $args...); }
-@function _is-plain-object($args...) { @return call(__is-plain-object, $args...); }
-@function _is-reg-exp($args...) { @return call(__is-reg-exp, $args...); }
+@function _is-map($args...) { @return call(__is-map, $args...); }
+@function _is-plain-map($args...) { @return call(__is-plain-map, $args...); }
+// @function _is-reg-exp($args...) { @return call(__is-reg-exp, $args...); }
 @function _is-string($args...) { @return call(__is-string, $args...); }
-@function _is-typed-array($args...) { @return call(__is-typed-array, $args...); }
+// @function _is-typed-array($args...) { @return call(__is-typed-array, $args...); }
 @function _is-undefined($args...) { @return call(__is-undefined, $args...); }
 @function _kebab-case($args...) { @return call(__kebab-case, $args...); }
 @function _last($args...) { @return call(__last, $args...); }

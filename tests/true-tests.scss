@@ -2354,6 +2354,72 @@ $test-before-count: 0 !global;
     }
 }
 
+@include test-module('_is-number') {
+    @include test('should return true for numbers') {
+        @include assert-equal(_is-number(0), true);
+        @include assert-equal(_is-number(999999), true);
+        @include assert-equal(_is-number(-99999.5), true);
+    }
+
+    @include test('should return true for numbers with units') {
+        @each $value in 1px  1cm  1mm  1%  1ch  1pc  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax {
+            @include assert-equal(_is-number($value), true);
+        }
+    }
+
+
+    @include test('should return false for non-numbers') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-number($value), $value == 0);
+        }
+    }
+}
+
+@include test-module('_is-map') {
+    @include test('should return true for maps') {
+        $map: ('a': 1, 'b': 2);
+        $empty-map: map-remove(('a': 1), 'a');
+        $set-map: map-merge((), ('a': 3));
+
+        @include assert-equal(_is-map($map), true);
+        @include assert-equal(_is-map($empty-map), true);
+        @include assert-equal(_is-map($set-map), true);
+    }
+
+    @include test('should return false for non maps') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-map($value), false);
+        }
+    }
+}
+
+@function NonPlainMap($foo) {
+    @return ('foo': $foo);
+}
+@include test-module('_is-plain-map') {
+    @include test('should detect plain maps') {
+        $plain-map: ('a': 1, 'b': 2);
+        $empty-map: map-remove(('a': 1), 'a');
+        $set-map: map-merge((), ('a': 3));
+
+        @include assert-equal(_is-plain-map($plain-map), true);
+        @include assert-equal(_is-plain-map($empty-map), true);
+        @include assert-equal(_is-plain-map($set-map), true);
+    }
+
+    @include test('should return false for constructed maps') {
+        $constructed-map: new(NonPlainMap, ('foo': 'bar'));
+
+        @include assert-equal(_is-plain-map($constructed-map), false);
+    }
+
+    @include test('should return false for non maps') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-plain-map($value), false);
+        }
+    }
+}
+
 // @include test-module('Sassdash') {
 //   @include test('_merge') {
 //     $names: (

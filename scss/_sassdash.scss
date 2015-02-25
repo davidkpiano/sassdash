@@ -4108,12 +4108,16 @@ $users: (
 // @debug __invert((foo: fred, bar: barney, baz: fred));
 // @debug __invert((foo: fred, bar: barney, baz: fred), true);
 
-@function __keys($map) {
+@function __keys($map: null) {
     // currently the same as __keys-in
     @return __keys-in($map);
 }
 
-@function __keys-in($map) {
+@function __keys-in($map: null) {
+    @if __is-falsey($map) {
+        @return ();
+    }
+
     $map: __to-map($map);
     $skip-keys: ('_type', '_constructor', '_extends', '_prototype');
 

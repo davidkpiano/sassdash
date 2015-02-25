@@ -2332,6 +2332,26 @@ $test-before-count: 0 !global;
 
     //     @include assert-equal($actual, (nth($maps, 1),));
     // }
+
+    // TODO: fix and finish _is-match tests
+}
+
+@include test-module('_is-null') {
+    @include test('should return true for nulls') {
+        @include assert-equal(_is-null(null), true);
+    }
+
+    @include test('should return false for non nulls') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-null($value), if(inspect($value) == 'null', true, false));
+        }
+
+        @include assert-equal(_is-null(test-args()), false);
+        @include assert-equal(_is-null(1 2 3), false);
+        @include assert-equal(_is-null(true), false);
+        @include assert-equal(_is-null(_), false);
+        @include assert-equal(_is-null(1), false);
+    }
 }
 
 // @include test-module('Sassdash') {

@@ -95,12 +95,6 @@
     @return __base-for($map, $iteratee, '__keys');
 }
 
-
-@function __is-strict-comparable($value) {
-    @return not __is-list($value);
-}
-
-
 @function __get-index-of() {
     @return '__base-index-of';
 }

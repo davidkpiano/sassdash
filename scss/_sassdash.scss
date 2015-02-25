@@ -184,6 +184,10 @@
         and ($length == null or $value <= $length);
 }
 
+@function __is-iterable($value, $args...) {
+    @return __is-map-like($value) or __is-string($value);
+}
+
 @function __is-map-like($value) {
     @return $value and (index('map' 'list' 'arglist', type-of($value)));
 }
@@ -1101,11 +1105,21 @@ $users: (
 }
 
 @function __base-is-equal($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
-    @return $value == $other;
+    @if $value == $other {
+        @return true;
+    }
+    
+    @if __is-string($value) or not __is-iterable($value) {
+        @return false;
+    }
+
+    @return __base-is-equal-deep($value, $other, $customizer, $is-where, $stack-a, $stack-b);
 }
 
 @function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
-    @return $value == $other;
+    $func: if(__is-list-like($value), __equal-lists, __equal-maps);
+
+    @return __call($func, null, $value, $other, __base-is-equal, $customizer, $is-where, $stack-a, $stack-b);
 }
 
 @function __base-is-match($map, $props, $values, $strict-compare-flags: (), $customizer: false) {
@@ -1188,8 +1202,8 @@ $users: (
 // @debug __base-map((foo: 1, bar: 3, baz: 55), double);
 
 @function __base-matches-function-1($map, $args...) {
-    $value: this(value);
-    $key: this(key);
+    $value: this('value');
+    $key: this('key');
 
     @return ($map != null)
         and (map-has-key($map, $key))
@@ -1222,10 +1236,6 @@ $users: (
 
             @return $result;
         }
-    }
-
-    @if ($is-cloned) {
-        $source: __base-clone($source, true);
     }
 
     $values: (); // list
@@ -1883,8 +1893,8 @@ $users: (
 
         @if ($customizer) {
             $result: if($is-where,
-                call($customizer, $other-value, $list-value, $index),
-                call($customizer, $list-value, $other-value, $index));
+                __call($customizer, null, $other-value, $list-value, $index),
+                __call($customizer, null, $list-value, $other-value, $index));
         }
 
         @if (__is-undefined($result)) {
@@ -1896,7 +1906,7 @@ $users: (
                     $other-value: nth($other, $other-index);
                     $result: if(if($list-value, $list-value == $other-value, false),
                         true,
-                        call($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+                        __call($equal-func, null, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
 
                     @if ($result) {
                         $break: true;
@@ -1907,7 +1917,7 @@ $users: (
             } @else {
                 $result: if(if($list-value, $list-value == $other-value, false),
                     true,
-                    call($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+                    __call($equal-func, null, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
             }
         }
 
@@ -1944,13 +1954,16 @@ $users: (
 
             @if ($customizer) {
                 $result: if($is-where,
-                    call($customizer, $other-value, $map-value, $key),
-                    call($customizer, $map-value, $other-value, $key));
+                    __call($customizer, null, $other-value, $map-value, $key),
+                    __call($customizer, null, $map-value, $other-value, $key));
             }
 
             @if (__is-undefined($result)) {
-                $result: if($map-value, ($map-value == $other-value), false);
-                $result: if($result, $result, call($equal-func, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+                @if $map-value == $other-value {
+                    @return true;
+                }
+
+                $result: __call($equal-func, null, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b);
             }
         }
 
@@ -2123,8 +2136,8 @@ $users: (
         and $value < (pow(2, 53) - 1);
 }
 
-@function x__is-strict-comparable() {
-    // _helpers
+@function __is-strict-comparable($value) {
+    @return not __is-map-like($value);
 }
 
 @function __merge-data() {}
@@ -3160,6 +3173,10 @@ $users: (
 // @debug __invoke(((3 1 2), (8 2 3 4 1 2 5 6 9)), sort-iteratee, asc);
 
 @function __map($collection, $iteratee: __identity, $this-arg: null) {
+    @if not __is-iterable($collection) {
+        $collection: ();
+    }
+
     $collection: if(__is-string($collection), __to-list($collection), $collection);
     $function: if(__is-list($collection), __list-map, __base-map);
 
@@ -4129,12 +4146,12 @@ $users: (
 
 
 @function __map-values-iteratee($value, $key, $map) {
-    $result: this(result);
-    $iteratee: this(iteratee);
+    $result: this('result');
+    $iteratee: this('iteratee');
 
     $result: set($result, $key, __call($iteratee, null, $value, $key, $map));
 
-    $_: this(result, $result);
+    $_: this('result', $result);
 
     @return true;
 }
@@ -4143,14 +4160,14 @@ $users: (
     $iteratee: __get-callback($iteratee, $this-arg, 3);
 
     $_: scope-start();
-    $_: scope(result, $result);
-    $_: scope(iteratee, $iteratee);
+    $_: scope('result', $result);
+    $_: scope('iteratee', $iteratee);
 
     $scoped-function: scoped-function(__map-values-iteratee);
 
     $_: __base-for-own($map, $scoped-function);
 
-    $result: scope(result);
+    $result: scope('result');
     $_: scope-end();
 
     @return $result;

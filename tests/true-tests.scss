@@ -2609,6 +2609,85 @@ $test-before-count: 0 !global;
     }
 }
 
+@include test-module('_map') {
+    $list: 1 2 3;
+
+    @include test('should work with a _pluck style iteratee') {
+        $maps: (('a': 'x'), ('a': 'y'));
+
+        @include assert-equal(_map($maps, 'a'), 'x' 'y');
+    }
+
+    @include test('should work with a map with no iteratee') {
+        @include assert-equal(_map(('a': 1, 'b': 2, 'c': 3)), $list);
+    }
+
+    @include test('should accept a falsey collection argument') {
+        @each $value in $test-falsey {
+            @include assert-equal(_map($value), ());
+        }
+    }
+
+    @include test('should treat number values for collection as empty') {
+        @include assert-equal(_map(1), ());
+    }
+
+    @include test('should be chainable') {
+        $list: 1 2 3 4;
+
+        $actual: _($list, filter test-is-even, map test-square);
+
+        @include assert-equal($actual, 4 16);
+    }
+
+    @include test('should be aliased') {
+        @include assert-equal(_map($list, test-square), _collect($list, test-square))
+    }
+}
+
+@include test-module('_map-values') {
+    $map: ('a': 1, 'b': 2, 'c': 3);
+
+    @include test('should work with a _pluck style iteratee') {
+        $actual: _map-values(('a': ('b': 1)), 'b');
+
+        @include assert-equal($actual, ('a': 1));
+    }
+
+    @include test('should work on a map with no iteratee') {
+        @include assert-equal(_map-values($map), $map);
+    }
+
+    @include test('should accept a falsey map argument') {
+        @each $value in $test-falsey {
+            @include assert-equal(_map-values($value), ());
+        }
+    }
+
+    @include test('should be chainable') {
+        $actual: _($map, map-values test-square);
+
+        @include assert-equal($actual, ('a': 1, 'b': 4, 'c': 9));
+    }
+}
+
+@include test-module('_matches') {
+    @include test('should create a function that performs a deep comparison between a given map and source') {
+        $map: ('a': 1, 'b': 2, 'c': 3);
+        $matches: _matches(('a': 1));
+
+        @include assert-equal(_call($matches, null, $map), true);
+        @include assert-equal(_call($matches, null, ('b': 1)), false);
+        @include assert-equal(_call($matches, null, ('a': 1, 'c': 3)), true);
+        @include assert-equal(_call($matches, null, ('c': 3, 'd': 4)), false);
+
+        $map: ('a': ('b': ('c': 1, 'd': 2), 'e': 3), 'f': 4);
+        $matches: _matches(('a': ('b': ('c': 1))));
+
+        @include assert-equal(_call($matches, null, $map), true, 'deep');
+    }
+}
+
 // @include test-module('Sassdash') {
 //   @include test('_merge') {
 //     $names: (

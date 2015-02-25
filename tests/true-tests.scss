@@ -2420,6 +2420,62 @@ $test-before-count: 0 !global;
     }
 }
 
+@include test-module('_is-string') {
+    @include test('should return true for quoted strings') {
+        $string: 'I am a quoted string';
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: "I am a double quoted string";
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: 'green';
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: unquote('green');
+
+        @include assert-equal(_is-string($string), true);
+    }
+
+    @include test('should return true for unquoted strings') {
+        $string: foobar;
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: unquote('foo bar baz quo');
+
+        @include assert-equal(_is-string($string), true);
+    }
+
+    @include test('should return true for empty strings') {
+        $string: '';
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: unquote('');
+
+        @include assert-equal(_is-string($string), true);
+    }
+
+    @include test('should return false for colors') {
+        $string: green;
+
+        @include assert-equal(_is-string($string), false);
+
+        $string: #ee5566;
+
+        @include assert-equal(_is-string($string), false);
+    }
+
+    @include test('should return false for non strings') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-string($value), $value == '');
+        }
+    }
+}
+
 // @include test-module('Sassdash') {
 //   @include test('_merge') {
 //     $names: (

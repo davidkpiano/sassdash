@@ -3895,7 +3895,7 @@ $users: (
 // @function __is-regexp($value) {} // not implemented
 
 @function __is-string($value, $args...) {
-    @return (type-of($value) == 'string');
+    @return type-of($value) == 'string';
 }
 
 // @function __is-typed-list($value) {} // not implemented

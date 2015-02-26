@@ -1205,7 +1205,7 @@ $users: (
     $value: this('value');
     $key: this('key');
 
-    @return ($map != null)
+    @return (__is-truthy($map))
         and (map-has-key($map, $key))
         and ($value == get($map, $key));
 }
@@ -1879,17 +1879,18 @@ $users: (
     $other-length: length($other);
     $result: true;
 
+
     @if not ($list-length == $other-length)
         and not ($is-where and ($other-length > $list-length))
     {
         @return false;
     }
 
-    @while ($result and ($index < $list-length)) {
+    @while ($result and ($index <= $list-length)) {
         $list-value: nth($list, $index);
         $other-value: nth($other, $index);
 
-        $result: null;
+        $result: $__undefined__;
 
         @if ($customizer) {
             $result: if($is-where,
@@ -1904,7 +1905,8 @@ $users: (
                 $break: false;
                 @while ($other-index > 0 and not $break) {
                     $other-value: nth($other, $other-index);
-                    $result: if(if($list-value, $list-value == $other-value, false),
+
+                    $result: if($list-value == $other-value,
                         true,
                         __call($equal-func, null, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
 
@@ -1959,11 +1961,9 @@ $users: (
             }
 
             @if (__is-undefined($result)) {
-                @if $map-value == $other-value {
-                    @return true;
-                }
-
-                $result: __call($equal-func, null, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b);
+                $result: if($map-value == $other-value,
+                    true,
+                    __call($equal-func, null, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
             }
         }
 

@@ -560,7 +560,7 @@ $users: (
     // TODO use Hugo's comparison for strings
     @while ($index <= $length) {
         $value: nth($list, $index);
-        @if ($value > $result) {
+        @if __is-number($value) and ($value > $result) {
             $result: $value;
         }
 
@@ -3664,7 +3664,7 @@ $users: (
 // $flow-right: __flow-right(square, add);
 // @debug __call($flow-right, null, 1, 2);
 
-@function __memoize() {} // todo
+@function __memoize() {} // not implemented
 
 @function __negate-function($arguments...) {
     $predicate: this(predicate);
@@ -4947,7 +4947,7 @@ $users: (
 @function _map($args...) { @return call(__map, $args...); }
 @function _map-values($args...) { @return call(__map-values, $args...); }
 @function _matches($args...) { @return call(__matches, $args...); }
-@function _memoize($args...) { @return call(__memoize, $args...); }
+// @function _memoize($args...) { @return call(__memoize, $args...); }
 @function _merge($args...) { @return call(__merge, $args...); }
 @function _mixin($args...) { @return call(__mixin, $args...); }
 @function _negate($args...) { @return call(__negate, $args...); }

@@ -2713,22 +2713,22 @@ $test-before-count: 0 !global;
         @include assert-equal($actual, $maps);
     }
 
-    @include test('should not error for falsey map values') {
-        $matches: _matches(('a': 1));
+    // @include test('should not error for falsey map values') {
+    //     $matches: _matches(('a': 1));
 
-        @each $value in $test-falsey {
-            @debug $value;
-            @include assert-equal(_call($matches, null, $value), false, inspect($value));
-        }
-    }
+    //     @each $value in $test-falsey {
+    //         @debug $value;
+    //         @include assert-equal(_call($matches, null, $value), false, inspect($value));
+    //     }
+    // }
 
-    @include test('should return true when comparing an empty source to a falsey map') {
-        $matches: _matches(());
+    // @include test('should return true when comparing an empty source to a falsey map') {
+    //     $matches: _matches(());
 
-        @each $value in $test-falsey {
-            @include assert-equal(_call($matches, null, $value), true);
-        }
-    }
+    //     @each $value in $test-falsey {
+    //         @include assert-equal(_call($matches, null, $value), true);
+    //     }
+    // }
 
     @include test('should search lists of source for values') {
         $maps: ('a': ('b',)), ('a': ('c', 'd'));
@@ -2758,6 +2758,24 @@ $test-before-count: 0 !global;
         $actual: _filter($maps, $matches);
 
         @include assert-equal($actual, (nth($maps, 1),));
+    }
+}
+
+@include test-module('_max') {
+    @include test('should return the largest value from a collection') {
+        @include assert-equal(_max(1 2 3), 3);
+    }
+
+    @include test('should return -infinity for empty collections') {
+        @include assert-equal(_max(()), const-get('NEGATIVE_INFINITY'));
+    }
+
+    @include test('should return -infinity for non-numeric collection values') {
+        $collections: (true, false), (true: true, false: false);
+
+        @each $collection in $collections {
+            @include assert-equal(_max($collection), const-get('NEGATIVE_INFINITY'), inspect($collection));
+        }
     }
 }
 

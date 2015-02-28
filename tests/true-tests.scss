@@ -2917,8 +2917,8 @@ $test-before-count: 0 !global;
       'should work with a list map argument');
     
     // TODO: investigate failing test
-    // @include assert-equal(_omit($map, test-is-even), ('a': 1, 'c': 3),
-    //   'should work with a predicate argument');
+    @include assert-equal(_omit((a:1,b:2,c:3,d:4,e:5), test-is-even), ('a': 1, 'c': 3),
+      'should work with a predicate argument');
   }
 }
 

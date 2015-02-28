@@ -2184,7 +2184,9 @@ $users: (
         $_: scope('predicate', $predicate);
         $_: scope('result', $result);
 
-        $_: __base-for-in($map, __pick-by-callback-iteratee);
+        $scoped-function: scoped-function(__pick-by-callback-iteratee);
+
+        $_: __base-for-in($map, $scoped-function);
 
         $result: scope('result');
     $_: scope-end();
@@ -4189,7 +4191,6 @@ $users: (
     @if ($map == null) {
         @return ();
     }
-
 
     $map: __to-map($map);
 

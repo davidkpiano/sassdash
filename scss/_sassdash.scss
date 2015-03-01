@@ -992,7 +992,6 @@ $users: (
 
     $break: false;
 
-
     @while ($index <= $length and not $break) {
         $key: nth($props, $index);
         $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
@@ -4182,11 +4181,6 @@ $users: (
     // todo
 }
 
-@function __omit-callback($value, $key, $map) {
-    $predicate: this('predicate');
-
-    @return not (__call($predicate, null, $value, $key, $map));
-}
 @function __omit($map, $predicate, $this-arg: null, $args...) {
     @if ($map == null) {
         @return ();
@@ -4202,14 +4196,7 @@ $users: (
 
     $predicate: __bind-callback($predicate, $this-arg, 3);
 
-    $_: scope-start();
-    $_: scope('predicate', $predicate);
-
-    $scoped-callback: scoped-function(__omit-callback);
-
-    $_: scope-end();
-
-    $result: __pick-by-callback($map, $scoped-callback);
+    $result: __pick-by-callback($map, __negate($predicate));
 
     @return $result;
 }

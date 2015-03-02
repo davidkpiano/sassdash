@@ -13,6 +13,7 @@
 @import 'defaults';
 @import 'difference';
 @import 'drop';
+@import 'exec'; // not unit tested
 @import 'fill'; // not unit tested
 @import 'filter';
 @import 'flatten';
@@ -28,4 +29,9 @@
 @import 'keys';
 @import 'map';
 @import 'matches';
-@import 'exec'; // not unit tested
+@import 'negate';
+@import 'omit';
+@import 'once';
+@import 'pairs';
+@import 'partial';
+@import 'merge'; // not unit tested

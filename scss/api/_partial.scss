@@ -1,0 +1,108 @@
+
+
+@function __partial-wrapper($args...) {
+    $partials: __this('partials');
+    $func: __this('func');
+
+    $args: join($partials, $args);
+
+    @return __exec($func, $args...);
+}
+@function __partial($func, $args...) {
+    $partials: $args;
+
+    $_: __scope(('partials': $partials, 'func': $func));
+
+    $partial-wrapper: __bind(__partial-wrapper);
+
+    $_: __scope(false);
+
+    @return $partial-wrapper;
+}
+
+@function __partial-right-wrapper($args...) {
+    $partials: __this('partials');
+    $func: __this('func');
+
+    $args: join($args, $partials);
+
+    @return __exec($func, $args...);
+}
+@function __partial-right($func, $args...) {
+    $partials: $args;
+
+    $_: __scope(('partials': $partials, 'func': $func));
+
+    $partial-wrapper: __bind(__partial-right-wrapper);
+
+    $_: __scope(false);
+
+    @return $partial-wrapper;
+}
+
+/**
+ * Creates a function that invokes `func` with `partial` arguments prepended
+ * to those provided to the new function. This method is like `_.bind` except
+ * it does **not** alter the `this` binding.
+ *
+ * The `_.partial.placeholder` value, which defaults to `_` in monolithic
+ * builds, may be used as a placeholder for partially applied arguments.
+ *
+ * **Note:** This method does not set the `length` property of partially
+ * applied functions.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to partially apply arguments to.
+ * @param {...*} [args] The arguments to be partially applied.
+ * @returns {Function} Returns the new partially applied function.
+ * @example
+ *
+ * var greet = function(greeting, name) {
+ *   return greeting + ' ' + name;
+ * };
+ *
+ * var sayHelloTo = _.partial(greet, 'hello');
+ * sayHelloTo('fred');
+ * // => 'hello fred'
+ *
+ * // using placeholders
+ * var greetFred = _.partial(greet, _, 'fred');
+ * greetFred('hi');
+ * // => 'hi fred'
+ */
+@function _partial($args...) { @return call(__partial, $args...); }
+
+/**
+ * This method is like `_.partial` except that partially applied arguments
+ * are appended to those provided to the new function.
+ *
+ * The `_.partialRight.placeholder` value, which defaults to `_` in monolithic
+ * builds, may be used as a placeholder for partially applied arguments.
+ *
+ * **Note:** This method does not set the `length` property of partially
+ * applied functions.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to partially apply arguments to.
+ * @param {...*} [args] The arguments to be partially applied.
+ * @returns {Function} Returns the new partially applied function.
+ * @example
+ *
+ * var greet = function(greeting, name) {
+ *   return greeting + ' ' + name;
+ * };
+ *
+ * var greetFred = _.partialRight(greet, 'fred');
+ * greetFred('hi');
+ * // => 'hi fred'
+ *
+ * // using placeholders
+ * var sayHelloTo = _.partialRight(greet, 'hello', _);
+ * sayHelloTo('fred');
+ * // => 'hello fred'
+ */
+@function _partial-right($args...) { @return call(__partial-right, $args...); }

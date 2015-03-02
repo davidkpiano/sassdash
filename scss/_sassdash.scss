@@ -818,14 +818,6 @@ $users: (
 
 // @debug __base-map((foo: 1, bar: 3, baz: 55), double);
 
-@function __base-merge($map, $source, $customizer: null) {
-    // todo
-}
-
-@function __list-merge($list, $source, $customizer: null) {
-    // todo
-}
-
 // @debug __base-merge((baz: butt), (foo: bar, baz: quo));
 
 
@@ -2722,52 +2714,8 @@ $users: (
 
 @function __memoize() {} // not implemented
 
-@function __negate-function($arguments...) {
-    $predicate: this(predicate);
-
-    @return not __call($predicate, this(), $arguments...);
-}
-@function __negate($predicate) {
-    @if not (__function-exists($predicate)) {
-        @error 'FUNC_ERROR_TEXT';
-    }
-
-    $_: __scope();
-    $_: scope(predicate, $predicate);
-
-    $scoped-function: __bind(__negate-function);
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
-
 // @debug __filter((1 2 3 4 5 6), __negate(__negate(is-even)));
 
-@function __once($function) {
-    @return __before($function, 2);
-}
-
-@function __partial-wrapper($args...) {
-    $partials: this('partials');
-    $func: this('func');
-
-    $args: join($partials, $args);
-
-    @return _call($func, null, $args...);
-}
-@function __partial($func, $args...) {
-    $partials: $args;
-
-    $_: __scope();
-    $_: scope('partials', $partials);
-    $_: scope('func', $func);
-
-    $scoped-function: __bind(__partial-wrapper);
-
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
 
 // function partial(func) {
 //       var partials = baseSlice(arguments, 1),
@@ -2776,27 +2724,6 @@ $users: (
 //       return createWrapper(func, PARTIAL_FLAG, null, partials, holders);
 //     }
 
-@function __partial-right-wrapper($args...) {
-    $partials: this('partials');
-    $func: this('func');
-
-    $args: join($args, $partials);
-
-    @return _call($func, null, $args...);
-}
-@function __partial-right($func, $args...) {
-    $partials: $args;
-
-    $_: __scope();
-    $_: scope('partials', $partials);
-    $_: scope('func', $func);
-
-    $scoped-function: __bind(__partial-right-wrapper);
-
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
 
 @function __rearg() {} // todo
 
@@ -3098,48 +3025,8 @@ $users: (
 // @debug __map-values((foo: 1, bar: 2, baz: 3), double);
 // @debug __map-values($users, 'age');
 
-@function __merge($arguments...) {
-    // todo
-}
-
-@function __omit($map, $predicate, $this-arg: null, $args...) {
-    @if ($map == null) {
-        @return ();
-    }
-
-    $map: __to-map($map);
-
-    @if not (__function-exists($predicate)) {
-        $props: __base-flatten(($map, $predicate, $this-arg), false, false, 1);
-
-        @return __pick-by-list($map, __base-difference(__keys-in($map), $props));
-    }
-
-    $predicate: __bind-callback($predicate, $this-arg, 3);
-
-    $result: __pick-by-callback($map, __negate($predicate));
-
-    @return $result;
-}
-
 // @debug __omit((user: fred, age: 40), 'age');
 
-@function __pairs($map) {
-    $index: 1;
-    $props: __keys($map);
-    $length: length($props);
-    $result: ();
-
-    @while ($index <= $length) {
-        $key: nth($props, $index);
-
-        $result: append($result, ($key, get($map, $key)));
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
 // @debug __pairs((name: fred, age: 40));
 
 @function __pick($map, $predicate, $this-arg: null) {
@@ -3791,14 +3678,7 @@ $users: (
 // @function _defer($args...) { @return call(__defer, $args...); }
 // @function _delay($args...) { @return call(__delay, $args...); }
 // @function _memoize($args...) { @return call(__memoize, $args...); }
-@function _merge($args...) { @return call(__merge, $args...); }
 @function _mixin($args...) { @return call(__mixin, $args...); }
-@function _negate($args...) { @return call(__negate, $args...); }
-@function _omit($args...) { @return call(__omit, $args...); }
-@function _once($args...) { @return call(__once, $args...); }
-@function _pairs($args...) { @return call(__pairs, $args...); }
-@function _partial($args...) { @return call(__partial, $args...); }
-@function _partial-right($args...) { @return call(__partial-right, $args...); }
 @function _partition($args...) { @return call(__partition, $args...); }
 @function _pick($args...) { @return call(__pick, $args...); }
 @function _pluck($args...) { @return call(__pluck, $args...); }

@@ -1,0 +1,36 @@
+@function __after-callback($arguments...) {
+    $n: __this('n');
+    $function: __this('function');
+
+    @if ($n < 1) {
+        @return __call($function, __this(), $arguments...);
+    }
+
+    $_: __this('n', $n - 1);
+
+    @return null;
+}
+@function __after($n, $function) {
+    @if not (__function-exists($function)) {
+        @if (__function-exists($n)) {
+            $temp: $n;
+            $n: $function;
+            $function: $temp;
+        } @else {
+            @error '#{$function} is not a function for __after.';
+        }
+    }
+
+    $_: __scope((
+            'function': $function,
+            'n': $n
+        ));
+
+    $after-callback: __bind(__after-callback);
+
+    $_: __scope(false);
+
+    @return $after-callback;
+}
+
+@function _after($args...) { @return call(__after, $args...); }

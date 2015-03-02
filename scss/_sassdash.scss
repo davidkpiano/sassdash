@@ -1,4 +1,6 @@
 
+@import 'helpers/module';
+@import 'api/module';
 @import 'utilities/_module';
 
 @mixin initialize() {
@@ -3474,42 +3476,6 @@ $users: (
 
 // @function __now() {} // not implemented
 
-@function __after-callback($arguments...) {
-    $n: this(n);
-    $function: this(function);
-
-    @if ($n < 1) {
-        @return __call($function, this(), $arguments...);
-    }
-
-    $_: this(n, $n - 1);
-
-    @return null;
-}
-@function __after($n, $function) {
-    @if not (__function-exists($function)) {
-        @if (__function-exists($n)) {
-            $temp: $n;
-            $n: $function;
-            $function: $temp;
-        } @else {
-            @error 'FUNC_ERROR_TEXT';
-        }
-    }
-
-    $n: if(__native-is-finite($n), $n, 0);
-
-    $_: scope-start();
-    $_: scope(function, $function);
-    $_: scope(n, $n);
-
-    $after-callback: scoped-function(__after-callback);
-
-    $_: scope-end();
-
-    @return $after-callback;
-}
-
 // $after: __after(3, length);
 // @debug __call($after, null, (1, 2, 3));
 // @debug __call($after, null, (1, 2, 3));
@@ -3562,7 +3528,7 @@ $users: (
 // @debug __call($before, null, (1, 2, 3));
 // @debug __call($before, null, (1, 2, 3));
 
-@function __bind() {} // todo
+// @function __bind() {} // todo
 
 @function __bind-all() {} // todo
 
@@ -4886,7 +4852,6 @@ $users: (
 @function _backflow($args...) { @return call(__flow-right, $args...); }
 
 // // Add functions that return wrapped values when chaining
-@function _after($args...) { @return call(__after, $args...); }
 @function _ary($args...) { @return call(__ary, $args...); }
 @function _assign($args...) { @return call(__assign, $args...); }
 @function _at($args...) { @return call(__at, $args...); }

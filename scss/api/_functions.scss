@@ -1,0 +1,33 @@
+
+@function __base-functions($map, $props) {
+    $result: ();
+
+    @each $key in $props {
+        @if __function-exists(get($map, $key)) {
+            $result: append($result, $key);
+        }
+    }
+
+    @return $result;
+}
+
+@function __functions($map) {
+    @return __base-functions($map, __keys-in($map));
+}
+
+/**
+ * Creates an array of function property names from all enumerable properties,
+ * own and inherited, of `object`.
+ *
+ * @static
+ * @memberOf _
+ * @alias methods
+ * @category Object
+ * @param {Object} object The object to inspect.
+ * @returns {Array} Returns the new array of property names.
+ * @example
+ *
+ * _.functions(_);
+ * // => ['after', 'ary', 'assign', ...]
+ */
+@function _functions($args...) { @return call(__functions, $args...); }

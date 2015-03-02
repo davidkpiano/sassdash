@@ -369,43 +369,6 @@
     // todo test
 }
 
-
-@function MapCache() {
-    @return (
-        __data__: ()
-    );
-}
-
-@function __map-delete($this, $key) {
-    $data: get($this, __data__);
-
-    @return set($this, map-delete($data, $key));
-}
-
-@function __map-get($this, $key) {
-    @return get($this, __data__ $key);
-}
-
-@function __map-has($this, $key) {
-    $data: get($this, __data__);
-
-    @return map-has-key($data, $key);
-}
-
-@function __map-set($this, $key, $value) {
-    @return set($this, __data__ $key, $value);
-}
-
-@function SetCache($values: ()) {
-    @return (
-        data: (
-            number: (),
-            set: new(Set)
-        ),
-        values: $values
-    );
-}
-
 @function __cache-index-of($this, $value) {
     $type: type-of($value);
     $data: get($this, data);
@@ -513,21 +476,6 @@ $users: (
     (name: fred, age: 7, foo: true),
 );
 
-@function __list-map($list, $iteratee) {
-    $index: 1;
-    $length: length($list);
-    $result-list: ();
-
-    @while ($index <= $length) {
-        $value: nth($list, $index);
-
-        $result-list: append($result-list, __exec($iteratee, $value, $index, $list));
-
-        $index: $index + 1;
-    }
-
-    @return $result-list;
-}
 
 @function __list-max($list) {
     @if (__is-map($list)) {
@@ -794,127 +742,6 @@ $users: (
 
 // @debug __base-find((1 2 3 4 5), is-even);
 
-
-@function __base-for($map, $iteratee, $keys-function) {
-    $index: 1;
-    $iterable: __to-map($map);
-    $props: __exec($keys-function, $map);
-    $length: length($props);
-    $result-map: ();
-
-    $break: false;
-
-    @while ($index <= $length and not $break) {
-        $key: nth($props, $index);
-        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
-
-        @if ($iteration == false) {
-            $break: true;
-        } @else {
-            $result-map: set($result-map, $key, $iteration);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result-map;
-}
-
-@function __base-for-right($map, $iteratee, $keys-function) {
-    $iterable: __to-map($map);
-    $props: __exec($keys-function, $map);
-    $length: length($props);
-    $result-map: ();
-
-    $break: false;
-
-    @while ($length > 0 and not $break) {
-        $key: nth($props, $length);
-        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
-
-        @if ($iteration == false) {
-            $break: true;
-        } @else {
-            $result-map: set($result-map, $key, $iteration);
-        }
-
-        $length: $length - 1;
-    }
-
-    @return $result-map;
-}
-
-@function __base-for-in($map, $iteratee) {
-    @return __base-for($map, $iteratee, __keys-in);
-}
-
-@function __base-for-own($map, $iteratee) {
-    @return __base-for($map, $iteratee, __keys);
-}
-
-@function __base-for-own-right($map, $iteratee) {
-    @return __base-for-right($map, $iteratee, __keys);
-}
-
-@function __base-functions($map, $props) {
-    $index: 1;
-    $length: length($props);
-    $result: ();
-
-    @while ($index <= $length) {
-        $key: nth($props, $index);
-
-        @if (__function-exists(get($map, $key))) {
-            $result: append($result, $key);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
-
-@function __base-invoke-iteratee($value, $index, $collection) {
-    $function: this(function);
-    $args: this(args);
-    $index: this(index);
-
-    $result: __exec($function, $value, $index, $collection, $args...);
-
-    $_: this(result, append(this(result), $result));
-    $_: this(index, this(index) + 1);
-
-    @return true;
-}
-@function __base-invoke($collection, $method-name, $args...) {
-    $index: 1;
-    $is-func: __function-exists($method-name);
-    $length: if(__is-map-like($collection), length($collection), 0);
-    $result: ();
-    $function: if($is-func, $method-name, if($value != null, get($value, $method-name), false));
-
-    @if $length == 0 {
-        @return $result;
-    }
-
-    $_: __scope();
-
-    $_: scope(result, $result);
-    $_: scope(function, $function);
-    $_: scope(args, $args);
-    $_: scope(index, $index);
-
-    $iteratee: __bind(__base-invoke-iteratee);
-
-    $_: __base-each($collection, $iteratee);
-
-    $result: scope(result);
-
-    $_: __scope(false);
-
-    @return $result;
-}
-
 @function __base-is-equal($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
     @if $value == $other {
         @return true;
@@ -988,91 +815,8 @@ $users: (
 
 // @debug __base-is-match((foo: bar, baz: 42), (baz), (43));
 
-@function __base-map-iteratee($value, $key, $collection) {
-    $result: this('result');
-    $iteratee: this('iteratee');
-
-    $result: append($result, __exec($iteratee, $value, $key, $collection));
-    $_: this('result', $result);
-
-    @return $result;
-}
-@function __base-map($collection, $iteratee) {
-    $_: __scope();
-    $_: scope('result', ());
-    $_: scope('iteratee', $iteratee);
-
-    $_: __base-each($collection, __base-map-iteratee);
-
-    $result: scope('result');
-    $_: __scope(false);
-
-    @return $result;
-}
 
 // @debug __base-map((foo: 1, bar: 3, baz: 55), double);
-
-@function __base-matches-function-1($map, $args...) {
-    $value: this('value');
-    $key: this('key');
-
-    @return (__is-truthy($map))
-        and (map-has-key($map, $key))
-        and ($value == get($map, $key));
-}
-@function __base-matches-function-2($map, $args...) {
-    @return __base-is-match(
-        $map,
-        this('props'),
-        this('values'),
-        this('strict-compare-flags'));
-}
-@function __base-matches($source, $is-cloned: false) {
-    $props: map-keys($source);
-    $length: length($props);
-
-    $_: __scope();
-
-    @if ($length == 1) {
-        $key: nth($props, 1);
-        $value: get($source, $key);
-
-        $_: scope('key', $key);
-        $_: scope('value', $value);
-
-        @if (__is-strict-comparable($value)) {
-            $result: __bind(__base-matches-function-1);
-
-            $_: __scope(false);
-
-            @return $result;
-        }
-    }
-
-    $values: (); // list
-    $strict-compare-flags: (); // list
-
-    @while ($length > 0) {
-        $value: get($source, nth($props, $length));
-        $values: set($values, $length, $value);
-        $strict-compare-flags: set($strict-compare-flags, $length, __is-strict-comparable($value));
-
-        $length: $length - 1;
-    }
-
-    $values: __to-list($values);
-    $strict-compare-flags: __to-list($strict-compare-flags);
-
-    $_: scope('props', $props);
-    $_: scope('values', $values);
-    $_: scope('strict-compare-flags', $strict-compare-flags);
-
-    $result: __bind(__base-matches-function-2);
-
-    $_: __scope(false);
-
-    @return $result;
-}
 
 @function __base-merge($map, $source, $customizer: null) {
     // todo
@@ -1981,14 +1725,6 @@ $users: (
     @return __base-set-data($key, $value);
 }
 
-@function __shim-is-plain-map() {
-    // not implemented
-}
-
-@function __shim-keys() {
-    // not implemented
-}
-
 @function __to-comparable($value, $customizer: null, $guard: null) {
     @if not (__function-exists($customizer)) {
         $customizer: if(__is-string($value), get-char-code, __identity);
@@ -2147,68 +1883,7 @@ $users: (
 
 // @debug __index-of((10 20 30 40 50), 10);
 
-@function __initial($list, $args...) {
-    @return __drop-right($list, 1);
-}
-
 // @debug __initial((1 2 3));
-
-@function __intersection($arguments...) {
-    $args: ();
-    $args-index: 1;
-    $args-length: length($arguments);
-    $index-of: __get-index-of();
-    $is-common: $index-of == '__base-index-of';
-
-    @while ($args-index <= $args-length) {
-        $value: nth($arguments, $args-index);
-
-        @if (__is-list($value) or __is-arglist($value)) {
-            $args: append($args, $value);
-        }
-
-        $args-index: $args-index + 1;
-    }
-
-    $args-length: length($args);
-
-    $list: nth($args, 1);
-    $index: 1;
-    $length: if($list, length($list), 0);
-    $result: ();
-    $seen: false;
-
-    $continue-outer: false;
-    @while ($index <= $length) {
-        $continue-outer: false;
-        $value: nth($list, $index);
-
-        @if (if($seen, __cache-index-of($seen, $value), __index-of($result, $value)) < 0) {
-            $args-index: $args-length;
-
-            @while ($args-index > 0 and not $continue-outer) {
-
-                @if __index-of(nth($args, $args-index), $value) < 0 {
-                    $continue-outer: true;
-                }
-
-                @if not ($continue-outer) {
-                    @if ($seen) {
-                        $seen: append($seen, $value);
-                    }
-
-                    $result: append($result, $value);
-
-                    $args-index: $args-index - 1;
-                }
-            }
-        }
-
-        $index: $index + 1;
-    }
-
-    @return __base-uniq($result); // todo: fix
-}
 
 // @debug __intersection((1 2 3), (2 3 5), (3 5 7));
 
@@ -2710,69 +2385,16 @@ $users: (
 
 // @debug __find-where(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), (bam: true));
 
-@function __for-each($collection, $iteratee: __identity, $this-arg: $__undefined__) {
-    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
-        __list-each($collection, $iteratee),
-        __base-each($collection, __bind-callback($iteratee, $this-arg, 3)));
-}
-
-// @debug __for-each((1 2 3), double);
-
-@function __for-each-right($collection, $iteratee: __identity, $this-arg: $__undefined__) {
-    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
-        __list-each-right($collection, $iteratee),
-        __base-each-right($collection, __bind-callback($iteratee, $this-arg, 3)));
-}
-
-@function __group-by-aggregator($result, $value, $key, $args...) {
-    @if (map-has-key($result, $key)) {
-        $result: set($result, $key, append(get($result, $key), $value));
-    } @else {
-        $result: set($result, $key, ($value,));
-    }
-
-    @return $result;
-}
-@function __group-by($arguments...) {
-    $function: __create-aggregator(__group-by-aggregator);
-
-    @return __exec($function, $arguments...);
-}
 
 // @function flooor($value, $args...) {
 //     @return floor($value);
 // }
 // @debug __group-by((4.2, 4.3, 6.1, 7.3), flooor);
 
-@function __index-by-aggregator($result, $value, $key, $args...) {
-    @return set($result, $key, $value);
-}
-@function __index-by($arguments...) {
-    $function: __create-aggregator(__index-by-aggregator);
-
-    @return __exec($function, $arguments...);
-}
-
 // @debug __index-by(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
 
-@function __invoke($collection, $method-name: _identity, $args...) {
-    @return __base-invoke($collection, $method-name, $args...);
-}
 
 // @debug __invoke(((3 1 2), (8 2 3 4 1 2 5 6 9)), sort-iteratee, asc);
-
-@function __map($collection, $iteratee: __identity, $this-arg: null) {
-    @if not __is-iterable($collection) {
-        $collection: ();
-    }
-
-    $collection: if(__is-string($collection), __to-list($collection), $collection);
-    $function: if(__is-list($collection), __list-map, __base-map);
-
-    $iteratee: __get-callback($iteratee, $this-arg, 3);
-
-    @return __exec($function, $collection, $iteratee);
-}
 
 // @debug __map(((foo: bar, baz: quo), (foo: wat, baz: weay)), 'baz');
 
@@ -3092,87 +2714,6 @@ $users: (
 
 // @function __delay() {} // not implemented
 
-@function __flow-function($arguments...) {
-    $functions: this(functions);
-    $length: this(length);
-
-    $index: 1;
-    $result: __call(nth($functions, $index), null, $arguments...);
-    $index: $index + 1;
-
-    @while ($index <= $length) {
-        $result: __call(nth($functions, $index), null, $result);
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
-@function __flow($arguments...) {
-    $functions: $arguments;
-    $length: length($functions);
-
-    @if (__is-falsey($length)) {
-        @return __noop;
-    }
-
-    @if not(__list-every($functions, __function-exists)) {
-        @error 'FUNC_ERROR_TEXT';
-    }
-
-    $_: __scope();
-
-    $_: scope(functions, $functions);
-    $_: scope(length, $length);
-
-    $scoped-function: __bind(__flow-function);
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
-
-// @function add($a, $b) { @return $a + $b; }
-// @function square($a) { @return $a * $a; }
-// $flow: __flow(add, square);
-// @debug __exec($flow, 1, 2);
-
-@function __flow-right-function($arguments...) {
-    $functions: this(functions);
-    $index: this(from-index);
-
-    $result: __call(nth($functions, $index), null, $arguments...);
-    $index: $index - 1;
-
-    @while ($index > 0) {
-        $result: __call(nth($functions, $index), null, $result);
-
-        $index: $index - 1;
-    }
-
-    @return $result;
-}
-@function __flow-right($arguments...) {
-    $functions: $arguments;
-    $from-index: length($functions);
-
-    @if ($from-index < 1) {
-        @return __noop;
-    }
-
-    @if not(__list-every($functions, __function-exists)) {
-        @error 'FUNC_ERROR_TEXT';
-    }
-
-    $_: __scope();
-
-    $_: scope(functions, $functions);
-    $_: scope(from-index, $from-index);
-
-    $scoped-function: __bind(__flow-right-function);
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
 
 // @function add($a, $b) { @return $a + $b; }
 // @function square($a) { @return $a * $a; }
@@ -3525,48 +3066,12 @@ $users: (
 // @debug __find-last-key($users, 'foo');
 
 
-@function __for-in($map, $iteratee: __identity, $this-arg: $__undefined__) {
-    @if (not __function-exists($iteratee) or not __is-undefined($this-arg)) {
-        $iteratee: __bind-callback($iteratee, $this-arg, 3);
-    }
-
-    @return __base-for($map, $iteratee, __keys-in);
-}
-
-// @debug __for-in((foo: 1, bar: 2, baz: 3), double);
-
-@function __for-in-right($map, $iteratee: __identity, $this-arg: null) {
-    $iteratee: __bind-callback($iteratee, $this-arg, 3);
-
-    @return __base-for-right($map, $iteratee, __keys-in);
-}
-
-// @debug __for-in-right((foo: 1, bar: 2, baz: 3), double);
-
-@function __for-own($map, $iteratee: __identity, $this-arg: $__undefined__) {
-    @if (not __function-exists($iteratee))
-        or (not __is-undefined($this-arg))
-    {
-        $iteratee: __bind-callback($iteratee, $this-arg, 3);
-    }
-
-    @return __base-for-own($map, $iteratee);
-}
 
 @function debug($value, $args...) { @debug $value; @return true; }
 // @debug __for-own((0: zero, 1: one, length: 3), debug);
 
-@function __for-own-right($map, $iteratee: __identity, $this-arg: null) {
-    $iteratee: __bind-callback($iteratee, $this-arg, 3);
-
-    @return __base-for-right($map, $iteratee, __keys);
-}
-
 // @debug __for-own-right((1: one, 2: two, 3: three), debug);
 
-@function __functions($map) {
-    @return __base-functions($map, __keys-in($map));
-}
 // @debug __functions((1: length, 2: str-length, 3: __identity, 4: bogus));
 
 @function __has($map, $key) {
@@ -3582,86 +3087,13 @@ $users: (
 }
 // @debug __has((foo: bar, baz: quo), 'foo');
 
-@function __invert($map, $multi-value: false, $guard: false) {
-    @if ($guard and __is-iteratee-call($map, $multi-value, $guard)) {
-        $multi-value: null;
-    }
-
-    $index: 1;
-    $props: __keys($map);
-    $length: length($props);
-    $result: ();
-
-    @while ($index <= $length) {
-        $key: nth($props, $index);
-        $value: get($map, $key);
-
-        @if ($multi-value) {
-            @if (map-has-key($result, $value)) {
-                $result: set($result, $value, append(get($result, $value), $key));
-            } @else {
-                $result: set($result, $value, ($key,));
-            }
-        } @else {
-            $result: set($result, $value, $key);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
-
 // @debug __invert((foo: fred, bar: barney, baz: fred));
 // @debug __invert((foo: fred, bar: barney, baz: fred), true);
-
-@function __keys($map: null) {
-    // currently the same as __keys-in
-    @return __keys-in($map);
-}
-
-@function __keys-in($map: null) {
-    @if __is-falsey($map) {
-        @return ();
-    }
-
-    $map: __to-map($map);
-    $skip-keys: ('_type', '_constructor', '_extends', '_prototype');
-
-    @return __without(map-keys($map), $skip-keys...);
-}
 
 // @debug __keys((40, 41, 42));
 // @debug __keys(new(Scope));
 
 
-@function __map-values-iteratee($value, $key, $map) {
-    $result: this('result');
-    $iteratee: this('iteratee');
-
-    $result: set($result, $key, __exec($iteratee, $value, $key, $map));
-
-    $_: this('result', $result);
-
-    @return true;
-}
-@function __map-values($map, $iteratee: __identity, $this-arg: null) {
-    $result: ();
-    $iteratee: __get-callback($iteratee, $this-arg, 3);
-
-    $_: __scope();
-    $_: scope('result', $result);
-    $_: scope('iteratee', $iteratee);
-
-    $scoped-function: __bind(__map-values-iteratee);
-
-    $_: __base-for-own($map, $scoped-function);
-
-    $result: scope('result');
-    $_: __scope(false);
-
-    @return $result;
-}
 
 // @debug __map-values((foo: 1, bar: 2, baz: 3), double);
 // @debug __map-values($users, 'age');
@@ -4242,10 +3674,6 @@ $users: (
     @return $value;
 }
 
-@function __matches($source) {
-    @return __base-matches($source, true);
-}
-
 @function __mixin() {} // todo
 
 @function __no-conflict() {} // not implemented
@@ -4362,26 +3790,6 @@ $users: (
 // @function _debounce($args...) { @return call(__debounce, $args...); }
 // @function _defer($args...) { @return call(__defer, $args...); }
 // @function _delay($args...) { @return call(__delay, $args...); }
-@function _flow($args...) { @return call(__flow, $args...); }
-@function _flow-right($args...) { @return call(__flow-right, $args...); }
-@function _for-each($args...) { @return call(__for-each, $args...); }
-@function _for-each-right($args...) { @return call(__for-each-right, $args...); }
-@function _for-in($args...) { @return call(__for-in, $args...); }
-@function _for-in-right($args...) { @return call(__for-in-right, $args...); }
-@function _for-own($args...) { @return call(__for-own, $args...); }
-@function _for-own-right($args...) { @return call(__for-own-right, $args...); }
-@function _functions($args...) { @return call(__functions, $args...); }
-@function _group-by($args...) { @return call(__group-by, $args...); }
-@function _index-by($args...) { @return call(__index-by, $args...); }
-@function _initial($args...) { @return call(__initial, $args...); }
-@function _intersection($args...) { @return call(__intersection, $args...); }
-@function _invert($args...) { @return call(__invert, $args...); }
-@function _invoke($args...) { @return call(__invoke, $args...); }
-@function _keys($args...) { @return call(__keys, $args...); }
-@function _keys-in($args...) { @return call(__keys-in, $args...); }
-@function _map($args...) { @return call(__map, $args...); }
-@function _map-values($args...) { @return call(__map-values, $args...); }
-@function _matches($args...) { @return call(__matches, $args...); }
 // @function _memoize($args...) { @return call(__memoize, $args...); }
 @function _merge($args...) { @return call(__merge, $args...); }
 @function _mixin($args...) { @return call(__mixin, $args...); }

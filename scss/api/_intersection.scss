@@ -1,0 +1,70 @@
+
+
+@function __intersection($arguments...) {
+    $args: ();
+    $index-of: __get-index-of();
+    $is-common: $index-of == '__base-index-of';
+
+    @each $arg-value in $arguments {        
+        @if __is-list-like($arg-value) {
+            $args: append($args, $arg-value);
+        }
+    }
+
+    $args-length: length($args);
+
+    $list: nth($args, 1);
+    $result: ();
+    $seen: false;
+
+    $continue-outer: false;
+    @each $value in $list {
+        $continue-outer: false;
+
+        @if (if($seen,
+                __cache-index-of($seen, $value),
+                __index-of($result, $value)) < 0)
+        {
+            $args-index: $args-length;
+
+            @while ($args-index > 0 and not $continue-outer) {
+
+                @if __index-of(nth($args, $args-index), $value) < 0 {
+                    $continue-outer: true;
+                }
+
+                @if not ($continue-outer) {
+                    @if $seen {
+                        $seen: append($seen, $value);
+                    }
+
+                    $result: append($result, $value);
+
+                    $args-index: $args-index - 1;
+                }
+            }
+        }
+    }
+
+    @return __base-uniq($result);
+}
+
+/**
+ * Creates an array of unique values in all provided arrays using `SameValueZero`
+ * for equality comparisons.
+ *
+ * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
+ * e.g. `===`, except that `NaN` matches `NaN`. See the
+ * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+ * for more details.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {...Array} [arrays] The arrays to inspect.
+ * @returns {Array} Returns the new array of shared values.
+ * @example
+ * _.intersection([1, 2], [4, 2], [2, 1]);
+ * // => [2]
+ */
+@function _intersection($args...) { @return call(__intersection, $args...); }

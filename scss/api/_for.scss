@@ -1,0 +1,270 @@
+
+
+@function __base-for($map, $iteratee, $keys-function) {
+    $index: 1;
+    $iterable: __to-map($map);
+    $props: __exec($keys-function, $map);
+    $length: length($props);
+    $result-map: ();
+
+    $break: false;
+    @while $index <= $length and not $break {
+        $key: nth($props, $index);
+        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $result-map: set($result-map, $key, $iteration);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result-map;
+}
+
+@function __base-for-right($map, $iteratee, $keys-function) {
+    $iterable: __to-map($map);
+    $props: __exec($keys-function, $map);
+    $length: length($props);
+    $result-map: ();
+
+    $break: false;
+    @while $length > 0 and not $break {
+        $key: nth($props, $length);
+        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $result-map: set($result-map, $key, $iteration);
+        }
+
+        $length: $length - 1;
+    }
+
+    @return $result-map;
+}
+
+@function __base-for-in($map, $iteratee) {
+    @return __base-for($map, $iteratee, __keys-in);
+}
+
+@function __base-for-own($map, $iteratee) {
+    @return __base-for($map, $iteratee, __keys);
+}
+
+@function __base-for-own-right($map, $iteratee) {
+    @return __base-for-right($map, $iteratee, __keys);
+}
+
+@function __for-each($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
+        __list-each($collection, $iteratee),
+        __base-each($collection, __bind-callback($iteratee, $this-arg, 3)));
+}
+
+@function __for-each-right($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
+        __list-each-right($collection, $iteratee),
+        __base-each-right($collection, __bind-callback($iteratee, $this-arg, 3)));
+}
+
+@function __for-in($map, $iteratee: __identity, $this-arg: $__undefined__) {
+    @if not __function-exists($iteratee)
+        or not __is-undefined($this-arg)
+    {
+        $iteratee: __bind-callback($iteratee, $this-arg, 3);
+    }
+
+    @return __base-for($map, $iteratee, __keys-in);
+}
+
+@function __for-in-right($map, $iteratee: __identity, $this-arg: null) {
+    $iteratee: __bind-callback($iteratee, $this-arg, 3);
+
+    @return __base-for-right($map, $iteratee, __keys-in);
+}
+
+@function __for-own($map, $iteratee: __identity, $this-arg: $__undefined__) {
+    @if not __function-exists($iteratee)
+        or not __is-undefined($this-arg)
+    {
+        $iteratee: __bind-callback($iteratee, $this-arg, 3);
+    }
+
+    @return __base-for-own($map, $iteratee);
+}
+
+
+@function __for-own-right($map, $iteratee: __identity, $this-arg: null) {
+    $iteratee: __bind-callback($iteratee, $this-arg, 3);
+
+    @return __base-for-right($map, $iteratee, __keys);
+}
+
+/**
+ * Iterates over elements of `collection` invoking `iteratee` for each element.
+ * The `iteratee` is bound to `thisArg` and invoked with three arguments;
+ * (value, index|key, collection). Iterator functions may exit iteration early
+ * by explicitly returning `false`.
+ *
+ * **Note:** As with other "Collections" methods, objects with a `length` property
+ * are iterated like arrays. To avoid this behavior `_.forIn` or `_.forOwn`
+ * may be used for object iteration.
+ *
+ * @static
+ * @memberOf _
+ * @alias each
+ * @category Collection
+ * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Array|Object|string} Returns `collection`.
+ * @example
+ *
+ * _([1, 2]).forEach(function(n) {
+ *   console.log(n);
+ * }).value();
+ * // => logs each value from left to right and returns the array
+ *
+ * _.forEach({ 'a': 1, 'b': 2 }, function(n, key) {
+ *   console.log(n, key);
+ * });
+ * // => logs each value-key pair and returns the object (iteration order is not guaranteed)
+ */
+@function _for-each($args...) { @return call(__for-each, $args...); }
+
+/**
+ * This method is like `_.forEach` except that it iterates over elements of
+ * `collection` from right to left.
+ *
+ * @static
+ * @memberOf _
+ * @alias eachRight
+ * @category Collection
+ * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Array|Object|string} Returns `collection`.
+ * @example
+ *
+ * _([1, 2]).forEachRight(function(n) {
+ *   console.log(n);
+ * }).join(',');
+ * // => logs each value from right to left and returns the array
+ */
+@function _for-each-right($args...) { @return call(__for-each-right, $args...); }
+
+/**
+ * Iterates over own and inherited enumerable properties of an object invoking
+ * `iteratee` for each property. The `iteratee` is bound to `thisArg` and invoked
+ * with three arguments; (value, key, object). Iterator functions may exit
+ * iteration early by explicitly returning `false`.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.forIn(new Foo, function(value, key) {
+ *   console.log(key);
+ * });
+ * // => logs 'a', 'b', and 'c' (iteration order is not guaranteed)
+ */
+@function _for-in($args...) { @return call(__for-in, $args...); }
+
+/**
+ * This method is like `_.forIn` except that it iterates over properties of
+ * `object` in the opposite order.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.forInRight(new Foo, function(value, key) {
+ *   console.log(key);
+ * });
+ * // => logs 'c', 'b', and 'a' assuming `_.forIn ` logs 'a', 'b', and 'c'
+ */
+@function _for-in-right($args...) { @return call(__for-in-right, $args...); }
+
+/**
+ * Iterates over own enumerable properties of an object invoking `iteratee`
+ * for each property. The `iteratee` is bound to `thisArg` and invoked with
+ * three arguments; (value, key, object). Iterator functions may exit iteration
+ * early by explicitly returning `false`.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.forOwn(new Foo, function(value, key) {
+ *   console.log(key);
+ * });
+ * // => logs 'a' and 'b' (iteration order is not guaranteed)
+ */
+@function _for-own($args...) { @return call(__for-own, $args...); }
+
+/**
+ * This method is like `_.forOwn` except that it iterates over properties of
+ * `object` in the opposite order.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.forOwnRight(new Foo, function(value, key) {
+ *   console.log(key);
+ * });
+ * // => logs 'b' and 'a' assuming `_.forOwn` logs 'a' and 'b'
+ */
+@function _for-own-right($args...) { @return call(__for-own-right, $args...); }

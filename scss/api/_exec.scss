@@ -1,0 +1,5 @@
+
+
+@function __exec($method, $args...) {
+    @return __call($method, null, $args...);
+}

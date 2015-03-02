@@ -1,0 +1,7 @@
+
+
+@function __bind($function, $this-arg: $__current-scope__) {
+    @return '#{$function}#{$this-arg}';
+}
+
+@function _bind($args...) { @return call(__bind, $args...); }

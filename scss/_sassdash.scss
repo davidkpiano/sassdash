@@ -458,9 +458,9 @@
     $result-list: ();
 
     @while ($index <= $length) and not $break {
-        $item: __call($iteratee, null, nth($list, $index), $index, $list);
+        $item: __exec($iteratee, nth($list, $index), $index, $list);
 
-        @if (__call($iteratee, null, nth($list, $index), $index, $list) == false) {
+        @if (__exec($iteratee, nth($list, $index), $index, $list) == false) {
             $break: true;
         } @else {
             $result-list: append($result-list, $item);
@@ -485,7 +485,7 @@
     $length: length($list);
 
     @while ($index <= $length) {
-        $iteration: __call($predicate, null, nth($list, $index), $index, $list);
+        $iteration: __exec($predicate, nth($list, $index), $index, $list);
 
         @if (not __is-truthy($iteration)) {
             @return false;
@@ -505,7 +505,7 @@
     @while ($index <= $length) {
         $value: nth($list, $index);
 
-        $iteration: __call($predicate, null, $value, $index, $list);
+        $iteration: __exec($predicate, $value, $index, $list);
 
         @if (__is-truthy($iteration)) {
             $result-list: append($result-list, $value);
@@ -540,7 +540,7 @@ $users: (
     @while ($index <= $length) {
         $value: nth($list, $index);
 
-        $result-list: append($result-list, __call($iteratee, null, $value, $index, $list));
+        $result-list: append($result-list, __exec($iteratee, $value, $index, $list));
 
         $index: $index + 1;
     }
@@ -629,7 +629,7 @@ $users: (
 
     @while ($index <= $length) {
         $value: nth($list, $index);
-        $iteration: __call($predicate, null, $value, $index, $list);
+        $iteration: __exec($predicate, $value, $index, $list);
 
         @if (__is-truthy($iteration)) {
             @return true;
@@ -639,67 +639,6 @@ $users: (
     }
 
     @return false;
-}
-
-@function __assign-defaults($map-value, $source-value, $args...) {
-    @return if(__is-undefined($map-value), $source-value, $map-value);
-}
-
-@function __assign-own-defaults() {
-    // todo
-}
-
-@function __base-assign($map, $source, $customizer: false) {
-    @if not (__is-map-like($map)) {
-        @return $map;
-    }
-
-    $props: __keys($source);
-
-    @if not ($customizer) {
-        @return __base-copy($source, $map, $props);
-    }
-
-    $index: 1;
-    $length: length($props);
-
-    @while ($index <= $length) {
-        $key: nth($props, $index);
-        $value: if(map-has-key($map, $key), get($map, $key), $__undefined__);
-        $result: __call($customizer, null, $value, get($source, $key), $key, $map, $source);
-
-        @if ($result != $value)
-            or ($value == null and not map-has-key($map, $key)) {
-            $map: set($map, $key, $result);    
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $map;
-}
-
-@function __base-at($collection, $props) {
-    $index: 1;
-    $length: length($collection);
-    $is-list: type-of($collection) == list;
-    $props-length: length($props);
-    $result: ();
-
-    @while ($index <= $props-length) {
-        $key: nth($props, $index);
-
-        @if ($is-list) {
-            $key: __parse-float($key);
-            $result: append($result, if(__is-index($key, $length), nth($collection, $key), null));
-        } @else {
-            $result: append($result, get($collection, $key));
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
 }
 
 @function __base-copy($source, $map, $props: null) {
@@ -723,24 +662,6 @@ $users: (
 
 @function __base-bind-all() {
     // todo
-}
-
-@function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
-    $type: if(__function-exists($function), 'function', type-of($function));
-
-    @if ($type == 'function') {
-        @return if(not __is-undefined($this-arg) and __is-bindable($function),
-            __bind-callback($function, $this-arg, $arg-count),
-            $function);
-    }
-
-    @if ($function == null) {
-        @return __identity;
-    }
-
-    @return if($type == 'map',
-        __base-matches($function, __is-falsey($arg-count)),
-        __base-property($function));
 }
 
 @function __base-clone($value, $is-deep: false, $customizer: null, $key: null, $map: null) {
@@ -774,18 +695,6 @@ $users: (
     // not being implemented
 }
 
-@function __base-difference($list, $values) {
-    $result: ();
-
-    @each $item in $list {
-        @if not index($values, $item) {
-            $result: append($result, $item);
-        }
-    }
-
-    @return $result;
-}
-
 // @debug __base-difference((1 2 3), (5 2 10));
 
 @function __base-each($collection, $iteratee) {
@@ -800,7 +709,7 @@ $users: (
 
     $break: false;
     @while ($index <= $length and not $break) {
-        $iteration: __call($iteratee, null, get($iterable, $index), $index, $iterable);
+        $iteration: __exec($iteratee, get($iterable, $index), $index, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -830,7 +739,7 @@ $users: (
 
     $break: false;
     @while ($length > 0 and not $break) {
-        $iteration: __call($iteratee, null, get($iterable, $length), $length, $iterable);
+        $iteration: __exec($iteratee, get($iterable, $length), $length, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -849,21 +758,21 @@ $users: (
 @function __base-every-iteratee($value, $index, $collection) {
     $predicate: scope-get(predicate);
 
-    $result: if(__is-truthy(__call($predicate, null, $value, $index, $collection)), true, false);
+    $result: if(__is-truthy(__exec($predicate, $value, $index, $collection)), true, false);
 
     $_: this('result', $result);
 
     @return null;
 }
 @function __base-every($collection, $predicate) {
-    $_: scope-start();
+    $_: __scope();
     $_: scope('result', true);
     $_: scope('predicate', $predicate);
 
     $_: __base-each($collection, __base-every-iteratee);
 
     $result: scope('result');
-    $_: scope-end();
+    $_: __scope(false);
 
     @return if($result, true, false);
 }
@@ -894,7 +803,7 @@ $users: (
     $result: this('result');
     $predicate: this('predicate');
 
-    $iteration: __call($predicate, null, $value, $index, $collection);
+    $iteration: __exec($predicate, $value, $index, $collection);
 
     @if __is-truthy($iteration) {
         $_: this('result', append($result, $value));
@@ -903,14 +812,14 @@ $users: (
     @return null;
 }
 @function __base-filter($collection, $predicate) {
-    $_: scope-start();
+    $_: __scope();
     $_: scope('result', ());
     $_: scope('predicate', $predicate);
 
     $_: __base-each($collection, __base-filter-iteratee);
 
     $result: scope('result');
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -919,7 +828,7 @@ $users: (
     $predicate: this('predicate');
     $return-key: this('return-key');
 
-    $iteration: __call($predicate, null, $value, $key, $collection);
+    $iteration: __exec($predicate, $value, $key, $collection);
 
     @if (__is-truthy($iteration)) {
         $_: this('result', if($return-key, $key, $value));
@@ -933,17 +842,17 @@ $users: (
 @function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
     $result: null;
 
-    $_: scope-start();
+    $_: __scope();
         $_: scope('result', null);
         $_: scope('predicate', $predicate);
         $_: scope('return-key', $return-key);
 
-        $iteratee: scoped-function(__base-find-iteratee);
+        $iteratee: __bind(__base-find-iteratee);
 
-        $_: __call($each-function, null, $collection, $iteratee);
+        $_: __exec($each-function, $collection, $iteratee);
 
         $result: scope('result');
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -988,7 +897,7 @@ $users: (
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;
     $iterable: __to-map($map);
-    $props: __call($keys-function, null, $map);
+    $props: __exec($keys-function, $map);
     $length: length($props);
     $result-map: ();
 
@@ -996,7 +905,7 @@ $users: (
 
     @while ($index <= $length and not $break) {
         $key: nth($props, $index);
-        $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
+        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -1012,7 +921,7 @@ $users: (
 
 @function __base-for-right($map, $iteratee, $keys-function) {
     $iterable: __to-map($map);
-    $props: __call($keys-function, null, $map);
+    $props: __exec($keys-function, $map);
     $length: length($props);
     $result-map: ();
 
@@ -1020,7 +929,7 @@ $users: (
 
     @while ($length > 0 and not $break) {
         $key: nth($props, $length);
-        $iteration: __call($iteratee, null, get($iterable, $key), $key, $iterable);
+        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -1069,7 +978,7 @@ $users: (
     $args: this(args);
     $index: this(index);
 
-    $result: __call($function, null, $value, $index, $collection, $args...);
+    $result: __exec($function, $value, $index, $collection, $args...);
 
     $_: this(result, append(this(result), $result));
     $_: this(index, this(index) + 1);
@@ -1087,20 +996,20 @@ $users: (
         @return $result;
     }
 
-    $_: scope-start();
+    $_: __scope();
 
     $_: scope(result, $result);
     $_: scope(function, $function);
     $_: scope(args, $args);
     $_: scope(index, $index);
 
-    $iteratee: scoped-function(__base-invoke-iteratee);
+    $iteratee: __bind(__base-invoke-iteratee);
 
     $_: __base-each($collection, $iteratee);
 
     $result: scope(result);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -1120,7 +1029,7 @@ $users: (
 @function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
     $func: if(__is-list-like($value), __equal-lists, __equal-maps);
 
-    @return __call($func, null, $value, $other, __base-is-equal, $customizer, $is-where, $stack-a, $stack-b);
+    @return __exec($func, $value, $other, __base-is-equal, $customizer, $is-where, $stack-a, $stack-b);
 }
 
 @function __base-is-match($map, $props, $values, $strict-compare-flags: (), $customizer: false) {
@@ -1157,7 +1066,7 @@ $users: (
             $src-value: nth($values, $index);
 
             $result: if($customizer,
-                __call($customizer, null, $map-value, $src-value, $key),
+                __exec($customizer, $map-value, $src-value, $key),
                 null);
 
             @if ($result == null) {
@@ -1182,20 +1091,20 @@ $users: (
     $result: this('result');
     $iteratee: this('iteratee');
 
-    $result: append($result, __call($iteratee, null, $value, $key, $collection));
+    $result: append($result, __exec($iteratee, $value, $key, $collection));
     $_: this('result', $result);
 
     @return $result;
 }
 @function __base-map($collection, $iteratee) {
-    $_: scope-start();
+    $_: __scope();
     $_: scope('result', ());
     $_: scope('iteratee', $iteratee);
 
     $_: __base-each($collection, __base-map-iteratee);
 
     $result: scope('result');
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -1221,7 +1130,7 @@ $users: (
     $props: map-keys($source);
     $length: length($props);
 
-    $_: scope-start();
+    $_: __scope();
 
     @if ($length == 1) {
         $key: nth($props, 1);
@@ -1231,9 +1140,9 @@ $users: (
         $_: scope('value', $value);
 
         @if (__is-strict-comparable($value)) {
-            $result: scoped-function(__base-matches-function-1);
+            $result: __bind(__base-matches-function-1);
 
-            $_: scope-end();
+            $_: __scope(false);
 
             @return $result;
         }
@@ -1257,9 +1166,9 @@ $users: (
     $_: scope('values', $values);
     $_: scope('strict-compare-flags', $strict-compare-flags);
 
-    $result: scoped-function(__base-matches-function-2);
+    $result: __bind(__base-matches-function-2);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -1282,12 +1191,12 @@ $users: (
     @return if($map == null, null, get($map, $key));
 }
 @function __base-property($key) {
-    $_: scope-start();
+    $_: __scope();
     $_: scope('key', $key);
 
-    $result: scoped-function(__base-property-function);
+    $result: __bind(__base-property-function);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -1295,7 +1204,7 @@ $users: (
 // $yoname: __base-property('name');
 // $yomap: (foo: bar, name: billy, baz: quo);
 
-// @debug __call($yoname, null, $yomap);
+// @debug __exec($yoname, $yomap);
 
 @function __base-pull-at($list, $indexes) {
     // not implementing - mutates list
@@ -1316,7 +1225,7 @@ $users: (
         $_: this(init-from-collection, false);
         $accumulator: $value;
     } @else {
-        $accumulator: __call($iteratee, null, $accumulator, $value, $index, $collection);
+        $accumulator: __exec($iteratee, $accumulator, $value, $index, $collection);
     }
 
     $_: this(accumulator, $accumulator);
@@ -1325,17 +1234,17 @@ $users: (
 }
 @function __base-reduce($collection, $iteratee, $accumulator, $init-from-collection: false, $each-function: null) {
 
-    $_: scope-start();
+    $_: __scope();
         $_: scope(iteratee, $iteratee);
         $_: scope(accumulator, $accumulator);
         $_: scope(init-from-collection, $init-from-collection);
 
-        $iteratee: scoped-function(__base-reduce-iteratee);
+        $iteratee: __bind(__base-reduce-iteratee);
 
-        $_: __call($each-function, null, $collection, $iteratee);
+        $_: __exec($each-function, $collection, $iteratee);
 
         $accumulator: scope(accumulator);
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $accumulator;
 }
@@ -1386,7 +1295,7 @@ $users: (
     $predicate: this(predicate);
     $result: this(result);
 
-    $result: __call($predicate, null, $value, $index, $collection);
+    $result: __exec($predicate, $value, $index, $collection);
 
     $_: this(result, $result);
 
@@ -1395,7 +1304,7 @@ $users: (
 @function __base-some($collection, $predicate) {
     $result: false;
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope(predicate, $predicate);
     $_: scope(result, $result);
 
@@ -1403,7 +1312,7 @@ $users: (
 
     $result: scope(result);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return if($result, true, false);
 }
@@ -1417,7 +1326,7 @@ $users: (
     $iteratee: if(__is-iteratee-call($list, $iteratee, $guard), __identity, $iteratee);
 
     @each $item in $list {
-        $iteration: __call($iteratee, null, $item);
+        $iteration: __exec($iteratee, $item);
         $result: map-merge($result, ($iteration: $item));
     }
 
@@ -1555,7 +1464,7 @@ $users: (
         @return $function;
     }
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope('function', $function);
     $_: scope('this-arg', $this-arg);
 
@@ -1570,9 +1479,9 @@ $users: (
         @return __bind-callback-any;
     }
 
-    $result: scoped-function(get($arg-count-case, $arg-count), $this-arg);
+    $result: __bind(get($arg-count-case, $arg-count), $this-arg);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -1641,7 +1550,7 @@ $users: (
     $setter: this('setter');
     $iteratee: this('iteratee');
 
-    $result: __call($setter, null, $result, $value, __call($iteratee, null, $value, $key, $collection), $collection);
+    $result: __exec($setter, $result, $value, __exec($iteratee, $value, $key, $collection), $collection);
 
     $_: this('result', $result);
 
@@ -1662,7 +1571,7 @@ $users: (
 
         @while ($index <= $length) {
             $value: nth($collection, $index);
-            $result: __call($setter, null, $result, $value, __call($iteratee, null, $value, $index, $collection), $collection);
+            $result: __exec($setter, $result, $value, __exec($iteratee, $value, $index, $collection), $collection);
 
             $index: $index + 1;
         }
@@ -1677,12 +1586,12 @@ $users: (
     @return $result;
 }
 @function __create-aggregator($setter, $initializer: null) {
-    $_: scope-start();
+    $_: __scope();
         $_: scope('setter', $setter);
         $_: scope('initializer', $initializer);
 
-        $function: scoped-function(__create-aggregator-function);
-    $_: scope-end();
+        $function: __bind(__create-aggregator-function);
+    $_: __scope(false);
 
     @return $function;
 }
@@ -1709,55 +1618,6 @@ $users: (
     //   };
     // }
 
-@function __create-assigner-function($arguments...) {
-    $assigner: this('assigner');
-    $length: length($arguments);
-    $map: if($length >= 1, nth($arguments, 1), null);
-    $customizer: null;
-
-    @if ($length < 2 or $map == null) {
-        @return $map;
-    }
-
-    @if ($length > 3 and __is-iteratee-call(nth($arguments, 2), nth($arguments, 3), nth($arguments, 4))) {
-        $length: 2;
-    }
-
-    @if ($length > 3 and __function-exists(nth($arguments, $length - 1))) {
-        $length: $length - 1;
-        $customizer: __bind-callback(nth($arguments, $length), nth($arguments, $length - 1), 5);
-    } @else if ($length > 2 and __function-exists(nth($arguments, $length))) {
-        $length: $length - 1;
-        $customizer: nth($arguments, $length + 1);
-    }
-
-    $index: 1;
-
-    @while ($index <= $length) {
-        $source: nth($arguments, $index);
-
-        @if ($source) {
-            $map: __call($assigner, null, $map, $source, $customizer);
-        }
-
-        $index: $index + 1;
-    }
-
-    // @debug $assigner, $map, $source, $customizer;
-
-    @return $map;
-}
-@function __create-assigner($assigner) {
-    $_: scope-start();
-    $_: scope('assigner', $assigner);
-
-    $scoped-function: scoped-function(__create-assigner-function);
-
-    $_: scope-end();
-
-    @return $scoped-function;
-}
-
 
 
 @function __create-bind-wrapper($function, $this-arg) {
@@ -1777,7 +1637,7 @@ $users: (
     $result: '';
 
     @while ($index <= $length) {
-        $result: __call($callback, null, $result, nth($list, $index), $index);
+        $result: __exec($callback, $result, nth($list, $index), $index);
 
         $index: $index + 1;
     }
@@ -1785,10 +1645,10 @@ $users: (
     @return $result;
 }
 @function __create-compounder($callback) {
-    $_: scope-start();
+    $_: __scope();
     $_: scope(callback, $callback);
-    $scoped-function: scoped-function(__create-compounder-function);
-    $_: scope-end();
+    $scoped-function: __bind(__create-compounder-function);
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -1809,7 +1669,7 @@ $users: (
 
     @if not ($function == __base-callback and $no-iteratee) {
         $no-iteratee: false;
-        $iteratee: __call($function, null, $iteratee, $this-arg, 3);
+        $iteratee: __exec($function, $iteratee, $this-arg, 3);
     }
 
     @if ($no-iteratee) {
@@ -1818,7 +1678,7 @@ $users: (
         @if (not $is-list and __is-string($collection)) {
             $iteratee: __char-at-callback;
         } @else {
-            @return __call($list-function, null, if($is-list, $collection, __to-iterable($collection)));
+            @return __exec($list-function, if($is-list, $collection, __to-iterable($collection)));
         }
     }
 
@@ -1826,13 +1686,13 @@ $users: (
 }
 @function __create-extremum($list-function, $is-min: false) {
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope(list-function, $list-function);
     $_: scope(is-min, $is-min);
 
-    $function: scoped-function(__create-extremum-function);
+    $function: __bind(__create-extremum-function);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $function;
 }
@@ -1895,8 +1755,8 @@ $users: (
 
         @if ($customizer) {
             $result: if($is-where,
-                __call($customizer, null, $other-value, $list-value, $index),
-                __call($customizer, null, $list-value, $other-value, $index));
+                __exec($customizer, $other-value, $list-value, $index),
+                __exec($customizer, $list-value, $other-value, $index));
         }
 
         @if (__is-undefined($result)) {
@@ -1909,7 +1769,7 @@ $users: (
 
                     $result: if($list-value == $other-value,
                         true,
-                        __call($equal-func, null, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+                        __exec($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
 
                     @if ($result) {
                         $break: true;
@@ -1920,7 +1780,7 @@ $users: (
             } @else {
                 $result: if(if($list-value, $list-value == $other-value, false),
                     true,
-                    __call($equal-func, null, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+                    __exec($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
             }
         }
 
@@ -1957,14 +1817,14 @@ $users: (
 
             @if ($customizer) {
                 $result: if($is-where,
-                    __call($customizer, null, $other-value, $map-value, $key),
-                    __call($customizer, null, $map-value, $other-value, $key));
+                    __exec($customizer, $other-value, $map-value, $key),
+                    __exec($customizer, $map-value, $other-value, $key));
             }
 
             @if (__is-undefined($result)) {
                 $result: if($map-value == $other-value,
                     true,
-                    __call($equal-func, null, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
+                    __exec($equal-func, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
             }
         }
 
@@ -1992,7 +1852,7 @@ $users: (
     $computed: scope(computed);
     $result: scope(result);
 
-    $current: __call($iteratee, null, $value, $index, $collection);
+    $current: __exec($iteratee, $value, $index, $collection);
 
     @if (if($is-min, $current < $computed, $current > $computed))
         or ($current == $ex-value and $current == $result)
@@ -2008,7 +1868,7 @@ $users: (
     $computed: $ex-value;
     $result: $computed;
 
-    $_: scope-start();
+    $_: __scope();
         $_: scope(collection, $collection);
         $_: scope(iteratee, $iteratee);
         $_: scope(is-min, $is-min);
@@ -2016,12 +1876,12 @@ $users: (
         $_: scope(computed, $computed);
         $_: scope(result, $result);
 
-        $iteratee: scoped-function(__extremum-by-iteratee);
+        $iteratee: __bind(__extremum-by-iteratee);
 
         $_: __base-each($collection, $iteratee);
 
         $result: scope(result);
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -2043,7 +1903,7 @@ $users: (
 @function __get-index-of($collection: null, $target: $__undefined__, $from-index: $__undefined__) {
     $result: __base-index-of;
 
-    @return if($collection, __call($result, null, $collection, $target, $from-index), $result);
+    @return if($collection, __exec($result, $collection, $target, $from-index), $result);
 }
 
 @function __get-view($start, $end, $transforms) {
@@ -2171,7 +2031,7 @@ $users: (
     $result: this('result');
     $predicate: this('predicate');
 
-    @if (__call($predicate, null, $value, $key, $map)) {
+    @if (__exec($predicate, $value, $key, $map)) {
         $_: this('result', set($result, $key, $value));
     }
 
@@ -2180,17 +2040,17 @@ $users: (
 @function __pick-by-callback($map, $predicate) {
     $result: ();
 
-    $_: scope-start();
+    $_: __scope();
         $_: scope('map', $map);
         $_: scope('predicate', $predicate);
         $_: scope('result', $result);
 
-        $scoped-function: scoped-function(__pick-by-callback-iteratee);
+        $scoped-function: __bind(__pick-by-callback-iteratee);
 
         $_: __base-for-in($map, $scoped-function);
 
         $result: scope('result');
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -2233,7 +2093,7 @@ $users: (
         $customizer: if(__is-string($value), get-char-code, __identity);
     }
 
-    $value: __call($customizer, null, $value);
+    $value: __exec($customizer, $value);
 
     @return $value;
 }
@@ -2281,71 +2141,11 @@ $users: (
 // @debug __to-string((foo: bar));
 // @debug __to-string(null);
 
-@function __chunk($list, $size: null, $guard: null) {
-    @if (if($guard, __is-iteratee-call($list, $size, $guard), ($size == null))) {
-        $size: 1;
-    } @else {
-        $size: __native-max(if(__is-falsey($size), 1, $size), 1);
-    }
-
-    $index: 1;
-    $length: if($list, length($list), 0);
-    $result: ();
-
-    @while ($index <= $length) {
-        $result: append($result, __base-slice($list, $index - 1, $index + $size - 1));
-
-        $index: $index + $size;
-    }
-
-    @if (length($result) == 1) {
-        $result: ($result,);
-    }
-
-    @return $result;
-}
-
 // @debug __chunk((a b c d), 2);
 // @debug __chunk((a b c d), 3);
 
-@function __compact($list) {
-    $index: 1;
-    $length: if($list, length($list), 0);
-    $result: ();
-
-    @while ($index <= $length) {
-        $value: nth($list, $index);
-
-        @if not (__is-falsey($value)) {
-            $result: append($result, $value);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
-
 // @debug __compact((0 1 false 2 '' 3));
 
-@function __difference($arguments...) {
-    $index: 1;
-    $length: length($arguments);
-    $value: null;
-
-    $break: false;
-    @while ($index <= $length and not $break) {
-        $value: nth($arguments, $index);
-
-        @if (__is-list($value)) or (__is-arglist($value)) {
-            $break: true;
-        } @else {
-            $index: $index + 1;
-        }
-    }
-
-    @return __base-difference($value, __base-flatten($arguments, false, true, $index + 1));
-}
 
 // @debug __difference((1 2 3), (5 2 10), (1 90 91));
 
@@ -2399,7 +2199,7 @@ $users: (
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @while ($length > 0
-        and __is-truthy(__call($predicate, null, nth($list, $length), $length, $list))) {
+        and __is-truthy(__exec($predicate, nth($list, $length), $length, $list))) {
         $length: $length - 1;
     }
 
@@ -2421,7 +2221,7 @@ $users: (
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @while ($index <= $length
-        and __is-truthy(__call($predicate, null, nth($list, $index), $index, $list))) {
+        and __is-truthy(__exec($predicate, nth($list, $index), $index, $list))) {
         $index: $index + 1;
     }
 
@@ -2769,7 +2569,7 @@ $users: (
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     
-    @while ($length > 0 and __is-truthy(__call($predicate, null, nth($list, $length), $length, $list))) {
+    @while ($length > 0 and __is-truthy(__exec($predicate, nth($list, $length), $length, $list))) {
         $length: $length - 1;
     }
 
@@ -2789,7 +2589,7 @@ $users: (
     $index: 1;
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @while ($index <= $length and __is-truthy(__call($predicate, null, nth($list, $index), $index, $list))) {
+    @while ($index <= $length and __is-truthy(__exec($predicate, nth($list, $index), $index, $list))) {
         $index: $index + 1;
     }
 
@@ -2955,7 +2755,7 @@ $users: (
     @return __thru($value, __wrapper-reverse-function, this());
 }
 
-// $_: scope-start();
+// $_: __scope();
 // $_: scope('__wrapped__', (1 2 3 4 5));
 
 // @debug __wrapper-reverse();
@@ -2964,7 +2764,7 @@ $users: (
     @return __call(value, this()) + '';
 }
 
-// $_: scope-start();
+// $_: __scope();
 // $_: scope(value, foo-value);
 // $_: scope(foo, 42);
 // @function foo-value() {
@@ -2973,16 +2773,7 @@ $users: (
 
 // @debug type-of(__wrapper-to-string());
 
-@function __at($arguments...) {
-    $collection: nth($arguments, 1);
-    $length: if($collection, length($collection), 0);
 
-    @if (__is-length($length)) {
-        $collection: __to-iterable($collection);
-    }
-
-    @return __base-at($collection, __base-flatten($arguments, false, false, 2));
-}
 
 // @debug __at((a b c d e f g), 1, 3, 5);
 
@@ -3025,22 +2816,12 @@ $users: (
 
 // @debug __includes((a b c d e f g), d, 4);
 
-@function __count-by-iteratee($result, $value, $key, $args...) {
-    $result: if(map-has-key($result, $key), set($result, $key, get($result, $key) + 1), set($result, $key, 1));
-
-    @return $result;
-}
-@function __count-by($arguments...) {
-    $function: __create-aggregator(__count-by-iteratee);
-
-    @return __call($function, null, $arguments...);
-}
 // todo
 
 // @debug __count-by((1 2 3 4 5 6 7 9 11 13 15 17), is-even);
 
 @function __either($this, $that, $predicate: __is-truthy) {
-    $this-bool: __call($predicate, null, $this);
+    $this-bool: __exec($predicate, $this);
 
     @return if($this-bool, $this, $that);
 }
@@ -3052,7 +2833,7 @@ $users: (
         $predicate: __get-callback($predicate, $this-arg, 3);
     }
 
-    @return __call($function, null, $collection, $predicate);
+    @return __exec($function, $collection, $predicate);
 }
 
 // @debug __every((true 1 null 'yes'));
@@ -3068,14 +2849,14 @@ $users: (
 
 // @debug __filter((1 2 3 4 5 6 6 1239), is-even);
 
-// $_: scope-start();
+// $_: __scope();
 // $_: scope(poop, 12341234);
 
 // $poop: __callback('poop', this());
 
-// $_: scope-end();
+// $_: __scope(false);
 // @debug $poop;
-// @debug __call($poop, null, (poop: 78788));
+// @debug __exec($poop, (poop: 78788));
 
 
 // @debug __filter(((a: 123, bam: true), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
@@ -3150,7 +2931,7 @@ $users: (
 @function __group-by($arguments...) {
     $function: __create-aggregator(__group-by-aggregator);
 
-    @return __call($function, null, $arguments...);
+    @return __exec($function, $arguments...);
 }
 
 // @function flooor($value, $args...) {
@@ -3164,7 +2945,7 @@ $users: (
 @function __index-by($arguments...) {
     $function: __create-aggregator(__index-by-aggregator);
 
-    @return __call($function, null, $arguments...);
+    @return __exec($function, $arguments...);
 }
 
 // @debug __index-by(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
@@ -3185,7 +2966,7 @@ $users: (
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
 
-    @return __call($function, null, $collection, $iteratee);
+    @return __exec($function, $collection, $iteratee);
 }
 
 // @debug __map(((foo: bar, baz: quo), (foo: wat, baz: weay)), 'baz');
@@ -3193,7 +2974,7 @@ $users: (
 @function __max($arguments...) {
     $function: __create-extremum(__list-max);
 
-    @return __call($function, null, $arguments...);
+    @return __exec($function, $arguments...);
 }
 
 // @debug __max((1 5 8 3 2 5 88 3 2 5 4));
@@ -3202,7 +2983,7 @@ $users: (
 @function __min($arguments...) {
     $function: __create-extremum(__list-min, true);
 
-    @return __call($function, null, $arguments...);
+    @return __exec($function, $arguments...);
 }
 
 // @debug __min((1 5 8 3 2 5 88 3 2 5 4));
@@ -3221,7 +3002,7 @@ $users: (
 @function __partition($arguments...) {
     $function: __create-aggregator(__partition-aggregator, __partition-initializer);
 
-    @return __to-list(__call($function, null, $arguments...));
+    @return __to-list(__exec($function, $arguments...));
 }
 
 // @debug __partition((1 2 3), is-even);
@@ -3235,7 +3016,7 @@ $users: (
 @function __reduce($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
     $function: if(__is-list($collection), __list-reduce, __base-reduce);
 
-    @return __call($function, null,
+    @return __exec($function,
         $collection,
         __get-callback($iteratee, $this-arg, 4),
         $accumulator,
@@ -3260,7 +3041,7 @@ $users: (
 @function __reduce-right($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
     $function: if(__is-list($collection), __list-reduce-right, __base-reduce);
 
-    @return __call($function, null, $collection, __get-callback($iteratee, $this-arg, 4), $accumulator, ($accumulator == null and $this-arg == null), __base-each-right);
+    @return __exec($function, $collection, __get-callback($iteratee, $this-arg, 4), $accumulator, ($accumulator == null and $this-arg == null), __base-each-right);
 }
 
 // $list: ((0, 1), (2, 3), (4, 5));
@@ -3273,19 +3054,19 @@ $users: (
 @function __reject-iteratee($value, $index, $collection) {
     $predicate: this('predicate');
 
-    @return __is-falsey(__call($predicate, null, $value, $index, $collection));
+    @return __is-falsey(__exec($predicate, $value, $index, $collection));
 }
 @function __reject($collection, $predicate: __identity, $this-arg: null) {
     $function: if(__is-list($collection), __list-filter, __base-filter);
 
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope('predicate', $predicate);
 
-    $result: __call($function, null, $collection, __reject-iteratee);
+    $result: __exec($function, $collection, __reject-iteratee);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -3354,7 +3135,7 @@ $users: (
         $predicate: __get-callback($predicate, $this-arg, 3);
     }
 
-    @return __call($function, null, $collection, $predicate);
+    @return __exec($function, $collection, $predicate);
 }
 
 // @debug __some((1 2 3 4 5), is-even);
@@ -3368,7 +3149,7 @@ $users: (
     $index: this(index);
 
     $result: append($result, (
-            'criteria': __call($iteratee, null, $value, $key, $collection),
+            'criteria': __exec($iteratee, $value, $key, $collection),
             'index': $index,
             'value': $value
         ));
@@ -3393,17 +3174,17 @@ $users: (
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
 
-    $_: scope-start();
+    $_: __scope();
         $_: scope(result, $result);
         $_: scope(iteratee, $iteratee);
         $_: scope(index, $index);
 
-        $sort-by-iteratee: scoped-function(__sort-by-iteratee);
+        $sort-by-iteratee: __bind(__sort-by-iteratee);
 
         $_: __base-each($collection, $sort-by-iteratee);
 
         $result: scope(result);
-    $_: scope-end();
+    $_: __scope(false);
 
     @return __base-sort-by($result, __compare-ascending);
 }
@@ -3450,17 +3231,17 @@ $users: (
     $props: __base-flatten($args, false, false, 1);
     $result: ();
 
-    $_: scope-start();
+    $_: __scope();
         $_: scope(props, $props);
         $_: scope(result, $result);
         $_: scope(index, $index);
 
-        $iteratee: scoped-function(__sort-by-all-iteratee);
+        $iteratee: __bind(__sort-by-all-iteratee);
 
         $_: __base-each($collection, $iteratee);
 
         $result: scope(result);
-    $_: scope-end();
+    $_: __scope(false);
 
     @return __base-sort-by($result, __compare-multiple-ascending);
 }
@@ -3477,56 +3258,18 @@ $users: (
 // @function __now() {} // not implemented
 
 // $after: __after(3, length);
-// @debug __call($after, null, (1, 2, 3));
-// @debug __call($after, null, (1, 2, 3));
-// @debug __call($after, null, (1, 2, 3));
-// @debug __call($after, null, (1, 2, 3));
+// @debug __exec($after, (1, 2, 3));
+// @debug __exec($after, (1, 2, 3));
+// @debug __exec($after, (1, 2, 3));
+// @debug __exec($after, (1, 2, 3));
 
 @function __ary() {} // todo
 
-@function __before-callback($arguments...) {
-    $n: this('n');
-    $function: this('function');
-    $result: null;
-
-    $n: $n - 1;
-    $_: this(n, $n);
-
-    @if ($n > 0) {
-        $result: __call($function, this(), $arguments...);
-    } @else {
-        $_: this('function', null);
-    }
-
-    @return $result;
-}
-@function __before($n, $function) {
-    @if not (__function-exists($function)) {
-        @if (__function-exists($n)) {
-            $temp: $n;
-            $n: $function;
-            $function: $temp;
-        } @else {
-            @error 'FUNC_ERROR_TEXT';
-        }
-    }
-
-    $_: scope-start();
-    $_: scope('function', $function);
-    $_: scope('n', $n);
-
-    $after-callback: scoped-function(__before-callback);
-
-    $_: scope-end();    
-
-    @return $after-callback;
-}
-
 // $before: __before(3, length);
-// @debug __call($before, null, (1, 2, 3));
-// @debug __call($before, null, (1, 2, 3));
-// @debug __call($before, null, (1, 2, 3));
-// @debug __call($before, null, (1, 2, 3));
+// @debug __exec($before, (1, 2, 3));
+// @debug __exec($before, (1, 2, 3));
+// @debug __exec($before, (1, 2, 3));
+// @debug __exec($before, (1, 2, 3));
 
 // @function __bind() {} // todo
 
@@ -3572,13 +3315,13 @@ $users: (
         @error 'FUNC_ERROR_TEXT';
     }
 
-    $_: scope-start();
+    $_: __scope();
 
     $_: scope(functions, $functions);
     $_: scope(length, $length);
 
-    $scoped-function: scoped-function(__flow-function);
-    $_: scope-end();
+    $scoped-function: __bind(__flow-function);
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -3586,7 +3329,7 @@ $users: (
 // @function add($a, $b) { @return $a + $b; }
 // @function square($a) { @return $a * $a; }
 // $flow: __flow(add, square);
-// @debug __call($flow, null, 1, 2);
+// @debug __exec($flow, 1, 2);
 
 @function __flow-right-function($arguments...) {
     $functions: this(functions);
@@ -3615,13 +3358,13 @@ $users: (
         @error 'FUNC_ERROR_TEXT';
     }
 
-    $_: scope-start();
+    $_: __scope();
 
     $_: scope(functions, $functions);
     $_: scope(from-index, $from-index);
 
-    $scoped-function: scoped-function(__flow-right-function);
-    $_: scope-end();
+    $scoped-function: __bind(__flow-right-function);
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -3629,7 +3372,7 @@ $users: (
 // @function add($a, $b) { @return $a + $b; }
 // @function square($a) { @return $a * $a; }
 // $flow-right: __flow-right(square, add);
-// @debug __call($flow-right, null, 1, 2);
+// @debug __exec($flow-right, 1, 2);
 
 @function __memoize() {} // not implemented
 
@@ -3643,11 +3386,11 @@ $users: (
         @error 'FUNC_ERROR_TEXT';
     }
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope(predicate, $predicate);
 
-    $scoped-function: scoped-function(__negate-function);
-    $_: scope-end();
+    $scoped-function: __bind(__negate-function);
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -3669,13 +3412,13 @@ $users: (
 @function __partial($func, $args...) {
     $partials: $args;
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope('partials', $partials);
     $_: scope('func', $func);
 
-    $scoped-function: scoped-function(__partial-wrapper);
+    $scoped-function: __bind(__partial-wrapper);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -3698,13 +3441,13 @@ $users: (
 @function __partial-right($func, $args...) {
     $partials: $args;
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope('partials', $partials);
     $_: scope('func', $func);
 
-    $scoped-function: scoped-function(__partial-right-wrapper);
+    $scoped-function: __bind(__partial-right-wrapper);
 
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -3784,7 +3527,7 @@ $users: (
         @return ($value == $other) and (type-of($value) == type-of($other));
     }
 
-    $result: if($customizer, __call($customizer, null, $value, $other), $__undefined__);
+    $result: if($customizer, __exec($customizer, $value, $other), $__undefined__);
 
     @return if(__is-undefined($result) or __is-null($result), __base-is-equal($value, $other, $customizer), ($result and true));
 }
@@ -3957,31 +3700,6 @@ $users: (
     @return null;
 }
 
-@function __assign($arguments...) {
-    $assigner: __create-assigner(__base-assign);
-
-    @return __call($assigner, null, $arguments...);
-}
-
-@function __create($prototype, $properties, $guard: null) {
-    $result: __base-create($prototype);
-
-    @if ($guard and __is-iteratee-call($prototype, $properties, $guard)) {
-        $properties: null;
-    }
-
-    @return if($properties, __base-copy($properties, $result, __keys($properties)), $result);
-}
-
-@function __defaults($map: null, $args...) {
-    @if ($map == null) {
-        @return $map;
-    }
-
-    $args: append($args, __assign-defaults);
-
-    @return __assign($map, $args...);
-}
 
 @function __find-key($map, $predicate: __identity, $this-arg: null) {
     $predicate: __get-callback($predicate, $this-arg, 3);
@@ -4116,7 +3834,7 @@ $users: (
     $result: this('result');
     $iteratee: this('iteratee');
 
-    $result: set($result, $key, __call($iteratee, null, $value, $key, $map));
+    $result: set($result, $key, __exec($iteratee, $value, $key, $map));
 
     $_: this('result', $result);
 
@@ -4126,16 +3844,16 @@ $users: (
     $result: ();
     $iteratee: __get-callback($iteratee, $this-arg, 3);
 
-    $_: scope-start();
+    $_: __scope();
     $_: scope('result', $result);
     $_: scope('iteratee', $iteratee);
 
-    $scoped-function: scoped-function(__map-values-iteratee);
+    $scoped-function: __bind(__map-values-iteratee);
 
     $_: __base-for-own($map, $scoped-function);
 
     $result: scope('result');
-    $_: scope-end();
+    $_: __scope(false);
 
     @return $result;
 }
@@ -4212,11 +3930,11 @@ $users: (
     @if (__function-exists($value)) {
         $_: scope-start($map);
 
-        $scoped-function: scoped-function($value);
+        $scoped-function: __bind($value);
 
         $result: __call($scoped-function, $__current-scope__);
 
-        $_: scope-end();
+        $_: __scope(false);
     } @else {
         $result: $value;
     }
@@ -4235,7 +3953,7 @@ $users: (
 //     $iteratee: this(iteratee);
 //     $accumulator: this(accumulator);
 
-//     @return __call($iteratee, null, $value, $index, $map);
+//     @return __exec($iteratee, $value, $index, $map);
 // }
 // @function __transform($map, $iteratee: __identity, $accumulator: null, $this-arg: null) {
 //     $is-list: __is-list($map);
@@ -4257,16 +3975,16 @@ $users: (
 
 //     $function: if($is-list, __list-each, __base-for-own);
 
-//     $_: scope-start();
+//     $_: __scope();
 //     $_: scope(iteratee, $iteratee);
 //     $_: scope(accumulator, $accumulator);
 
-//     $scoped-function: scoped-function(__transform-iteratee);
+//     $scoped-function: __bind(__transform-iteratee);
 
-//     $_: __call($function, null, $map, $scoped-function);
+//     $_: __exec($function, $map, $scoped-function);
 
 //     $accumulator: scope(accumulator);
-//     $_: scope-end();
+//     $_: __scope(false);
 
 //     @return $accumulator;
 // }
@@ -4349,7 +4067,7 @@ $users: (
 @function __camel-case($arguments...) {
     $compounder: __create-compounder(__camel-case-compounder);
 
-    @return __call($compounder, null, $arguments...);
+    @return __exec($compounder, $arguments...);
 }
 
 // @debug __camel-case('Foo Bar');
@@ -4416,7 +4134,7 @@ $users: (
 @function __kebab-case($arguments...) {
     $compounder: __create-compounder(__kebab-case-compounder);
 
-    @return __call($compounder, null, $arguments...);
+    @return __exec($compounder, $arguments...);
 }
 
 // @debug __kebab-case('Foo Bar');
@@ -4491,7 +4209,7 @@ $users: (
 @function __snake-case($arguments...) {
     $compounder: __create-compounder(__snake-case-compounder);
 
-    @return __call($compounder, null, $arguments...);
+    @return __exec($compounder, $arguments...);
 }
 
 // @debug __snake-case('Foo Bar');
@@ -4504,7 +4222,7 @@ $users: (
 @function __start-case($arguments...) {
     $compounder: __create-compounder(__start-case-compounder);
 
-    @return __call($compounder, null, $arguments...);
+    @return __exec($compounder, $arguments...);
 }
 
 @function __starts-with($string, $target, $position: 1) {
@@ -4711,28 +4429,6 @@ $users: (
 
 @function __attempt() {} // not implemented
 
-@function __callback($function: __identity, $this-arg: null, $guard: null) {
-    @if ($guard and __is-iteratee-call($function, $this-arg, $guard)) {
-        $this-arg: null;
-    }
-
-    @return __base-callback($function, $this-arg);
-}
-
-@function __constant-function($args...) {
-    $value: this('value');
-
-    @return $value;
-}
-@function __constant($value: null) {
-    $_: scope-start();
-    $_: scope('value', $value);
-    $scoped-function: scoped-function(__constant-function);
-    $_: scope-end();
-
-    @return $scoped-function;
-}
-
 // $my-map: (user: 'fred');
 // $get-my-map: __constant($my-map);
 // @debug __call($get-my-map);
@@ -4763,10 +4459,10 @@ $users: (
     @return if($map == null, null, get($map, $key));
 }
 @function __property-of($map) {
-    $_: scope-start();
+    $_: __scope();
     $_: scope('map', $map);
-    $scoped-function: scoped-function(__property-of-function);
-    $_: scope-end();
+    $scoped-function: __bind(__property-of-function);
+    $_: __scope(false);
 
     @return $scoped-function;
 }
@@ -4830,7 +4526,7 @@ $users: (
     $iteratee: __bind-callback($iteratee, $this-arg, 1);
 
     @while ($index <= $n) {
-        $result: append($result, __call($iteratee, null, $index));
+        $result: append($result, __exec($iteratee, $index));
 
         $index: $index + 1;
     }
@@ -4853,26 +4549,14 @@ $users: (
 
 // // Add functions that return wrapped values when chaining
 @function _ary($args...) { @return call(__ary, $args...); }
-@function _assign($args...) { @return call(__assign, $args...); }
-@function _at($args...) { @return call(__at, $args...); }
-@function _before($args...) { @return call(__before, $args...); }
-@function _bind($args...) { @return call(__bind, $args...); }
 @function _bind-all($args...) { @return call(__bind-all, $args...); }
 @function _bind-key($args...) { @return call(__bind-key, $args...); }
-@function _callback($args...) { @return call(__callback, $args...); }
 // @function _chain($args...) { @return call(__chain, $args...); }
-@function _chunk($args...) { @return call(__chunk, $args...); }
-@function _compact($args...) { @return call(__compact, $args...); }
-@function _constant($args...) { @return call(__constant, $args...); }
-@function _count-by($args...) { @return call(__count-by, $args...); }
-@function _create($args...) { @return call(__create, $args...); }
 @function _curry($args...) { @return call(__curry, $args...); }
 @function _curry-right($args...) { @return call(__curry-right, $args...); }
-@function _debounce($args...) { @return call(__debounce, $args...); }
-@function _defaults($args...) { @return call(__defaults, $args...); }
-@function _defer($args...) { @return call(__defer, $args...); }
-@function _delay($args...) { @return call(__delay, $args...); }
-@function _difference($args...) { @return call(__difference, $args...); }
+// @function _debounce($args...) { @return call(__debounce, $args...); }
+// @function _defer($args...) { @return call(__defer, $args...); }
+// @function _delay($args...) { @return call(__delay, $args...); }
 @function _drop($args...) { @return call(__drop, $args...); }
 @function _drop-right($args...) { @return call(__drop-right, $args...); }
 @function _drop-right-while($args...) { @return call(__drop-right-while, $args...); }
@@ -5077,7 +4761,7 @@ $users: (
 
         $method: if(__starts-with($method, '_'), $method, '_' + $method);
 
-        $result: __call($method, null, $result, $args...);
+        $result: __exec($method, $result, $args...);
     }
 
     @return $result;

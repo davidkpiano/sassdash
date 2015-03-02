@@ -1,0 +1,28 @@
+@function __constant-function($args...) {
+    @return this('value');
+}
+@function __constant($value: null) {
+    $_: __scope(('value': $value));
+    $constant-function: __bind(__constant-function);
+    $_: __scope(false);
+
+    @return $constant-function;
+}
+
+/**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new function.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ * var getter = _.constant(object);
+ *
+ * getter() === object;
+ * // => true
+ */
+@function _constant($args...) { @return call(__constant, $args...); }

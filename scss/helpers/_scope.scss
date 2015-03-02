@@ -11,7 +11,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
     );
 }
 
-@function __scope($map: null) {
+@function __scope($map: ()) {
     @if $map == false {
         $scope: static-get($__current-scope__);
         $__current-scope__: get($scope, '_parent') !global;
@@ -41,8 +41,3 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 
     @return static-set($__current-scope__ $key, $value);
 }
-
-@function __bind($function, $this-arg: $__current-scope__) {
-    @return '#{$function}#{$this-arg}';
-}
-

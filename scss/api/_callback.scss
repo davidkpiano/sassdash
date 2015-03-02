@@ -1,0 +1,30 @@
+
+
+
+@function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
+    $type: if(__function-exists($function), 'function', type-of($function));
+
+    @if ($type == 'function') {
+        @return if(not __is-undefined($this-arg) and __is-bindable($function),
+            __bind-callback($function, $this-arg, $arg-count),
+            $function);
+    }
+
+    @if ($function == null) {
+        @return __identity;
+    }
+
+    @return if($type == 'map',
+        __base-matches($function, __is-falsey($arg-count)),
+        __base-property($function));
+}
+
+@function __callback($function: __identity, $this-arg: null, $guard: null) {
+    @if ($guard and __is-iteratee-call($function, $this-arg, $guard)) {
+        $this-arg: null;
+    }
+
+    @return __base-callback($function, $this-arg);
+}
+
+@function _callback($args...) { @return call(__callback, $args...); }

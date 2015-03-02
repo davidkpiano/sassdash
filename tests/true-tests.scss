@@ -435,13 +435,10 @@ $test-before-count: 0 !global;
     //     @include assert-equal($actual, $expected);
     // }
 
-    @include xit('should work with a number for iteratee') {
-        // todo
+    @include test('should work with a number for iteratee') {
         $list: (1 'a', 2 'a', 2 'b');
         $actual: _count-by($list, 1);
         $expected: (1: 1, 2: 2);
-
-        @debug $actual;
 
         @include assert-equal($actual, $expected);
     }
@@ -592,17 +589,11 @@ $test-before-count: 0 !global;
         @include assert-equal($actual, $expected);
     }
 
-    @include xit('should support binding built-in methods') {}
-
     @include test('should return the function provided when there is no this reference') {
         $actual: _callback(test-add);
         $expected: test-add;
 
         @include assert-equal($actual, $expected);
-    }
-
-    @include xit('should work with bizarro _support-func-names') {
-        // not implemented
     }
 
     @include test('should work as an iteratee for _map') {
@@ -664,14 +655,6 @@ $test-before-count: 0 !global;
 
         @include assert-equal($actual, 1 3);
     }
-
-    @include xit('should match NaN') {} // not implemented
-
-    @include xit('should work with large arrays') {} // irrelevant
-
-    @include xit('should work with large array of objects') {} // irrelevant
-
-    @include xit('should work with large arrays of NaN') {} // irrelevant
 
     @include test('should ignore values that are not arrays or arguments objects') {
         $list: (0 1 null 3);
@@ -736,8 +719,6 @@ $test-before-count: 0 !global;
 
         @include assert-equal($actual, $expected);    
     }
-
-    @include xit('should return a wrapped value when chaining') {} // todo
 
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4 5 6 7 8 9 10;
@@ -813,8 +794,6 @@ $test-before-count: 0 !global;
         @include assert-equal($actual, $expected);    
     }
 
-    @include xit('should return a wrapped value when chaining') {} // todo
-
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4 5 6 7 8 9 10;
         $predicate: test-drop-right-1;
@@ -864,8 +843,6 @@ $test-before-count: 0 !global;
         @include assert-equal($actual, $expected);
     }
 
-    @include xit('should provide the correct predicate arguments') {} // todo
-
     // @include test('should support the this-arg argument') {} // todo
 
     @include test('should work with a _pluck style predicate') {
@@ -902,8 +879,6 @@ $test-before-count: 0 !global;
 
         @include assert-equal($actual, $expected);
     }
-
-    @include xit('should provide the correct predicate arguments') {} // todo
 
     // @include test('should support the this-arg argument') {} // todo
 
@@ -1045,8 +1020,6 @@ $test-before-count: 0 !global;
         @include assert-equal($actual, $expected);
     }
 
-    @include xit('should work with collections of undefined values') {} // not implemented
-
     @include test('should work with a _pluck style predicate') {
         $maps: (('a': 0, 'b': 1), ('a': 1, 'b': 2));
         $actual: _every($maps, 'a');
@@ -1106,8 +1079,6 @@ $test-before-count: 0 !global;
 
         @include assert-equal($actual, $expected);
     }
-
-    @include xit('should iterate correctly over an object with numeric keys') {} //irrelevant
 
     @include test('should be aliased') {
         $actual: _select(1 2 3, test-filter-1);
@@ -1258,8 +1229,6 @@ $test-before-count: 0 !global;
             nth($maps, 3));
     }
 
-    @include xit('should work with a function for source') {} // not applicable
-
     @include test('should match all elements when provided an empty source') {
         $actual: _find-where($maps, ());
         $expected: nth($maps, 1);
@@ -1292,8 +1261,6 @@ $test-before-count: 0 !global;
 
         @include assert-equal($actual, $expected);
     }
-
-    @include xit('should return an unwrapped value for chaining') {} // todo
 
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4;
@@ -1362,8 +1329,6 @@ $test-before-count: 0 !global;
 
         @include assert-equal($actual, $expected);
     }
-
-    @include xit('should return a wrapped value when chaining') {} // todo
 
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4 5 6 7 8 9 10;
@@ -1472,8 +1437,6 @@ $test-before-count: 0 !global;
 
     @include assert-equal($actual, 2 3,
       'should take elements while predicate returns truthy');
-
-    @include assert-true(true, 'should provide the correct predicate arguments'); // not implemented
 
     @include assert-true(true, 'should support the this-arg argument'); // todo
 
@@ -1612,103 +1575,6 @@ $test-before-count: 0 !global;
       'should be aliased');
   }
 }
-
-// @include test-module('Sassdash iteration methods') {
-//   $methods: (
-//     'count-by',
-//     'every',
-//     'filter',
-//     'find',
-//     'find-index',
-//     'find-key',
-//     'find-last',
-//     'find-last-index',
-//     'find-last-key',
-//     'for-each-right',
-//     'for-in',
-//     'for-in-right',
-//     'for-own',
-//     'for-own-right',
-//     'group-by',
-//     'index-by',
-//     'map',
-//     'max',
-//     'min',
-//     'partition',
-//     'reject',
-//     'some'
-//   );
-
-//   $array-methods: (
-//     'find-index',
-//     'find-last-index'
-//   );
-
-//   $collection-methods: (
-//     'count-by',
-//     'every',
-//     'filter',
-//     'find',
-//     'find-last',
-//     'for-each',
-//     'for-each-right',
-//     'group-by',
-//     'index-by',
-//     'map',
-//     'max',
-//     'min',
-//     'partition',
-//     'reduce',
-//     'reduce-right',
-//     'reject',
-//     'some'
-//   );
-
-//   $for-in-methods: (
-//     'for-in',
-//     'for-in-right'
-//   );
-
-//   $iteration-methods: (
-//     'for-each',
-//     'for-each-right',
-//     'for-in',
-//     'for-in-right',
-//     'for-own',
-//     'for-own-right'
-//   );
-
-//   $map-methods: (
-//     'find-key',
-//     'find-last-key',
-//     'for-in',
-//     'for-in-right',
-//     'for-own',
-//     'for-own-right'
-//   );
-
-//   $right-methods: (
-//     'find-last',
-//     'find-last-index',
-//     'find-last-key',
-//     'for-each-right',
-//     'for-in-right',
-//     'for-own-right'
-//   );
-
-//   $unwrapped-methods: (
-//     'every',
-//     'find',
-//     'find-index',
-//     'find-key',
-//     'find-last',
-//     'find-last-index',
-//     'find-last-key',
-//     'max',
-//     'min',
-//     'some'
-//   );
-// }
 
 @include test-module('Sassdash') {
   @include test('map assignments') {  
@@ -2239,8 +2105,8 @@ $test-before-count: 0 !global;
         @include assert-equal(_is-match($map, ('a': 1, 'c': 3)), true);
         @include assert-equal(_is-match($map, ('c': 3, 'd': 4)), false);
 
-        // $map: ('a': ('b': ('c': 1, 'd': 2), 'e': 3), 'f': 4);
-        // @include assert-equal(_is-match($map, ('a': ('b': ('c': 1)))), true);
+        $map: ('a': ('b': ('c': 1, 'd': 2), 'e': 3), 'f': 4);
+        @include assert-equal(_is-match($map, ('a': ('b': ('c': 1)))), true);
     }
 
     @include test('should compare a variety of source values') {
@@ -2257,14 +2123,14 @@ $test-before-count: 0 !global;
         @include assert-equal(_is-match($map, ()), true);
     }
 
-    // @include test('should return true when comparing a source of empty lists and maps') {
-    //     $maps: (('a': (1,), 'b': ('c': 1)), ('a': 2 3, 'b': ('d': 2)));
-    //     $source: ('a': (), 'b': ());
+    @include test('should return true when comparing a source of empty lists and maps') {
+        $maps: (('a': (1,), 'b': ('c': 1)), ('a': 2 3, 'b': ('d': 2)));
+        $source: ('a': (), 'b': ());
 
-    //     @each $map in $maps {
-    //         @include assert-equal(__is-match($map, $source), true);
-    //     }
-    // }
+        @each $map in $maps {
+            @include assert-equal(__is-match($map, $source), true);
+        }
+    }
 
     @include test('should return false for falsey map values') {
         @each $value in $test-falsey {
@@ -2278,60 +2144,60 @@ $test-before-count: 0 !global;
         }
     }
 
-    // @include test('should search lists of source for values') {
-    //     $maps: (('a': ('b',)), ('a': ('c', 'd')));
-    //     $source: ('a': ('d',));
-    //     $actual: ();
+    @include test('should search lists of source for values') {
+        $maps: (('a': ('b',)), ('a': ('c', 'd')));
+        $source: ('a': ('d',));
+        $actual: ();
 
-    //     @each $map in $maps {
-    //         @if _is-match($map, $source) {
-    //             $actual: append($actual, $map);
-    //         }
-    //     }
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
 
-    //     @include assert-equal($actual, (nth($maps, 2),));
+        @include assert-equal($actual, (nth($maps, 2),));
 
-    //     $source: ('a': ('d', 'b'));
-    //     $actual: ();
+        $source: ('a': ('d', 'b'));
+        $actual: ();
 
-    //     @each $map in $maps {
-    //         @if _is-match($map, $source) {
-    //             $actual: append($actual, $map);
-    //         }
-    //     }
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
 
-    //     @include assert-equal($actual, ());
+        @include assert-equal($actual, ());
 
-    //     $source: ('a': ('b', 'd'));
-    //     $actual: ();
+        $source: ('a': ('b', 'd'));
+        $actual: ();
 
-    //     @each $map in $maps {
-    //         @if _is-match($map, $source) {
-    //             $actual: append($actual, $map);
-    //         }
-    //     }
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
 
-    //     @include assert-equal($actual, ());
-    // }
+        @include assert-equal($actual, ());
+    }
 
-    // @include test('should perform a partial comparison of all maps within lists of source') {
-    //     $source: ('a': (('b': 1), ('b': 4, 'c': 5)));
+    @include test('should perform a partial comparison of all maps within lists of source') {
+        $source: ('a': (('b': 1), ('b': 4, 'c': 5)));
 
-    //     $maps: (
-    //         ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 5, 'd': 6 ))),
-    //         ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 6, 'd': 7 )))
-    //     );
+        $maps: (
+            ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 5, 'd': 6 ))),
+            ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 6, 'd': 7 )))
+        );
 
-    //     $actual: ();
+        $actual: ();
 
-    //     @each $map in $maps {
-    //         @if _is-match($map, $source) {
-    //             $actual: append($actual, $map);
-    //         }
-    //     }
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
 
-    //     @include assert-equal($actual, (nth($maps, 1),));
-    // }
+        @include assert-equal($actual, (nth($maps, 1),));
+    }
 
     // TODO: fix and finish _is-match tests
 }
@@ -2916,7 +2782,6 @@ $test-before-count: 0 !global;
     @include assert-equal(_omit(1 2 3, 1, 3), (2: 2),
       'should work with a list map argument');
     
-    // TODO: investigate failing test
     @include assert-equal(_omit(('a': 1,'b': 2,'c': 3,'d': 4,'e': 5), test-is-even), ('a': 1, 'c': 3, 'e': 5),
       'should work with a predicate argument');
   }

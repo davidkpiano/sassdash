@@ -1,0 +1,223 @@
+
+@function __drop($list, $n: null, $guard: false) {
+    $length: if($list, length($list), 0);
+
+    @if ($length == 0) {
+        @return ();
+    }
+
+    @if (if($guard, __is-iteratee-call($list, $n, $guard), ($n == null))) {
+        $n: 1;
+    }
+
+    $n: if(__is-falsey($n), 0, if($n < 0, 0, min($n, length($list))));
+
+    @return __base-slice($list, $n);
+}
+
+@function __drop-right($list, $n: null, $guard: false) {
+    $length: if($list, length($list), 0);
+
+    @if ($length == 0) {
+        @return ();
+    }
+
+    @if (if($guard, __is-iteratee-call($list, $n, $guard), ($n == null))) {
+        $n: 1;
+    }
+
+    $n: $length - if(__is-number($n), $n, if(__is-falsey($n), 0, 1));
+
+    @return __base-slice($list, 0, if($n < 0, 0, $n));
+}
+
+@function __drop-right-while($list, $predicate: __identity, $this-arg: null) {
+    $length: if($list, length($list), 0);
+
+    @if ($length == 0) {
+        @return ();
+    }
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @while ($length > 0
+        and __is-truthy(__exec($predicate, nth($list, $length), $length, $list))) {
+        $length: $length - 1;
+    }
+
+    @return __base-slice($list, 0, $length);
+}
+
+
+@function __drop-while($list, $predicate: __identity, $this-arg: null) {
+    $length: if($list, length($list), 0);
+
+    @if ($length == 0) {
+        @return ();
+    }
+
+    $index: 1;
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @while ($index <= $length
+        and __is-truthy(__exec($predicate, nth($list, $index), $index, $list))) {
+        $index: $index + 1;
+    }
+
+    @return __base-slice($list, $index - 1);
+}
+
+/**
+ * Creates a slice of `array` with `n` elements dropped from the beginning.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @param {number} [n=1] The number of elements to drop.
+ * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+ * @returns {Array} Returns the slice of `array`.
+ * @example
+ *
+ * _.drop([1, 2, 3]);
+ * // => [2, 3]
+ *
+ * _.drop([1, 2, 3], 2);
+ * // => [3]
+ *
+ * _.drop([1, 2, 3], 5);
+ * // => []
+ *
+ * _.drop([1, 2, 3], 0);
+ * // => [1, 2, 3]
+ */
+@function _drop($args...) { @return call(__drop, $args...); }
+
+/**
+ * Creates a slice of `array` with `n` elements dropped from the end.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @param {number} [n=1] The number of elements to drop.
+ * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+ * @returns {Array} Returns the slice of `array`.
+ * @example
+ *
+ * _.dropRight([1, 2, 3]);
+ * // => [1, 2]
+ *
+ * _.dropRight([1, 2, 3], 2);
+ * // => [1]
+ *
+ * _.dropRight([1, 2, 3], 5);
+ * // => []
+ *
+ * _.dropRight([1, 2, 3], 0);
+ * // => [1, 2, 3]
+ */
+@function _drop-right($args...) { @return call(__drop-right, $args...); }
+
+/**
+ * Creates a slice of `array` excluding elements dropped from the end.
+ * Elements are dropped until `predicate` returns falsey. The predicate is
+ * bound to `thisArg` and invoked with three arguments; (value, index, array).
+ *
+ * If a property name is provided for `predicate` the created `_.property`
+ * style callback returns the property value of the given element.
+ *
+ * If a value is also provided for `thisArg` the created `_.matchesProperty`
+ * style callback returns `true` for elements that have a matching property
+ * value, else `false`.
+ *
+ * If an object is provided for `predicate` the created `_.matches` style
+ * callback returns `true` for elements that match the properties of the given
+ * object, else `false`.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked
+ *  per iteration.
+ * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @returns {Array} Returns the slice of `array`.
+ * @example
+ *
+ * _.dropRightWhile([1, 2, 3], function(n) {
+ *   return n > 1;
+ * });
+ * // => [1]
+ *
+ * var users = [
+ *   { 'user': 'barney',  'active': true },
+ *   { 'user': 'fred',    'active': false },
+ *   { 'user': 'pebbles', 'active': false }
+ * ];
+ *
+ * // using the `_.matches` callback shorthand
+ * _.pluck(_.dropRightWhile(users, { 'user': 'pebbles', 'active': false }), 'user');
+ * // => ['barney', 'fred']
+ *
+ * // using the `_.matchesProperty` callback shorthand
+ * _.pluck(_.dropRightWhile(users, 'active', false), 'user');
+ * // => ['barney']
+ *
+ * // using the `_.property` callback shorthand
+ * _.pluck(_.dropRightWhile(users, 'active'), 'user');
+ * // => ['barney', 'fred', 'pebbles']
+ */
+@function _drop-right-while($args...) { @return call(__drop-right-while, $args...); }
+
+/**
+ * Creates a slice of `array` excluding elements dropped from the beginning.
+ * Elements are dropped until `predicate` returns falsey. The predicate is
+ * bound to `thisArg` and invoked with three arguments; (value, index, array).
+ *
+ * If a property name is provided for `predicate` the created `_.property`
+ * style callback returns the property value of the given element.
+ *
+ * If a value is also provided for `thisArg` the created `_.matchesProperty`
+ * style callback returns `true` for elements that have a matching property
+ * value, else `false`.
+ *
+ * If an object is provided for `predicate` the created `_.matches` style
+ * callback returns `true` for elements that have the properties of the given
+ * object, else `false`.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked
+ *  per iteration.
+ * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @returns {Array} Returns the slice of `array`.
+ * @example
+ *
+ * _.dropWhile([1, 2, 3], function(n) {
+ *   return n < 3;
+ * });
+ * // => [3]
+ *
+ * var users = [
+ *   { 'user': 'barney',  'active': false },
+ *   { 'user': 'fred',    'active': false },
+ *   { 'user': 'pebbles', 'active': true }
+ * ];
+ *
+ * // using the `_.matches` callback shorthand
+ * _.pluck(_.dropWhile(users, { 'user': 'barney', 'active': false }), 'user');
+ * // => ['fred', 'pebbles']
+ *
+ * // using the `_.matchesProperty` callback shorthand
+ * _.pluck(_.dropWhile(users, 'active', false), 'user');
+ * // => ['pebbles']
+ *
+ * // using the `_.property` callback shorthand
+ * _.pluck(_.dropWhile(users, 'active'), 'user');
+ * // => ['barney', 'fred', 'pebbles']
+ */
+@function _drop-while($args...) { @return call(__drop-while, $args...); }

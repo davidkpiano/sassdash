@@ -497,25 +497,6 @@
     @return true;
 }
 
-@function __list-filter($list, $predicate) {
-    $index: 1;
-    $length: length($list);
-    $result-list: ();
-
-    @while ($index <= $length) {
-        $value: nth($list, $index);
-
-        $iteration: __exec($predicate, $value, $index, $list);
-
-        @if (__is-truthy($iteration)) {
-            $result-list: append($result-list, $value);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result-list;
-}
 
 // TODO remove - for testing only
 @function is-even($val, $args...) {
@@ -777,52 +758,6 @@ $users: (
     @return if($result, true, false);
 }
 
-@function __base-fill($list, $value, $start: null, $end: null) {
-    $length: length($list);
-
-    $start: if($start == null, 1, if(__is-number($start), $start, if($start, 2, 1)));
-
-    $end: if(__is-undefined($end) or $end > $length, $length, if(__is-number($end), $end, if($end, 2, 1)));
-
-    @if ($end < 1) {
-        $end: $end + $length;
-    }
-
-    $length: if($start > $end, 0, $end);
-
-    @while ($start <= $length) {
-        $list: set-nth($list, $start, $value);
-
-        $start: $start + 1;
-    }
-
-    @return $list;
-}
-
-@function __base-filter-iteratee($value, $index, $collection) {
-    $result: this('result');
-    $predicate: this('predicate');
-
-    $iteration: __exec($predicate, $value, $index, $collection);
-
-    @if __is-truthy($iteration) {
-        $_: this('result', append($result, $value));
-    }
-
-    @return null;
-}
-@function __base-filter($collection, $predicate) {
-    $_: __scope();
-    $_: scope('result', ());
-    $_: scope('predicate', $predicate);
-
-    $_: __base-each($collection, __base-filter-iteratee);
-
-    $result: scope('result');
-    $_: __scope(false);
-
-    @return $result;
-}
 
 @function __base-find-iteratee($value, $key, $collection) {
     $predicate: this('predicate');
@@ -859,40 +794,6 @@ $users: (
 
 // @debug __base-find((1 2 3 4 5), is-even);
 
-@function __base-flatten($list, $is-deep: false, $is-strict: false, $from-index: 1) {
-    $index: $from-index;
-    $length: length($list);
-    $result-index: 1;
-    $result: ();
-
-    @while ($index <= $length) {
-        $value: nth($list, $index);
-
-        @if __is-map-like($value)
-            and __is-length(length($value))
-            and (__is-list($value) or __is-arglist($value))
-        {
-            @if ($is-deep) {
-                $value: __base-flatten($value, $is-deep, $is-strict);
-            }
-
-            $value-index: 1;
-            $value-length: length($value);
-
-            @while ($value-index <= $value-length) {
-                $result: append($result, nth($value, $value-index));
-
-                $value-index: $value-index + 1;
-            }
-        } @else if not ($is-strict) {
-            $result: append($result, $value);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
 
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;
@@ -2149,101 +2050,23 @@ $users: (
 
 // @debug __difference((1 2 3), (5 2 10), (1 90 91));
 
-@function __drop($list, $n: null, $guard: false) {
-    $length: if($list, length($list), 0);
 
-    @if ($length == 0) {
-        @return ();
-    }
-
-    @if (if($guard, __is-iteratee-call($list, $n, $guard), ($n == null))) {
-        $n: 1;
-    }
-
-    $n: if(__is-falsey($n), 0, if($n < 0, 0, min($n, length($list))));
-
-    @return __base-slice($list, $n);
-}
 
 // @debug __drop((1 2 3));
 // @debug __drop((1 2 3), 2);
 // @debug __drop((1 2 3), 5);
 // @debug __drop((1 2 3), 0);
 
-@function __drop-right($list, $n: null, $guard: false) {
-    $length: if($list, length($list), 0);
 
-    @if ($length == 0) {
-        @return ();
-    }
-
-    @if (if($guard, __is-iteratee-call($list, $n, $guard), ($n == null))) {
-        $n: 1;
-    }
-
-    $n: $length - if(type-of($n) == 'number', $n, if(__is-falsey($n), 0, 1));
-
-    @return __base-slice($list, 0, if($n < 0, 0, $n));
-}
 
 // @debug __drop-right((1 2 3 4 5));
 // @debug __drop-right((1 2 3 4 5), 2);
 
-@function __drop-right-while($list, $predicate: __identity, $this-arg: null) {
-    $length: if($list, length($list), 0);
-
-    @if ($length == 0) {
-        @return ();
-    }
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @while ($length > 0
-        and __is-truthy(__exec($predicate, nth($list, $length), $length, $list))) {
-        $length: $length - 1;
-    }
-
-    @return __base-slice($list, 0, $length);
-}
-
 // @debug __drop-right-while((1 2 3 4 5 6 7 8 10 12 14), is-even);
-
-
-@function __drop-while($list, $predicate: __identity, $this-arg: null) {
-    $length: if($list, length($list), 0);
-
-    @if ($length == 0) {
-        @return ();
-    }
-
-    $index: 1;
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @while ($index <= $length
-        and __is-truthy(__exec($predicate, nth($list, $index), $index, $list))) {
-        $index: $index + 1;
-    }
-
-    @return __base-slice($list, $index - 1);
-}
 
 // @debug __drop-while((2 4 6 8 10 12 13 14 15 16), is-even);
 
-@function __fill($list, $value, $start: null, $end: null) {
-    $length: if($list, length($list), 0);
 
-    @if not ($length) {
-        @return ();
-    }
-
-    @if ($start and __is-number($start) and __is-iteratee-call($list, $value, $start)) {
-        $start: 1;
-        $end: $length;
-    }
-
-    @return __base-fill($list, $value, $start, $end);
-}
 
 // @debug __fill(1 2 3, 'a', 2);
 
@@ -2294,24 +2117,12 @@ $users: (
 // @debug __first((2 4 6 8));
 // @debug __first(null);
 
-@function __flatten($list, $is-deep: false, $guard: null) {
-    $length: if(__is-list-like($list), length($list), 0);
 
-    @if ($guard and __is-iteratee-call($list, $is-deep, $guard)) {
-        $is-deep: false;
-    }
-
-    @return if($length > 0, __base-flatten($list, $is-deep), ());
-}
 
 // @debug __flatten((1 (2 3) (4 (5 6)) (7 (8 (9 10 100))))); // single level flatten
 // @debug __flatten((1 (2 3) (4 (5 6)) (7 (8 (9 10 100)))), true); // deep flatten
 
-@function __flatten-deep($list, $args...) {
-    $length: if(__is-list-like($list), length($list), 0);
 
-    @return if($length > 0, __base-flatten($list, true), ());
-}
 
 // @debug __flatten-deep((1 (2 3) (4 (5 6)) (7 (8 (9 10 100))))); // deep flatten
 
@@ -2839,13 +2650,7 @@ $users: (
 // @debug __every((true 1 null 'yes'));
 // @debug __every((2 4 6 8 10), is-even);
 
-@function __filter($collection, $predicate: __identity, $this-arg: null) {
-    $function: if(__is-list($collection), __list-filter, __base-filter);
 
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @return __call($function, $this-arg, $collection, $predicate);
-}
 
 // @debug __filter((1 2 3 4 5 6 6 1239), is-even);
 
@@ -4557,13 +4362,6 @@ $users: (
 // @function _debounce($args...) { @return call(__debounce, $args...); }
 // @function _defer($args...) { @return call(__defer, $args...); }
 // @function _delay($args...) { @return call(__delay, $args...); }
-@function _drop($args...) { @return call(__drop, $args...); }
-@function _drop-right($args...) { @return call(__drop-right, $args...); }
-@function _drop-right-while($args...) { @return call(__drop-right-while, $args...); }
-@function _drop-while($args...) { @return call(__drop-while, $args...); }
-@function _filter($args...) { @return call(__filter, $args...); }
-@function _flatten($args...) { @return call(__flatten, $args...); }
-@function _flatten-deep($args...) { @return call(__flatten-deep, $args...); }
 @function _flow($args...) { @return call(__flow, $args...); }
 @function _flow-right($args...) { @return call(__flow-right, $args...); }
 @function _for-each($args...) { @return call(__for-each, $args...); }

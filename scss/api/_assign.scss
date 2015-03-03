@@ -101,3 +101,5 @@
  * // => { 'user': 'barney', 'age': 36 }
  */
 @function _assign($args...) { @return call(__assign, $args...); }
+
+@function _extend($args...) { @return call(__assign, $args...); }

@@ -136,6 +136,8 @@
  */
 @function _for-each($args...) { @return call(__for-each, $args...); }
 
+@function _each($args...) { @return call(__for-each, $args...); }
+
 /**
  * This method is like `_.forEach` except that it iterates over elements of
  * `collection` from right to left.
@@ -156,6 +158,8 @@
  * // => logs each value from right to left and returns the array
  */
 @function _for-each-right($args...) { @return call(__for-each-right, $args...); }
+
+@function _each-right($args...) { @return call(__for-each-right, $args...); }
 
 /**
  * Iterates over own and inherited enumerable properties of an object invoking

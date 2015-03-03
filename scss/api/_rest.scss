@@ -20,3 +20,5 @@
  * // => [2, 3]
  */
 @function _rest($args...) { @return call(__rest, $args...); }
+
+@function _tail($args...) { @return call(__rest, $args...); }

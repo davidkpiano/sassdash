@@ -1,0 +1,48 @@
+
+@function __to-list($value) {
+    @if __is-map($value) {
+        @if __list-some(map-keys($value), __is-string) {
+            @return map-values($value);
+        }
+
+        $result: ();
+
+        @for $index from 1 through max(map-keys($value)...) {
+            $map-value: get($value, $index);
+            $result: append($result, $map-value);
+        }
+
+        @return $result;
+    }
+
+    @if __is-string($value) {
+        $result: ();
+
+        @if str-length($value) >= 1 {        
+            @for $index from 1 through str-length($value) {
+                $result: append($result, str-slice($value, $index, $index));
+            }
+        }
+
+        @return $result;
+    }
+
+    @return if(__is-list-like($value), join((), $value), ());
+}
+
+/**
+ * Converts `value` to an array.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {Array} Returns the converted array.
+ * @example
+ *
+ * (function() {
+ *   return _.toArray(arguments).slice(1);
+ * }(1, 2, 3));
+ * // => [2, 3]
+ */
+@function _to-list($args...) { @return call(__to-list, $args...); }

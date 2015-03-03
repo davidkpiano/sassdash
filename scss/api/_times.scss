@@ -1,0 +1,46 @@
+
+@function __times($n, $iteratee: __identity, $this-arg: null) {
+    $n: if(__is-falsey($n), 0, $n);
+
+    $index: 1;
+    $result: ();
+
+    $iteratee: __bind-callback($iteratee, $this-arg, 1);
+
+    @while $index <= $n {
+        $result: append($result, __exec($iteratee, $index));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+/**
+ * Invokes the iteratee function `n` times, returning an array of the results
+ * of each invocation. The `iteratee` is bound to `thisArg` and invoked with
+ * one argument; (index).
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Array} Returns the array of results.
+ * @example
+ *
+ * var diceRolls = _.times(3, _.partial(_.random, 1, 6, false));
+ * // => [3, 6, 4]
+ *
+ * _.times(3, function(n) {
+ *   mage.castSpell(n);
+ * });
+ * // => invokes `mage.castSpell(n)` three times with `n` of `0`, `1`, and `2` respectively
+ *
+ * _.times(3, function(n) {
+ *   this.cast(n);
+ * }, mage);
+ * // => also invokes `mage.castSpell(n)` three times
+ */
+@function _times($args...) { @return call(__times, $args...); }

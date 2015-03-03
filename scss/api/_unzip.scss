@@ -1,0 +1,35 @@
+
+
+@function __unzip($list) {
+    $index: 1;
+    $length: if($list, if(length($list) > 0, __list-max(__list-map($list, __get-length)), 0), 0);
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, __list-map($list, __base-property($index)));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+/**
+ * This method is like `_.zip` except that it accepts an array of grouped
+ * elements and creates an array regrouping the elements to their pre-`_.zip`
+ * configuration.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array of grouped elements to process.
+ * @returns {Array} Returns the new array of regrouped elements.
+ * @example
+ *
+ * var zipped = _.zip(['fred', 'barney'], [30, 40], [true, false]);
+ * // => [['fred', 30, true], ['barney', 40, false]]
+ *
+ * _.unzip(zipped);
+ * // => [['fred', 'barney'], [30, 40], [true, false]]
+ */
+@function _unzip($args...) { @return call(__unzip, $args...); }

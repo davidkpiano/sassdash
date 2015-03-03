@@ -31,3 +31,5 @@
  * // => ['after', 'ary', 'assign', ...]
  */
 @function _functions($args...) { @return call(__functions, $args...); }
+
+@function _methods($args...) { @return call(__functions, $args...); }

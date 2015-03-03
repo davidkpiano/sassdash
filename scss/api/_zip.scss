@@ -1,0 +1,87 @@
+
+@function __zip($arguments...) {
+    $length: length($arguments);
+    $list: ();
+
+    @while ($length > 0) {
+        $list: set($list, $length, nth($arguments, $length));
+
+        $length: $length - 1;
+    }
+
+    @return __unzip(__to-list($list));
+}
+
+// @debug __zip((fred barney), (30 40), (true false));
+// todo: see about reversed order
+
+@function __zip-map($props, $values: ()) {
+    $index: 1;
+    $length: if($props, length($props), 0);
+    $result: ();
+
+    @if not __is-list-like($props) {
+        @return ();
+    }
+
+    @if $length > 0
+        and not $values
+        and not __is-list(nth($props, 1)) {
+        $values: ();
+    }
+
+    @while $index <= $length {
+        $key: nth($props, $index);
+
+        @if ($values and length($values) > 0) {
+            $result: set($result, $key, nth($values, $index));
+        } @else if ($key) {
+            $result-key: nth($key, 1);
+            $result-value: if(length($key) > 1, nth($key, 2), null);
+            $result: set($result, $result-key, $result-value);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+/**
+ * Creates an array of grouped elements, the first of which contains the first
+ * elements of the given arrays, the second of which contains the second elements
+ * of the given arrays, and so on.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {...Array} [arrays] The arrays to process.
+ * @returns {Array} Returns the new array of grouped elements.
+ * @example
+ *
+ * _.zip(['fred', 'barney'], [30, 40], [true, false]);
+ * // => [['fred', 30, true], ['barney', 40, false]]
+ */
+@function _zip($args...) { @return call(__zip, $args...); }
+
+/**
+ * Creates an object composed from arrays of property names and values. Provide
+ * either a single two dimensional array, e.g. `[[key1, value1], [key2, value2]]`
+ * or two arrays, one of property names and one of corresponding values.
+ *
+ * @static
+ * @memberOf _
+ * @alias object
+ * @category Array
+ * @param {Array} props The property names.
+ * @param {Array} [values=[]] The property values.
+ * @returns {Object} Returns the new object.
+ * @example
+ *
+ * _.zipObject(['fred', 'barney'], [30, 40]);
+ * // => { 'fred': 30, 'barney': 40 }
+ */
+@function _zip-map($args...) { @return call(__zip-map, $args...); }
+
+@function _object($args...) { @return call(__zip-map, $args...); }
+

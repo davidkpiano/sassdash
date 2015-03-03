@@ -5,20 +5,18 @@
     @return __drop($list, 1);
 }
 
-/**
- * Gets all but the first element of `array`.
- *
- * @static
- * @memberOf _
- * @alias tail
- * @category Array
- * @param {Array} array The array to query.
- * @returns {Array} Returns the slice of `array`.
- * @example
- *
- * _.rest([1, 2, 3]);
- * // => [2, 3]
- */
+/// 
+/// Gets all but the first element of `array`.
+/// @static
+/// @memberOf _
+/// @alias tail
+/// @category Array
+/// @param {Array} array The array to query.
+/// @returns {Array} Returns the slice of `array`.
+/// @example
+/// _.rest([1, 2, 3]);
+/// // => [2, 3]
+/// 
 @function _rest($args...) { @return call(__rest, $args...); }
 
 @function _tail($args...) { @return call(__rest, $args...); }

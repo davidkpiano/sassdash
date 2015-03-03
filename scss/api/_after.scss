@@ -33,17 +33,16 @@
     @return $after-callback;
 }
 
-/**
- * The opposite of `_.before`; this method creates a function that invokes
- * `func` once it is called `n` or more times.
- *
- * @static
- * @memberOf _
- * @category Function
- * @param {number} n The number of calls before `func` is invoked.
- * @param {Function} func The function to restrict.
- * @returns {Function} Returns the new restricted function.
- * @example
- * // todo
- */
+/// 
+/// The opposite of `_.before`; this method creates a function that invokes
+/// `func` once it is called `n` or more times.
+/// @static
+/// @memberOf _
+/// @category Function
+/// @param {number} n The number of calls before `func` is invoked.
+/// @param {Function} func The function to restrict.
+/// @returns {Function} Returns the new restricted function.
+/// @example
+/// // todo
+/// 
 @function _after($args...) { @return call(__after, $args...); }

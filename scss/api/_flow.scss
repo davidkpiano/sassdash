@@ -69,56 +69,48 @@
     @return $flow-right-function;
 }
 
-/**
- * Creates a function that returns the result of invoking the provided
- * functions with the `this` binding of the created function, where each
- * successive invocation is supplied the return value of the previous.
- *
- * @static
- * @memberOf _
- * @category Function
- * @param {...Function} [funcs] Functions to invoke.
- * @returns {Function} Returns the new function.
- * @example
- *
- * function add(x, y) {
- *   return x + y;
- * }
- *
- * function square(n) {
- *   return n * n;
- * }
- *
- * var addSquare = _.flow(add, square);
- * addSquare(1, 2);
- * // => 9
- */
+/// 
+/// Creates a function that returns the result of invoking the provided
+/// functions with the `this` binding of the created function, where each
+/// successive invocation is supplied the return value of the previous.
+/// @static
+/// @memberOf _
+/// @category Function
+/// @param {...Function} [funcs] Functions to invoke.
+/// @returns {Function} Returns the new function.
+/// @example
+/// function add(x, y) {
+///   return x + y;
+/// }
+/// function square(n) {
+///   return n/// n;
+/// }
+/// var addSquare = _.flow(add, square);
+/// addSquare(1, 2);
+/// // => 9
+/// 
 @function _flow($args...) { @return call(__flow, $args...); }
 
-/**
- * This method is like `_.flow` except that it creates a function that
- * invokes the provided functions from right to left.
- *
- * @static
- * @memberOf _
- * @alias backflow, compose
- * @category Function
- * @param {...Function} [funcs] Functions to invoke.
- * @returns {Function} Returns the new function.
- * @example
- *
- * function add(x, y) {
- *   return x + y;
- * }
- *
- * function square(n) {
- *   return n * n;
- * }
- *
- * var addSquare = _.flowRight(square, add);
- * addSquare(1, 2);
- * // => 9
- */
+/// 
+/// This method is like `_.flow` except that it creates a function that
+/// invokes the provided functions from right to left.
+/// @static
+/// @memberOf _
+/// @alias backflow, compose
+/// @category Function
+/// @param {...Function} [funcs] Functions to invoke.
+/// @returns {Function} Returns the new function.
+/// @example
+/// function add(x, y) {
+///   return x + y;
+/// }
+/// function square(n) {
+///   return n/// n;
+/// }
+/// var addSquare = _.flowRight(square, add);
+/// addSquare(1, 2);
+/// // => 9
+/// 
 @function _flow-right($args...) { @return call(__flow-right, $args...); }
 
 @function _compose($args...) { @return call(__flow-right, $args...); }

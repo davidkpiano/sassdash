@@ -30,19 +30,17 @@
     @return if(__is-list-like($value), join((), $value), ());
 }
 
-/**
- * Converts `value` to an array.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {Array} Returns the converted array.
- * @example
- *
- * (function() {
- *   return _.toArray(arguments).slice(1);
- * }(1, 2, 3));
- * // => [2, 3]
- */
+/// 
+/// Converts `value` to an array.
+/// @static
+/// @memberOf _
+/// @category Lang
+/// @param {*} value The value to convert.
+/// @returns {Array} Returns the converted array.
+/// @example
+/// (function() {
+///   return _.toArray(arguments).slice(1);
+/// }(1, 2, 3));
+/// // => [2, 3]
+/// 
 @function _to-list($args...) { @return call(__to-list, $args...); }

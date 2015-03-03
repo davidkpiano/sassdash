@@ -68,65 +68,56 @@
     @return -1;
 }
 
-/**
- * Gets the index at which the first occurrence of `value` is found in `array`
- * using `SameValueZero` for equality comparisons. If `fromIndex` is negative,
- * it is used as the offset from the end of `array`. If `array` is sorted
- * providing `true` for `fromIndex` performs a faster binary search.
- *
- * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
- * e.g. `===`, except that `NaN` matches `NaN`. See the
- * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
- * for more details.
- *
- * @static
- * @memberOf _
- * @category Array
- * @param {Array} array The array to search.
- * @param {*} value The value to search for.
- * @param {boolean|number} [fromIndex=0] The index to search from or `true`
- *  to perform a binary search on a sorted array.
- * @returns {number} Returns the index of the matched value, else `-1`.
- * @example
- *
- * _.indexOf([1, 2, 1, 2], 2);
- * // => 1
- *
- * // using `fromIndex`
- * _.indexOf([1, 2, 1, 2], 2, 2);
- * // => 3
- *
- * // performing a binary search
- * _.indexOf([1, 1, 2, 2], 2, true);
- * // => 2
- */
+/// 
+/// Gets the index at which the first occurrence of `value` is found in `array`
+/// using `SameValueZero` for equality comparisons. If `fromIndex` is negative,
+/// it is used as the offset from the end of `array`. If `array` is sorted
+/// providing `true` for `fromIndex` performs a faster binary search.
+/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
+/// e.g. `===`, except that `NaN` matches `NaN`. See the
+/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+/// for more details.
+/// @static
+/// @memberOf _
+/// @category Array
+/// @param {Array} array The array to search.
+/// @param {*} value The value to search for.
+/// @param {boolean|number} [fromIndex=0] The index to search from or `true`
+///  to perform a binary search on a sorted array.
+/// @returns {number} Returns the index of the matched value, else `-1`.
+/// @example
+/// _.indexOf([1, 2, 1, 2], 2);
+/// // => 1
+/// // using `fromIndex`
+/// _.indexOf([1, 2, 1, 2], 2, 2);
+/// // => 3
+/// // performing a binary search
+/// _.indexOf([1, 1, 2, 2], 2, true);
+/// // => 2
+/// 
 @function _index-of($args...) { @return call(__index-of, $args...); }
 
-/**
- * This method is like `_.indexOf` except that it iterates over elements of
- * `array` from right to left.
- *
- * @static
- * @memberOf _
- * @category Array
- * @param {Array} array The array to search.
- * @param {*} value The value to search for.
- * @param {boolean|number} [fromIndex=array.length-1] The index to search from
- *  or `true` to perform a binary search on a sorted array.
- * @returns {number} Returns the index of the matched value, else `-1`.
- * @example
- *
- * _.lastIndexOf([1, 2, 1, 2], 2);
- * // => 3
- *
- * // using `fromIndex`
- * _.lastIndexOf([1, 2, 1, 2], 2, 2);
- * // => 1
- *
- * // performing a binary search
- * _.lastIndexOf([1, 1, 2, 2], 2, true);
- * // => 3
- */
+/// 
+/// This method is like `_.indexOf` except that it iterates over elements of
+/// `array` from right to left.
+/// @static
+/// @memberOf _
+/// @category Array
+/// @param {Array} array The array to search.
+/// @param {*} value The value to search for.
+/// @param {boolean|number} [fromIndex=array.length-1] The index to search from
+///  or `true` to perform a binary search on a sorted array.
+/// @returns {number} Returns the index of the matched value, else `-1`.
+/// @example
+/// _.lastIndexOf([1, 2, 1, 2], 2);
+/// // => 3
+/// // using `fromIndex`
+/// _.lastIndexOf([1, 2, 1, 2], 2, 2);
+/// // => 1
+/// // performing a binary search
+/// _.lastIndexOf([1, 1, 2, 2], 2, true);
+/// // => 3
+/// 
 @function _last-index-of($args...) { @return call(__last-index-of, $args...); }
 
 

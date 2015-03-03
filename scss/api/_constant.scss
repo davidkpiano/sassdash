@@ -9,20 +9,17 @@
     @return $constant-function;
 }
 
-/**
- * Creates a function that returns `value`.
- *
- * @static
- * @memberOf _
- * @category Utility
- * @param {*} value The value to return from the new function.
- * @returns {Function} Returns the new function.
- * @example
- *
- * var object = { 'user': 'fred' };
- * var getter = _.constant(object);
- *
- * getter() === object;
- * // => true
- */
+/// 
+/// Creates a function that returns `value`.
+/// @static
+/// @memberOf _
+/// @category Utility
+/// @param {*} value The value to return from the new function.
+/// @returns {Function} Returns the new function.
+/// @example
+/// var object = { 'user': 'fred' };
+/// var getter = _.constant(object);
+/// getter() === object;
+/// // => true
+/// 
 @function _constant($args...) { @return call(__constant, $args...); }

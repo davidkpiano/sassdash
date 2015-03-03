@@ -49,22 +49,20 @@
     @return __base-uniq($result);
 }
 
-/**
- * Creates an array of unique values in all provided arrays using `SameValueZero`
- * for equality comparisons.
- *
- * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
- * e.g. `===`, except that `NaN` matches `NaN`. See the
- * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
- * for more details.
- *
- * @static
- * @memberOf _
- * @category Array
- * @param {...Array} [arrays] The arrays to inspect.
- * @returns {Array} Returns the new array of shared values.
- * @example
- * _.intersection([1, 2], [4, 2], [2, 1]);
- * // => [2]
- */
+/// 
+/// Creates an array of unique values in all provided arrays using `SameValueZero`
+/// for equality comparisons.
+/// ////// Note:** `SameValueZero` comparisons are like strict equality comparisons,
+/// e.g. `===`, except that `NaN` matches `NaN`. See the
+/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+/// for more details.
+/// @static
+/// @memberOf _
+/// @category Array
+/// @param {...Array} [arrays] The arrays to inspect.
+/// @returns {Array} Returns the new array of shared values.
+/// @example
+/// _.intersection([1, 2], [4, 2], [2, 1]);
+/// // => [2]
+/// 
 @function _intersection($args...) { @return call(__intersection, $args...); }

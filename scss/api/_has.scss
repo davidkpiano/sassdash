@@ -11,21 +11,18 @@
     @return false;
 }
 
-/**
- * Checks if `key` exists as a direct property of `object` instead of an
- * inherited property.
- *
- * @static
- * @memberOf _
- * @category Object
- * @param {Object} object The object to inspect.
- * @param {string} key The key to check.
- * @returns {boolean} Returns `true` if `key` is a direct property, else `false`.
- * @example
- *
- * var object = { 'a': 1, 'b': 2, 'c': 3 };
- *
- * _.has(object, 'b');
- * // => true
- */
+/// 
+/// Checks if `key` exists as a direct property of `object` instead of an
+/// inherited property.
+/// @static
+/// @memberOf _
+/// @category Object
+/// @param {Object} object The object to inspect.
+/// @param {string} key The key to check.
+/// @returns {boolean} Returns `true` if `key` is a direct property, else `false`.
+/// @example
+/// var object = { 'a': 1, 'b': 2, 'c': 3 };
+/// _.has(object, 'b');
+/// // => true
+/// 
 @function _has($args...) { @return call(__has, $args...); }

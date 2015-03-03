@@ -13,25 +13,21 @@
     @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
 }
 
-/**
- * Checks if `string` ends with the given target string.
- *
- * @static
- * @memberOf _
- * @category String
- * @param {string} [string=''] The string to search.
- * @param {string} [target] The string to search for.
- * @param {number} [position=string.length] The position to search from.
- * @returns {boolean} Returns `true` if `string` ends with `target`, else `false`.
- * @example
- *
- * _.endsWith('abc', 'c');
- * // => true
- *
- * _.endsWith('abc', 'b');
- * // => false
- *
- * _.endsWith('abc', 'b', 2);
- * // => true
- */
+/// 
+/// Checks if `string` ends with the given target string.
+/// @static
+/// @memberOf _
+/// @category String
+/// @param {string} [string=''] The string to search.
+/// @param {string} [target] The string to search for.
+/// @param {number} [position=string.length] The position to search from.
+/// @returns {boolean} Returns `true` if `string` ends with `target`, else `false`.
+/// @example
+/// _.endsWith('abc', 'c');
+/// // => true
+/// _.endsWith('abc', 'b');
+/// // => false
+/// _.endsWith('abc', 'b', 2);
+/// // => true
+/// 
 @function _ends-with($args...) { @return call(__ends-with, $args...); }

@@ -19,19 +19,17 @@
     @return if(__is-truthy($result), __base-uniq($result), ());
 }
 
-/**
- * Creates an array that is the symmetric difference of the provided arrays.
- * See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
- * more details.
- *
- * @static
- * @memberOf _
- * @category Array
- * @param {...Array} [arrays] The arrays to inspect.
- * @returns {Array} Returns the new array of values.
- * @example
- *
- * _.xor([1, 2], [4, 2]);
- * // => [1, 4]
- */
+/// 
+/// Creates an array that is the symmetric difference of the provided arrays.
+/// See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
+/// more details.
+/// @static
+/// @memberOf _
+/// @category Array
+/// @param {...Array} [arrays] The arrays to inspect.
+/// @returns {Array} Returns the new array of values.
+/// @example
+/// _.xor([1, 2], [4, 2]);
+/// // => [1, 4]
+/// 
 @function _xor($args...) { @return call(__xor, $args...); }

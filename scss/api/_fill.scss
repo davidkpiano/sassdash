@@ -41,19 +41,17 @@
     @return __base-fill($list, $value, $start, $end);
 }
 
-/**
- * Fills elements of `array` with `value` from `start` up to, but not
- * including, `end`.
- *
- * **Note:** This method mutates `array`.
- *
- * @static
- * @memberOf _
- * @category Array
- * @param {Array} array The array to fill.
- * @param {*} value The value to fill `array` with.
- * @param {number} [start=0] The start position.
- * @param {number} [end=array.length] The end position.
- * @returns {Array} Returns `array`.
- */
+/// 
+/// Fills elements of `array` with `value` from `start` up to, but not
+/// including, `end`.
+/// **Note:** This method mutates `array`.
+/// @static
+/// @memberOf _
+/// @category Array
+/// @param {Array} array The array to fill.
+/// @param {*} value The value to fill `array` with.
+/// @param {number} [start=0] The start position.
+/// @param {number} [end=array.length] The end position.
+/// @returns {Array} Returns `array`.
+/// 
 @function _fill($args...) { @return call(__fill, $args...); }

@@ -1,0 +1,186 @@
+
+
+@function __equal-lists($list, $other, $equal-func, $customizer, $is-where) {
+    $index: 1;
+    $list-length: length($list);
+    $other-length: length($other);
+    $result: true;
+
+
+    @if not ($list-length == $other-length)
+        and not ($is-where and ($other-length > $list-length))
+    {
+        @return false;
+    }
+
+    @while ($result and ($index <= $list-length)) {
+        $list-value: nth($list, $index);
+        $other-value: nth($other, $index);
+
+        $result: $__undefined__;
+
+        @if ($customizer) {
+            $result: if($is-where,
+                __exec($customizer, $other-value, $list-value, $index),
+                __exec($customizer, $list-value, $other-value, $index));
+        }
+
+        @if (__is-undefined($result)) {
+            @if ($is-where) {
+                $other-index: $other-length;
+
+                $break: false;
+                @while ($other-index > 0 and not $break) {
+                    $other-value: nth($other, $other-index);
+
+                    $result: if($list-value == $other-value,
+                        true,
+                        __exec($equal-func, $list-value, $other-value, $customizer, $is-where));
+
+                    @if ($result) {
+                        $break: true;
+                    }
+
+                    $other-index: $other-index - 1;
+                }
+            } @else {
+                $result: if(if($list-value, $list-value == $other-value, false),
+                    true,
+                    __exec($equal-func, $list-value, $other-value, $customizer, $is-where));
+            }
+        }
+
+        $index: $index + 1;
+    }
+
+    @return if($result, true, false);
+}
+
+@function __equal-by-tag() {}
+
+@function __equal-maps($map, $other, $equal-func: false, $customizer: false, $is-where: false) {
+    $map-props: map-keys($map);
+    $map-length: length($map-props);
+    $other-props: map-keys($other);
+    $other-length: length($other-props);
+
+    @if ($map-length != $other-length) and not ($is-where) {
+        @return false;
+    }
+
+    $has-ctor: false;
+    $index: 1;
+
+    @while ($index <= $map-length) {
+        $key: nth($map-props, $index);
+        $result: map-has-key($other, $key);
+
+        @if ($result) {
+            $map-value: get($map, $key);
+            $other-value: get($other, $key);
+
+            $result: $__undefined__;
+
+            @if ($customizer) {
+                $result: if($is-where,
+                    __exec($customizer, $other-value, $map-value, $key),
+                    __exec($customizer, $map-value, $other-value, $key));
+            }
+
+            @if (__is-undefined($result)) {
+                $result: if($map-value == $other-value,
+                    true,
+                    __exec($equal-func, $map-value, $other-value, $customizer, $is-where));
+            }
+        }
+
+        @if not ($result) {
+            @return false;
+        }
+
+        $has-ctor: if($has-ctor, true, ($key == '_constructor'));
+
+        $index: $index + 1;
+    }
+
+    @if not ($has-ctor) {
+        // todo
+    }
+
+    @return true;
+}
+
+@function __base-is-equal($value, $other, $customizer: null, $is-where: null) {
+    @if $value == $other {
+        @return true;
+    }
+    
+    @if __is-string($value) or not __is-iterable($value) {
+        @return false;
+    }
+
+    @return __base-is-equal-deep($value, $other, $customizer, $is-where);
+}
+
+@function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null) {
+    $func: if(__is-list-like($value), __equal-lists, __equal-maps);
+
+    @return __exec($func, $value, $other, __base-is-equal, $customizer, $is-where);
+}
+
+@function __is-equal($value, $other, $customizer: null, $this-arg: null) {
+    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 3), false);
+
+    @if (not $customizer and __is-strict-comparable($value) and __is-strict-comparable($other)) {
+        @return ($value == $other) and (type-of($value) == type-of($other));
+    }
+
+    $result: if($customizer, __exec($customizer, $value, $other), $__undefined__);
+
+    @return if(__is-undefined($result) or __is-null($result), __base-is-equal($value, $other, $customizer), ($result and true));
+}
+
+/**
+ * Performs a deep comparison between two values to determine if they are
+ * equivalent. If `customizer` is provided it is invoked to compare values.
+ * If `customizer` returns `undefined` comparisons are handled by the method
+ * instead. The `customizer` is bound to `thisArg` and invoked with three
+ * arguments; (value, other [, index|key]).
+ *
+ * **Note:** This method supports comparing arrays, booleans, `Date` objects,
+ * numbers, `Object` objects, regexes, and strings. Objects are compared by
+ * their own, not inherited, enumerable properties. Functions and DOM nodes
+ * are **not** supported. Provide a customizer function to extend support
+ * for comparing other values.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @param {Function} [customizer] The function to customize comparing values.
+ * @param {*} [thisArg] The `this` binding of `customizer`.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ * var other = { 'user': 'fred' };
+ *
+ * object == other;
+ * // => false
+ *
+ * _.isEqual(object, other);
+ * // => true
+ *
+ * // using a customizer callback
+ * var array = ['hello', 'goodbye'];
+ * var other = ['hi', 'goodbye'];
+ *
+ * _.isEqual(array, other, function(value, other) {
+ *   if (_.every([value, other], RegExp.prototype.test, /^h(?:i|ello)$/)) {
+ *     return true;
+ *   }
+ * });
+ * // => true
+ */
+@function _is-equal($args...) { @return call(__is-equal, $args...); }

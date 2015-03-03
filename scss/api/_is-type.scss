@@ -1,0 +1,87 @@
+
+
+@function __is-arglist($value) {
+    @return type-of($value) == 'arglist';
+}
+
+@function __is-list($value) {
+    @return type-of($value) == 'list';
+}
+
+@function __is-boolean($value) {
+    @return type-of($value) == 'bool';
+}
+
+@function __is-finite($value, $args...) {
+    @return __is-number($value) and __native-is-finite($value);
+}
+
+@function __is-function($value, $args...) {
+    @return __function-exists($value);
+}
+
+@function __is-map($value, $args...) {
+    @return type-of($value) == 'map';
+}
+
+@function __is-null($value, $args...) {
+    @return ($value == null);
+}
+
+@function __is-number($value, $args...) {
+    @return type-of($value) == 'number';
+}
+
+@function __is-integer($value, $args...) {
+    @return __is-number($value) and round($value) == $value;
+}
+
+@function __is-plain-map($value, $args...) {
+    @return (type-of($value) == 'map')
+        and not (map-has-key($value, '_constructor'));
+}
+
+@function __is-string($value, $args...) {
+    @return type-of($value) == 'string';
+}
+
+@function __is-undefined($value) {
+    @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
+}
+
+@function __is-index($value, $length: null) {
+    $value: __parse-float($value);
+    
+    @return $value > 0
+        and $value % 1 == 0
+        and ($length == null or $value <= $length);
+}
+
+@function __is-iterable($value, $args...) {
+    @return __is-map-like($value) or __is-string($value);
+}
+
+@function __is-map-like($value) {
+    @return $value and (index('map' 'list' 'arglist', type-of($value)));
+}
+
+@function __is-list-like($value, $args...) {
+    @return __is-list($value) or __is-arglist($value);
+}
+
+@function _is-arglist($args...) { @return call(__is-arglist, $args...); }
+@function _is-list($args...) { @return call(__is-list, $args...); }
+@function _is-boolean($args...) { @return call(__is-boolean, $args...); }
+@function _is-finite($args...) { @return call(__is-finite, $args...); }
+@function _is-function($args...) { @return call(__is-function, $args...); }
+@function _is-null($args...) { @return call(__is-null, $args...); }
+@function _is-number($args...) { @return call(__is-number, $args...); }
+@function _is-integer($args...) { @return call(__is-integer, $args...); }
+@function _is-map($args...) { @return call(__is-map, $args...); }
+@function _is-plain-map($args...) { @return call(__is-plain-map, $args...); }
+@function _is-string($args...) { @return call(__is-string, $args...); }
+@function _is-undefined($args...) { @return call(__is-undefined, $args...); }
+@function _is-index($args...) { @return call(__is-index, $args...); }
+@function _is-iterable($args...) { @return call(__is-iterable, $args...); }
+@function _is-map-like($args...) { @return call(__is-map-like, $args...); }
+@function _is-list-like($args...) { @return call(__is-list-like, $args...); }

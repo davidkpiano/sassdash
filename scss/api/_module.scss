@@ -28,11 +28,18 @@
 @import 'for';
 @import 'functions'; // not unit tested
 @import 'group-by';
+@import 'has';
+@import 'identity';
+@import 'includes';
 @import 'index-by';
+@import 'index-of';
 @import 'initial';
 @import 'intersection';
 @import 'invert';
 @import 'invoke';
+@import 'is-empty';
+@import 'is-equal';
+@import 'is-type';
 @import 'keys';
 @import 'map';
 @import 'matches';

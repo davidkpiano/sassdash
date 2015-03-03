@@ -1,0 +1,73 @@
+
+
+@function __base-index-of($list, $value, $from-index: 1) {
+    $length: length($list);
+    $index: $from-index;
+
+    @if __is-falsey($index) {
+        $index: 1;
+    }
+
+    @while $index <= $length {
+        @if (nth($list, $index) == $value) {
+            @return $index;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return -1;
+}
+
+@function __index-of($list, $value: $__undefined__, $from-index: 1) {
+    $length: if($list, length($list), 0);
+
+    @if ($length == 0) {
+        @return -1;
+    }
+
+    @if __is-number($from-index) {
+        $from-index: if($from-index < 0, max($length + $from-index, 0), $from-index);
+    } @else if not (__is-falsey($from-index)) {
+        $index: __binary-index($list, $value);
+        $other: nth($list, $index);
+
+        @return if($value == $other, $index, -1);
+    }
+
+    @return __base-index-of($list, $value, $from-index);
+}
+
+/**
+ * Gets the index at which the first occurrence of `value` is found in `array`
+ * using `SameValueZero` for equality comparisons. If `fromIndex` is negative,
+ * it is used as the offset from the end of `array`. If `array` is sorted
+ * providing `true` for `fromIndex` performs a faster binary search.
+ *
+ * **Note:** `SameValueZero` comparisons are like strict equality comparisons,
+ * e.g. `===`, except that `NaN` matches `NaN`. See the
+ * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+ * for more details.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to search.
+ * @param {*} value The value to search for.
+ * @param {boolean|number} [fromIndex=0] The index to search from or `true`
+ *  to perform a binary search on a sorted array.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ * @example
+ *
+ * _.indexOf([1, 2, 1, 2], 2);
+ * // => 1
+ *
+ * // using `fromIndex`
+ * _.indexOf([1, 2, 1, 2], 2, 2);
+ * // => 3
+ *
+ * // performing a binary search
+ * _.indexOf([1, 1, 2, 2], 2, true);
+ * // => 2
+ */
+@function _index-of($args...) { @return call(__index-of, $args...); }

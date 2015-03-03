@@ -47,6 +47,8 @@
     $_: __const('PARTIAL_RIGHT_FLAG', 64);
     $_: __const('REARG_FLAG', 128);
     $_: __const('ARY_FLAG', 256);
+
+    $_: __const('CONSTRUCTOR_KEYS', ('_type', '_constructor', '_extends', '_prototype'));
 }
 
 @include initialize();
@@ -68,24 +70,6 @@
     @return 0;
 }
 
-@function __base-index-of($list, $value, $from-index: 1) {
-    $length: length($list);
-    $index: $from-index;
-
-    @if __is-falsey($index) {
-        $index: 1;
-    }
-
-    @while $index <= $length {
-        @if (nth($list, $index) == $value) {
-            @return $index;
-        }
-
-        $index: $index + 1;
-    }
-
-    @return -1;
-}
 
 @function __base-sort-by($list, $comparer) {
     $length: length($list);
@@ -175,21 +159,6 @@
     // TODO
 }
 
-@function __is-index($value, $length: null) {
-    $value: __parse-float($value);
-    
-    @return $value > 0
-        and $value % 1 == 0
-        and ($length == null or $value <= $length);
-}
-
-@function __is-iterable($value, $args...) {
-    @return __is-map-like($value) or __is-string($value);
-}
-
-@function __is-map-like($value) {
-    @return $value and (index('map' 'list' 'arglist', type-of($value)));
-}
 
 @function __is-space($char-code) {
     // TODO - find the rest of the space characters
@@ -693,25 +662,6 @@ $users: (
 }
 
 // @debug __base-find((1 2 3 4 5), is-even);
-
-@function __base-is-equal($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
-    @if $value == $other {
-        @return true;
-    }
-    
-    @if __is-string($value) or not __is-iterable($value) {
-        @return false;
-    }
-
-    @return __base-is-equal-deep($value, $other, $customizer, $is-where, $stack-a, $stack-b);
-}
-
-@function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null, $stack-a: null, $stack-b: null) {
-    $func: if(__is-list-like($value), __equal-lists, __equal-maps);
-
-    @return __exec($func, $value, $other, __base-is-equal, $customizer, $is-where, $stack-a, $stack-b);
-}
-
 @function __base-is-match($map, $props, $values, $strict-compare-flags: (), $customizer: false) {
     $length: length($props);
     $result: null;
@@ -1253,116 +1203,6 @@ $users: (
     // }
 }
 
-@function __equal-lists($list, $other, $equal-func, $customizer, $is-where, $stack-a, $stack-b) {
-    $index: 1;
-    $list-length: length($list);
-    $other-length: length($other);
-    $result: true;
-
-
-    @if not ($list-length == $other-length)
-        and not ($is-where and ($other-length > $list-length))
-    {
-        @return false;
-    }
-
-    @while ($result and ($index <= $list-length)) {
-        $list-value: nth($list, $index);
-        $other-value: nth($other, $index);
-
-        $result: $__undefined__;
-
-        @if ($customizer) {
-            $result: if($is-where,
-                __exec($customizer, $other-value, $list-value, $index),
-                __exec($customizer, $list-value, $other-value, $index));
-        }
-
-        @if (__is-undefined($result)) {
-            @if ($is-where) {
-                $other-index: $other-length;
-
-                $break: false;
-                @while ($other-index > 0 and not $break) {
-                    $other-value: nth($other, $other-index);
-
-                    $result: if($list-value == $other-value,
-                        true,
-                        __exec($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
-
-                    @if ($result) {
-                        $break: true;
-                    }
-
-                    $other-index: $other-index - 1;
-                }
-            } @else {
-                $result: if(if($list-value, $list-value == $other-value, false),
-                    true,
-                    __exec($equal-func, $list-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
-            }
-        }
-
-        $index: $index + 1;
-    }
-
-    @return if($result, true, false);
-}
-
-@function __equal-by-tag() {}
-
-@function __equal-maps($map, $other, $equal-func: false, $customizer: false, $is-where: false, $stack-a: null, $stack-b: null) {
-    $map-props: map-keys($map);
-    $map-length: length($map-props);
-    $other-props: map-keys($other);
-    $other-length: length($other-props);
-
-    @if ($map-length != $other-length) and not ($is-where) {
-        @return false;
-    }
-
-    $has-ctor: false;
-    $index: 1;
-
-    @while ($index <= $map-length) {
-        $key: nth($map-props, $index);
-        $result: map-has-key($other, $key);
-
-        @if ($result) {
-            $map-value: get($map, $key);
-            $other-value: get($other, $key);
-
-            $result: $__undefined__;
-
-            @if ($customizer) {
-                $result: if($is-where,
-                    __exec($customizer, $other-value, $map-value, $key),
-                    __exec($customizer, $map-value, $other-value, $key));
-            }
-
-            @if (__is-undefined($result)) {
-                $result: if($map-value == $other-value,
-                    true,
-                    __exec($equal-func, $map-value, $other-value, $customizer, $is-where, $stack-a, $stack-b));
-            }
-        }
-
-        @if not ($result) {
-            @return false;
-        }
-
-        $has-ctor: if($has-ctor, true, ($key == '_constructor'));
-
-        $index: $index + 1;
-    }
-
-    @if not ($has-ctor) {
-        // todo
-    }
-
-    @return true;
-}
-
 @function __extremum-by-iteratee($value, $index, $collection) {
     $collection: scope(collection);
     $iteratee: scope(iteratee);
@@ -1482,9 +1322,6 @@ $users: (
 
 // @function __init-clone-by-tag() {}
 
-@function __is-list-like($value, $args...) {
-    @return __is-list($value) or __is-arglist($value);
-}
 
 @function __is-bindable($function) {
     // Can't check for this(); there's no toString in Sass for functions
@@ -1647,25 +1484,6 @@ $users: (
 
 // @debug __flatten-deep((1 (2 3) (4 (5 6)) (7 (8 (9 10 100))))); // deep flatten
 
-@function __index-of($list, $value: $__undefined__, $from-index: 1) {
-    $length: if($list, length($list), 0);
-
-    @if ($length == 0) {
-        @return -1;
-    }
-
-    @if __is-number($from-index) {
-        $from-index: if($from-index < 0, max($length + $from-index, 0), $from-index);
-    } @else if not (__is-falsey($from-index)) {
-        $index: __binary-index($list, $value);
-        $other: nth($list, $index);
-
-        @return if($value == $other, $index, -1);
-    }
-
-    @return __base-index-of($list, $value, $from-index);
-}
-
 // @debug __index-of((10 20 30 40 50), 10);
 
 // @debug __initial((1 2 3));
@@ -1825,43 +1643,6 @@ $users: (
 
 
 // @debug __at((a b c d e f g), 1, 3, 5);
-
-@function __includes($collection, $target: null, $from-index: 1) {
-    @if __is-string($collection) {
-        @if not __is-number($from-index)
-            or -$from-index >= str-length($collection) {
-            $from-index: 0;
-        } @else if $from-index < 0 {
-            $from-index: str-length($collection) + $from-index;
-        }
-
-
-        $collection: str-slice($collection, $from-index);
-
-        @return if(str-index($collection, __to-string($target)), true, false);
-    }
-
-    $collection: __to-list($collection);
-
-    $length: if($collection, length($collection), 0);
-
-    @if not(__is-length($length)) {
-        $collection: __values($collection);
-        $length: length($collection);
-    }
-
-    @if (__is-falsey($length)) {
-        @return false;
-    }
-
-    @if __is-number($from-index) {
-        $from-index: if($from-index <= 0, __native-max($length + $from-index, 1), $from-index);
-    } @else {
-        $from-index: 1;
-    }
-
-    @return __get-index-of($collection, $target, $from-index) > -1;
-}
 
 // @debug __includes((a b c d e f g), d, 4);
 
@@ -2188,41 +1969,10 @@ $users: (
 
 @function __wrap() {} // todo
 
-@function __is-arglist($value) {
-    @return type-of($value) == 'arglist';
-}
-
-@function __is-list($value) {
-    @return type-of($value) == 'list';
-}
-
-@function __is-boolean($value) {
-    @return type-of($value) == 'bool';
-}
 
 @function __is-date() {} // todo
 
 // @function __is-element() {} // not implemented
-
-@function __is-empty($value: null) {
-    @if ($value == null) {
-        @return true;
-    }
-
-    @if (__is-string($value)) {
-        @return str-length($value) == 0;
-    }
-
-    @if (__is-map-like($value)) {
-        @return length($value) == 0;
-    }
-
-    @if (__is-boolean($value)) {
-        @return true;
-    }
-
-    @return not __length(__keys($value));
-}
 
 // @debug __is-empty(null);
 // @debug __is-empty(true);
@@ -2230,17 +1980,6 @@ $users: (
 // @debug __is-empty(());
 // @debug __is-empty((a:1,b:2,c:3));
 
-@function __is-equal($value, $other, $customizer: null, $this-arg: null) {
-    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 3), false);
-
-    @if (not $customizer and __is-strict-comparable($value) and __is-strict-comparable($other)) {
-        @return ($value == $other) and (type-of($value) == type-of($other));
-    }
-
-    $result: if($customizer, __exec($customizer, $value, $other), $__undefined__);
-
-    @return if(__is-undefined($result) or __is-null($result), __base-is-equal($value, $other, $customizer), ($result and true));
-}
 
 // @debug (foo: bar, baz: 3) == (baz: 3, foo: bar);
 // @debug __is-equal((foo: bar, baz: 3), (baz: 3, foo: bar));
@@ -2252,17 +1991,7 @@ $users: (
 // @function __is-error() {} // not implemented
 
 // Sass numbers can get HUGE. Well, Ruby numbers can.
-@function __is-finite($value, $args...) {
-    @return (type-of($value) == 'number' and __native-is-finite($value));
-}
 
-@function __is-function($value, $args...) {
-    @return (__function-exists($value));
-}
-
-@function __is-map($value, $args...) {
-    @return (type-of($value) == 'map');
-}
 
 @function __is-match($map, $source, $customizer: null, $this-arg: null) {
     $props: __keys($source);
@@ -2312,34 +2041,11 @@ $users: (
 
 // @function __is-native() {} // not implemented
 
-@function __is-null($value, $args...) {
-    @return ($value == null);
-}
 
-@function __is-number($value, $args...) {
-    @return (type-of($value) == 'number');
-}
 
-@function __is-integer($value, $args...) {
-    @return __is-number($value) and round($value) == $value;
-}
-
-@function __is-plain-map($value, $args...) {
-    @return (type-of($value) == 'map')
-        and not (map-has-key($value, '_constructor'));
-}
 
 // @function __is-regexp($value) {} // not implemented
 
-@function __is-string($value, $args...) {
-    @return type-of($value) == 'string';
-}
-
-// @function __is-typed-list($value) {} // not implemented
-
-@function __is-undefined($value) {
-    @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
-}
 
 
 // @debug __to-list('abcde');
@@ -2393,17 +2099,6 @@ $users: (
 
 // @debug __functions((1: length, 2: str-length, 3: __identity, 4: bogus));
 
-@function __has($map, $key) {
-    $skip-keys: ('_type', '_constructor', '_extends', '_prototype');
-
-    @if __is-map($map) {    
-        $map: __omit($map, $skip-keys);
-
-        @return if(__is-map($map), map-has-key($map, $key), false);
-    }
-
-    @return false;
-}
 // @debug __has((foo: bar, baz: quo), 'foo');
 
 // @debug __invert((foo: fred, bar: barney, baz: fred));
@@ -2895,9 +2590,6 @@ $users: (
 // $get-my-map: __constant($my-map);
 // @debug __call($get-my-map);
 
-@function __identity($value: null, $args...) {
-    @return $value;
-}
 
 @function __mixin() {} // todo
 
@@ -2964,6 +2656,7 @@ $users: (
 // @function _transform($args...) { @return call(__transform, $args...); }
 
 @function _wrap($args...) { @return call(__wrap, $args...); }
+@function _is-match($args...) { @return call(__is-match, $args...); }
 
 
 // Add aliases 
@@ -2974,31 +2667,6 @@ $users: (
 @function _deburr($args...) { @return call(__deburr, $args...); }
 @function _escape-reg-exp($args...) { @return call(__escape-reg-exp, $args...); }
 
-@function _has($args...) { @return call(__has, $args...); }
-@function _identity($args...) { @return call(__identity, $args...); }
-@function _includes($args...) { @return call(__includes, $args...); }
-@function _index-of($args...) { @return call(__index-of, $args...); }
-@function _is-arglist($args...) { @return call(__is-arglist, $args...); }
-@function _is-list($args...) { @return call(__is-list, $args...); }
-@function _is-boolean($args...) { @return call(__is-boolean, $args...); }
-// @function _is-date($args...) { @return call(__is-date, $args...); }
-// @function _is-element($args...) { @return call(__is-element, $args...); }
-@function _is-empty($args...) { @return call(__is-empty, $args...); }
-@function _is-equal($args...) { @return call(__is-equal, $args...); }
-@function _is-error($args...) { @return call(__is-error, $args...); }
-@function _is-finite($args...) { @return call(__is-finite, $args...); }
-@function _is-function($args...) { @return call(__is-function, $args...); }
-@function _is-match($args...) { @return call(__is-match, $args...); }
-@function _is-nan($args...) { @return call(__is-nan, $args...); }
-@function _is-native($args...) { @return call(__is-native, $args...); }
-@function _is-null($args...) { @return call(__is-null, $args...); }
-@function _is-number($args...) { @return call(__is-number, $args...); }
-@function _is-map($args...) { @return call(__is-map, $args...); }
-@function _is-plain-map($args...) { @return call(__is-plain-map, $args...); }
-// @function _is-reg-exp($args...) { @return call(__is-reg-exp, $args...); }
-@function _is-string($args...) { @return call(__is-string, $args...); }
-// @function _is-typed-array($args...) { @return call(__is-typed-array, $args...); }
-@function _is-undefined($args...) { @return call(__is-undefined, $args...); }
 @function _kebab-case($args...) { @return call(__kebab-case, $args...); }
 @function _last($args...) { @return call(__last, $args...); }
 @function _last-index-of($args...) { @return call(__last-index-of, $args...); }

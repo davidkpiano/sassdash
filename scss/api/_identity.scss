@@ -1,0 +1,22 @@
+
+
+@function __identity($value: null, $args...) {
+    @return $value;
+}
+
+/**
+ * This method returns the first argument provided to it.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ *
+ * _.identity(object) === object;
+ * // => true
+ */
+@function _identity($args...) { @return call(__identity, $args...); }

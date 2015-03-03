@@ -1031,21 +1031,6 @@ $users: (
 
 @function __create-hybrid-wrapper() {}
 
-@function __create-pad($string, $length, $chars: ' ') {
-    $str-length: str-length($string);
-
-    @if ($str-length >= $length) or not (__native-is-finite($length)) {
-        @return '';
-    }
-
-    $pad-length: $length - $str-length;
-    $chars: __to-string($chars);
-    $chars-length: length($chars);
-    $repeat-chars: if($chars-length > 0, ceil($pad-length / $chars-length), 0);
-
-    @return str-slice(__repeat($chars, $repeat-chars), 1, $pad-length);
-}
-
 // @debug __create-pad('abcd', 14);
 
 @function __create-partial-wrapper() {}
@@ -2071,43 +2056,6 @@ $users: (
 // @debug __kebab-case('fooBar');
 // @debug __kebab-case('__foo_bar__');
 
-@function __pad($string, $length: 0, $chars: ' ') {
-    $string: __base-to-string($string);
-
-    $str-length: str-length($string);
-
-    @if ($str-length >= $length or not __native-is-finite($length)) {
-        @return $string;
-    }
-
-    $mid: ($length - $str-length) / 2;
-    $left-length: floor($mid);
-    $right-length: ceil($mid);
-
-    $chars: __create-pad('', $right-length, $chars);
-
-    @return str-slice($chars, 0, $left-length) + $string + $chars;
-}
-
-// @debug __pad('abc', 8, '.');
-// @debug __pad('abc', 8, '_-');
-// @debug __pad('abc', 3);
-
-@function __pad-left($string, $length: 0, $chars: ' ') {
-    $string: __base-to-string($string);
-
-    @return if($string != '', __create-pad($string, $length, $chars) + $string, $string);
-}
-
-// @debug __pad-left('abc', 5);
-// @debug __pad-left('abc', 6, '_-');
-
-@function __pad-right($string, $length: 0, $chars: ' ') {
-    $string: __base-to-string($string);
-
-    @return if($string != '', $string + __create-pad($string, $length, $chars), $string);
-}
-
 @function __parse-int($string, $radix, $guard: null) {
     @if ($guard and __is-iteratee-call($string, $radix, $guard)) {
         $radix: 0;
@@ -2412,16 +2360,14 @@ $users: (
 // Add aliases 
 
 // Add functions that return unwrapped values when chaining.
-@function _attempt($args...) { @return call(__attempt, $args...); }
+// @function _attempt($args...) { @return call(__attempt, $args...); }
 
-@function _deburr($args...) { @return call(__deburr, $args...); }
-@function _escape-reg-exp($args...) { @return call(__escape-reg-exp, $args...); }
+// @function _deburr($args...) { @return call(__deburr, $args...); }
+// @function _escape-reg-exp($args...) { @return call(__escape-reg-exp, $args...); }
 
-@function _no-conflict($args...) { @return call(__no-conflict, $args...); }
-@function _now($args...) { @return call(__now, $args...); }
-@function _pad($args...) { @return call(__pad, $args...); }
-@function _pad-left($args...) { @return call(__pad-left, $args...); }
-@function _pad-right($args...) { @return call(__pad-right, $args...); }
+// @function _no-conflict($args...) { @return call(__no-conflict, $args...); }
+// @function _now($args...) { @return call(__now, $args...); }
+
 @function _parse-int($args...) { @return call(__parse-int, $args...); }
 @function _rand($args...) { @return call(__rand, $args...); }
 @function _reduce($args...) { @return call(__reduce, $args...); }

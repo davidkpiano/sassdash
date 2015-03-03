@@ -3071,7 +3071,7 @@ $test-before-count: 0 !global;
   @include test('_rand') {
     $actual: _map($list, _rand);
 
-    @include assert-equal(sort(_uniq($actual)), (0, 1),
+    @include assert-equal(__sort(_uniq($actual)), (0, 1),
       'should return 0 or 1 when arguments are not provided');
 
     $min: 5;
@@ -3399,7 +3399,7 @@ $test-before-count: 0 !global;
 
     $actual: _sample($list, length($list));
 
-    @include assert-equal(sort($actual), $list,
+    @include assert-equal(__sort($actual), $list,
       'should contain elements of the collection');
 
     @each $value in $test-falsey {
@@ -3413,7 +3413,7 @@ $test-before-count: 0 !global;
     }
 
     @each $value in 3, 4, pow(2, 32), 9999 {
-      @include assert-equal(sort(_sample($list, $value)), $list,
+      @include assert-equal(__sort(_sample($list, $value)), $list,
         'should return all elements when n >= list length');
     }
 
@@ -3450,7 +3450,7 @@ $test-before-count: 0 !global;
     @include assert-equal(_shuffle($list) != $list, true,
       'should return a new list');
 
-    @include assert-equal(sort(_shuffle($list)), $list,
+    @include assert-equal(__sort(_shuffle($list)), $list,
       'should contain the same elements after a collection is shuffled');
 
     @include assert-equal(length(_shuffle($map)), length($map),

@@ -90,7 +90,7 @@
 @function __base-sort-by($list, $comparer) {
     $length: length($list);
 
-    $list: sort($list, $comparer);
+    $list: __sort($list, $comparer);
 
     $list: __to-map($list);
 
@@ -3418,8 +3418,7 @@ $users: (
 // @function _mixin($args...) { @return call(__mixin, $args...); }
 @function _rearg($args...) { @return call(__rearg, $args...); }
 // @function _remove($args...) { @return call(__remove, $args...); }
-@function _sort-by($args...) { @return call(__sort-by, $args...); }
-@function _sort-by-all($args...) { @return call(__sort-by-all, $args...); }
+
 @function _take($args...) { @return call(__take, $args...); }
 @function _take-right($args...) { @return call(__take-right, $args...); }
 @function _take-right-while($args...) { @return call(__take-right-while, $args...); }

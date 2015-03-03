@@ -20,6 +20,34 @@
         false);
 }
 
+@function __kebab-case-compounder($result, $word, $index: 0) {
+    @return $result + if($index > 1, '-', '') + to-lower-case($word);
+}
+@function __kebab-case($arguments...) {
+    $compounder: __create-compounder(__kebab-case-compounder);
+
+    @return __exec($compounder, $arguments...);
+}
+
+@function __snake-case-compounder($result, $word, $index) {
+    @return $result + if($index > 1, '_', '') + to-lower-case($word);
+}
+@function __snake-case($arguments...) {
+    $compounder: __create-compounder(__snake-case-compounder);
+
+    @return __exec($compounder, $arguments...);
+}
+
+@function __start-case-compounder($result, $word, $index) {
+    @return $result + if($index > 1, ' ', '') + to-upper-case(__char-at($word, 1)) + str-slice($word, 2);
+}
+@function __start-case($arguments...) {
+    $compounder: __create-compounder(__start-case-compounder);
+
+    @return __exec($compounder, $arguments...);
+}
+
+
 /**
  * Converts `string` to camel case.
  * See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
@@ -56,3 +84,72 @@
  * // => 'Fred'
  */
 @function _capitalize($args...) { @return call(__capitalize, $args...); }
+
+/**
+ * Converts `string` to kebab case.
+ * See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for
+ * more details.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to convert.
+ * @returns {string} Returns the kebab cased string.
+ * @example
+ *
+ * _.kebabCase('Foo Bar');
+ * // => 'foo-bar'
+ *
+ * _.kebabCase('fooBar');
+ * // => 'foo-bar'
+ *
+ * _.kebabCase('__foo_bar__');
+ * // => 'foo-bar'
+ */
+@function _kebab-case($args...) { @return call(__kebab-case, $args...); }
+
+/**
+ * Converts `string` to snake case.
+ * See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to convert.
+ * @returns {string} Returns the snake cased string.
+ * @example
+ *
+ * _.snakeCase('Foo Bar');
+ * // => 'foo_bar'
+ *
+ * _.snakeCase('fooBar');
+ * // => 'foo_bar'
+ *
+ * _.snakeCase('--foo-bar');
+ * // => 'foo_bar'
+ */
+@function _snake-case($args...) { @return call(__snake-case, $args...); }
+
+/**
+ * Converts `string` to start case.
+ * See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage)
+ * for more details.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to convert.
+ * @returns {string} Returns the start cased string.
+ * @example
+ *
+ * _.startCase('--foo-bar');
+ * // => 'Foo Bar'
+ *
+ * _.startCase('fooBar');
+ * // => 'Foo Bar'
+ *
+ * _.startCase('__foo_bar__');
+ * // => 'Foo Bar'
+ */
+@function _start-case($args...) { @return call(__start-case, $args...); }
+

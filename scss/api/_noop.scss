@@ -1,0 +1,21 @@
+
+
+@function __noop($args...) {
+    @return null;
+}
+
+/**
+ * A no-operation function which returns `null` regardless of the
+ * arguments it receives.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ *
+ * _.noop(object) === null;
+ * // => true
+ */
+@function _noop($args...) { @return call(__noop, $args...); }

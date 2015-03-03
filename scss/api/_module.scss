@@ -19,6 +19,7 @@
 @import 'escape';
 @import 'every';
 @import 'exec'; // not unit tested
+@import 'extrema';
 @import 'fill'; // not unit tested
 @import 'filter';
 @import 'find';
@@ -39,11 +40,14 @@
 @import 'invoke';
 @import 'is-empty';
 @import 'is-equal';
+@import 'is-match';
 @import 'is-type';
 @import 'keys';
+@import 'last';
 @import 'map';
 @import 'matches';
 @import 'negate';
+@import 'noop';
 @import 'omit';
 @import 'once';
 @import 'pairs';

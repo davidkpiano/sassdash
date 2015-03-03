@@ -1,0 +1,99 @@
+
+
+@function __base-every-iteratee($value, $index, $collection) {
+    $predicate: __this('predicate');
+
+    $result: if(__is-truthy(__exec($predicate, $value, $index, $collection)), true, false);
+
+    $_: this('result', $result);
+
+    @return null;
+}
+@function __base-every($collection, $predicate) {
+    $_: __scope(('result': true, 'predicate': $predicate));
+
+    $_: __base-each($collection, __base-every-iteratee);
+
+    $result: __this('result');
+    $_: __scope(false);
+
+    @return if($result, true, false);
+}
+
+@function __list-every($list, $predicate) {
+    $index: 1;
+    $length: length($list);
+
+    @while ($index <= $length) {
+        $iteration: __exec($predicate, nth($list, $index), $index, $list);
+
+        @if (not __is-truthy($iteration)) {
+            @return false;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return true;
+}
+
+@function __every($collection, $predicate: __identity, $this-arg: $__undefined__) {
+    $function: if(__is-list($collection), __list-every, __base-every);
+
+    @if not __function-exists($predicate)
+        or not __is-undefined($this-arg) {
+        $predicate: __get-callback($predicate, $this-arg, 3);
+    }
+
+    @return __exec($function, $collection, $predicate);
+}
+
+/**
+ * Checks if `predicate` returns truthy for **all** elements of `collection`.
+ * The predicate is bound to `thisArg` and invoked with three arguments;
+ * (value, index|key, collection).
+ *
+ * If a property name is provided for `predicate` the created `_.property`
+ * style callback returns the property value of the given element.
+ *
+ * If a value is also provided for `thisArg` the created `_.matchesProperty`
+ * style callback returns `true` for elements that have a matching property
+ * value, else `false`.
+ *
+ * If an object is provided for `predicate` the created `_.matches` style
+ * callback returns `true` for elements that have the properties of the given
+ * object, else `false`.
+ *
+ * @static
+ * @memberOf _
+ * @alias all
+ * @category Collection
+ * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked
+ *  per iteration.
+ * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @returns {boolean} Returns `true` if all elements pass the predicate check,
+ *  else `false`.
+ * @example
+ *
+ * _.every([true, 1, null, 'yes'], Boolean);
+ * // => false
+ *
+ * var users = [
+ *   { 'user': 'barney', 'active': false },
+ *   { 'user': 'fred',   'active': false }
+ * ];
+ *
+ * // using the `_.matches` callback shorthand
+ * _.every(users, { 'user': 'barney', 'active': false });
+ * // => false
+ *
+ * // using the `_.matchesProperty` callback shorthand
+ * _.every(users, 'active', false);
+ * // => true
+ *
+ * // using the `_.property` callback shorthand
+ * _.every(users, 'active');
+ * // => false
+ */
+@function _every($args...) { @return call(__every, $args...); }

@@ -5,7 +5,9 @@
 @import 'before';
 @import 'bind'; // not unit tested
 @import 'callback';
+@import 'case';
 @import 'chunk';
+@import 'clone'; // not unit tested
 @import 'compact';
 @import 'constant';
 @import 'count-by';
@@ -13,9 +15,14 @@
 @import 'defaults';
 @import 'difference';
 @import 'drop';
+@import 'ends-with';
+@import 'escape';
+@import 'every';
 @import 'exec'; // not unit tested
 @import 'fill'; // not unit tested
 @import 'filter';
+@import 'find';
+@import 'first';
 @import 'flatten';
 @import 'flow';
 @import 'for';

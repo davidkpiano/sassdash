@@ -440,22 +440,6 @@
     @return $result-list;
 }
 
-@function __list-every($list, $predicate) {
-    $index: 1;
-    $length: length($list);
-
-    @while ($index <= $length) {
-        $iteration: __exec($predicate, nth($list, $index), $index, $list);
-
-        @if (not __is-truthy($iteration)) {
-            @return false;
-        }
-
-        $index: $index + 1;
-    }
-
-    @return true;
-}
 
 
 // TODO remove - for testing only
@@ -590,13 +574,6 @@ $users: (
     // todo
 }
 
-@function __base-clone($value, $is-deep: false, $customizer: null, $key: null, $map: null) {
-    // todo
-
-    // Sass does not copy by reference, so returning same value is safe
-    @return $value;
-}
-
 @function __base-create($constructor, $args...) {
     @if not (__function-exists($constructor)) {
         @return ();
@@ -679,28 +656,6 @@ $users: (
     $collection: if(__is-list($collection), map-values($iterable), $iterable);
 
     @return $collection;
-}
-
-@function __base-every-iteratee($value, $index, $collection) {
-    $predicate: scope-get(predicate);
-
-    $result: if(__is-truthy(__exec($predicate, $value, $index, $collection)), true, false);
-
-    $_: this('result', $result);
-
-    @return null;
-}
-@function __base-every($collection, $predicate) {
-    $_: __scope();
-    $_: scope('result', true);
-    $_: scope('predicate', $predicate);
-
-    $_: __base-each($collection, __base-every-iteratee);
-
-    $result: scope('result');
-    $_: __scope(false);
-
-    @return if($result, true, false);
 }
 
 
@@ -1498,22 +1453,22 @@ $users: (
     );
 }
 
-@function __init-clone-list($list) {
-    $length: length($list);
-    $result: ();
+// @function __init-clone-list($list) {
+//     $length: length($list);
+//     $result: ();
 
-    @return $result;
-}
+//     @return $result;
+// }
 
-@function __init-clone-map($map) {
-    $ctor: get($map, '_constructor');
+// @function __init-clone-map($map) {
+//     $ctor: get($map, '_constructor');
 
-    @if not (function-exists($ctor) and __is-ctor($ctor)) {
-        $ctor: 'Object';
-    }
+//     @if not (function-exists($ctor) and __is-ctor($ctor)) {
+//         $ctor: 'Object';
+//     }
 
-    @return new($ctor);
-}
+//     @return new($ctor);
+// }
 
 // @function Dog() {
 //     @return (
@@ -1525,7 +1480,7 @@ $users: (
 // @debug $dog;
 // @debug __init-clone-map($dog);
 
-@function __init-clone-by-tag() {}
+// @function __init-clone-by-tag() {}
 
 @function __is-list-like($value, $args...) {
     @return __is-list($value) or __is-arglist($value);
@@ -1677,49 +1632,8 @@ $users: (
 
 // @debug __fill(1 2 3, 'a', 2);
 
-@function __find-index($list, $predicate: __identity, $this-arg: null) {
-    $index: 1;
-    $length: if($list, length($list), 0);
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @while ($index <= $length) {
-        $iteration: __call($predicate, $this-arg, nth($list, $index), $index, $list);
-
-        @if (__is-truthy($iteration)) {
-            @return $index;
-        }
-
-        $index: $index + 1;
-    }
-
-    @return -1;
-}
-
-// @debug __find-index((1 3 5 7 2 9), is-even);
-// @debug __find-index((1 3 5 7 3 9), is-even);
-
-@function __find-last-index($list, $predicate: __identity, $this-arg: null) {
-    $length: if($list, length($list), 0);
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @while ($length > 0) {
-        @if (__call($predicate, $this-arg, nth($list, $length), $length, $list)) {
-            @return $length;
-        }
-
-        $length: $length - 1;
-    }
-
-    @return -1;
-}
 
 // @debug __find-last-index((1 2 3 5 7 9 4 3), is-even);
-
-@function __first($list, $args...) {
-    @return if($list and length($list) > 0, nth($list, 1), $__undefined__);
-}
 
 // @debug __first((2 4 6 8));
 // @debug __first(null);
@@ -1961,15 +1875,6 @@ $users: (
     @return if($this-bool, $this, $that);
 }
 
-@function __every($collection, $predicate: __identity, $this-arg: $__undefined__) {
-    $function: if(__is-list($collection), __list-every, __base-every);
-
-    @if (not __function-exists($predicate) or not __is-undefined($this-arg)) {
-        $predicate: __get-callback($predicate, $this-arg, 3);
-    }
-
-    @return __exec($function, $collection, $predicate);
-}
 
 // @debug __every((true 1 null 'yes'));
 // @debug __every((2 4 6 8 10), is-even);
@@ -1990,47 +1895,6 @@ $users: (
 
 // @debug __filter(((a: 123, bam: true), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
 
-@function __find($collection, $predicate: __identity, $this-arg: null) {
-    @if (__is-string($collection)) {
-        $collection: __to-list($collection);
-    }
-
-    @if (__is-list($collection)) {
-        $index: __find-index($collection, $predicate, $this-arg);
-
-        @return if($index > -1, nth($collection, $index), $__undefined__);
-    }
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @return __base-find($collection, $predicate, __base-each);
-}
-
-// @debug __find((123, 233, 137, 138, 592, 3939), is-even);
-// @debug __find(((a: 123, bam: false), (a: 234, bam: false), (a: 345, bam: true)), 'bam');
-
-@function __find-last($collection, $predicate: __identity, $this-arg: null) {
-    @if (__is-string($collection)) {
-        $collection: __to-list($collection);
-    }
-
-    @if (__is-list($collection)) {
-        $index: __find-last-index($collection, $predicate, $this-arg);
-
-        @return if($index > -1, nth($collection, $index), $__undefined__);
-    }
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @return __base-find($collection, $predicate, __base-each-right);
-}
-
-// @debug __find-last((123, 233, 137, 138, 592, 3939), is-even);
-// @debug __find-last(((a: 123, bam: true), (a: 234, bam: true), (a: 345, bam: false)), 'bam');
-
-@function __find-where($collection, $source) {
-    @return __find($collection, __matches($source));
-}
 
 // @debug __find-where(((a: 123, bam: false), (a: 234, bam: true), (a: 345, bam: false)), (bam: true));
 
@@ -2324,26 +2188,6 @@ $users: (
 
 @function __wrap() {} // todo
 
-@function __clone($value, $is-deep: null, $customizer: null, $this-arg: null) {
-    @if (type-of($is-deep) != 'bool' and $is-deep != null) {
-        $this-arg: $customizer;
-        $customizer: if(__is-iteratee-call($value, $is-deep, $this-arg), null, $is-deep);
-        $is-deep: false;
-    }
-
-    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 1), false);
-
-    @return __base-clone($value, $is-deep, $customizer);
-}
-
-// @debug __clone((foo: bar, baz: (quo: qote)));
-
-@function __clone-deep($value, $customizer: null, $this-arg: null) {
-    $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 1), false);
-
-    @return __base-clone($value, true, $customizer);
-}
-
 @function __is-arglist($value) {
     @return type-of($value) == 'arglist';
 }
@@ -2537,21 +2381,6 @@ $users: (
 }
 
 
-@function __find-key($map, $predicate: __identity, $this-arg: null) {
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @return __base-find($map, $predicate, __base-for-own, true);
-}
-
-// @debug __find-key($users, ('age': 43));
-// @debug __find-key($users, 'foo');
-
-@function __find-last-key($map, $predicate: __identity, $this-arg: null) {
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    @return __base-find($map, $predicate, __base-for-own-right, true);
-}
-
 // @debug __find-last-key($users, ('age': 43));
 // @debug __find-last-key($users, 'foo');
 
@@ -2729,26 +2558,10 @@ $users: (
 // @debug __random(5, true);
 // @debug __random(1.2, 5.2);
 
-@function __camel-case-compounder($result, $word, $index) {
-    $word: to-lower-case($word);
-
-    @return if($index > 1, $result + to-upper-case(__char-at($word, 1)) + str-slice($word, 2), $word);
-}
-@function __camel-case($arguments...) {
-    $compounder: __create-compounder(__camel-case-compounder);
-
-    @return __exec($compounder, $arguments...);
-}
-
 // @debug __camel-case('Foo Bar');
 // @debug __camel-case('--foo-bar');
 // @debug __camel-case('__foo_bar__');
 
-@function __capitalize($string) {
-    $string: __base-to-string($string);
-
-    @return if(str-length($string) > 0, to-upper-case(__char-at($string, 1)) + str-slice($string, 2), false);
-}
 
 // @debug __capitalize('fred');
 
@@ -2757,32 +2570,11 @@ $users: (
     @return $string;
 }
 
-@function __ends-with($string, $target, $position: str-length($string)) {
-    $string: __base-to-string($string);
-    $target: $target + '';
-
-    $length: str-length($string);
-
-    $position: if(__is-falsey($position), 0, $position);
-
-    $position: __native-min(if($position < 0, 0, $position), $length) + 1 - str-length($target);
-
-    @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
-}
 
 // @debug __ends-with('abc', 'c');
 // @debug __ends-with('abc', 'b');
 // @debug __ends-with('abc', 'b', 2);
 
-@function __escape($string) {
-    $string: __base-to-string($string);
-
-    @each $unescaped, $escaped in __const('html-escapes') {
-        $string: __string-replace($string, $unescaped, $escaped);
-    }
-
-    @return $string;
-}
 
 // @debug __escape('fred, barney & pebbles < your face >');
 
@@ -3178,23 +2970,10 @@ $users: (
 
 // Add functions that return unwrapped values when chaining.
 @function _attempt($args...) { @return call(__attempt, $args...); }
-@function _camel-case($args...) { @return call(__camel-case, $args...); }
-@function _capitalize($args...) { @return call(__capitalize, $args...); }
-@function _clone($args...) { @return call(__clone, $args...); }
-@function _clone-deep($args...) { @return call(__clone-deep, $args...); }
+
 @function _deburr($args...) { @return call(__deburr, $args...); }
-@function _ends-with($args...) { @return call(__ends-with, $args...); }
-@function _escape($args...) { @return call(__escape, $args...); }
 @function _escape-reg-exp($args...) { @return call(__escape-reg-exp, $args...); }
-@function _every($args...) { @return call(__every, $args...); }
-@function _find($args...) { @return call(__find, $args...); }
-@function _find-index($args...) { @return call(__find-index, $args...); }
-@function _find-key($args...) { @return call(__find-key, $args...); }
-@function _find-last($args...) { @return call(__find-last, $args...); }
-@function _find-last-index($args...) { @return call(__find-last-index, $args...); }
-@function _find-last-key($args...) { @return call(__find-last-key, $args...); }
-@function _find-where($args...) { @return call(__find-where, $args...); }
-@function _first($args...) { @return call(__first, $args...); }
+
 @function _has($args...) { @return call(__has, $args...); }
 @function _identity($args...) { @return call(__identity, $args...); }
 @function _includes($args...) { @return call(__includes, $args...); }

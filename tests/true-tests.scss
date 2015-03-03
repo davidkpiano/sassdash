@@ -1247,9 +1247,9 @@ $test-before-count: 0 !global;
         @include assert-equal($actual, $expected);
     }
 
-    @include test('should return undefined when querying empty arrays') {
+    @include test('should return null when querying empty arrays') {
         $actual: _first(());
-        $expected: $__undefined__;
+        $expected: null;
 
         @include assert-equal($actual, $expected);
     }

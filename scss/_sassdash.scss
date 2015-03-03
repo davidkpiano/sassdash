@@ -4,9 +4,7 @@
 @import 'utilities/_module';
 
 @mixin initialize() {
-    $_: static-set('__meta-map__', ());
-
-    $_: const-set('html-escapes', (
+    $_: __const('html-escapes', (
             '&': '&amp;',
             '<': '&lt;',
             '>': '&gt;',
@@ -14,7 +12,7 @@
             "'": '&#39;',
             '`': '&#96;'
         ));
-    $_: const-set('html-unescapes', (
+    $_: __const('html-unescapes', (
             '&amp;': '&',
             '&lt;': '<',
             '&gt;': '>',
@@ -22,7 +20,7 @@
             '&#39;': "'",
             '&#96;': '`'
         ));
-    $_: const-set('string-escapes', (
+    $_: __const('string-escapes', (
             '\\': '\\',
             "'": "'",
             '\n': 'n',
@@ -30,26 +28,25 @@
             '\u2028': 'u2028',
             '\u2029': 'u2029'
         ));
-    // $_: const-set('reg-exp-chars', ('.' '*' '+' '?' '^' '$' '{' '}' '(' ')' '|' '[' ']' '/' '\'));
-    $_: const-set('POSITIVE_INFINITY', 999999);
-    $_: const-set('NEGATIVE_INFINITY', -999999);
-    $_: const-set('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
-    $_: const-set('HALF_MAX_LIST_LENGTH', 999999);
-    $_: const-set('MAX_LIST_LENGTH', 999999);
-    $_: const-set('DEFAULT_TRUNC_LENGTH', 30);
-    $_: const-set('DEFAULT_TRUNC_OMISSION', '...');
-    $_: const-set('PLACEHOLDER', '__sassdash-placeholder__');
+    // $_: __const('reg-exp-chars', ('.' '*' '+' '?' '^' '$' '{' '}' '(' ')' '|' '[' ']' '/' '\'));
+    $_: __const('POSITIVE_INFINITY', 999999);
+    $_: __const('NEGATIVE_INFINITY', -999999);
+    $_: __const('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
+    $_: __const('HALF_MAX_LIST_LENGTH', 999999);
+    $_: __const('MAX_LIST_LENGTH', 999999);
+    $_: __const('DEFAULT_TRUNC_LENGTH', 30);
+    $_: __const('DEFAULT_TRUNC_OMISSION', '...');
+    $_: __const('PLACEHOLDER', '__sassdash-placeholder__');
 
-    $_: const-set('BIND_FLAG', 1);
-    $_: const-set('BIND_KEY_FLAG', 2);
-    $_: const-set('CURRY_BOUND_FLAG', 4);
-    $_: const-set('CURRY_FLAG', 8);
-    $_: const-set('CURRY_RIGHT_FLAG', 16);
-    $_: const-set('PARTIAL_FLAG', 32);
-    $_: const-set('PARTIAL_RIGHT_FLAG', 64);
-    $_: const-set('REARG_FLAG', 128);
-    $_: const-set('ARY_FLAG', 256);
-
+    $_: __const('BIND_FLAG', 1);
+    $_: __const('BIND_KEY_FLAG', 2);
+    $_: __const('CURRY_BOUND_FLAG', 4);
+    $_: __const('CURRY_FLAG', 8);
+    $_: __const('CURRY_RIGHT_FLAG', 16);
+    $_: __const('PARTIAL_FLAG', 32);
+    $_: __const('PARTIAL_RIGHT_FLAG', 64);
+    $_: __const('REARG_FLAG', 128);
+    $_: __const('ARY_FLAG', 256);
 }
 
 @include initialize();
@@ -165,13 +162,13 @@
 }
 
 @function __escape-html-char($char) {
-    $escaped-char: const-get('html-escapes' $char);
+    $escaped-char: __const('html-escapes' $char);
 
     @return if($escaped-char, $escaped-char, $char);
 }
 
 @function __escape-string-char($char) {
-    @return '\\#{const-get('string-escapes' $char)}';
+    @return '\\#{__const('string-escapes' $char)}';
 }
 
 @function __index-of-nan($list, $from-index, $from-right) {
@@ -206,7 +203,7 @@
 
     @while ($index <= $length) {
         @if (nth($list, $index) == $placeholder) {
-            $list: set-nth($list, $index, const-get('PLACEHOLDER'));
+            $list: set-nth($list, $index, __const('PLACEHOLDER'));
             $result: append($result, $index);
         }
 
@@ -261,7 +258,7 @@
 }
 
 @function __unescape-html-char($char) {
-    @return const-get('html-unescapes' $char);
+    @return __const('html-unescapes' $char);
 }
 
 // SASSDASH
@@ -294,7 +291,7 @@
         drop-count: 0,
         filtered: false,
         iteratees: null,
-        take-count: const-get('POSITIVE_INFINITY'),
+        take-count: __const('POSITIVE_INFINITY'),
         views: null,
         wrapped: $value
     );
@@ -342,10 +339,10 @@
             $computed: call($iteratee, $value, $index, $list);
             $type: get($data, 'type');
 
-            @if ($type == const-get('LAZY_MAP_FLAG')) {
+            @if ($type == __const('LAZY_MAP_FLAG')) {
                 $value: $computed;
             } @else if not ($computed) {
-                @if ($type == const-get('LAZY_FILTER_FLAG')) {
+                @if ($type == __const('LAZY_FILTER_FLAG')) {
                     $continue-outer: true;
                 } @else {
                     $break-outer: true;
@@ -486,7 +483,7 @@ $users: (
 
     $index: 1;
     $length: length($list);
-    $result: const-get('NEGATIVE_INFINITY');
+    $result: __const('NEGATIVE_INFINITY');
 
     // TODO use Hugo's comparison for strings
     @while ($index <= $length) {
@@ -510,7 +507,7 @@ $users: (
 
     $index: 1;
     $length: length($list);
-    $result: const-get(POSITIVE_INFINITY);
+    $result: __const(POSITIVE_INFINITY);
 
     // TODO use Hugo's comparison for strings
     @while ($index <= $length) {
@@ -821,22 +818,6 @@ $users: (
 // @debug __base-merge((baz: butt), (foo: bar, baz: quo));
 
 
-@function __base-property-function($map: null, $args...) {
-    $key: this('key');
-    $map: __to-map($map);
-
-    @return if($map == null, null, get($map, $key));
-}
-@function __base-property($key) {
-    $_: __scope();
-    $_: scope('key', $key);
-
-    $result: __bind(__base-property-function);
-
-    $_: __scope(false);
-
-    @return $result;
-}
 
 // $yoname: __base-property('name');
 // $yomap: (foo: bar, name: billy, baz: quo);
@@ -892,35 +873,6 @@ $users: (
     @return $function;
 }
 
-@function __base-slice($list, $start: 0, $end: length($list)) {
-    $index: 1;
-    $length: length($list);
-    $start: __to-number($start);
-    $start: if(__is-number($start), floor($start), if(__is-truthy($start), 1, 0));
-
-    @if ($start < 0) {
-        $start: if(-$start > $length, 0, ($length + $start));
-    }
-
-    $end: if(__is-number($end), floor($end), if(__is-truthy($end), 1, 0));
-    $end: if($end > $length, $length, if($end, $end, 0));
-
-    @if ($end < 0) {
-        $end: $end + $length;
-    }
-
-    $length: if($start > $end, 0, ($end - $start));
-
-    $result: ();
-
-    @while ($index <= $length) {
-        $result: append($result, nth($list, ($index + $start)));
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
 
 // @debug __base-slice((1 2 3), 1); // 2 3
 // @debug __base-slice((1 2 3), 4); // ()
@@ -1017,7 +969,7 @@ $users: (
     $low: 0;
     $high: if($list, length($list), $low);
 
-    @if (type-of($value) == number and $high <= const-get(HALF_MAX_LIST_LENGTH)) {
+    @if (type-of($value) == number and $high <= __const(HALF_MAX_LIST_LENGTH)) {
         @while ($low < $high) {
             $mid: floor(($low + $high) / 2);
             $computed: nth($list, $mid);
@@ -1059,7 +1011,7 @@ $users: (
         }
     }
 
-    @return call(native-min, $high, const-get(MAX_LIST_INDEX));
+    @return call(native-min, $high, __const(MAX_LIST_INDEX));
 }
 
 @function __bind-callback-1($value) {
@@ -1357,7 +1309,7 @@ $users: (
 
 // TODO
 @function __create-wrapper($func, $bitmask, $this-arg, $partials: null, $holders: null, $arg-pos: null, $ary: null, $arity: null) {
-    // $is-bind-key: $bitmask + const-get('BIND_KEY_FLAG');
+    // $is-bind-key: $bitmask + __const('BIND_KEY_FLAG');
 
     // @if (not $is-bind-key and not __is-function($func)) {
     //     @error 'FUNC_ERROR_TEXT';
@@ -1501,7 +1453,7 @@ $users: (
     @return true;
 }
 @function __extremum-by($collection, $iteratee, $is-min: false) {
-    $ex-value: if($is-min, const-get('POSITIVE_INFINITY'), const-get('NEGATIVE_INFINITY'));
+    $ex-value: if($is-min, __const('POSITIVE_INFINITY'), __const('NEGATIVE_INFINITY'));
     $computed: $ex-value;
     $result: $computed;
 
@@ -1640,57 +1592,9 @@ $users: (
 
 @function __merge-data() {}
 
-@function __pick-by-list($map, $props) {
-    $type: type-of($map);
-    $map: __to-map($map);
-
-    $index: 1;
-    $length: length($props);
-    $result: ();
-
-    @while ($index <= $length) {
-        $key: nth($props, $index);
-
-        @if (map-has-key($map, $key)) {
-            $result: set($result, $key, get($map, $key));
-        }
-
-        $index: $index + 1;
-    }
-
-    @return if($type == 'list', __to-list($result), $result);
-}
 
 // @debug __pick-by-list((2 4 6 8 10 12 14), (4 5 6));
 // @debug __pick-by-list((a: 1, b: 2, c: 3, d: 4, e: 5), (a, c, e));
-
-@function __pick-by-callback-iteratee($value, $key, $map) {
-    $result: this('result');
-    $predicate: this('predicate');
-
-    @if (__exec($predicate, $value, $key, $map)) {
-        $_: this('result', set($result, $key, $value));
-    }
-
-    @return true;
-}
-@function __pick-by-callback($map, $predicate) {
-    $result: ();
-
-    $_: __scope();
-        $_: scope('map', $map);
-        $_: scope('predicate', $predicate);
-        $_: scope('result', $result);
-
-        $scoped-function: __bind(__pick-by-callback-iteratee);
-
-        $_: __base-for-in($map, $scoped-function);
-
-        $result: scope('result');
-    $_: __scope(false);
-
-    @return $result;
-}
 
 // @debug __pick-by-callback((a: 1, b: 2, c: 3, d: 4, e: 5), is-even);
 
@@ -1919,65 +1823,17 @@ $users: (
 
 // @debug __last-index-of((12 23 34 45 56 1 2 3 4 5 6 7 23 39 9), 23);
 
-@function __pull($arguments...) {
-    $list: nth($arguments, 1);
 
-    @if not ($list and length($list)) {
-        @return $list;
-    }
-
-    $index: 1;
-    $index-of: __get-index-of();
-    $length: length($arguments);
-
-    @while ($index <= $length) {
-        $from-index: 1;
-        $value: nth($arguments, $index);
-
-        @while (__index-of($list, $value, $from-index) > -1) {
-            $from-index: __index-of($list, $value, $from-index);
-
-            $list: __splice($list, $from-index, 1);
-        }
-
-        $index: $index + 1;
-    }
-
-    @return $list;
-}
 
 // @debug __pull((1 2 3 1 2 3), 2, 3);
-
-@function __pull-at($arguments...) {
-    // not implemented - modifies list. use _at
-}
-
-// @debug __pull-at((5 10 15 20), 2, 4);
 
 @function __remove($list, $predicate: __identity, $this-arg: null) {
     // not implemented - mutates list. use _reject
 }
 
-@function __rest($list, $args...) {
-    @return __drop($list, 1);
-}
-
 // @debug __rest((1 2 3));
 
-@function __slice($list, $start: 0, $end: length($list)) {
-    $length: if(__is-list-like($list), length($list), 0);
 
-    @if (__is-falsey($length)) {
-        @return ();
-    }
-
-    @if ($end and type-of($end) != 'number' and __is-iteratee-call($list, $start, $end)) {
-        $start: 0;
-        $end: $length;
-    }
-
-    @return __base-slice($list, $start, $end);
-}
 
 // @debug __slice((1 2 3), -1);
 
@@ -2408,27 +2264,8 @@ $users: (
 // @debug __min((1 5 8 3 2 5 88 3 2 5 4));
 // @debug __min(((a: asdf, foo: 38), (a: qwer, foo: 22), (a: zxcv, foo: 29)), 'foo');
 
-@function __partition-initializer() {
-    @return (1: (), 2: ());
-}
-@function __partition-aggregator($result, $value, $key, $args...) {
-    $result-key: if(__is-truthy($key), 1, 2);
-    $result-value: get($result, $result-key);
-    $result-value: if($result-value, $result-value, ());
-
-    @return set($result, $result-key, append($result-value, $value));
-}
-@function __partition($arguments...) {
-    $function: __create-aggregator(__partition-aggregator, __partition-initializer);
-
-    @return __to-list(__exec($function, $arguments...));
-}
-
 // @debug __partition((1 2 3), is-even);
 
-@function __pluck($collection, $key) {
-    @return __map($collection, __property($key));
-}
 
 // @debug __pluck(((a: 1, b: 2), (a: 3, b: 4)), 'a');
 
@@ -2470,26 +2307,6 @@ $users: (
 // }
 // @debug __reduce-right($list, reduce-right-stuff);
 
-@function __reject-iteratee($value, $index, $collection) {
-    $predicate: this('predicate');
-
-    @return __is-falsey(__exec($predicate, $value, $index, $collection));
-}
-@function __reject($collection, $predicate: __identity, $this-arg: null) {
-    $function: if(__is-list($collection), __list-filter, __base-filter);
-
-    $predicate: __get-callback($predicate, $this-arg, 3);
-
-    $_: __scope();
-    $_: scope('predicate', $predicate);
-
-    $result: __exec($function, $collection, __reject-iteratee);
-
-    $_: __scope(false);
-
-    @return $result;
-}
-
 // @debug __reject((1 2 3 4 5 6 7 8), is-even);
 // @debug __reject(((a: 1, b: true), (a: 2, b: false), (a: 3, b: true), (a: 4, b: false)), 'b');
 // @debug __pluck(__reject(((act: 1, b: true), (act: 2, b: false), (act: 3, b: true), (act: 4, b: false)), 'b'), act); // works with __property
@@ -2508,28 +2325,6 @@ $users: (
 }
 
 // @debug __sample((1 2 3 4 5), 4);
-
-@function __shuffle($collection) {
-    $collection: __to-iterable($collection);
-
-    $index: 1;
-    $length: length($collection);
-    $result: ();
-
-    @while ($index <= $length) {
-        $rand: __base-rand(1, $index);
-
-        @if ($index != $rand) {
-            $result: set($result, $index, get($result, $rand));
-        }
-
-        $result: set($result, $rand, get($collection, $index));
-
-        $index: $index + 1;
-    }
-
-    @return __to-list($result);
-}
 
 // @debug __shuffle((1 2 3 4 5));
 // @debug __sample((1 2 3 4 5), 4);
@@ -3029,17 +2824,6 @@ $users: (
 
 // @debug __pairs((name: fred, age: 40));
 
-@function __pick($map, $predicate, $this-arg: null) {
-    @if ($map == null) {
-        @return ();
-    }
-
-    $map: __to-map($map);
-
-    @return if(__function-exists($predicate),
-        __pick-by-callback($map, __bind-callback($predicate, $this-arg, 3)),
-        __pick-by-list($map, __base-flatten(($map, $predicate, $this-arg), false, false, 1)));
-}
 // @debug __pick((name: fred, age: 40), 'name');
 // @debug __pick((name: fred, age: 40), __is-number);
 
@@ -3231,7 +3015,7 @@ $users: (
 @function __escape($string) {
     $string: __base-to-string($string);
 
-    @each $unescaped, $escaped in const-get('html-escapes') {
+    @each $unescaped, $escaped in __const('html-escapes') {
         $string: __string-replace($string, $unescaped, $escaped);
     }
 
@@ -3243,7 +3027,7 @@ $users: (
 // @function __escape-reg-exp($string) {
 //     $string: __base-to-string($string);
 
-//     @each $char in const-get('reg-exp-chars') {
+//     @each $char in __const('reg-exp-chars') {
 //         $string: __string-replace($string, $char, '\#{$char}');
 //     }
 
@@ -3425,8 +3209,8 @@ $users: (
         $options: null;
     }
 
-    $length: either($length, const-get('DEFAULT_TRUNC_LENGTH'));
-    $omission: either($omission, const-get('DEFAULT_TRUNC_OMISSION'));
+    $length: either($length, __const('DEFAULT_TRUNC_LENGTH'));
+    $omission: either($omission, __const('DEFAULT_TRUNC_OMISSION'));
     $separator: either($separator, null);
 
     @if ($options != null) {
@@ -3482,7 +3266,7 @@ $users: (
     $string: __base-to-string($string);
     $escapes: ();
 
-    @each $escaped, $unescaped in const-get('html-unescapes') {
+    @each $escaped, $unescaped in __const('html-unescapes') {
         $escaped-index: str-index($string, $escaped);
 
         @if $escaped-index {
@@ -3569,56 +3353,9 @@ $users: (
     @return null;
 }
 
-@function __property($key) {
-    @return __base-property($key);
-}
-
-@function __property-of-function($key, $args...) {
-    $map: this('map');
-
-    @return if($map == null, null, get($map, $key));
-}
-@function __property-of($map) {
-    $_: __scope();
-    $_: scope('map', $map);
-    $scoped-function: __bind(__property-of-function);
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
 
 // $foo-map: (a: 3, b: 1, c: 2);
 // @debug __sort-by((a b c), __property-of($foo-map));
-
-@function __range($start, $end: null, $step: null) {
-    @if ($step and $step != 0 and __is-iteratee-call($start, $end, $step)) {
-        $end: null;
-        $step: null;
-    }
-
-    $start: if(__is-integer($start), $start, if(__is-truthy($start), 1, 0));
-    $step: if($step == null, 1, if(__is-integer($step), $step, if($step, 1, 0)));
-
-    @if ($end == null) {
-        $end: $start;
-        $start: 0;
-    } @else {
-        $end: if(__is-integer($end), $end, if($end, 1, 0));
-    }
-
-    $index: 1;
-    $length: __native-max(ceil(($end - $start) / (if($step == 0, 1, $step))), 0);
-    $result: ();
-
-    @while ($index <= $length) {
-        $result: append($result, $start);
-        $start: $start + $step;
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
 
 // @debug __range(4);
 //      // => [0, 1, 2, 3]
@@ -3678,21 +3415,9 @@ $users: (
 // @function _defer($args...) { @return call(__defer, $args...); }
 // @function _delay($args...) { @return call(__delay, $args...); }
 // @function _memoize($args...) { @return call(__memoize, $args...); }
-@function _mixin($args...) { @return call(__mixin, $args...); }
-@function _partition($args...) { @return call(__partition, $args...); }
-@function _pick($args...) { @return call(__pick, $args...); }
-@function _pluck($args...) { @return call(__pluck, $args...); }
-@function _property($args...) { @return call(__property, $args...); }
-@function _property-of($args...) { @return call(__property-of, $args...); }
-@function _pull($args...) { @return call(__pull, $args...); }
-@function _pull-at($args...) { @return call(__pull-at, $args...); }
-@function _range($args...) { @return call(__range, $args...); }
+// @function _mixin($args...) { @return call(__mixin, $args...); }
 @function _rearg($args...) { @return call(__rearg, $args...); }
-@function _reject($args...) { @return call(__reject, $args...); }
-@function _remove($args...) { @return call(__remove, $args...); }
-@function _rest($args...) { @return call(__rest, $args...); }
-@function _shuffle($args...) { @return call(__shuffle, $args...); }
-@function _slice($args...) { @return call(__slice, $args...); }
+// @function _remove($args...) { @return call(__remove, $args...); }
 @function _sort-by($args...) { @return call(__sort-by, $args...); }
 @function _sort-by-all($args...) { @return call(__sort-by-all, $args...); }
 @function _take($args...) { @return call(__take, $args...); }

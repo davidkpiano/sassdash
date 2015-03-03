@@ -1,0 +1,54 @@
+
+
+@function __pull($arguments...) {
+    $list: nth($arguments, 1);
+
+    @if not ($list and length($list)) {
+        @return $list;
+    }
+
+    $index: 1;
+    $index-of: __get-index-of();
+    $length: length($arguments);
+
+    @while ($index <= $length) {
+        $from-index: 1;
+        $value: nth($arguments, $index);
+
+        @while (__index-of($list, $value, $from-index) > -1) {
+            $from-index: __index-of($list, $value, $from-index);
+
+            $list: __splice($list, $from-index, 1);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $list;
+}
+
+/**
+ * Removes all provided values from `array` using `SameValueZero` for equality
+ * comparisons.
+ *
+ * **Notes:**
+ *  - Unlike `_.without`, this method mutates `array`.
+ *  - `SameValueZero` comparisons are like strict equality comparisons, e.g. `===`,
+ *    except that `NaN` matches `NaN`. See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
+ *    for more details.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to modify.
+ * @param {...*} [values] The values to remove.
+ * @returns {Array} Returns `array`.
+ * @example
+ *
+ * var array = [1, 2, 3, 1, 2, 3];
+ *
+ * _.pull(array, 2, 3);
+ * console.log(array);
+ * // => [1, 1]
+ */
+@function _pull($args...) { @return call(__pull, $args...); }

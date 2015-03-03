@@ -1,0 +1,62 @@
+
+
+@function __base-slice($list, $start: 0, $end: length($list)) {
+    $index: 1;
+    $length: length($list);
+    $start: __to-number($start);
+    $start: if(__is-number($start), floor($start), if(__is-truthy($start), 1, 0));
+
+    @if ($start < 0) {
+        $start: if(-$start > $length, 0, ($length + $start));
+    }
+
+    $end: if(__is-number($end), floor($end), if(__is-truthy($end), 1, 0));
+    $end: if($end > $length, $length, if($end, $end, 0));
+
+    @if ($end < 0) {
+        $end: $end + $length;
+    }
+
+    $length: if($start > $end, 0, ($end - $start));
+
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, nth($list, ($index + $start)));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+@function __slice($list, $start: 0, $end: length($list)) {
+    $length: if(__is-list-like($list), length($list), 0);
+
+    @if __is-falsey($length) {
+        @return ();
+    }
+
+    @if ($end and not __is-number($end) and __is-iteratee-call($list, $start, $end)) {
+        $start: 0;
+        $end: $length;
+    }
+
+    @return __base-slice($list, $start, $end);
+}
+
+/**
+ * Creates a slice of `array` from `start` up to, but not including, `end`.
+ *
+ * **Note:** This function is used instead of `Array#slice` to support node
+ * lists in IE < 9 and to ensure dense arrays are returned.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to slice.
+ * @param {number} [start=0] The start position.
+ * @param {number} [end=array.length] The end position.
+ * @returns {Array} Returns the slice of `array`.
+ */
+@function _slice($args...) { @return call(__slice, $args...); }

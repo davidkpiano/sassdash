@@ -233,128 +233,6 @@
 // SASSDASH
 // ========
 
-@function SassdashWrapper($value, $chain-all: false, $actions: ()) {
-    @return (
-        __actions__: $actions,
-        __chain__: if($chain-all, true, false),
-        __wrapped__: $value
-    );
-}
-
-@function __sassdash($value) {
-    @if (__is-map-like($value) and type-of($value) != list) {
-        @if (instanceof($value, SassdashWrapper)) {
-            @return $value;
-        }
-    }
-
-    @return new(SassdashWrapper, (
-        value: $value
-    ));
-}
-
-@function LazyWrapper($value) {
-    @return (
-        actions: null,
-        dir: 1,
-        drop-count: 0,
-        filtered: false,
-        iteratees: null,
-        take-count: __const('POSITIVE_INFINITY'),
-        views: null,
-        wrapped: $value
-    );
-}
-
-@function __lazy-clone() {
-    // todo
-}
-
-@function __lazy-reverse() {
-    // todo
-}
-
-@function __lazy-value() {
-    $list: __call(value, this(), this('wrapped'));
-
-    @if not (__is-list($list)) {
-        @return __base-wrapper-value($list, this('actions'));
-    }
-
-    $dir: this('dir');
-    $is-right: $dir < 0;
-    $length: length($list);
-    $view: __get-view(0, $length, this('views'));
-    $start: get($view, 'start');
-    $end: get($view, 'end');
-    $drop-count: this('drop-count');
-    $take-count: __native-min($end - $start, this('take-count') - $drop-count);
-    $index: if($is-right, $end, $start - 1);
-    $iteratees: this('iteratees');
-    $iter-length: if($iteratees, length($iteratees), 0);
-    $result-index: 0;
-    $result: ();
-
-    @while ($length > 0 and $result-index < $take-count and not $break-outer) {
-        $continue-outer: false;
-        $index: $index + $dir;
-
-        $iter-index: 1;
-        $value: nth($list, $index);
-
-        @while ($iter-index < $iter-length and not ($continue-outer or $break-outer)) {
-            $data: nth($iteratees, $iter-index);
-            $iteratee: get($data, 'iteratee');
-            $computed: call($iteratee, $value, $index, $list);
-            $type: get($data, 'type');
-
-            @if ($type == __const('LAZY_MAP_FLAG')) {
-                $value: $computed;
-            } @else if not ($computed) {
-                @if ($type == __const('LAZY_FILTER_FLAG')) {
-                    $continue-outer: true;
-                } @else {
-                    $break-outer: true;
-                }
-            }
-
-            $iter-index: $iter-index + 1;
-        }
-        @if not ($continue-outer or $break-outer) {
-            @if ($drop-count and $drop-count > 0) {
-                $drop-count: $drop-count - 1;
-            } @else {
-                $result: set($result, $result-index, $value);
-            }
-        }
-
-        $length: $length - 1;
-    }
-
-    @return if($is-right, __list-reverse($result), $result);
-    // todo test
-}
-
-@function __cache-index-of($this, $value) {
-    $type: type-of($value);
-    $data: get($this, data);
-    $result: if($type == number, get($data, $type $value), method(get($data, set), has, $value));
-
-    @return if($result, 0, -1);
-}
-
-@function __cache-push($this, $value) {
-    $data: get($this, data);
-    $type: type-of($value);
-
-    @if ($type == number) {
-        $data: set($data, $type $value, true);
-    } @else {
-        // data.set.add(value);
-        $data: set($data, set, method(get($data, set), add, $value));
-    }
-}
-
 @function __args-to-map($args) {
     // todo
 }
@@ -428,31 +306,6 @@ $users: (
 
 
 
-@function __list-reduce($list, $iteratee, $accumulator: null, $init-from-list: true, $args...) {
-    $index: 1;
-    $length: length($list);
-
-    @if ($init-from-list and ($length > 0)) {
-        $accumulator: nth($list, $index);
-        $index: $index + 1;
-    }
-
-    @while ($index <= $length) {
-        $value: nth($list, $index);
-        $accumulator: call($iteratee, $accumulator, $value, $index, $list);
-
-        $index: $index + 1;
-    }
-
-    @return $accumulator;
-}
-
-@function __list-reduce-right($list, $iteratee, $accumulator: null, $init-from-list: true, $args...) {
-    $list: __list-reverse($list);
-
-
-    @return __list-reduce($list, $iteratee, $accumulator, $init-from-list);
-}
 
 @function __list-some($list, $predicate) {
     $index: 1;
@@ -635,44 +488,8 @@ $users: (
     // not implementing - mutates list
 }
 
-@function __base-rand($min, $max) {
-    @return $min + floor(random() * ($max - $min + 1));
-}
 
 // @debug __base-rand(3, 10);
-
-@function __base-reduce-iteratee($value, $index, $collection: null) {
-    $iteratee: this(iteratee);
-    $accumulator: this(accumulator);
-    $init-from-collection: this(init-from-collection);
-
-    @if ($init-from-collection) {
-        $_: this(init-from-collection, false);
-        $accumulator: $value;
-    } @else {
-        $accumulator: __exec($iteratee, $accumulator, $value, $index, $collection);
-    }
-
-    $_: this(accumulator, $accumulator);
-
-    @return true;
-}
-@function __base-reduce($collection, $iteratee, $accumulator, $init-from-collection: false, $each-function: null) {
-
-    $_: __scope();
-        $_: scope(iteratee, $iteratee);
-        $_: scope(accumulator, $accumulator);
-        $_: scope(init-from-collection, $init-from-collection);
-
-        $iteratee: __bind(__base-reduce-iteratee);
-
-        $_: __exec($each-function, $collection, $iteratee);
-
-        $accumulator: scope(accumulator);
-    $_: __scope(false);
-
-    @return $accumulator;
-}
 
 @function __base-set-data($function, $data) {
     $_: static-set('__meta-map__', $function, $data);
@@ -747,54 +564,7 @@ $users: (
     @return $result;
 }
 
-@function __binary-index($list, $value, $ret-highest: false) {
-    $low: 0;
-    $high: if($list, length($list), $low);
 
-    @if (type-of($value) == number and $high <= __const(HALF_MAX_LIST_LENGTH)) {
-        @while ($low < $high) {
-            $mid: floor(($low + $high) / 2);
-            $computed: nth($list, $mid);
-
-            @if (if($ret-highest, ($computed <= $value), ($computed < $value))) {
-                $low: $mid + 1;
-            } @else {
-                $high: $mid;
-            }
-        }
-
-        @return $high;
-    }
-
-    @return __binary-index-by($list, $value, __identity, $ret-highest);
-}
-
-@function __binary-index-by($list, $value, $iteratee, $ret-highest) {
-    $value: call($iteratee, $value);
-
-    $low: 0;
-    $high: if($list, length($list), 0);
-    $val-is-undefined: ($value == null);
-
-    @while ($low < $high) {
-        $mid: floor(($low + $high) / 2);
-        $computed: call($iteratee, nth($list, $mid));
-
-        @if ($val-is-undefined) {
-            $set-low: ($ret-highest > 0 or not ($computed == null));
-        } @else {
-            $set-low: if($ret-highest > 0, ($computed <= $value), ($computed < $value));
-        }
-
-        @if ($set-low) {
-            $low: $mid + 1;
-        } @else {
-            $high: $mid;
-        }
-    }
-
-    @return call(native-min, $high, __const(MAX_LIST_INDEX));
-}
 
 @function __bind-callback-1($value) {
     $function: scope(function);
@@ -1271,17 +1041,7 @@ $users: (
     // _helpers
 }
 
-@function __to-string($value, $args...) {
-    @if (type-of($value) == 'string') {
-        @return $value;
-    }
 
-    @if ($value == null) {
-        @return '';
-    }
-
-    @return inspect($value);
-}
 
 // @debug __to-string('hello');
 // @debug __to-string(hello);
@@ -1358,25 +1118,7 @@ $users: (
 
 // @debug __slice((1 2 3), -1);
 
-@function __sorted-index($list, $value, $iteratee: __identity, $this-arg: null) {
-    $function: __get-callback($iteratee);
 
-    @return if($function == __base-callback and $iteratee == null,
-        __binary-index($list, $value),
-        __binary-index($list, $value, call($function, $iteratee, $this-arg, 1)));
-
-    // todo fix binary-index
-}
-
-// @debug __sorted-index((4 4 5 5 6 6), 5); // 3
-
-@function __sorted-last-index($list, $value, $iteratee: __identity, $this-arg: null) {
-    $function: __get-callback($iteratee);
-
-    @return if($function == __base-callback and $iteratee == null,
-        __binary-index($list, $value),
-        __binary-index($list, $value, call($function, $iteratee, $this-arg, 1), true));
-}
 
 
 // @debug __take-while((2 4 6 8 9 10 12 14 15), is-even);
@@ -1464,11 +1206,7 @@ $users: (
 
 // @debug __count-by((1 2 3 4 5 6 7 9 11 13 15 17), is-even);
 
-@function __either($this, $that, $predicate: __is-truthy) {
-    $this-bool: __exec($predicate, $this);
 
-    @return if($this-bool, $this, $that);
-}
 
 
 // @debug __every((true 1 null 'yes'));
@@ -1518,16 +1256,6 @@ $users: (
 
 // @debug __pluck(((a: 1, b: 2), (a: 3, b: 4)), 'a');
 
-@function __reduce($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
-    $function: if(__is-list($collection), __list-reduce, __base-reduce);
-
-    @return __exec($function,
-        $collection,
-        __get-callback($iteratee, $this-arg, 4),
-        $accumulator,
-        ($accumulator == null and $this-arg == null),
-        __base-each);
-}
 
 // @function sum($sum, $n, $args...) {
 //     @return $sum + $n;
@@ -1543,11 +1271,6 @@ $users: (
 // @debug __call(__base-reduce, null, (a:1,b:2,c:3), double-map, null, true, __base-each);
 // TODO fix reduce with maps!
 
-@function __reduce-right($collection, $iteratee: __identity, $accumulator: null, $this-arg: null) {
-    $function: if(__is-list($collection), __list-reduce-right, __base-reduce);
-
-    @return __exec($function, $collection, __get-callback($iteratee, $this-arg, 4), $accumulator, ($accumulator == null and $this-arg == null), __base-each-right);
-}
 
 // $list: ((0, 1), (2, 3), (4, 5));
 // @function reduce-right-stuff($flattened, $other, $args...) {
@@ -1560,46 +1283,16 @@ $users: (
 // @debug __reject(((a: 1, b: true), (a: 2, b: false), (a: 3, b: true), (a: 4, b: false)), 'b');
 // @debug __pluck(__reject(((act: 1, b: true), (act: 2, b: false), (act: 3, b: true), (act: 4, b: false)), 'b'), act); // works with __property
 
-@function __sample($collection, $n: null, $guard: null) {
-    @if (if($guard, __is-iteratee-call($collection, $n, $guard), ($n == null))) {
-        $length: length($collection);
-        @return if($length > 0, nth($collection, __base-rand(1, $length)), null);
-    }
-
-    $n: if(type-of($n) == 'number', $n, if(__is-truthy($n), 1, 0));
-    $result: __shuffle($collection);
-    $result: __take($result, __native-min(if($n < 0, 0, $n), length($result)));
-
-    @return $result;
-}
 
 // @debug __sample((1 2 3 4 5), 4);
 
 // @debug __shuffle((1 2 3 4 5));
 // @debug __sample((1 2 3 4 5), 4);
 
-@function __size($collection: null) {
-    @if __is-string($collection) {
-        $collection: __to-list($collection);
-    }
-
-    $length: if(__is-map-like($collection), length($collection), 0);
-
-    @return if(__is-length($length), $length, length(__keys($collection)));
-}
 
 // @debug __size((1 2 3 4 5));
 // @debug __size((a:2,b:3,c:4));
 
-@function __some($collection, $predicate: __identity, $this-arg: $__undefined__) {
-    $function: if(__is-list($collection), __list-some, __base-some);
-
-    @if (not __function-exists($predicate)) or (not __is-undefined($this-arg)) {
-        $predicate: __get-callback($predicate, $this-arg, 3);
-    }
-
-    @return __exec($function, $collection, $predicate);
-}
 
 // @debug __some((1 2 3 4 5), is-even);
 // @debug __some((1 3 5 7 9), is-even);
@@ -1885,28 +1578,7 @@ $users: (
 // @debug __pick((name: fred, age: 40), 'name');
 // @debug __pick((name: fred, age: 40), __is-number);
 
-@function __result($map, $key, $default-value: null) {
-    $value: if($map == null, $__undefined__, get($map, $key));
-    $result: null;
 
-    @if (__is-undefined($value) or __is-null($value)) {
-        $value: $default-value;
-    }
-
-    @if (__function-exists($value)) {
-        $_: scope-start($map);
-
-        $scoped-function: __bind($value);
-
-        $result: __call($scoped-function, $__current-scope__);
-
-        $_: __scope(false);
-    } @else {
-        $result: $value;
-    }
-
-    @return $result;
-}
 
 // @function greet() {
 //     @return 'Hey, my name is #{this(name)}.';
@@ -1970,49 +1642,6 @@ $users: (
 // @debug __values('hi there');
 
 
-@function __rand($min: null, $max: null, $floating: null) {
-    $min: __to-number($min);
-    $max: __to-number($max);
-
-    @if ($floating and __is-iteratee-call($min, $max, $floating)) {
-        $max: null;
-        $floating: null;
-    }
-
-    $no-min: ($min == null);
-    $no-max: ($max == null);
-
-    @if ($floating == null) {
-        @if ($no-max and type-of($min) == 'bool') {
-            $floating: $min;
-            $min: 1;
-        } @else if (type-of($max) == 'bool') {
-            $floating: $max;
-            $no-max: true;
-        }
-    }
-
-    @if ($no-min and $no-max) {
-        $max: 1;
-        $no-max: false;
-    }
-
-    $min: if($min == true, 1, if(__is-falsey($min), 0, $min));
-
-    @if ($no-max) {
-        $max: $min;
-        $min: 0;
-    } @else {
-        $max: if($max == true, 1, if($max == false, 0, $max));
-    }
-
-    @if ($floating or ($min % 1 > 0) or ($max % 1 > 0)) {
-        $rand: random();
-
-        @return __native-min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
-    }
-    @return __base-rand($min, $max);
-}
 
 // @debug __random(0, 5);
 // @debug __random(5);
@@ -2064,35 +1693,11 @@ $users: (
     @return __native-parse-int($string, $radix);
 }
 
-@function __push($list, $items...) {
-    @return join($list, $items, $separator: auto);
-}
-
-@function __repeat($string, $value: 0) {
-    $value: __to-number($value);
-    $result: '';
-
-    @if $value >= 1 {    
-        @for $iteration from 1 through $value {
-            $result: $result + $string;
-        }
-    }
-
-    @return $result;
-}
-
 
 // @debug __snake-case('Foo Bar');
 // @debug __snake-case('--foo-bar');
 // @debug __snake-case('fooBar');
 
-@function __starts-with($string, $target, $position: 1) {
-    $string: __base-to-string($string);
-    $position: if(__is-falsey($position), 0, $position);
-    $position: __native-min(if($position <= 0, 1, $position), str-length($string));
-
-    @return if($target == '', true, __string-last-index-of($string, $target, $position) == $position);
-}
 
 // @debug __starts-with('abc', 'a');
 // @debug __starts-with('abc', 'b');
@@ -2100,110 +1705,8 @@ $users: (
 
 @function __template() {} // not implemented
 
-@function __trim($string, $chars: null, $guard: null) {
-    $value: $string;
-    $string: __base-to-string($string);
-
-    @if not ($string) or ($string == '') or ($chars == '') {
-        @return $string;
-    }
-
-    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
-        @return str-slice($string, __trimmed-left-index($string), __trimmed-right-index($string));
-    }
-
-    $chars: __base-to-string($chars);
-
-    @return str-slice($string, __chars-left-index($string, $chars), __chars-right-index($string, $chars));
-}
-
-// @debug __trim('  abc   ') + 'def';
-// @debug __trim('-_-abc-_-', '_-');
-// @debug __map(('  foo  ', '    bar     '), __trim);
-
-@function __trim-left($string, $chars: null, $guard: null) {
-    $value: $string;
-    $string: __base-to-string($string);
-
-    @if not ($string) or ($string == '') or ($chars == '') {
-        @return $string;
-    }
-
-    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
-        @return str-slice($string, __trimmed-left-index($string));
-    }
-
-    $chars: __base-to-string($chars);
-
-    @return str-slice($string, __chars-left-index($string, $chars));
-}
-
-@function __trim-right($string, $chars: null, $guard: null) {
-    $value: $string;
-    $string: __base-to-string($string);
-
-    @if not ($string) or ($string == '') or ($chars == '') {
-        @return $string;
-    }
-
-    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
-        @return str-slice($string, 0, __trimmed-right-index($string));
-    }
-
-    $chars: __base-to-string($chars);
-
-    @return str-slice($string, 0, __chars-right-index($string, $chars));
-}
 
 // @debug __trim-right('abc       ') + 'def';
-
-@function __trunc($string, $options: null, $guard: null, $omission: null, $length: null, $separator: null) {
-    @if ($guard and __is-iteratee-call($string, $options, $guard)) {
-        $options: null;
-    }
-
-    $length: either($length, __const('DEFAULT_TRUNC_LENGTH'));
-    $omission: either($omission, __const('DEFAULT_TRUNC_OMISSION'));
-    $separator: either($separator, null);
-
-    @if ($options != null) {
-        @if (__is-map($options)) {
-            $separator: if(map-has-key($options, 'separator'), get($options, 'separator'), $separator);
-            $length: if(map-has-key($options, 'length'), get($options, 'length'), $length);
-            $omission: if(map-has-key($options, 'omission'), __base-to-string(get($options, 'omission')), $omission);
-        } @else {
-            $length: __to-number($options);
-        }
-    }
-
-    $string: __base-to-string($string);
-
-    @if ($length >= str-length($string)) {
-        @return $string;
-    }
-
-    $end: $length - str-length($omission);
-
-    @if ($end < 1) {
-        @return $omission;
-    }
-
-    $result: str-slice($string, 0, $end);
-
-    @if ($separator == null) {
-        @return $result + $omission;
-    }
-
-    @if (__string-index-of($string, $separator, $end) != $end) {
-        $index: __string-last-index-of($result, $separator);
-
-        @if ($index > -1) {
-            $result: str-slice($result, 0, $index - 1);
-        }
-    }
-
-    @return $result + $omission;
-}
 
 // @debug __trunc('hi-diddly-ho there, neighborino');
 // // => 'hi-diddly-ho there, neighbo...'
@@ -2214,76 +1717,7 @@ $users: (
 // @debug __trunc('hi-diddly-ho there, neighborino', ( 'omission': ' [...]' ));
 // // => 'hi-diddly-ho there, neig [...]'
 
-
-@function __unescape($string) {
-    $string: __base-to-string($string);
-    $escapes: ();
-
-    @each $escaped, $unescaped in __const('html-unescapes') {
-        $escaped-index: str-index($string, $escaped);
-
-        @if $escaped-index {
-            $escapes: append($escapes, (
-                    'escaped': $escaped,
-                    'unescaped': $unescaped,
-                    'index': $escaped-index
-                ));
-        }
-    }
-
-    $escapes: __sort-by($escapes, __property('index'));
-
-    @each $escaped-map in $escapes {
-        $escaped: get($escaped-map, 'escaped');
-        $unescaped: get($escaped-map, 'unescaped');
-
-        $string: __string-replace($string, $escaped, $unescaped);
-    }
-
-    @return $string;
-}
-
 // @debug __unescape('fred, barney &amp; pebbles&quot;');
-
-@function __words($string, $args...) {
-    $string: __base-to-string($string);
-
-    $result: ();
-
-    $temp: '';
-
-    $lowercase-letters: 'abcdefghijklmnopqrstuvwxyz';
-    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ';
-
-    @for $index from 1 through str-length($string) {
-        $letter: __char-at($string, $index);
-        $letter-prev: __char-at($string, $index - 1);
-        $letter-next: __char-at($string, $index + 1);
-
-        @if not (str-index($lowercase-letters, $letter))
-            and not (
-                str-index($uppercase-letters, $letter-prev)
-                and str-index($uppercase-letters, $letter-next)
-            ) {
-            @if (str-length($temp) > 0) {
-                $result: append($result, $temp);
-                $temp: '';
-            }
-
-            @if (str-index($uppercase-letters, $letter) and $letter != ' ') {
-                $temp: $temp + $letter;
-            }
-        } @else {
-            $temp: $temp + $letter;
-        }
-    }
-
-    @if (str-length($temp) > 0) {
-        $result: append($result, $temp);
-    }
-
-    @return $result;
-}
 
 // @debug __words('dear god, what have I done??');
 // @debug __words('try---toFindAllThe-words    in thisCrazy.sentence.');
@@ -2322,12 +1756,6 @@ $users: (
 
 
 // @debug __times(3, __random);
-
-@function __unique-id($prefix: '') {
-    $id: unique-id();
-
-    @return __base-to-string($prefix) + $id;
-}
 
 
 // Aliases
@@ -2369,51 +1797,18 @@ $users: (
 // @function _now($args...) { @return call(__now, $args...); }
 
 @function _parse-int($args...) { @return call(__parse-int, $args...); }
-@function _rand($args...) { @return call(__rand, $args...); }
-@function _reduce($args...) { @return call(__reduce, $args...); }
-@function _reduce-right($args...) { @return call(__reduce-right, $args...); }
-@function _repeat($args...) { @return call(__repeat, $args...); }
-@function _result($args...) { @return call(__result, $args...); }
+
 @function _run-in-context($args...) { @return call(__run-in-context, $args...); }
-@function _size($args...) { @return call(__size, $args...); }
-@function _some($args...) { @return call(__some, $args...); }
-@function _sorted-index($args...) { @return call(__sorted-index, $args...); }
-@function _sorted-last-index($args...) { @return call(__sorted-last-index, $args...); }
-@function _starts-with($args...) { @return call(__starts-with, $args...); }
+
 @function _template($args...) { @return call(__template, $args...); }
-@function _trim($args...) { @return call(__trim, $args...); }
-@function _trim-left($args...) { @return call(__trim-left, $args...); }
-@function _trim-right($args...) { @return call(__trim-right, $args...); }
-@function _trunc($args...) { @return call(__trunc, $args...); }
-@function _unescape($args...) { @return call(__unescape, $args...); }
-@function _unique-id($args...) { @return call(__unique-id, $args...); }
-@function _words($args...) { @return call(__words, $args...); }
+
 
 // Add aliases.
-@function _all($args...) { @return call(__every, $args...); }
-@function _any($args...) { @return call(__some, $args...); }
-@function _contains($args...) { @return call(__includes, $args...); }
-@function _detect($args...) { @return call(__find, $args...); }
-@function _foldl($args...) { @return call(__reduce, $args...); }
-@function _foldr($args...) { @return call(__reduce-right, $args...); }
-@function _head($args...) { @return call(__first, $args...); }
-@function _include($args...) { @return call(__includes, $args...); }
-@function _inject($args...) { @return call(__reduce, $args...); }
 
 // Add functions capable of returning wrapped and unwrapped values when chaining.
-@function _sample($args...) { @return call(__sample, $args...); }
 
 // Add custom Sassdash functions.
-@function _call($args...) { @return call(__call, $args...); }
-@function _push($args...) { @return call(__push, $args...); }
-@function _to-string($args...) { @return call(__to-string, $args...); }
 @function _value($args...) { @return call(__value, $args...); }
-@function _either($args...) { @return call(__either, $args...); }
-@function _concat($args...) { @return call(__concat, $args...); }
-@function _str-concat($args...) { @return call(__str-concat, $args...); }
-@function _join($args...) { @return call(__join, $args...); }
-@function _reverse($args...) { @return call(__reverse, $args...); }
-@function _str-reverse($args...) { @return call(__str-reverse, $args...); }
 
 
 

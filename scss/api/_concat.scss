@@ -1,0 +1,32 @@
+
+
+
+@function __str-concat($source, $args...) {
+    @if __is-iteratee-call($args...) {
+        $args: nth($args, 1);
+    }
+
+    $source: __to-string($source);
+
+    @each $string in $args {
+        $source: $source + $string;
+    }
+
+    @return $source;
+}
+
+@function __concat($source, $args...) {
+    $separator: list-separator($source);
+
+    $source: if(not __is-list-like($source), ($source,), $source);
+
+    @each $list in $args {
+        $source: join($source, $list, $separator);
+    }
+
+    @return $source;
+}
+
+@function _concat($args...) { @return call(__concat, $args...); }
+
+@function _str-concat($args...) { @return call(__str-concat, $args...); }

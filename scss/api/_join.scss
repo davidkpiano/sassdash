@@ -1,0 +1,30 @@
+
+
+
+@function __list-join($list, $separator: '') {
+    $length: length($list);
+    $result: nth($list, 1);
+
+    @if $length > 1 {
+        @for $index from 2 through $length {
+            $result: $result + $separator + nth($list, $index);
+        }
+    }
+
+    @return $result;
+}
+
+
+@function __join($list, $separator: '', $guard: null) {
+    @if __is-iteratee-call($list, $separator, $guard) {
+        $separator: '';
+    }
+
+    @if __is-list-like($separator) {
+        @return join($list, $separator);
+    }
+    
+    @return __list-join($list, $separator);
+}
+
+@function _join($args...) { @return call(__join, $args...); }

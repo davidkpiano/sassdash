@@ -1,0 +1,8 @@
+
+@function __either($this, $that, $predicate: __is-truthy) {
+    $this-bool: __exec($predicate, $this);
+
+    @return if($this-bool, $this, $that);
+}
+
+@function _either($args...) { @return call(__either, $args...); }

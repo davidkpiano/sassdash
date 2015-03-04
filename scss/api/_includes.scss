@@ -67,3 +67,8 @@
 /// // => true
 /// 
 @function _includes($args...) { @return call(__includes, $args...); }
+
+@function _include($args...) { @return call(__includes, $args...); }
+
+@function _contains($args...) { @return call(__includes, $args...); }
+

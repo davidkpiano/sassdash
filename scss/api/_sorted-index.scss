@@ -1,0 +1,125 @@
+
+
+@function __sorted-index($list, $value, $iteratee: __identity, $this-arg: null) {
+    $function: __get-callback($iteratee);
+
+    @return if($function == __base-callback and $iteratee == null,
+        __binary-index($list, $value),
+        __binary-index($list, $value, call($function, $iteratee, $this-arg, 1)));
+}
+
+@function __sorted-last-index($list, $value, $iteratee: __identity, $this-arg: null) {
+    $function: __get-callback($iteratee);
+
+    @return if($function == __base-callback and $iteratee == null,
+        __binary-index($list, $value),
+        __binary-index($list, $value, call($function, $iteratee, $this-arg, 1), true));
+}
+
+@function __binary-index($list, $value, $ret-highest: false) {
+    $low: 0;
+    $high: if($list, length($list), $low);
+
+    @if (type-of($value) == number and $high <= __const(HALF_MAX_LIST_LENGTH)) {
+        @while ($low < $high) {
+            $mid: floor(($low + $high) / 2);
+            $computed: nth($list, $mid);
+
+            @if (if($ret-highest, ($computed <= $value), ($computed < $value))) {
+                $low: $mid + 1;
+            } @else {
+                $high: $mid;
+            }
+        }
+
+        @return $high;
+    }
+
+    @return __binary-index-by($list, $value, __identity, $ret-highest);
+}
+
+@function __binary-index-by($list, $value, $iteratee, $ret-highest) {
+    $value: call($iteratee, $value);
+
+    $low: 0;
+    $high: if($list, length($list), 0);
+    $val-is-undefined: ($value == null);
+
+    @while ($low < $high) {
+        $mid: floor(($low + $high) / 2);
+        $computed: call($iteratee, nth($list, $mid));
+
+        @if ($val-is-undefined) {
+            $set-low: ($ret-highest > 0 or not ($computed == null));
+        } @else {
+            $set-low: if($ret-highest > 0, ($computed <= $value), ($computed < $value));
+        }
+
+        @if ($set-low) {
+            $low: $mid + 1;
+        } @else {
+            $high: $mid;
+        }
+    }
+
+    @return call(native-min, $high, __const(MAX_LIST_INDEX));
+}
+/// 
+/// Uses a binary search to determine the lowest index at which `value` should
+/// be inserted into `array` in order to maintain its sort order. If an iteratee
+/// function is provided it is invoked for `value` and each element of `array`
+/// to compute their sort ranking. The iteratee is bound to `thisArg` and
+/// invoked with one argument; (value).
+/// /// If a property name is provided for `predicate` the created `_.property`
+/// style callback returns the property value of the given element.
+/// /// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// /// If an object is provided for `predicate` the created `_.matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// object, else `false`.
+/// /// @static
+/// @memberOf _
+/// @category Array
+/// @param {Array} array The sorted array to inspect.
+/// @param {*} value The value to evaluate.
+/// @param {Function|Object|string} [iteratee=_.identity] The function invoked
+///  per iteration.
+/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @returns {number} Returns the index at which `value` should be inserted
+///  into `array`.
+/// @example
+/// /// _.sortedIndex([30, 50], 40);
+/// // => 1
+/// /// _.sortedIndex([4, 4, 5, 5], 5);
+/// // => 2
+/// /// var dict = { 'data': { 'thirty': 30, 'forty': 40, 'fifty': 50 } };
+/// /// // using an iteratee function
+/// _.sortedIndex(['thirty', 'fifty'], 'forty', function(word) {
+///   return this.data[word];
+/// }, dict);
+/// // => 1
+/// /// // using the `_.property` callback shorthand
+/// _.sortedIndex([{ 'x': 30 }, { 'x': 50 }], { 'x': 40 }, 'x');
+/// // => 1
+/// 
+@function _sorted-index($args...) { @return call(__sorted-index, $args...); }
+/// 
+/// This method is like `_.sortedIndex` except that it returns the highest
+/// index at which `value` should be inserted into `array` in order to
+/// maintain its sort order.
+/// /// @static
+/// @memberOf _
+/// @category Array
+/// @param {Array} array The sorted array to inspect.
+/// @param {*} value The value to evaluate.
+/// @param {Function|Object|string} [iteratee=_.identity] The function invoked
+///  per iteration.
+/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @returns {number} Returns the index at which `value` should be inserted
+///  into `array`.
+/// @example
+/// /// _.sortedLastIndex([4, 4, 5, 5], 5);
+/// // => 4
+/// 
+@function _sorted-last-index($args...) { @return call(__sorted-last-index, $args...); }

@@ -88,3 +88,6 @@
 /// // => false
 /// 
 @function _every($args...) { @return call(__every, $args...); }
+
+@function _all($args...) { @return call(__every, $args...); }
+

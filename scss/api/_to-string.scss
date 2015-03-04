@@ -1,0 +1,14 @@
+
+@function __to-string($value, $args...) {
+    @if __is-string($value) {
+        @return $value;
+    }
+
+    @if $value == null {
+        @return '';
+    }
+
+    @return inspect($value);
+}
+
+@function _to-string($args...) { @return call(__to-string, $args...); }

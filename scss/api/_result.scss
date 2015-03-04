@@ -1,0 +1,49 @@
+
+
+@function __result($map, $key, $default-value: null) {
+    $value: if($map == null, $__undefined__, get($map, $key));
+    $result: null;
+
+    @if __is-undefined($value) or __is-null($value) {
+        $value: $default-value;
+    }
+
+    @if __function-exists($value) {
+        $_: __scope($map);
+
+        $scoped-function: __bind($value);
+
+        $result: __call($scoped-function, $__current-scope__);
+
+        $_: __scope(false);
+    } @else {
+        $result: $value;
+    }
+
+    @return $result;
+}
+/// 
+/// Resolves the value of property `key` on `object`. If the value of `key` is
+/// a function it is invoked with the `this` binding of `object` and its result
+/// is returned, else the property value is returned. If the property value is
+/// `undefined` the `defaultValue` is used in its place.
+/// /// @static
+/// @memberOf _
+/// @category Object
+/// @param {Object} object The object to query.
+/// @param {string} key The key of the property to resolve.
+/// @param {*} [defaultValue] The value returned if the property value
+///  resolves to `undefined`.
+/// @returns {*} Returns the resolved value.
+/// @example
+/// /// var object = { 'user': 'fred', 'age': _.constant(40) };
+/// /// _.result(object, 'user');
+/// // => 'fred'
+/// /// _.result(object, 'age');
+/// // => 40
+/// /// _.result(object, 'status', 'busy');
+/// // => 'busy'
+/// /// _.result(object, 'status', _.constant('busy'));
+/// // => 'busy'
+/// 
+@function _result($args...) { @return call(__result, $args...); }

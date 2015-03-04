@@ -10,57 +10,5 @@
 }
 
 
-@function __call($method, $this-arg: $__current-scope__, $args...) {
-    $function-name: __function-name($method);
-    $scope-id: __function-scope($method);
-    $previous-scope: $__current-scope__;
-
-    $scope-id: if($scope-id, $scope-id, $this-arg);
-
-    @if $scope-id {
-        $__current-scope__: $scope-id !global;
-    }
-
-    $method-name: this($function-name);
-
-    @if $method-name != null and __function-exists(this($function-name)) {
-        $function-name: this($function-name);
-    } @else if not ($function-name and __function-exists($function-name)) {
-        $__current-scope__: $previous-scope !global;
-
-        @return null;
-    }
-
-    $result: call($function-name, $args...);
-    
-    $__current-scope__: $previous-scope !global;
-
-    @return $result;
-}
 
 
-@function __function-scope($function) {
-    @if type-of($function) != 'string' {
-        @return null;
-    }
-
-    $scope-index: str-index($function, '@');
-    $scope-id: false;
-
-    @if $scope-index {
-        $scope-id: str-slice($function, $scope-index);
-    }
-
-    @return $scope-id;
-}
-
-
-@function __function-name($function) {
-    @if type-of($function) != 'string' {
-        @return null;
-    }
-
-    $scope-index: str-index($function, '@');
-
-    @return if($scope-index, str-slice($function, 1, $scope-index - 1), $function);
-}

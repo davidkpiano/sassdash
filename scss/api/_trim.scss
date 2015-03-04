@@ -1,0 +1,107 @@
+
+
+
+@function __trim($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') or ($chars == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, __trimmed-left-index($string), __trimmed-right-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string,
+        __chars-left-index($string, $chars),
+        __chars-right-index($string, $chars));
+}
+
+@function __trim-left($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') or ($chars == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, __trimmed-left-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string,
+        __chars-left-index($string, $chars));
+}
+
+@function __trim-right($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') or ($chars == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, 0, __trimmed-right-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string, 0,
+        __chars-right-index($string, $chars));
+}
+/// 
+/// Removes leading and trailing whitespace or specified characters from `string`.
+/// /// @static
+/// @memberOf _
+/// @category String
+/// @param {string} [string=''] The string to trim.
+/// @param {string} [chars=whitespace] The characters to trim.
+/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @returns {string} Returns the trimmed string.
+/// @example
+/// /// _.trim('  abc  ');
+/// // => 'abc'
+/// /// _.trim('-_-abc-_-', '_-');
+/// // => 'abc'
+/// /// _.map(['  foo  ', '  bar  '], _.trim);
+/// // => ['foo', 'bar]
+/// 
+@function _trim($args...) { @return call(__trim, $args...); }
+/// 
+/// Removes leading whitespace or specified characters from `string`.
+/// /// @static
+/// @memberOf _
+/// @category String
+/// @param {string} [string=''] The string to trim.
+/// @param {string} [chars=whitespace] The characters to trim.
+/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @returns {string} Returns the trimmed string.
+/// @example
+/// /// _.trimLeft('  abc  ');
+/// // => 'abc  '
+/// /// _.trimLeft('-_-abc-_-', '_-');
+/// // => 'abc-_-'
+/// 
+@function _trim-left($args...) { @return call(__trim-left, $args...); }
+/// 
+/// Removes trailing whitespace or specified characters from `string`.
+/// /// @static
+/// @memberOf _
+/// @category String
+/// @param {string} [string=''] The string to trim.
+/// @param {string} [chars=whitespace] The characters to trim.
+/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @returns {string} Returns the trimmed string.
+/// @example
+/// /// _.trimRight('  abc  ');
+/// // => '  abc'
+/// /// _.trimRight('-_-abc-_-', '_-');
+/// // => '-_-abc'
+/// 
+@function _trim-right($args...) { @return call(__trim-right, $args...); }

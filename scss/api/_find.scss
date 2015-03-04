@@ -125,6 +125,9 @@
 /// 
 @function _find($args...) { @return call(__find, $args...); }
 
+@function _detect($args...) { @return call(__find, $args...); }
+
+
 /// 
 /// This method is like `_.find` except that it returns the index of the first
 /// element `predicate` returns truthy for, instead of the element itself.

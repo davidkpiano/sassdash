@@ -1,0 +1,27 @@
+
+
+@function __starts-with($string, $target, $position: 1) {
+    $string: __base-to-string($string);
+    $position: if(__is-falsey($position), 0, $position);
+    $position: __native-min(if($position <= 0, 1, $position), str-length($string));
+
+    @return if($target == '', true, __string-last-index-of($string, $target, $position) == $position);
+}
+/// 
+/// Checks if `string` starts with the given target string.
+/// /// @static
+/// @memberOf _
+/// @category String
+/// @param {string} [string=''] The string to search.
+/// @param {string} [target] The string to search for.
+/// @param {number} [position=0] The position to search from.
+/// @returns {boolean} Returns `true` if `string` starts with `target`, else `false`.
+/// @example
+/// /// _.startsWith('abc', 'a');
+/// // => true
+/// /// _.startsWith('abc', 'b');
+/// // => false
+/// /// _.startsWith('abc', 'b', 1);
+/// // => true
+/// 
+@function _starts-with($args...) { @return call(__starts-with, $args...); }

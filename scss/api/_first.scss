@@ -18,3 +18,5 @@
 /// // => undefined
 /// 
 @function _first($args...) { @return call(__first, $args...); }
+
+@function _head($args...) { @return call(__first, $args...); }

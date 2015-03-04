@@ -8,7 +8,6 @@
     }
 
     $index: 1;
-    $index-of: __get-index-of();
     $length: length($arguments);
 
     @while ($index <= $length) {

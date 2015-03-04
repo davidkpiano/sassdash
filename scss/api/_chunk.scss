@@ -2,7 +2,7 @@
     @if (if($guard, __is-iteratee-call($list, $size, $guard), ($size == null))) {
         $size: 1;
     } @else {
-        $size: __native-max(if(__is-falsey($size), 1, $size), 1);
+        $size: max(if(__is-falsey($size), 1, $size), 1);
     }
 
     $index: 1;

@@ -1,4 +1,34 @@
 
+
+@function __base-find-iteratee($value, $key, $collection) {
+    $predicate: __this('predicate');
+    $return-key: __this('return-key');
+
+    $iteration: __exec($predicate, $value, $key, $collection);
+
+    @if __is-truthy($iteration) {
+        $_: __this('result', if($return-key, $key, $value));
+
+        @return false;
+    }
+
+    @return true;
+}
+
+@function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
+    $result: null;
+
+    $_: __scope(('result': null, 'predicate': $predicate, 'return-key': $return-key));
+    $iteratee: __bind(__base-find-iteratee);
+
+    $_: __exec($each-function, $collection, $iteratee);
+
+    $result: __this('result');
+    $_: __scope(false);
+
+    @return $result;
+}
+
 @function __find($collection, $predicate: __identity, $this-arg: null) {
     @if __is-string($collection) {
         $collection: __to-list($collection);

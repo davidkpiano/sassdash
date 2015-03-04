@@ -8,7 +8,7 @@
 
     $position: if(__is-falsey($position), 0, $position);
 
-    $position: __native-min(if($position < 0, 0, $position), $length) + 1 - str-length($target);
+    $position: min(if($position < 0, 0, $position), $length) + 1 - str-length($target);
 
     @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
 }

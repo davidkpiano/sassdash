@@ -1,6 +1,26 @@
 
+@function __base-some-iteratee($value, $index, $collection) {
+    $predicate: __this('predicate');
+    $result: __this('result');
 
+    $result: __exec($predicate, $value, $index, $collection);
 
+    $_: __this('result', $result);
+
+    @return if($result, false, true);
+}
+@function __base-some($collection, $predicate) {
+    $result: false;
+
+    $_: __scope(('predicate': $predicate, 'result': $result));
+    $_: __base-each($collection, __base-some-iteratee);
+
+    $result: __this('result');
+
+    $_: __scope(false);
+
+    @return if($result, true, false);
+}
 
 @function __some($collection, $predicate: __identity, $this-arg: $__undefined__) {
     $function: if(__is-list($collection), __list-some, __base-some);

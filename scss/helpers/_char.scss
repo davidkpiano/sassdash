@@ -1,0 +1,21 @@
+
+@function __get-char-code($char) {
+    $chars: join(__const('ASCII_PRINTABLE'), __const('ASCII_EXTENDED'));
+
+    @each $char-code, $char-value in $chars {
+        @if $char == $char-value {
+            @return $char-code;
+        }
+    }
+
+    @return false;
+}
+
+@function __char-at($string, $index) {
+    @return str-slice($string, $index, $index);
+}
+
+@function _char-at($args...) { @return call(__char-at, $args...); }
+
+@function _get-char-code($args...) { @return call(__get-char-code, $args...); }
+

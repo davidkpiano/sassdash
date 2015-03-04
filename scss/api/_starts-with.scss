@@ -3,7 +3,7 @@
 @function __starts-with($string, $target, $position: 1) {
     $string: __base-to-string($string);
     $position: if(__is-falsey($position), 0, $position);
-    $position: __native-min(if($position <= 0, 1, $position), str-length($string));
+    $position: min(if($position <= 0, 1, $position), str-length($string));
 
     @return if($target == '', true, __string-last-index-of($string, $target, $position) == $position);
 }

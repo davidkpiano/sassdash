@@ -62,26 +62,6 @@
     @return $result-map;
 }
 
-
-@function __base-for-own($map, $iteratee) {
-    @return __base-for($map, $iteratee, '__keys');
-}
-
-@function __get-index-of() {
-    @return '__base-index-of';
-}
-
-
-@function __native-min($args...) {
-    @return min($args...);
-}
-
-
-@function __native-max($args...) {
-    @return max($args...);
-}
-
-
 @function __native-is-finite($value) {
     // @TODO
     @return true;

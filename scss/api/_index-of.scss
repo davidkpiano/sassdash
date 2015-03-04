@@ -48,7 +48,7 @@
     $index: $length;
 
     @if __is-number($from-index) {
-        $index: if($from-index < 0, __native-max($length + $from-index, 0), __native-min($from-index - 1, $length - 1)) + 1;
+        $index: if($from-index < 0, max($length + $from-index, 0), min($from-index - 1, $length - 1)) + 1;
     } @else if not (__is-falsey($from-index)) {
         $index: __binary-index($list, $value, true) - 1;
 

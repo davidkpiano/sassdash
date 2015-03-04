@@ -31,13 +31,13 @@
 
     @if __is-number($from-index) {
         $from-index: if($from-index <= 0,
-            __native-max($length + $from-index, 1),
+            max($length + $from-index, 1),
             $from-index);
     } @else {
         $from-index: 1;
     }
 
-    @return __get-index-of($collection, $target, $from-index) > -1;
+    @return __index-of($collection, $target, $from-index) > -1;
 }
 
 /// 

@@ -8,7 +8,7 @@
 
     $n: if(type-of($n) == 'number', $n, if(__is-truthy($n), 1, 0));
     $result: __shuffle($collection);
-    $result: __take($result, __native-min(if($n < 0, 0, $n), length($result)));
+    $result: __take($result, min(if($n < 0, 0, $n), length($result)));
 
     @return $result;
 }

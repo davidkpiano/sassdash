@@ -1,4 +1,41 @@
 
+
+@function __extremum-by-iteratee($value, $index, $collection) {
+    $collection: __this('collection');
+    $iteratee: __this('iteratee');
+    $is-min: __this('is-min');
+    $ex-value: __this('ex-value');
+    $computed: __this('computed');
+    $result: __this('result');
+
+    $current: __exec($iteratee, $value, $index, $collection);
+
+    @if (if($is-min, $current < $computed, $current > $computed))
+        or ($current == $ex-value and $current == $result)
+    {
+        $_: __this('computed', $current);
+        $_: __this('result', $value);
+    }
+
+    @return true;
+}
+@function __extremum-by($collection, $iteratee, $is-min: false) {
+    $ex-value: if($is-min, __const('POSITIVE_INFINITY'), __const('NEGATIVE_INFINITY'));
+    $computed: $ex-value;
+    $result: $computed;
+
+    $_: __scope(('collection': $collection, 'iteratee': $iteratee, 'is-min': $is-min, 'ex-value': $ex-value, 'computed': $computed, 'result': $result));
+
+        $iteratee: __bind(__extremum-by-iteratee);
+
+        $_: __base-each($collection, $iteratee);
+
+        $result: __this('result');
+    $_: __scope(false);
+
+    @return $result;
+}
+
 @function __create-extremum-function($collection, $iteratee: null, $this-arg: null) {
     $list-function: __this('list-function');
     $is-min: __this('is-min');

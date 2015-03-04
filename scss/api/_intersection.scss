@@ -2,8 +2,6 @@
 
 @function __intersection($arguments...) {
     $args: ();
-    $index-of: __get-index-of();
-    $is-common: $index-of == '__base-index-of';
 
     @each $arg-value in $arguments {        
         @if __is-list-like($arg-value) {

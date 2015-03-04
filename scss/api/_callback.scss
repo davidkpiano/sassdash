@@ -1,11 +1,73 @@
 
 
+@function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
+    @return if($arg-count, __call(__base-callback, null, $function, $this-arg, $arg-count), __base-callback);
+}
+
+@function __bind-callback-1($value) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $value);
+}
+@function __bind-callback-3($value, $index, $collection) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $value, $index, $collection);
+}
+@function __bind-callback-4($accumulator, $value, $index, $collection) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $accumulator, $value, $index, $collection);
+}
+@function __bind-callback-5($value, $other, $key, $map, $source) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $value, $other, $key, $map, $source);
+}
+@function __bind-callback-any($arguments...) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $arguments...);
+}
+@function __bind-callback($function, $this-arg: null, $arg-count: null) {
+    @if (not __function-exists($function)) {
+        @return __identity;
+    }
+
+    @if ($this-arg == null) {
+        @return $function;
+    }
+
+    $_: __scope(('function': $function, 'this-arg': $this-arg));
+
+    $arg-count-case: (
+        1: __bind-callback-1,
+        3: __bind-callback-3,
+        4: __bind-callback-4,
+        5: __bind-callback-5
+    );
+
+    @if ($arg-count > 5) {
+        @return __bind-callback-any;
+    }
+
+    $result: __bind(get($arg-count-case, $arg-count), $this-arg);
+
+    $_: __scope(false);
+
+    @return $result;
+}
 
 @function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
     $type: if(__function-exists($function), 'function', type-of($function));
 
     @if ($type == 'function') {
-        @return if(not __is-undefined($this-arg) and __is-bindable($function),
+        @return if(not __is-undefined($this-arg) and __is-function($function),
             __bind-callback($function, $this-arg, $arg-count),
             $function);
     }

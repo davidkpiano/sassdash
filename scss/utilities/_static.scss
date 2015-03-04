@@ -72,6 +72,12 @@ $__this__: () !global;
     ));
 }
 
+@function push($map, $properties, $value) {
+    $list: append(get($map, $properties), $value);
+
+    @return set($map, $properties, $list);
+}
+
 
 @function static-get($properties) {
     @return get($__static__, $properties);
@@ -82,6 +88,24 @@ $__this__: () !global;
     $__static__: set($__static__, $properties, $value) !global;
 
     @return $__static__;
+}
+
+@function static-push($properties, $value) {
+    $__static__: push($__static__, $properties, $value) !global;
+
+    @return $__static__;
+}
+
+@function static($properties: $__undefined__, $value: $__undefined__) {
+    @if __is-undefined($properties) and __is-undefined($value) {
+        @return $__static__;
+    }
+
+    @if __is-undefined($value) {
+        @return static-get($properties);
+    }
+
+    @return static-set($properties, $value);
 }
 
 

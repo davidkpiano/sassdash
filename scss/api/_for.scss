@@ -1,4 +1,57 @@
+@function __base-each($collection, $iteratee) {
+    $length: if($collection, length($collection), 0);
 
+    @if not (__is-list($collection)) {
+        @return __base-for-own($collection, $iteratee);
+    }
+
+    $index: 1;
+    $iterable: __to-map($collection);
+
+    $break: false;
+    @while ($index <= $length and not $break) {
+        $iteration: __exec($iteratee, get($iterable, $index), $index, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $iterable: set($iterable, $index, $iteration);
+        }
+
+        $index: $index + 1;
+    }
+
+    $collection: if(__is-list($collection), map-values($iterable), $iterable);
+
+    @return $collection;
+}
+
+@function __base-each-right($collection, $iteratee) {
+    $length: if($collection, length($collection), 0);
+
+    @if not (__is-list($collection)) {
+        @return __base-for-own-right($collection, $iteratee);
+    }
+
+    $iterable: __to-map($collection);
+
+    $break: false;
+    @while ($length > 0 and not $break) {
+        $iteration: __exec($iteratee, get($iterable, $length), $length, $iterable);
+
+        @if ($iteration == false) {
+            $break: true;
+        } @else {
+            $iterable: set($iterable, $length, $iteration);
+        }
+
+        $length: $length - 1;
+    }
+
+    $collection: if(__is-list($collection), map-values($iterable), $iterable);
+
+    @return $collection;
+}
 
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;

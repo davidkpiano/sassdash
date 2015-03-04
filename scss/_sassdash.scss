@@ -49,6 +49,237 @@
     $_: __const('ARY_FLAG', 256);
 
     $_: __const('CONSTRUCTOR_KEYS', ('_type', '_constructor', '_extends', '_prototype'));
+
+    $_: __const('ASCII_PRINTABLE', (
+        31: ' ',
+        32: '&',
+        33: '!',
+        34: '"',
+        35: '#',
+        36: '$',
+        37: '%',
+        38: '&',
+        39: "'",
+        40: '(',
+        41: ')',
+        42: '*',
+        43: '+',
+        44: ',',
+        45: '-',
+        46: '.',
+        47: '/',
+        48: '0',
+        49: '1',
+        50: '2',
+        51: '3',
+        52: '4',
+        53: '5',
+        54: '6',
+        55: '7',
+        56: '8',
+        57: '9',
+        58: ':',
+        59: ';',
+        60: '&',
+        61: '=',
+        62: '&',
+        63: '?',
+        64: '@',
+        65: 'A',
+        66: 'B',
+        67: 'C',
+        68: 'D',
+        69: 'E',
+        70: 'F',
+        71: 'G',
+        72: 'H',
+        73: 'I',
+        74: 'J',
+        75: 'K',
+        76: 'L',
+        77: 'M',
+        78: 'N',
+        79: 'O',
+        80: 'P',
+        81: 'Q',
+        82: 'R',
+        83: 'S',
+        84: 'T',
+        85: 'U',
+        86: 'V',
+        87: 'W',
+        88: 'X',
+        89: 'Y',
+        90: 'Z',
+        91: '[',
+        92: '\\',
+        93: ']',
+        94: '^',
+        95: '_',
+        96: '`',
+        97: 'a',
+        98: 'b',
+        99: 'c',
+        100: 'd',
+        101: 'e',
+        102: 'f',
+        103: 'g',
+        104: 'h',
+        105: 'i',
+        106: 'j',
+        107: 'k',
+        108: 'l',
+        109: 'm',
+        110: 'n',
+        111: 'o',
+        112: 'p',
+        113: 'q',
+        114: 'r',
+        115: 's',
+        116: 't',
+        117: 'u',
+        118: 'v',
+        119: 'w',
+        120: 'x',
+        121: 'y',
+        122: 'z',
+        123: '{',
+        124: '|',
+        125: '}',
+        126: '~',
+        127: '<',
+    ));
+
+    $_: __const('ASCII_EXTENDED', (
+        128: 'â‚¬',
+        129: '&',
+        130: 'â€š',
+        131: 'Æ’',
+        132: 'â€ž',
+        133: 'â€¦',
+        134: 'â€ ',
+        135: 'â€¡',
+        136: 'Ë†',
+        137: 'â€°',
+        138: 'Å ',
+        139: 'â€¹',
+        140: 'Å’',
+        141: '&',
+        142: 'Å½',
+        143: '&',
+        144: '&',
+        145: 'â€˜',
+        146: 'â€™',
+        147: 'â€œ',
+        148: 'â€',
+        149: 'â€¢',
+        150: 'â€“',
+        151: 'â€”',
+        152: 'Ëœ',
+        153: 'â„¢',
+        154: 'Å¡',
+        155: 'â€º',
+        156: 'Å“',
+        157: '&',
+        158: 'Å¾',
+        159: 'Å¸',
+        160: '&',
+        161: 'Â¡',
+        162: 'Â¢',
+        163: 'Â£',
+        164: 'Â¤',
+        165: 'Â¥',
+        166: 'Â¦',
+        167: 'Â§',
+        168: 'Â¨',
+        169: 'Â©',
+        170: 'Âª',
+        171: 'Â«',
+        172: 'Â¬',
+        173: 'Â­',
+        174: 'Â®',
+        175: 'Â¯',
+        176: 'Â°',
+        177: 'Â±',
+        178: 'Â²',
+        179: 'Â³',
+        180: 'Â´',
+        181: 'Âµ',
+        182: 'Â¶',
+        183: 'Â·',
+        184: 'Â¸',
+        185: 'Â¹',
+        186: 'Âº',
+        187: 'Â»',
+        188: 'Â¼',
+        189: 'Â½',
+        190: 'Â¾',
+        191: 'Â¿',
+        192: 'Ã€',
+        193: 'Ã',
+        194: 'Ã‚',
+        195: 'Ãƒ',
+        196: 'Ã„',
+        197: 'Ã…',
+        198: 'Ã†',
+        199: 'Ã‡',
+        200: 'Ãˆ',
+        201: 'Ã‰',
+        202: 'ÃŠ',
+        203: 'Ã‹',
+        204: 'ÃŒ',
+        205: 'Ã',
+        206: 'ÃŽ',
+        207: 'Ã',
+        208: 'Ã',
+        209: 'Ã‘',
+        210: 'Ã’',
+        211: 'Ã“',
+        212: 'Ã”',
+        213: 'Ã•',
+        214: 'Ã–',
+        215: 'Ã—',
+        216: 'Ã˜',
+        217: 'Ã™',
+        218: 'Ãš',
+        219: 'Ã›',
+        220: 'Ãœ',
+        221: 'Ã',
+        222: 'Ãž',
+        223: 'ÃŸ',
+        224: 'Ã ',
+        225: 'Ã¡',
+        226: 'Ã¢',
+        227: 'Ã£',
+        228: 'Ã¤',
+        229: 'Ã¥',
+        230: 'Ã¦',
+        231: 'Ã§',
+        232: 'Ã¨',
+        233: 'Ã©',
+        234: 'Ãª',
+        235: 'Ã«',
+        236: 'Ã¬',
+        237: 'Ã­',
+        238: 'Ã®',
+        239: 'Ã¯',
+        240: 'Ã°',
+        241: 'Ã±',
+        242: 'Ã²',
+        243: 'Ã³',
+        244: 'Ã´',
+        245: 'Ãµ',
+        246: 'Ã¶',
+        247: 'Ã·',
+        248: 'Ã¸',
+        249: 'Ã¹',
+        250: 'Ãº',
+        251: 'Ã»',
+        252: 'Ã¼',
+        253: 'Ã½',
+        254: 'Ã¾',
+        255: 'Ã¿',
+    ));
 }
 
 @include initialize();
@@ -97,7 +328,7 @@
 }
 
 @function __char-at-callback($string, $args...) {
-    @return get-char-code(str-slice($string, 1, 1));
+    @return __get-char-code(str-slice($string, 1, 1));
 }
 
 @function __chars-index($string, $chars, $direction) {
@@ -374,98 +605,6 @@ $users: (
 
 // @debug __base-difference((1 2 3), (5 2 10));
 
-@function __base-each($collection, $iteratee) {
-    $length: if($collection, length($collection), 0);
-
-    @if not (__is-list($collection)) {
-        @return __base-for-own($collection, $iteratee);
-    }
-
-    $index: 1;
-    $iterable: __to-map($collection);
-
-    $break: false;
-    @while ($index <= $length and not $break) {
-        $iteration: __exec($iteratee, get($iterable, $index), $index, $iterable);
-
-        @if ($iteration == false) {
-            $break: true;
-        } @else {
-            $iterable: set($iterable, $index, $iteration);
-        }
-
-        $index: $index + 1;
-    }
-
-    $collection: if(__is-list($collection), map-values($iterable), $iterable);
-
-    @return $collection;
-}
-
-// @debug __base-each((1, 3, 55), double);
-// @debug __base-each((foo: 1, bar: 3, baz: 55), double);
-
-@function __base-each-right($collection, $iteratee) {
-    $length: if($collection, length($collection), 0);
-
-    @if not (__is-list($collection)) {
-        @return __base-for-own-right($collection, $iteratee);
-    }
-
-    $iterable: __to-map($collection);
-
-    $break: false;
-    @while ($length > 0 and not $break) {
-        $iteration: __exec($iteratee, get($iterable, $length), $length, $iterable);
-
-        @if ($iteration == false) {
-            $break: true;
-        } @else {
-            $iterable: set($iterable, $length, $iteration);
-        }
-
-        $length: $length - 1;
-    }
-
-    $collection: if(__is-list($collection), map-values($iterable), $iterable);
-
-    @return $collection;
-}
-
-
-@function __base-find-iteratee($value, $key, $collection) {
-    $predicate: this('predicate');
-    $return-key: this('return-key');
-
-    $iteration: __exec($predicate, $value, $key, $collection);
-
-    @if (__is-truthy($iteration)) {
-        $_: this('result', if($return-key, $key, $value));
-
-        @return false;
-    }
-
-    @return true;
-}
-    // @return __base-find($map, $predicate, __base-for-own-right, true);
-@function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
-    $result: null;
-
-    $_: __scope();
-        $_: scope('result', null);
-        $_: scope('predicate', $predicate);
-        $_: scope('return-key', $return-key);
-
-        $iteratee: __bind(__base-find-iteratee);
-
-        $_: __exec($each-function, $collection, $iteratee);
-
-        $result: scope('result');
-    $_: __scope(false);
-
-    @return $result;
-}
-
 // @debug __base-find((1 2 3 4 5), is-even);
 
 
@@ -504,31 +643,6 @@ $users: (
 // @debug __base-slice((1 2 3), -3); // 1 2 3
 // @debug __base-slice((1 2 3 4 5 6 7 8), 2, 5);
 
-@function __base-some-iteratee($value, $index, $collection) {
-    $predicate: this(predicate);
-    $result: this(result);
-
-    $result: __exec($predicate, $value, $index, $collection);
-
-    $_: this(result, $result);
-
-    @return if($result, false, true);
-}
-@function __base-some($collection, $predicate) {
-    $result: false;
-
-    $_: __scope();
-    $_: scope(predicate, $predicate);
-    $_: scope(result, $result);
-
-    $_: __base-each($collection, __base-some-iteratee);
-
-    $result: scope(result);
-
-    $_: __scope(false);
-
-    @return if($result, true, false);
-}
 
 // @debug __base-some((1 3 5 7 9), is-even);
 // @debug __base-some((2 3 5 7 9), is-even);
@@ -565,68 +679,6 @@ $users: (
 }
 
 
-
-@function __bind-callback-1($value) {
-    $function: scope(function);
-    $this-arg: scope(this-arg);
-
-    @return __call($function, $this-arg, $value);
-}
-@function __bind-callback-3($value, $index, $collection) {
-    $function: scope(function);
-    $this-arg: scope(this-arg);
-
-    @return __call($function, $this-arg, $value, $index, $collection);
-}
-@function __bind-callback-4($accumulator, $value, $index, $collection) {
-    $function: scope(function);
-    $this-arg: scope(this-arg);
-
-    @return __call($function, $this-arg, $accumulator, $value, $index, $collection);
-}
-@function __bind-callback-5($value, $other, $key, $map, $source) {
-    $function: scope(function);
-    $this-arg: scope(this-arg);
-
-    @return __call($function, $this-arg, $value, $other, $key, $map, $source);
-}
-@function __bind-callback-any($arguments...) {
-    $function: scope(function);
-    $this-arg: scope(this-arg);
-
-    @return __call($function, $this-arg, $arguments...);
-}
-@function __bind-callback($function, $this-arg: null, $arg-count: null) {
-    @if (not __function-exists($function)) {
-        @return __identity;
-    }
-
-    @if ($this-arg == null) {
-        @return $function;
-    }
-
-    $_: __scope();
-    $_: scope('function', $function);
-    $_: scope('this-arg', $this-arg);
-
-    $arg-count-case: (
-        1: __bind-callback-1,
-        3: __bind-callback-3,
-        4: __bind-callback-4,
-        5: __bind-callback-5
-    );
-
-    @if ($arg-count > 5) {
-        @return __bind-callback-any;
-    }
-
-    $result: __bind(get($arg-count-case, $arg-count), $this-arg);
-
-    $_: __scope(false);
-
-    @return $result;
-}
-
 @function __buffer-clone() {
     // not implemented
 }
@@ -634,7 +686,7 @@ $users: (
 @function __compose-args($args, $partials, $holders) {
     $holders-length: length($holders);
     $args-index: 1;
-    $args-length: __native-max(length($args) - $holders-length, 0);
+    $args-length: max(length($args) - $holders-length, 0);
     $left-index: 1;
     $left-length: length($partials);
     $result: ();
@@ -686,56 +738,6 @@ $users: (
     //   return result;
     // }
 
-@function __create-aggregator-function-iteratee($value, $key, $collection) {
-    $result: this('result');
-    $setter: this('setter');
-    $iteratee: this('iteratee');
-
-    $result: __exec($setter, $result, $value, __exec($iteratee, $value, $key, $collection), $collection);
-
-    $_: this('result', $result);
-
-    @return true;
-}
-@function __create-aggregator-function($collection, $iteratee: __identity, $this-arg: null) {
-    $setter: this('setter');
-    $initializer: this('initializer');
-
-    $iteratee: __get-callback($iteratee, $this-arg, 3);
-    $_: this('iteratee', $iteratee);
-
-    $result: if($initializer, __call($initializer), ());
-
-    @if (__is-list($collection)) {
-        $index: 1;
-        $length: length($collection);
-
-        @while ($index <= $length) {
-            $value: nth($collection, $index);
-            $result: __exec($setter, $result, $value, __exec($iteratee, $value, $index, $collection), $collection);
-
-            $index: $index + 1;
-        }
-    } @else {
-        $_: this('result', $result);
-
-        $_: __base-each($collection, __create-aggregator-function-iteratee);
-
-        $result: this('result');
-    }
-
-    @return $result;
-}
-@function __create-aggregator($setter, $initializer: null) {
-    $_: __scope();
-        $_: scope('setter', $setter);
-        $_: scope('initializer', $initializer);
-
-        $function: __bind(__create-aggregator-function);
-    $_: __scope(false);
-
-    @return $function;
-}
 
     // function createAggregator(setter, initializer) {
     //   return function(collection, iteratee, thisArg) {
@@ -769,30 +771,6 @@ $users: (
     @return new(SetCache($values));
 }
 
-@function __create-compounder-function($string) {
-    $callback: this(callback);
-
-    $index: 1;
-    $list: __words(__deburr($string));
-    $length: length($list);
-    $result: '';
-
-    @while ($index <= $length) {
-        $result: __exec($callback, $result, nth($list, $index), $index);
-
-        $index: $index + 1;
-    }
-
-    @return $result;
-}
-@function __create-compounder($callback) {
-    $_: __scope();
-    $_: scope(callback, $callback);
-    $scoped-function: __bind(__create-compounder-function);
-    $_: __scope(false);
-
-    @return $scoped-function;
-}
 
 
 @function __create-ctor-wrapper() {}
@@ -821,53 +799,9 @@ $users: (
     // }
 }
 
-@function __extremum-by-iteratee($value, $index, $collection) {
-    $collection: scope(collection);
-    $iteratee: scope(iteratee);
-    $is-min: scope(is-min);
-    $ex-value: scope(ex-value);
-    $computed: scope(computed);
-    $result: scope(result);
-
-    $current: __exec($iteratee, $value, $index, $collection);
-
-    @if (if($is-min, $current < $computed, $current > $computed))
-        or ($current == $ex-value and $current == $result)
-    {
-        $_: scope(computed, $current);
-        $_: scope(result, $value);
-    }
-
-    @return true;
-}
-@function __extremum-by($collection, $iteratee, $is-min: false) {
-    $ex-value: if($is-min, __const('POSITIVE_INFINITY'), __const('NEGATIVE_INFINITY'));
-    $computed: $ex-value;
-    $result: $computed;
-
-    $_: __scope();
-        $_: scope(collection, $collection);
-        $_: scope(iteratee, $iteratee);
-        $_: scope(is-min, $is-min);
-        $_: scope(ex-value, $ex-value);
-        $_: scope(computed, $computed);
-        $_: scope(result, $result);
-
-        $iteratee: __bind(__extremum-by-iteratee);
-
-        $_: __base-each($collection, $iteratee);
-
-        $result: scope(result);
-    $_: __scope(false);
-
-    @return $result;
-}
 
 // @debug __extremum-by((1 3 4 5 6 9 2 4 3), __identity, true);
 
-@function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
-    @return if($arg-count, __call(__base-callback, null, $function, $this-arg, $arg-count), __base-callback);
-}
 
 @function __get-data($function) {
     @if not static-get('__meta-map__') {
@@ -877,11 +811,6 @@ $users: (
     @return static-get('__meta-map__' $function);
 }
 
-@function __get-index-of($collection: null, $target: $__undefined__, $from-index: $__undefined__) {
-    $result: __base-index-of;
-
-    @return if($collection, __exec($result, $collection, $target, $from-index), $result);
-}
 
 @function __get-view($start, $end, $transforms) {
     $index: 1;
@@ -897,9 +826,9 @@ $users: (
         } @else if ($type == 'drop-right') {
             $end: $end - $size;
         } @else if ($type == 'take') {
-            $end: __native-min($end, $start + $size);
+            $end: min($end, $start + $size);
         } @else if ($type == 'take-right') {
-            $start: __native-max($start, $end - $size);
+            $start: max($start, $end - $size);
         }
 
         $index: $index + 1;
@@ -940,12 +869,6 @@ $users: (
 
 // @function __init-clone-by-tag() {}
 
-
-@function __is-bindable($function) {
-    // Can't check for this(); there's no toString in Sass for functions
-    @return function-exists($function);
-}
-
 @function __is-iteratee-call($value: null, $index: null, $map: null) {
     @if not (__is-map-like($map)) {
         @return false;
@@ -985,7 +908,7 @@ $users: (
 
 @function __reorder($list, $indexes) {
     $list-length: length($list);
-    $length: __native-min(length($indexes), $list-length);
+    $length: min(length($indexes), $list-length);
     $old-list: __list-copy($list);
 
     $list: __to-map($list);
@@ -1008,7 +931,7 @@ $users: (
 
 @function __to-comparable($value, $customizer: null, $guard: null) {
     @if not (__function-exists($customizer)) {
-        $customizer: if(__is-string($value), get-char-code, __identity);
+        $customizer: if(__is-string($value), __get-char-code, __identity);
     }
 
     $value: __exec($customizer, $value);

@@ -43,7 +43,7 @@
     @if ($floating or ($min % 1 > 0) or ($max % 1 > 0)) {
         $rand: random();
 
-        @return __native-min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
+        @return min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
     }
     @return __base-rand($min, $max);
 }

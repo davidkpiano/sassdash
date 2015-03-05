@@ -2678,6 +2678,26 @@ $test-before-count: 0 !global;
 
     @include assert-equal(_merge($names, $ages, $heights), $expected);
   }
+
+  @include test('should merge arglists') {
+    $map1: ('value': test-args(1, 2, 3));
+    $map2: ('value': (4: 4));
+    $expected: ('value': (1: 1, 2: 2, 3: 3, 4: 4));
+
+    @include assert-equal(_merge($map1, $map2), $expected);
+  }
+
+  @include test('should work with four arguments') {
+    $expected: ('a': 4);
+
+    @include assert-equal(_merge(('a': 1), ('a': 2), ('a': 3), $expected), $expected);
+  }
+
+  @include test('should assign null values') {
+    $actual: _merge(('a': 1), ('a': null));
+
+    @include assert-equal(get($actual, 'a'), null);
+  }
 }
 
 @include test-module('Sassdash') {

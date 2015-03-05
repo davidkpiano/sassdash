@@ -18,7 +18,7 @@
 @function __concat($source, $args...) {
     $separator: list-separator($source);
 
-    $source: if(not __is-list-like($source), ($source,), $source);
+    $source: __either($source, ($source,), __is-list-like);
 
     @each $list in $args {
         $source: join($source, $list, $separator);

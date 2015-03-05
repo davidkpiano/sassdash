@@ -1,14 +1,14 @@
 
 
-@function __is-arglist($value) {
+@function __is-arglist($value, $args...) {
     @return type-of($value) == 'arglist';
 }
 
-@function __is-list($value) {
+@function __is-list($value, $args...) {
     @return type-of($value) == 'list';
 }
 
-@function __is-boolean($value) {
+@function __is-boolean($value, $args...) {
     @return type-of($value) == 'bool';
 }
 
@@ -45,7 +45,7 @@
     @return type-of($value) == 'string';
 }
 
-@function __is-undefined($value) {
+@function __is-undefined($value, $args...) {
     @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
 }
 
@@ -61,7 +61,7 @@
     @return __is-map-like($value) or __is-string($value);
 }
 
-@function __is-map-like($value) {
+@function __is-map-like($value, $args...) {
     @return $value and (index('map' 'list' 'arglist', type-of($value)));
 }
 

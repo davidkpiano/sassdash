@@ -17,24 +17,36 @@
 }
 
 @function __unit($value) {
-    $result: false;
-    $units: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
-    $index: 1;
-    $length: length($units);
+    $units: (
+        'vmax': 1vmax, 
+        'vmin': 1vmin, 
+        'pica': 1pica, 
+        'rem': 1rem, 
+        'vh': 1vh, 
+        'vw': 1vw, 
+        'ex': 1ex, 
+        'pc': 1pc, 
+        'pt': 1pt, 
+        'em': 1em, 
+        'in': 1in, 
+        'ch': 1ch, 
+        'mm': 1mm, 
+        'cm': 1cm, 
+        'px': 1px, 
+        '%': 1%
+    );
 
     @if __is-number($value) {
-        $result: unit($value);
+        @return unit($value);
     } @else if __is-string($value) {
-        @while $index <= $length and not $result {
-            $unit: nth($units, $index);
-
-            $result: if(__ends-with($value, $unit), $unit, false);
-
-            $index: $index + 1;
+        @each $string-unit, $number-unit in $units {
+            @if __ends-with($value, $string-unit) {
+                @return $number-unit;
+            }
         }
     }
 
-    @return $result;
+    @return 1;
 }
 
 @function __parse-float($string) {
@@ -68,6 +80,8 @@
         }
     }
 
-    @return $multiplier * $result / pow(10, $exponent);
+    $unit: __unit($string);
+
+    @return $multiplier * $result / pow(10, $exponent) * $unit;
 }
 

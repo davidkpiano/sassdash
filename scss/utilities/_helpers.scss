@@ -20,11 +20,6 @@
     @return $value;
 }
 
-
-@function __parse-float($value) {
-    @return __to-number($value);
-}
-
 @function __is-index($value, $length: null) {
     $value: __parse-float($value);
 

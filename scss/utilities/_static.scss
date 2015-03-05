@@ -59,12 +59,26 @@ $__this__: () !global;
 @function set($map, $properties, $value) {
     $property: nth($properties, 1);
     $properties: pop($properties);
-    $child-map: map-get($map, $property);
+    $child-map: null;
+
+    @if __is-list-like($map) and length($map) > 0 {
+        $child-map: nth($map, $property);
+    } @else {
+        $child-map: map-get($map, $property);
+    }
 
     @if length($properties) == 0 {
+        @if __is-list-like($map) and length($map) > 0 {
+            @return set-nth($map, $property, $value);
+        }
+
         @return map-merge($map, (
             $property: $value,
         ));
+    }
+
+    @if __is-list-like($map) and length($map) > 0 {
+        @return set-nth($map, $property, set($child-map, $properties, $value));
     }
 
     @return map-merge($map, (

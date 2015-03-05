@@ -825,7 +825,6 @@ $test-before-count: 0 !global;
     @return $value > 1;
 }
 @function test-drop-right-while-2($num, $index, $args...) {
-    @debug this('list');
     @return nth(this('list'), $index) > 1;
 }
 @include test-module('_drop-right-while') {
@@ -2645,40 +2644,41 @@ $test-before-count: 0 !global;
     }
 }
 
-// @include test-module('Sassdash') {
-//   @include test('_merge') {
-//     $names: (
-//       'characters': (
-//         ('name': 'barney'),
-//         ('name': 'fred')
-//       )
-//     );
+@include test-module('_merge') {
+  @include test('should merge source into the destination map') {
+    @include assert-equal(_merge((a:1),(b:2)), (a:1,b:2));
 
-//     $ages: (
-//       'characters': (
-//         ('age': 36),
-//         ('age': 40)
-//       )
-//     );
+    $names: (
+      'characters': (
+        ('name': 'barney'),
+        ('name': 'fred')
+      )
+    );
 
-//     $heights: (
-//       'characters': (
-//         ('height': '5ft4'),
-//         ('height': '5ft5')
-//       )
-//     );
+    $ages: (
+      'characters': (
+        ('age': 36),
+        ('age': 40)
+      )
+    );
 
-//     $expected: (
-//       'characters': (
-//         ('name': 'barney', 'age': 36, 'height': '5ft4'),
-//         ('name': 'fred', 'age': 40, 'height': '5ft5')
-//       )
-//     );
+    $heights: (
+      'characters': (
+        ('height': '5ft4'),
+        ('height': '5ft5')
+      )
+    );
 
-//     @include assert-equal(_merge($names, $ages, $heights), $expected
-//       'should merge source into the destination object');
-//   }
-// }
+    $expected: (
+      'characters': (
+        ('name': 'barney', 'age': 36, 'height': '5ft4'),
+        ('name': 'fred', 'age': 40, 'height': '5ft5')
+      )
+    );
+
+    @include assert-equal(_merge($names, $ages, $heights), $expected);
+  }
+}
 
 @include test-module('Sassdash') {
   @include test('_min') {
@@ -2886,7 +2886,38 @@ $test-before-count: 0 !global;
   }
 }
 
-// todo _parseint
+@include test-module('_parse-float') {
+    @include test('should parse an integer') {
+        @include assert-equal(__parse-float('4'), 4);
+        @include assert-equal(__parse-float('0'), 0);
+        @include assert-equal(__parse-float('123456'), 123456);
+    }
+
+    @include test('should parse a number with a radix') {
+        @include assert-equal(__parse-float('123.4567'), 123.4567);
+    }
+
+    @include test('should parse a number with a radix < 1') {
+        @include assert-equal(__parse-float('0.123'), 0.123);
+
+        @include assert-equal(__parse-float('.123'), 0.123);
+    }
+
+    @include test('should parse negative numbers') {
+        @include assert-equal(__parse-float('-42'), -42);
+        @include assert-equal(__parse-float('-12.345'), -12.345);
+        @include assert-equal(__parse-float('-0.123'), -0.123);
+        @include assert-equal(__parse-float('-.123'), -0.123);
+    }
+
+    @include test('should trim string before parsing') {
+        @include assert-equal(__parse-float('   123.456'), 123.456);
+        @include assert-equal(__parse-float('123.456   '), 123.456);
+        @include assert-equal(__parse-float('   123.456   '), 123.456);
+    }
+
+    @debug __unit('123.456rem');
+}
 
 @function test-partial-1($a, $b) {
   @return ($a, $b);

@@ -1,6 +1,7 @@
 
-@function __get-char-code($char) {
+@function __get-char-code($char, $args...) {
     $chars: join(__const('ASCII_PRINTABLE'), __const('ASCII_EXTENDED'));
+    $char: __to-string($char);
 
     @each $char-code, $char-value in $chars {
         @if $char == $char-value {
@@ -18,4 +19,6 @@
 @function _char-at($args...) { @return call(__char-at, $args...); }
 
 @function _get-char-code($args...) { @return call(__get-char-code, $args...); }
+
+@function _char-code($args...) { @return call(__get-char-code, $args...); }
 

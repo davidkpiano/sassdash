@@ -14,7 +14,7 @@
             $length: if(map-has-key($options, 'length'), get($options, 'length'), $length);
             $omission: if(map-has-key($options, 'omission'), __base-to-string(get($options, 'omission')), $omission);
         } @else {
-            $length: __to-number($options);
+            $length: __parse-int($options);
         }
     }
 

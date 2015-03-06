@@ -1608,14 +1608,6 @@ $users: (
 // @debug __kebab-case('fooBar');
 // @debug __kebab-case('__foo_bar__');
 
-@function __parse-int($string, $radix, $guard: null) {
-    @if ($guard and __is-iteratee-call($string, $radix, $guard)) {
-        $radix: 0;
-    }
-
-    @return __native-parse-int($string, $radix);
-}
-
 
 // @debug __snake-case('Foo Bar');
 // @debug __snake-case('--foo-bar');

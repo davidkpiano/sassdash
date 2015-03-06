@@ -49,7 +49,7 @@
     @return 1;
 }
 
-@function __parse-float($string) {
+@function __parse-float($string, $radix: 10) {
     @if not __is-string($string) {
         @return $string;
     }
@@ -61,27 +61,70 @@
     $string: __trim($string);
     $result: 0;
     $exponent: 0;
-    $radix: false;
+    $decimal: false;
     $multiplier: if(__starts-with($string, '-'), -1, 1);
 
     $char-min: __get-char-code(0);
     $char-max: __get-char-code(9);
-    $char-radix: __get-char-code('.');
+    $char-decimal: __get-char-code('.');
 
     @each $char-code in __map($string, __get-char-code) {
         @if $char-code >= $char-min and $char-code <= $char-max {
-            $result: (10 * $result) + ($char-code - $char-min);
+            $result: ($radix * $result) + ($char-code - $char-min);
 
-            @if $radix {
+            @if $decimal {
                 $exponent: $exponent + 1;
             }
-        } @else if $char-code == $char-radix {
-            $radix: true;
+        } @else if $char-code == $char-decimal {
+            $decimal: true;
         }
     }
 
     $unit: __unit($string);
 
-    @return $multiplier * $result / pow(10, $exponent) * $unit;
+    @return $multiplier * $result / pow($radix, $exponent) * $unit;
 }
+
+
+
+@function __parse-int($string, $radix: 10, $guard: null) {
+    @if ($guard and __is-iteratee-call($string, $radix, $guard)) {
+        $radix: 10;
+    }
+
+    @if __is-falsey($string) {
+        @return 0;
+    }
+
+    $string: __trim(__either($string, __to-string($string), __is-string));
+    $result: 0;
+    $multiplier: if(__starts-with($string, '-'), -1, 1);
+
+    $char-min: __get-char-code(0);
+    $char-max: $char-min + $radix - 1;
+
+    $char-codes: __map($string, __get-char-code);
+    $index: if($multiplier == -1, 2, 1);
+
+    $break: false;
+    @while $index <= length($char-codes) and not $break {
+        $char-code: nth($char-codes, $index);
+
+        @if $char-code >= $char-min and $char-code <= $char-max {
+            $result: ($radix * $result) + ($char-code - $char-min);
+        } @else {
+            $break: true;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $multiplier * $result;
+}
+
+
+
+@function _parse-float($args...) { @return call(__parse-float, $args...); }
+@function _to-number($args...) { @return call(__parse-float, $args...); }
+
 

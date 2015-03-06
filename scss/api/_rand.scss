@@ -5,8 +5,8 @@
 }
 
 @function __rand($min: null, $max: null, $floating: null) {
-    $min: __to-number($min);
-    $max: __to-number($max);
+    $min: __parse-float($min);
+    $max: __parse-float($max);
 
     @if ($floating and __is-iteratee-call($min, $max, $floating)) {
         $max: null;

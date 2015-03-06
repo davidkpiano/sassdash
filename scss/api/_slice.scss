@@ -3,7 +3,7 @@
 @function __base-slice($list, $start: 0, $end: length($list)) {
     $index: 1;
     $length: length($list);
-    $start: __to-number($start);
+    $start: __parse-int($start);
     $start: if(__is-number($start), floor($start), if(__is-truthy($start), 1, 0));
 
     @if ($start < 0) {

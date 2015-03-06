@@ -1,7 +1,7 @@
 
 
 @function __repeat($string, $value: 0) {
-    $value: __to-number($value);
+    $value: __parse-int($value);
     $result: '';
 
     @if $value >= 1 {    

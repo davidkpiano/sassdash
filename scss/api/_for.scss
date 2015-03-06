@@ -1,3 +1,34 @@
+
+
+@function __list-each($list, $iteratee) {
+    $index: 1;
+    $length: length($list);
+    $break: false;
+    $result-list: ();
+
+    @while ($index <= $length) and not $break {
+        $item: __exec($iteratee, nth($list, $index), $index, $list);
+
+        @if (__exec($iteratee, nth($list, $index), $index, $list) == false) {
+            $break: true;
+        } @else {
+            $result-list: append($result-list, $item);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result-list;
+}
+
+@function __list-each-right($list, $iteratee) {
+    $list: __list-reverse($list);
+    $result-list: __list-each($list, $iteratee);
+    $result-list: __list-reverse($result-list);
+
+    @return $result-list;
+}
+
 @function __base-each($collection, $iteratee) {
     $length: if($collection, length($collection), 0);
 

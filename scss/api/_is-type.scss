@@ -1,4 +1,32 @@
 
+@function __is-length($value) {
+    @return type-of($value) == 'number'
+        and $value > -1
+        and $value % 1 == 0
+        and $value < (pow(2, 53) - 1);
+}
+
+@function __is-strict-comparable($value) {
+    @return not __is-map-like($value);
+}
+
+@function __is-iteratee-call($value: null, $index: null, $map: null) {
+    @if not (__is-map-like($map)) {
+        @return false;
+    }
+
+    $type: type-of($index);
+    $prereq: false;
+
+    @if ($type == 'number') {
+        $length: length($map);
+        $prereq: (__is-length($length) and __is-index($index, $length));
+    } @else {
+        $prereq: ($type == 'string');
+    }
+
+    @return if($prereq, get($map, $index) == $value, false);
+}
 
 @function __is-arglist($value, $args...) {
     @return type-of($value) == 'arglist';

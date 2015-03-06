@@ -1,5 +1,59 @@
 
 
+@function __base-sort-by($list, $comparer) {
+    $length: length($list);
+
+    $list: __sort($list, $comparer);
+
+    $list: __to-map($list);
+
+    @while ($length > 0) {
+        $list: set($list, $length, get(get($list, $length), 'value'));
+
+        $length: $length - 1;
+    }
+
+    @return __to-list($list);
+}
+
+@function __base-compare-ascending($value, $other) {
+    $value: if(__is-falsey($value), 0, $value);
+    $other: if(__is-falsey($other), 0, $other);
+
+    @if $value > $other {
+        @return 1;
+    }
+
+    @if $value < $other {
+        @return -1;
+    }
+
+    @return 0;
+}
+
+@function __compare-ascending($map, $other) {
+    @return either(__base-compare-ascending(get($map, 'criteria'), get($other, 'criteria')), (get($map, 'index') - get($other, 'index')));
+}
+
+@function __compare-multiple-ascending($map, $other) {
+    $index: 1;
+    $map-criteria: get($map, 'criteria');
+    $other-criteria: get($other, 'criteria');
+    $length: length($map-criteria);
+
+    @while ($index <= $length) {
+        $result: __base-compare-ascending(nth($map-criteria, $index), nth($other-criteria, $index));
+
+        @if ($result) {
+            @return $result;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return (get($map, 'index') - get($other, 'index'));
+}
+
 @function __sort-predicate-asc($first, $second) {
   @return if($first > $second, 1, if($first < $second, -1, 0));
 }
@@ -47,6 +101,107 @@
     }
 
     @return $list;
+}
+
+@function __sort-by-iteratee($value, $key, $collection) {
+    $result: this(result);
+    $iteratee: this(iteratee);
+    $index: this(index);
+
+    $result: append($result, (
+            'criteria': __exec($iteratee, $value, $key, $collection),
+            'index': $index,
+            'value': $value
+        ));
+
+    $_: this(result, $result);
+    $_: this(index, $index + 1);
+
+    @return true;
+}
+@function __sort-by($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+    $index: 1;
+    $length: if(__is-map-like($collection), length($collection), 0);
+    $result: ();
+
+    @if $length == 0 {
+        @return $result;
+    }
+
+    @if (__is-truthy($this-arg) and __is-iteratee-call($collection, $iteratee, $this-arg)) {
+        $iteratee: null;
+    }
+
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+
+    $_: __scope();
+        $_: scope(result, $result);
+        $_: scope(iteratee, $iteratee);
+        $_: scope(index, $index);
+
+        $sort-by-iteratee: __bind(__sort-by-iteratee);
+
+        $_: __base-each($collection, $sort-by-iteratee);
+
+        $result: scope(result);
+    $_: __scope(false);
+
+    @return __base-sort-by($result, __compare-ascending);
+}
+
+@function __sort-by-all-iteratee($value, $key, $collection) {
+    $props: this(props);
+    $result: this(result);
+    $index: this(index);
+
+    $length: length($props);
+    $criteria: ();
+
+    @while ($length > 0) {
+        $criteria: set($criteria, $length, if($value == null, $__undefined__, get($value, get($props, $length))));
+
+        $length: $length - 1;
+    }
+
+    $criteria: __to-list($criteria);
+
+    $result: append($result, (
+            'criteria': $criteria,
+            'index': $index,
+            'value': $value
+        ));
+
+    $_: this(result, $result);
+    $_: this(index, $index + 1);
+
+    @return true;
+}
+@function __sort-by-all($arguments...) {
+    $collection: nth($arguments, 1);
+    $args: $arguments;
+
+    @if (length($args) > 3 and __is-iteratee-call(nth($args, 2), nth($args, 3), nth($args, 4))) {
+        $args: ($collection, nth($args, 2));
+    }
+
+    $index: 1;
+    $length: if($collection, length($collection), 0);
+    $props: __base-flatten($args, false, false, 1);
+    $result: ();
+
+    $_: __scope();
+        $_: scope(props, $props);
+        $_: scope(result, $result);
+        $_: scope(index, $index);
+
+        $iteratee: __bind(__sort-by-all-iteratee);
+
+        $_: __base-each($collection, $iteratee);
+
+        $result: scope(result);
+    $_: __scope(false);
+
+    @return __base-sort-by($result, __compare-multiple-ascending);
 }
 
 @function _sort($args...) { @return call(__sort, $args...); }

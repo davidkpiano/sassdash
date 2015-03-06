@@ -1,4 +1,13 @@
 
+@function __escape-string-char($char) {
+    @return '\\#{__const('string-escapes' $char)}';
+}
+
+@function __escape-html-char($char) {
+    $escaped-char: __const('html-escapes' $char);
+
+    @return if($escaped-char, $escaped-char, $char);
+}
 
 @function __escape($string) {
     $string: __base-to-string($string);

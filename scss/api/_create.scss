@@ -1,5 +1,13 @@
 
 
+@function __base-create($constructor, $args...) {
+    @if not (__function-exists($constructor)) {
+        @return ();
+    }
+
+    @return new($constructor, $args...);
+}
+
 @function __create($prototype, $properties, $guard: null) {
     $result: __base-create($prototype);
 

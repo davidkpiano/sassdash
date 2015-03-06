@@ -113,4 +113,6 @@
 /// 
 @function _flow-right($args...) { @return call(__flow-right, $args...); }
 
+@function _backflow($args...) { @return call(__flow-right, $args...); }
+
 @function _compose($args...) { @return call(__flow-right, $args...); }

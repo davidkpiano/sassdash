@@ -132,8 +132,6 @@
     @return $multiplier * $result;
 }
 
-
-
 @function _parse-float($args...) { @return call(__parse-float, $args...); }
 @function _to-number($args...) { @return call(__parse-float, $args...); }
 

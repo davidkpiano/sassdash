@@ -1,0 +1,7 @@
+@function __base-to-string($value) {
+    @if __is-string($value) {
+        @return $value;
+    }
+
+    @return if($value == null, '', $value + '');
+}

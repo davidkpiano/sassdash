@@ -1,4 +1,31 @@
 
+
+@function __is-space($char-code) {
+    @return $char-code == ' ';
+}
+
+@function __chars-index($string, $chars, $direction) {
+    $index: 1;
+    $length: str-length($string);
+    $direction-map: ('right': -1, 'left': 1);
+    $increment: map-get($direction-map, $direction);
+
+    @while str-index($chars, __char-at($string, $index))
+        and $index <= $length {
+        $index: $index + $increment;
+    }
+
+    @return $index;
+}
+
+@function __chars-left-index($string, $chars) {
+    @return __chars-index($string, $chars, $direction: left);
+}
+
+@function __chars-right-index($string, $chars) {
+    @return __chars-index($string, $chars, $direction: right);
+}
+
 @function __get-char-code($char, $args...) {
     $chars: join(__const('ASCII_PRINTABLE'), __const('ASCII_EXTENDED'));
     $char: __to-string($char);
@@ -10,6 +37,10 @@
     }
 
     @return false;
+}
+
+@function __char-at-callback($string, $args...) {
+    @return __get-char-code(str-slice($string, 1, 1));
 }
 
 @function __char-at($string, $index) {

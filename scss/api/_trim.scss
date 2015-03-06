@@ -1,5 +1,25 @@
 
 
+@function __trimmed-left-index($string) {
+    $index: 1;
+    $length: str-length($string);
+
+    @while ($index <= $length) and (__is-space(__char-at($string, $index))) {
+        $index: $index + 1;
+    }
+
+    @return $index;
+}
+
+@function __trimmed-right-index($string) {
+    $index: str-length($string);
+
+    @while ($index > 0) and (__is-space(__char-at($string, $index))) {
+        $index: $index - 1;
+    }
+
+    @return $index;
+}
 
 @function __trim($string, $chars: null, $guard: null) {
     $value: $string;

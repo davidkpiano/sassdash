@@ -11,6 +11,7 @@
 @import 'compact';
 @import 'concat';
 @import 'constant';
+@import 'copy'; // not unit tested (or implemented?)
 @import 'count-by';
 @import 'create'; // not unit tested
 @import 'defaults';
@@ -49,6 +50,7 @@
 @import 'last';
 @import 'map';
 @import 'matches';
+@import 'merge';
 @import 'negate';
 @import 'noop';
 @import 'omit';
@@ -67,6 +69,7 @@
 @import 'reject';
 @import 'reduce';
 @import 'repeat';
+@import 'reorder'; // not unit tested (or implemented)
 @import 'result';
 @import 'rest';
 @import 'reverse';
@@ -95,4 +98,3 @@
 @import 'words';
 @import 'xor';
 @import 'zip';
-@import 'merge'; // not unit tested

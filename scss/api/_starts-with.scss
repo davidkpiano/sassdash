@@ -4,6 +4,15 @@
     $string: __base-to-string($string);
     $position: if(__is-falsey($position), 0, $position);
     $position: min(if($position <= 0, 1, $position), str-length($string));
+    $result: false;
+
+    @if __is-list-like($target) {
+        @each $target-string in $target {
+            $result: __either($result, __starts-with($string, $target-string));
+        }
+
+        @return $result;
+    }
 
     @return if($target == '', true, __string-last-index-of($string, $target, $position) == $position);
 }

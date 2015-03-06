@@ -65,7 +65,7 @@
     $multiplier: if(__starts-with($string, '-'), -1, 1);
 
     $char-min: __get-char-code(0);
-    $char-max: __get-char-code(9);
+    $char-max: $char-min + 9;
     $char-decimal: __get-char-code('.');
 
     @each $char-code in __map($string, __get-char-code) {
@@ -87,7 +87,7 @@
 
 
 
-@function __parse-int($string, $radix: 10, $guard: null) {
+@function __parse-int($string, $radix: null, $guard: null) {
     @if ($guard and __is-iteratee-call($string, $radix, $guard)) {
         $radix: 10;
     }
@@ -96,15 +96,23 @@
         @return 0;
     }
 
-    $string: __trim(__either($string, __to-string($string), __is-string));
+    $string: to-upper-case(__trim($string));
+    
+    @if __is-falsey($radix) {
+        $radix: if(__starts-with($string, ('0X', '#')), 16, 10);
+    }
+
     $result: 0;
     $multiplier: if(__starts-with($string, '-'), -1, 1);
+    $prefix: if(__starts-with($string, ('-', '+', '#')), 1, if(__starts-with($string, ('0X')), 2, 0));
 
     $char-min: __get-char-code(0);
-    $char-max: $char-min + $radix - 1;
+    $char-max: $char-min + 9;
+    $char-alpha-min: __get-char-code('A'); // 10
+    $char-alpha-max: __get-char-code('Z');
 
     $char-codes: __map($string, __get-char-code);
-    $index: if($multiplier == -1, 2, 1);
+    $index: $prefix + 1;
 
     $break: false;
     @while $index <= length($char-codes) and not $break {
@@ -112,6 +120,8 @@
 
         @if $char-code >= $char-min and $char-code <= $char-max {
             $result: ($radix * $result) + ($char-code - $char-min);
+        } @else if $char-code >= $char-alpha-min and $char-code < $char-alpha-max {
+            $result: ($radix * $result) + ($char-code - $char-alpha-min + 10);            
         } @else {
             $break: true;
         }

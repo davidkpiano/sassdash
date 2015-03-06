@@ -56,12 +56,12 @@
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|string} methodName The name of the method to invoke or
 ///  the function invoked per iteration.
-/// @param {...*} [args] The arguments to invoke the method with.
+/// @param {...*} (args) The arguments to invoke the method with.
 /// @returns {Array} Returns the array of results.
 /// @example
-/// _.invoke([[5, 1, 7], [3, 2, 1]], 'sort');
-/// // => [[1, 5, 7], [1, 2, 3]]
-/// _.invoke([123, 456], String.prototype.split, '');
-/// // => [['1', '2', '3'], ['4', '5', '6']]
+/// _invoke([(5, 1, 7), (3, 2, 1)], 'sort');
+/// // => [(1, 5, 7), (1, 2, 3)]
+/// _invoke((123, 456), String.prototype.split, '');
+/// // => [('1', '2', '3'), ('4', '5', '6')]
 /// 
 @function _invoke($args...) { @return call(__invoke, $args...); }

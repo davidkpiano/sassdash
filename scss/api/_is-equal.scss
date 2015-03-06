@@ -145,7 +145,7 @@
 /// equivalent. If `customizer` is provided it is invoked to compare values.
 /// If `customizer` returns `undefined` comparisons are handled by the method
 /// instead. The `customizer` is bound to `thisArg` and invoked with three
-/// arguments; (value, other [, index|key]).
+/// arguments; (value, other (, index|key)).
 /// **Note:** This method supports comparing arrays, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. Functions and DOM nodes
@@ -156,21 +156,21 @@
 /// @category Lang
 /// @param {*} value The value to compare.
 /// @param {*} other The other value to compare.
-/// @param {Function} [customizer] The function to customize comparing values.
-/// @param {*} [thisArg] The `this` binding of `customizer`.
+/// @param {Function} (customizer) The function to customize comparing values.
+/// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {boolean} Returns `true` if the values are equivalent, else `false`.
 /// @example
 /// var object = { 'user': 'fred' };
 /// var other = { 'user': 'fred' };
 /// object == other;
 /// // => false
-/// _.isEqual(object, other);
+/// _is-equal(object, other);
 /// // => true
 /// // using a customizer callback
-/// var array = ['hello', 'goodbye'];
-/// var other = ['hi', 'goodbye'];
-/// _.isEqual(array, other, function(value, other) {
-///   if (_.every([value, other], RegExp.prototype.test, /^h(?:i|ello)$/)) {
+/// var array = ('hello', 'goodbye');
+/// var other = ('hi', 'goodbye');
+/// _is-equal(array, other, function(value, other) {
+///   if (_every((value, other), RegExp.prototype.test, /^h(?:i|ello)$/)) {
 ///     return true;
 ///   }
 /// });

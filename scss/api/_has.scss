@@ -22,7 +22,7 @@
 /// @returns {boolean} Returns `true` if `key` is a direct property, else `false`.
 /// @example
 /// var object = { 'a': 1, 'b': 2, 'c': 3 };
-/// _.has(object, 'b');
+/// _has(object, 'b');
 /// // => true
 /// 
 @function _has($args...) { @return call(__has, $args...); }

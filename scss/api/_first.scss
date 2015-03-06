@@ -12,9 +12,9 @@
 /// @param {Array} array The array to query.
 /// @returns {*} Returns the first element of `array`.
 /// @example
-/// _.first([1, 2, 3]);
+/// _first((1, 2, 3));
 /// // => 1
-/// _.first([]);
+/// _first([]);
 /// // => undefined
 /// 
 @function _first($args...) { @return call(__first, $args...); }

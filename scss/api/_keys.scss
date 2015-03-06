@@ -32,10 +32,10 @@
 ///   this.b = 2;
 /// }
 /// Foo.prototype.c = 3;
-/// _.keys(new Foo);
-/// // => ['a', 'b'] (iteration order is not guaranteed)
-/// _.keys('hi');
-/// // => ['0', '1']
+/// _keys(new Foo);
+/// // => ('a', 'b') (iteration order is not guaranteed)
+/// _keys('hi');
+/// // => ('0', '1')
 /// 
 @function _keys($args...) { @return call(__keys, $args...); }
 
@@ -53,7 +53,7 @@
 ///   this.b = 2;
 /// }
 /// Foo.prototype.c = 3;
-/// _.keysIn(new Foo);
-/// // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+/// _keys-in(new Foo);
+/// // => ('a', 'b', 'c') (iteration order is not guaranteed)
 /// 
 @function _keys-in($args...) { @return call(__keys-in, $args...); }

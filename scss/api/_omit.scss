@@ -22,7 +22,7 @@
 }
 
 /// 
-/// The opposite of `_.pick`; this method creates an object composed of the
+/// The opposite of `_pick`; this method creates an object composed of the
 /// own and inherited enumerable properties of `object` that are not omitted.
 /// Property names may be specified as individual arguments or as arrays of
 /// property names. If `predicate` is provided it is invoked for each property
@@ -33,16 +33,16 @@
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The source object.
-/// @param {Function|...(string|string[])} [predicate] The function invoked per
+/// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to omit, specified as individual property
 ///  names or arrays of property names.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {Object} Returns the new object.
 /// @example
 /// var object = { 'user': 'fred', 'age': 40 };
-/// _.omit(object, 'age');
+/// _omit(object, 'age');
 /// // => { 'user': 'fred' }
-/// _.omit(object, _.isNumber);
+/// _omit(object, _.isNumber);
 /// // => { 'user': 'fred' }
 /// 
 @function _omit($args...) { @return call(__omit, $args...); }

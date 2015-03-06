@@ -26,16 +26,16 @@
 /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to search.
-/// @param {string} [target] The string to search for.
-/// @param {number} [position=string.length] The position to search from.
+/// @param {string} (string='') The string to search.
+/// @param {string} (target) The string to search for.
+/// @param {number} (position=string.length) The position to search from.
 /// @returns {boolean} Returns `true` if `string` ends with `target`, else `false`.
 /// @example
-/// _.endsWith('abc', 'c');
+/// _ends-with('abc', 'c');
 /// // => true
-/// _.endsWith('abc', 'b');
+/// _ends-with('abc', 'b');
 /// // => false
-/// _.endsWith('abc', 'b', 2);
+/// _ends-with('abc', 'b', 2);
 /// // => true
 /// 
 @function _ends-with($args...) { @return call(__ends-with, $args...); }

@@ -54,16 +54,16 @@
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {*} target The value to search for.
-/// @param {number} [fromIndex=0] The index to search from.
+/// @param {number} (fromIndex=0) The index to search from.
 /// @returns {boolean} Returns `true` if a matching element is found, else `false`.
 /// @example
-/// _.includes([1, 2, 3], 1);
+/// _includes((1, 2, 3), 1);
 /// // => true
-/// _.includes([1, 2, 3], 1, 2);
+/// _includes((1, 2, 3), 1, 2);
 /// // => false
-/// _.includes({ 'user': 'fred', 'age': 40 }, 'fred');
+/// _includes({ 'user': 'fred', 'age': 40 }, 'fred');
 /// // => true
-/// _.includes('pebbles', 'eb');
+/// _includes('pebbles', 'eb');
 /// // => true
 /// 
 @function _includes($args...) { @return call(__includes, $args...); }

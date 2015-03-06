@@ -18,7 +18,7 @@
 /// @returns {Function} Returns the new function.
 /// @example
 /// var object = { 'user': 'fred' };
-/// var getter = _.constant(object);
+/// var getter = _constant(object);
 /// getter() === object;
 /// // => true
 /// 

@@ -11,7 +11,7 @@
 /// **Note:** This method supports comparing arrays, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. For comparing a single
-/// own or inherited property value see `_.matchesProperty`.
+/// own or inherited property value see `_matches-property`.
 /// @static
 /// @memberOf _
 /// @category Collection
@@ -20,12 +20,12 @@
 /// @returns {Array} Returns the new filtered array.
 /// @example
 /// var users = [
-///   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ['hoppy'] },
-///   { 'user': 'fred',   'age': 40, 'active': true, 'pets': ['baby puss', 'dino'] }
+///   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy') },
+///   { 'user': 'fred',   'age': 40, 'active': true, 'pets': ('baby puss', 'dino') }
 /// ];
-/// _.pluck(_.where(users, { 'age': 36, 'active': false }), 'user');
-/// // => ['barney']
-/// _.pluck(_.where(users, { 'pets': ['dino'] }), 'user');
-/// // => ['fred']
+/// _pluck(_where(users, { 'age': 36, 'active': false }), 'user');
+/// // => ('barney')
+/// _pluck(_where(users, { 'pets': ('dino') }), 'user');
+/// // => ('fred')
 /// 
 @function _where($args...) { @return call(__where, $args...); }

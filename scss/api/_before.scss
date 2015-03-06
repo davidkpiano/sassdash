@@ -46,7 +46,7 @@
 /// @param {Function} func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
 /// @example
-/// jQuery('#add').on('click', _.before(5, addContactToList));
+/// jQuery('#add').on('click', _before(5, addContactToList));
 /// // => allows adding up to 4 contacts to the list
 /// 
 @function _before($args...) { @return call(__before, $args...); }

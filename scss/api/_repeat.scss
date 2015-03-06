@@ -17,15 +17,15 @@
 /// /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to repeat.
-/// @param {number} [n=0] The number of times to repeat the string.
+/// @param {string} (string='') The string to repeat.
+/// @param {number} (n=0) The number of times to repeat the string.
 /// @returns {string} Returns the repeated string.
 /// @example
-/// /// _.repeat('*', 3);
+/// /// _repeat('*', 3);
 /// // => '***'
-/// /// _.repeat('abc', 2);
+/// /// _repeat('abc', 2);
 /// // => 'abcabc'
-/// /// _.repeat('abc', 0);
+/// /// _repeat('abc', 0);
 /// // => ''
 /// 
 @function _repeat($args...) { @return call(__repeat, $args...); }

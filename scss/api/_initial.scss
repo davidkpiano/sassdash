@@ -11,7 +11,7 @@
 /// @param {Array} array The array to query.
 /// @returns {Array} Returns the slice of `array`.
 /// @example
-/// _.initial([1, 2, 3]);
-/// // => [1, 2]
+/// _initial((1, 2, 3));
+/// // => (1, 2)
 /// 
 @function _initial($args...) { @return call(__initial, $args...); }

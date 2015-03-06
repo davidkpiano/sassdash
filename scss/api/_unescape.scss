@@ -33,7 +33,7 @@
 }
 
 /// 
-/// The inverse of `_.escape`; this method converts the HTML entities
+/// The inverse of `_escape`; this method converts the HTML entities
 /// `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to their
 /// corresponding characters.
 /// /// **Note:** No other HTML entities are unescaped. To unescape additional HTML
@@ -41,10 +41,10 @@
 /// /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to unescape.
+/// @param {string} (string='') The string to unescape.
 /// @returns {string} Returns the unescaped string.
 /// @example
-/// /// _.unescape('fred, barney, &amp; pebbles');
+/// /// _unescape('fred, barney, &amp; pebbles');
 /// // => 'fred, barney, & pebbles'
 /// 
 @function _unescape($args...) { @return call(__unescape, $args...); }

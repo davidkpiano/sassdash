@@ -131,36 +131,36 @@
 /// for each value in `collection` to generate the criterion by which the value
 /// is ranked. The `iteratee` is bound to `thisArg` and invoked with three
 /// arguments; (value, index, collection).
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
 /// @memberOf _
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} [iteratee] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function|Object|string} (iteratee) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the maximum value.
 /// @example
-/// _.max([4, 2, 8, 6]);
+/// _max((4, 2, 8, 6));
 /// // => 8
-/// _.max([]);
+/// _max([]);
 /// // => -Infinity
 /// var users = [
 ///   { 'user': 'barney', 'age': 36 },
 ///   { 'user': 'fred',   'age': 40 }
 /// ];
-/// _.max(users, function(chr) {
+/// _max(users, function(chr) {
 ///   return chr.age;
 /// });
 /// // => { 'user': 'fred', 'age': 40 };
-/// // using the `_.property` callback shorthand
-/// _.max(users, 'age');
+/// // using the `_property` callback shorthand
+/// _max(users, 'age');
 /// // => { 'user': 'fred', 'age': 40 };
 /// 
 @function _max($args...) { @return call(__max, $args...); }
@@ -171,36 +171,36 @@
 /// for each value in `collection` to generate the criterion by which the value
 /// is ranked. The `iteratee` is bound to `thisArg` and invoked with three
 /// arguments; (value, index, collection).
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
 /// @memberOf _
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} [iteratee] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function|Object|string} (iteratee) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the minimum value.
 /// @example
-/// _.min([4, 2, 8, 6]);
+/// _min((4, 2, 8, 6));
 /// // => 2
-/// _.min([]);
+/// _min([]);
 /// // => Infinity
 /// var users = [
 ///   { 'user': 'barney', 'age': 36 },
 ///   { 'user': 'fred',   'age': 40 }
 /// ];
-/// _.min(users, function(chr) {
+/// _min(users, function(chr) {
 ///   return chr.age;
 /// });
 /// // => { 'user': 'barney', 'age': 36 };
-/// // using the `_.property` callback shorthand
-/// _.min(users, 'age');
+/// // using the `_property` callback shorthand
+/// _min(users, 'age');
 /// // => { 'user': 'barney', 'age': 36 };
 /// 
 @function _min($args...) { @return call(__min, $args...); }

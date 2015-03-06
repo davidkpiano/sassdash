@@ -82,40 +82,40 @@
 /// @category Array
 /// @param {Array} array The array to search.
 /// @param {*} value The value to search for.
-/// @param {boolean|number} [fromIndex=0] The index to search from or `true`
+/// @param {boolean|number} (fromIndex=0) The index to search from or `true`
 ///  to perform a binary search on a sorted array.
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example
-/// _.indexOf([1, 2, 1, 2], 2);
+/// _index-of((1, 2, 1, 2), 2);
 /// // => 1
 /// // using `fromIndex`
-/// _.indexOf([1, 2, 1, 2], 2, 2);
+/// _index-of((1, 2, 1, 2), 2, 2);
 /// // => 3
 /// // performing a binary search
-/// _.indexOf([1, 1, 2, 2], 2, true);
+/// _index-of((1, 1, 2, 2), 2, true);
 /// // => 2
 /// 
 @function _index-of($args...) { @return call(__index-of, $args...); }
 
 /// 
-/// This method is like `_.indexOf` except that it iterates over elements of
+/// This method is like `_index-of` except that it iterates over elements of
 /// `array` from right to left.
 /// @static
 /// @memberOf _
 /// @category Array
 /// @param {Array} array The array to search.
 /// @param {*} value The value to search for.
-/// @param {boolean|number} [fromIndex=array.length-1] The index to search from
+/// @param {boolean|number} (fromIndex=array.length-1) The index to search from
 ///  or `true` to perform a binary search on a sorted array.
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example
-/// _.lastIndexOf([1, 2, 1, 2], 2);
+/// _last-index-of((1, 2, 1, 2), 2);
 /// // => 3
 /// // using `fromIndex`
-/// _.lastIndexOf([1, 2, 1, 2], 2, 2);
+/// _last-index-of((1, 2, 1, 2), 2, 2);
 /// // => 1
 /// // performing a binary search
-/// _.lastIndexOf([1, 1, 2, 2], 2, true);
+/// _last-index-of((1, 1, 2, 2), 2, true);
 /// // => 3
 /// 
 @function _last-index-of($args...) { @return call(__last-index-of, $args...); }

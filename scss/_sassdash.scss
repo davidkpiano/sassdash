@@ -28,7 +28,7 @@
             '\u2028': 'u2028',
             '\u2029': 'u2029'
         ));
-    // $_: __const('reg-exp-chars', ('.' '*' '+' '?' '^' '$' '{' '}' '(' ')' '|' '[' ']' '/' '\'));
+    // $_: __const('reg-exp-chars', ('.' '*' '+' '?' '^' '$' '{' '}' '(' ')' '|' '(' ')' '/' '\'));
     $_: __const('POSITIVE_INFINITY', 999999);
     $_: __const('NEGATIVE_INFINITY', -999999);
     $_: __const('MAX_SAFE_INTEGER', (pow(2, 53) - 1));

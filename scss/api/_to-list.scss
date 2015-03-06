@@ -41,8 +41,8 @@
 /// @returns {Array} Returns the converted array.
 /// @example
 /// (function() {
-///   return _.toArray(arguments).slice(1);
+///   return _to-array(arguments).slice(1);
 /// }(1, 2, 3));
-/// // => [2, 3]
+/// // => (2, 3)
 /// 
 @function _to-list($args...) { @return call(__to-list, $args...); }

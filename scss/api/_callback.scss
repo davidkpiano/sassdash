@@ -99,9 +99,9 @@
 /// @memberOf _
 /// @alias iteratee
 /// @category Utility
-/// @param {*} [func=_.identity] The value to convert to a callback.
-/// @param {*} [thisArg] The `this` binding of `func`.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {*} (func=_.identity) The value to convert to a callback.
+/// @param {*} (thisArg) The `this` binding of `func`.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Function} Returns the callback.
 /// @example
 /// var users = [
@@ -109,19 +109,19 @@
 ///   { 'user': 'fred',   'age': 40 }
 /// ];
 /// // wrap to create custom callback shorthands
-/// _.callback = _.wrap(_.callback, function(callback, func, thisArg) {
-///   var match = /^(.+?)__([gl]t)(.+)$/.exec(func);
+/// _.callback = _wrap(_.callback, function(callback, func, thisArg) {
+///   var match = /^(.+?)__((gl)t)(.+)$/.exec(func);
 ///   if (!match) {
 ///     return callback(func, thisArg);
 ///   }
 ///   return function(object) {
-///     return match[2] == 'gt'
-///       ? object[match[1]] > match[3]
-///       : object[match[1]] < match[3];
+///     return match(2) == 'gt'
+///       ? object[match(1)] > match(3)
+///       : object[match(1)] < match(3);
 ///   };
 /// });
-/// _.filter(users, 'age__gt36');
-/// // => [{ 'user': 'fred', 'age': 40 }]
+/// _filter(users, 'age__gt36');
+/// // => ({ 'user': 'fred', 'age': 40 })
 /// 
 @function _callback($args...) { @return call(__callback, $args...); }
 

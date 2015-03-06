@@ -48,16 +48,16 @@
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The source object.
-/// @param {Function|...(string|string[])} [predicate] The function invoked per
+/// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to pick, specified as individual property
 ///  names or arrays of property names.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {Object} Returns the new object.
 /// @example
 /// var object = { 'user': 'fred', 'age': 40 };
-/// _.pick(object, 'user');
+/// _pick(object, 'user');
 /// // => { 'user': 'fred' }
-/// _.pick(object, _.isString);
+/// _pick(object, _.isString);
 /// // => { 'user': 'fred' }
 /// 
 @function __pick($map, $predicate: __identity, $this-arg: null) {

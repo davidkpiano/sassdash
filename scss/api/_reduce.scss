@@ -81,7 +81,7 @@
 /// value. The `iteratee` is bound to `thisArg`and invoked with four arguments;
 /// (accumulator, value, index|key, collection).
 /// /// Many lodash methods are guarded to work as interatees for methods like
-/// `_.reduce`, `_.reduceRight`, and `_.transform`.
+/// `_reduce`, `_reduce-right`, and `_transform`.
 /// /// The guarded methods are:
 /// `assign`, `defaults`, `merge`, and `sortAllBy`
 /// /// @static
@@ -89,17 +89,17 @@
 /// @alias foldl, inject
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [accumulator] The initial value.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (accumulator) The initial value.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example
-/// /// _.reduce([1, 2], function(sum, n) {
+/// /// _reduce((1, 2), function(sum, n) {
 ///   return sum + n;
 /// });
 /// // => 3
-/// /// _.reduce({ 'a': 1, 'b': 2 }, function(result, n, key) {
-///   result[key] = n * 3;
+/// /// _reduce({ 'a': 1, 'b': 2 }, function(result, n, key) {
+///   result(key) = n * 3;
 ///   return result;
 /// }, {});
 /// // => { 'a': 3, 'b': 6 } (iteration order is not guaranteed)
@@ -111,23 +111,23 @@
 @function _inject($args...) { @return call(__reduce, $args...); }
 
 /// 
-/// This method is like `_.reduce` except that it iterates over elements of
+/// This method is like `_reduce` except that it iterates over elements of
 /// `collection` from right to left.
 /// /// @static
 /// @memberOf _
 /// @alias foldr
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [accumulator] The initial value.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (accumulator) The initial value.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example
-/// /// var array = [[0, 1], [2, 3], [4, 5]];
-/// /// _.reduceRight(array, function(flattened, other) {
+/// /// var array = [(0, 1), (2, 3), (4, 5)];
+/// /// _reduce-right(array, function(flattened, other) {
 ///   return flattened.concat(other);
 /// }, []);
-/// // => [4, 5, 2, 3, 0, 1]
+/// // => (4, 5, 2, 3, 0, 1)
 /// 
 @function _reduce-right($args...) { @return call(__reduce-right, $args...); }
 

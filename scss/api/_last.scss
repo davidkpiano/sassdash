@@ -14,7 +14,7 @@
 /// @param {Array} array The array to query.
 /// @returns {*} Returns the last element of `array`.
 /// @example
-/// _.last([1, 2, 3]);
+/// _last((1, 2, 3));
 /// // => 3
 /// 
 @function _last($args...) { @return call(__last, $args...); }

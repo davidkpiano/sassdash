@@ -12,7 +12,7 @@
 /// @category Utility
 /// @example
 /// var object = { 'user': 'fred' };
-/// _.noop(object) === null;
+/// _noop(object) === null;
 /// // => true
 /// 
 @function _noop($args...) { @return call(__noop, $args...); }

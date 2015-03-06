@@ -26,8 +26,8 @@
 /// @memberOf _
 /// @category Object
 /// @param {Object} prototype The object to inherit from.
-/// @param {Object} [properties] The properties to assign to the object.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {Object} (properties) The properties to assign to the object.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Object} Returns the new object.
 /// @example
 /// function Shape() {
@@ -37,7 +37,7 @@
 /// function Circle() {
 ///   Shape.call(this);
 /// }
-/// Circle.prototype = _.create(Shape.prototype, {
+/// Circle.prototype = _create(Shape.prototype, {
 ///   'constructor': Circle
 /// });
 /// var circle = new Circle;

@@ -72,7 +72,7 @@
 /// **Note:** This method supports comparing arrays, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. For comparing a single
-/// own or inherited property value see `_.matchesProperty`.
+/// own or inherited property value see `_matches-property`.
 /// @static
 /// @memberOf _
 /// @category Utility
@@ -83,7 +83,7 @@
 ///   { 'user': 'barney', 'age': 36, 'active': true },
 ///   { 'user': 'fred',   'age': 40, 'active': false }
 /// ];
-/// _.filter(users, _.matches({ 'age': 40, 'active': false }));
-/// // => [{ 'user': 'fred', 'age': 40, 'active': false }]
+/// _filter(users, _matches({ 'age': 40, 'active': false }));
+/// // => ({ 'user': 'fred', 'age': 40, 'active': false })
 /// 
 @function _matches($args...) { @return call(__matches, $args...); }

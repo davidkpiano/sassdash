@@ -31,12 +31,12 @@
 /// @memberOf _
 /// @category Function
 /// @param {Function} func The function to cap arguments for.
-/// @param {number} [n=func.length] The arity cap.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {number} (n=func.length) The arity cap.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Function} Returns the new function.
 /// @example
 ///
-/// _.map(['6', '8', '10'], _.ary(parseInt, 1));
-/// // => [6, 8, 10]
+/// _map(('6', '8', '10'), _ary(parseInt, 1));
+/// // => (6, 8, 10)
 ///
 @function _ary($args...) { @return call(__ary, $args...); }

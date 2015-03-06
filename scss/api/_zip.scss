@@ -54,17 +54,17 @@
 /// @static
 /// @memberOf _
 /// @category Array
-/// @param {...Array} [arrays] The arrays to process.
+/// @param {...Array} (arrays) The arrays to process.
 /// @returns {Array} Returns the new array of grouped elements.
 /// @example
-/// _.zip(['fred', 'barney'], [30, 40], [true, false]);
-/// // => [['fred', 30, true], ['barney', 40, false]]
+/// _zip(('fred', 'barney'), (30, 40), (true, false));
+/// // => [('fred', 30, true), ('barney', 40, false)]
 /// 
 @function _zip($args...) { @return call(__zip, $args...); }
 
 /// 
 /// Creates an object composed from arrays of property names and values. Provide
-/// either a single two dimensional array, e.g. `[[key1, value1], [key2, value2]]`
+/// either a single two dimensional array, e.g. `[(key1, value1), (key2, value2)]`
 /// or two arrays, one of property names and one of corresponding values.
 /// @static
 /// @memberOf _
@@ -74,7 +74,7 @@
 /// @param {Array} [values=[]] The property values.
 /// @returns {Object} Returns the new object.
 /// @example
-/// _.zipObject(['fred', 'barney'], [30, 40]);
+/// _zip-object(('fred', 'barney'), (30, 40));
 /// // => { 'fred': 30, 'barney': 40 }
 /// 
 @function _zip-map($args...) { @return call(__zip-map, $args...); }

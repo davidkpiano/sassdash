@@ -31,7 +31,7 @@
 /// @param {Array|Object|string} collection The collection to shuffle.
 /// @returns {Array} Returns the new shuffled array.
 /// @example
-/// _.shuffle([1, 2, 3, 4]);
-/// // => [4, 1, 3, 2]
+/// _shuffle((1, 2, 3, 4));
+/// // => (4, 1, 3, 2)
 /// 
 @function _shuffle($args...) { @return call(__shuffle, $args...); }

@@ -32,18 +32,18 @@
 /// @category Object
 /// @param {Object} object The object to query.
 /// @param {string} key The key of the property to resolve.
-/// @param {*} [defaultValue] The value returned if the property value
+/// @param {*} (defaultValue) The value returned if the property value
 ///  resolves to `undefined`.
 /// @returns {*} Returns the resolved value.
 /// @example
-/// /// var object = { 'user': 'fred', 'age': _.constant(40) };
-/// /// _.result(object, 'user');
+/// /// var object = { 'user': 'fred', 'age': _constant(40) };
+/// /// _result(object, 'user');
 /// // => 'fred'
-/// /// _.result(object, 'age');
+/// /// _result(object, 'age');
 /// // => 40
-/// /// _.result(object, 'status', 'busy');
+/// /// _result(object, 'status', 'busy');
 /// // => 'busy'
-/// /// _.result(object, 'status', _.constant('busy'));
+/// /// _result(object, 'status', _constant('busy'));
 /// // => 'busy'
 /// 
 @function _result($args...) { @return call(__result, $args...); }

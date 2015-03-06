@@ -57,10 +57,10 @@
 /// @static
 /// @memberOf _
 /// @category Array
-/// @param {...Array} [arrays] The arrays to inspect.
+/// @param {...Array} (arrays) The arrays to inspect.
 /// @returns {Array} Returns the new array of shared values.
 /// @example
-/// _.intersection([1, 2], [4, 2], [2, 1]);
-/// // => [2]
+/// _intersection((1, 2), (4, 2), (2, 1));
+/// // => (2)
 /// 
 @function _intersection($args...) { @return call(__intersection, $args...); }

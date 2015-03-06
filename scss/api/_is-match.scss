@@ -103,20 +103,20 @@
 /// @category Lang
 /// @param {Object} object The object to inspect.
 /// @param {Object} source The object of property values to match.
-/// @param {Function} [customizer] The function to customize comparing values.
-/// @param {*} [thisArg] The `this` binding of `customizer`.
+/// @param {Function} (customizer) The function to customize comparing values.
+/// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {boolean} Returns `true` if `object` is a match, else `false`.
 /// @example
 /// var object = { 'user': 'fred', 'age': 40 };
-/// _.isMatch(object, { 'age': 40 });
+/// _is-match(object, { 'age': 40 });
 /// // => true
-/// _.isMatch(object, { 'age': 36 });
+/// _is-match(object, { 'age': 36 });
 /// // => false
 /// // using a customizer callback
 /// var object = { 'greeting': 'hello' };
 /// var source = { 'greeting': 'hi' };
-/// _.isMatch(object, source, function(value, other) {
-///   return _.every([value, other], RegExp.prototype.test, /^h(?:i|ello)$/) || undefined;
+/// _is-match(object, source, function(value, other) {
+///   return _every((value, other), RegExp.prototype.test, /^h(?:i|ello)$/) || undefined;
 /// });
 /// // => true
 /// 

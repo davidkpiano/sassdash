@@ -25,10 +25,10 @@
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The destination object.
-/// @param {...Object} [sources] The source objects.
+/// @param {...Object} (sources) The source objects.
 /// @returns {Object} Returns `object`.
 /// @example
-/// _.defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+/// _defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
 /// // => { 'user': 'barney', 'age': 36 }
 /// 
 @function _defaults($args...) { @return call(__defaults, $args...); }

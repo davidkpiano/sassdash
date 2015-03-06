@@ -116,12 +116,12 @@
 /// Iterates over elements of `collection`, returning the first element
 /// `predicate` returns truthy for. The predicate is bound to `thisArg` and
 /// invoked with three arguments; (value, index|key, collection).
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
@@ -129,9 +129,9 @@
 /// @alias detect
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to search.
-/// @param {Function|Object|string} [predicate=_.identity] The function invoked
+/// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example
 /// var users = [
@@ -139,18 +139,18 @@
 ///   { 'user': 'fred',    'age': 40, 'active': false },
 ///   { 'user': 'pebbles', 'age': 1,  'active': true }
 /// ];
-/// _.result(_.find(users, function(chr) {
+/// _result(_find(users, function(chr) {
 ///   return chr.age < 40;
 /// }), 'user');
 /// // => 'barney'
-/// // using the `_.matches` callback shorthand
-/// _.result(_.find(users, { 'age': 1, 'active': true }), 'user');
+/// // using the `_matches` callback shorthand
+/// _result(_find(users, { 'age': 1, 'active': true }), 'user');
 /// // => 'pebbles'
-/// // using the `_.matchesProperty` callback shorthand
-/// _.result(_.find(users, 'active', false), 'user');
+/// // using the `_matches-property` callback shorthand
+/// _result(_find(users, 'active', false), 'user');
 /// // => 'fred'
-/// // using the `_.property` callback shorthand
-/// _.result(_.find(users, 'active'), 'user');
+/// // using the `_property` callback shorthand
+/// _result(_find(users, 'active'), 'user');
 /// // => 'barney'
 /// 
 @function _find($args...) { @return call(__find, $args...); }
@@ -159,23 +159,23 @@
 
 
 /// 
-/// This method is like `_.find` except that it returns the index of the first
+/// This method is like `_find` except that it returns the index of the first
 /// element `predicate` returns truthy for, instead of the element itself.
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
 /// @memberOf _
 /// @category Array
 /// @param {Array} array The array to search.
-/// @param {Function|Object|string} [predicate=_.identity] The function invoked
+/// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example
 /// var users = [
@@ -183,40 +183,40 @@
 ///   { 'user': 'fred',    'active': false },
 ///   { 'user': 'pebbles', 'active': true }
 /// ];
-/// _.findIndex(users, function(chr) {
+/// _find-index(users, function(chr) {
 ///   return chr.user == 'barney';
 /// });
 /// // => 0
-/// // using the `_.matches` callback shorthand
-/// _.findIndex(users, { 'user': 'fred', 'active': false });
+/// // using the `_matches` callback shorthand
+/// _find-index(users, { 'user': 'fred', 'active': false });
 /// // => 1
-/// // using the `_.matchesProperty` callback shorthand
-/// _.findIndex(users, 'active', false);
+/// // using the `_matches-property` callback shorthand
+/// _find-index(users, 'active', false);
 /// // => 0
-/// // using the `_.property` callback shorthand
-/// _.findIndex(users, 'active');
+/// // using the `_property` callback shorthand
+/// _find-index(users, 'active');
 /// // => 2
 /// 
 @function _find-index($args...) { @return call(__find-index, $args...); }
 
 /// 
-/// This method is like `_.findIndex` except that it returns the key of the
+/// This method is like `_find-index` except that it returns the key of the
 /// first element `predicate` returns truthy for, instead of the element itself.
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The object to search.
-/// @param {Function|Object|string} [predicate=_.identity] The function invoked
+/// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example
 /// var users = {
@@ -224,35 +224,35 @@
 ///   'fred':    { 'age': 40, 'active': false },
 ///   'pebbles': { 'age': 1,  'active': true }
 /// };
-/// _.findKey(users, function(chr) {
+/// _find-key(users, function(chr) {
 ///   return chr.age < 40;
 /// });
 /// // => 'barney' (iteration order is not guaranteed)
-/// // using the `_.matches` callback shorthand
-/// _.findKey(users, { 'age': 1, 'active': true });
+/// // using the `_matches` callback shorthand
+/// _find-key(users, { 'age': 1, 'active': true });
 /// // => 'pebbles'
-/// // using the `_.matchesProperty` callback shorthand
-/// _.findKey(users, 'active', false);
+/// // using the `_matches-property` callback shorthand
+/// _find-key(users, 'active', false);
 /// // => 'fred'
-/// // using the `_.property` callback shorthand
-/// _.findKey(users, 'active');
+/// // using the `_property` callback shorthand
+/// _find-key(users, 'active');
 /// // => 'barney'
 /// 
 @function _find-key($args...) { @return call(__find-key, $args...); }
 
 /// 
-/// This method is like `_.find` except that it iterates over elements of
+/// This method is like `_find` except that it iterates over elements of
 /// `collection` from right to left.
 /// @static
 /// @memberOf _
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to search.
-/// @param {Function|Object|string} [predicate=_.identity] The function invoked
+/// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example
-/// _.findLast([1, 2, 3, 4], function(n) {
+/// _find-last((1, 2, 3, 4), function(n) {
 ///   return n % 2 == 1;
 /// });
 /// // => 3
@@ -260,23 +260,23 @@
 @function _find-last($args...) { @return call(__find-last, $args...); }
 
 /// 
-/// This method is like `_.findIndex` except that it iterates over elements
+/// This method is like `_find-index` except that it iterates over elements
 /// of `collection` from right to left.
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
 /// @memberOf _
 /// @category Array
 /// @param {Array} array The array to search.
-/// @param {Function|Object|string} [predicate=_.identity] The function invoked
+/// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example
 /// var users = [
@@ -284,40 +284,40 @@
 ///   { 'user': 'fred',    'active': false },
 ///   { 'user': 'pebbles', 'active': false }
 /// ];
-/// _.findLastIndex(users, function(chr) {
+/// _find-last-index(users, function(chr) {
 ///   return chr.user == 'pebbles';
 /// });
 /// // => 2
-/// // using the `_.matches` callback shorthand
-/// _.findLastIndex(users, { 'user': 'barney', 'active': true });
+/// // using the `_matches` callback shorthand
+/// _find-last-index(users, { 'user': 'barney', 'active': true });
 /// // => 0
-/// // using the `_.matchesProperty` callback shorthand
-/// _.findLastIndex(users, 'active', false);
+/// // using the `_matches-property` callback shorthand
+/// _find-last-index(users, 'active', false);
 /// // => 1
-/// // using the `_.property` callback shorthand
-/// _.findLastIndex(users, 'active');
+/// // using the `_property` callback shorthand
+/// _find-last-index(users, 'active');
 /// // => 0
 /// 
 @function _find-last-index($args...) { @return call(__find-last-index, $args...); }
 
 /// 
-/// This method is like `_.findKey` except that it iterates over elements of
+/// This method is like `_find-key` except that it iterates over elements of
 /// a collection in the opposite order.
-/// If a property name is provided for `predicate` the created `_.property`
+/// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_.matchesProperty`
+/// If a value is also provided for `thisArg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_.matches` style
+/// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// @static
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The object to search.
-/// @param {Function|Object|string} [predicate=_.identity] The function invoked
+/// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
-/// @param {*} [thisArg] The `this` binding of `predicate`.
+/// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example
 /// var users = {
@@ -325,18 +325,18 @@
 ///   'fred':    { 'age': 40, 'active': false },
 ///   'pebbles': { 'age': 1,  'active': true }
 /// };
-/// _.findLastKey(users, function(chr) {
+/// _find-last-key(users, function(chr) {
 ///   return chr.age < 40;
 /// });
-/// // => returns `pebbles` assuming `_.findKey` returns `barney`
-/// // using the `_.matches` callback shorthand
-/// _.findLastKey(users, { 'age': 36, 'active': true });
+/// // => returns `pebbles` assuming `_find-key` returns `barney`
+/// // using the `_matches` callback shorthand
+/// _find-last-key(users, { 'age': 36, 'active': true });
 /// // => 'barney'
-/// // using the `_.matchesProperty` callback shorthand
-/// _.findLastKey(users, 'active', false);
+/// // using the `_matches-property` callback shorthand
+/// _find-last-key(users, 'active', false);
 /// // => 'fred'
-/// // using the `_.property` callback shorthand
-/// _.findLastKey(users, 'active');
+/// // using the `_property` callback shorthand
+/// _find-last-key(users, 'active');
 /// // => 'pebbles'
 /// 
 @function _find-last-key($args...) { @return call(__find-last-key, $args...); }
@@ -348,7 +348,7 @@
 /// **Note:** This method supports comparing arrays, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. For comparing a single
-/// own or inherited property value see `_.matchesProperty`.
+/// own or inherited property value see `_matches-property`.
 /// @static
 /// @memberOf _
 /// @category Collection
@@ -360,9 +360,9 @@
 ///   { 'user': 'barney', 'age': 36, 'active': true },
 ///   { 'user': 'fred',   'age': 40, 'active': false }
 /// ];
-/// _.result(_.findWhere(users, { 'age': 36, 'active': true }), 'user');
+/// _result(_find-where(users, { 'age': 36, 'active': true }), 'user');
 /// // => 'barney'
-/// _.result(_.findWhere(users, { 'age': 40, 'active': false }), 'user');
+/// _result(_find-where(users, { 'age': 40, 'active': false }), 'user');
 /// // => 'fred'
 /// 
 @function _find-where($args...) { @return call(__find-where, $args...); }

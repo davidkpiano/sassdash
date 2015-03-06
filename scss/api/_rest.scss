@@ -14,8 +14,8 @@
 /// @param {Array} array The array to query.
 /// @returns {Array} Returns the slice of `array`.
 /// @example
-/// _.rest([1, 2, 3]);
-/// // => [2, 3]
+/// _rest((1, 2, 3));
+/// // => (2, 3)
 /// 
 @function _rest($args...) { @return call(__rest, $args...); }
 

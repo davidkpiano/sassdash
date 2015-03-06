@@ -194,22 +194,22 @@
 /// (value, index|key, collection). Iterator functions may exit iteration early
 /// by explicitly returning `false`.
 /// **Note:** As with other "Collections" methods, objects with a `length` property
-/// are iterated like arrays. To avoid this behavior `_.forIn` or `_.forOwn`
+/// are iterated like arrays. To avoid this behavior `_for-in` or `_for-own`
 /// may be used for object iteration.
 /// @static
 /// @memberOf _
 /// @alias each
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Array|Object|string} Returns `collection`.
 /// @example
-/// _([1, 2]).forEach(function(n) {
+/// _((1, 2)).forEach(function(n) {
 ///   console.log(n);
 /// }).value();
 /// // => logs each value from left to right and returns the array
-/// _.forEach({ 'a': 1, 'b': 2 }, function(n, key) {
+/// _for-each({ 'a': 1, 'b': 2 }, function(n, key) {
 ///   console.log(n, key);
 /// });
 /// // => logs each value-key pair and returns the object (iteration order is not guaranteed)
@@ -219,18 +219,18 @@
 @function _each($args...) { @return call(__for-each, $args...); }
 
 /// 
-/// This method is like `_.forEach` except that it iterates over elements of
+/// This method is like `_for-each` except that it iterates over elements of
 /// `collection` from right to left.
 /// @static
 /// @memberOf _
 /// @alias eachRight
 /// @category Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Array|Object|string} Returns `collection`.
 /// @example
-/// _([1, 2]).forEachRight(function(n) {
+/// _((1, 2)).forEachRight(function(n) {
 ///   console.log(n);
 /// }).join(',');
 /// // => logs each value from right to left and returns the array
@@ -248,8 +248,8 @@
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example
 /// function Foo() {
@@ -257,7 +257,7 @@
 ///   this.b = 2;
 /// }
 /// Foo.prototype.c = 3;
-/// _.forIn(new Foo, function(value, key) {
+/// _for-in(new Foo, function(value, key) {
 ///   console.log(key);
 /// });
 /// // => logs 'a', 'b', and 'c' (iteration order is not guaranteed)
@@ -265,14 +265,14 @@
 @function _for-in($args...) { @return call(__for-in, $args...); }
 
 /// 
-/// This method is like `_.forIn` except that it iterates over properties of
+/// This method is like `_for-in` except that it iterates over properties of
 /// `object` in the opposite order.
 /// @static
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example
 /// function Foo() {
@@ -280,7 +280,7 @@
 ///   this.b = 2;
 /// }
 /// Foo.prototype.c = 3;
-/// _.forInRight(new Foo, function(value, key) {
+/// _for-in-right(new Foo, function(value, key) {
 ///   console.log(key);
 /// });
 /// // => logs 'c', 'b', and 'a' assuming `_.forIn ` logs 'a', 'b', and 'c'
@@ -296,8 +296,8 @@
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example
 /// function Foo() {
@@ -305,7 +305,7 @@
 ///   this.b = 2;
 /// }
 /// Foo.prototype.c = 3;
-/// _.forOwn(new Foo, function(value, key) {
+/// _for-own(new Foo, function(value, key) {
 ///   console.log(key);
 /// });
 /// // => logs 'a' and 'b' (iteration order is not guaranteed)
@@ -313,14 +313,14 @@
 @function _for-own($args...) { @return call(__for-own, $args...); }
 
 /// 
-/// This method is like `_.forOwn` except that it iterates over properties of
+/// This method is like `_for-own` except that it iterates over properties of
 /// `object` in the opposite order.
 /// @static
 /// @memberOf _
 /// @category Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} [iteratee=_.identity] The function invoked per iteration.
-/// @param {*} [thisArg] The `this` binding of `iteratee`.
+/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example
 /// function Foo() {
@@ -328,9 +328,9 @@
 ///   this.b = 2;
 /// }
 /// Foo.prototype.c = 3;
-/// _.forOwnRight(new Foo, function(value, key) {
+/// _for-own-right(new Foo, function(value, key) {
 ///   console.log(key);
 /// });
-/// // => logs 'b' and 'a' assuming `_.forOwn` logs 'a' and 'b'
+/// // => logs 'b' and 'a' assuming `_for-own` logs 'a' and 'b'
 /// 
 @function _for-own-right($args...) { @return call(__for-own-right, $args...); }

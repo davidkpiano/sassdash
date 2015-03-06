@@ -80,17 +80,17 @@
 /// /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to trim.
-/// @param {string} [chars=whitespace] The characters to trim.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {string} (string='') The string to trim.
+/// @param {string} (chars=whitespace) The characters to trim.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the trimmed string.
 /// @example
-/// /// _.trim('  abc  ');
+/// /// _trim('  abc  ');
 /// // => 'abc'
-/// /// _.trim('-_-abc-_-', '_-');
+/// /// _trim('-_-abc-_-', '_-');
 /// // => 'abc'
-/// /// _.map(['  foo  ', '  bar  '], _.trim);
-/// // => ['foo', 'bar]
+/// /// _map(('  foo  ', '  bar  '), _.trim);
+/// // => ('foo', 'bar)
 /// 
 @function _trim($args...) { @return call(__trim, $args...); }
 /// 
@@ -98,14 +98,14 @@
 /// /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to trim.
-/// @param {string} [chars=whitespace] The characters to trim.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {string} (string='') The string to trim.
+/// @param {string} (chars=whitespace) The characters to trim.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the trimmed string.
 /// @example
-/// /// _.trimLeft('  abc  ');
+/// /// _trim-left('  abc  ');
 /// // => 'abc  '
-/// /// _.trimLeft('-_-abc-_-', '_-');
+/// /// _trim-left('-_-abc-_-', '_-');
 /// // => 'abc-_-'
 /// 
 @function _trim-left($args...) { @return call(__trim-left, $args...); }
@@ -114,14 +114,14 @@
 /// /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to trim.
-/// @param {string} [chars=whitespace] The characters to trim.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {string} (string='') The string to trim.
+/// @param {string} (chars=whitespace) The characters to trim.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the trimmed string.
 /// @example
-/// /// _.trimRight('  abc  ');
+/// /// _trim-right('  abc  ');
 /// // => '  abc'
-/// /// _.trimRight('-_-abc-_-', '_-');
+/// /// _trim-right('-_-abc-_-', '_-');
 /// // => '-_-abc'
 /// 
 @function _trim-right($args...) { @return call(__trim-right, $args...); }

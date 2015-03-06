@@ -25,8 +25,8 @@
 /// @param {Object} object The object to inspect.
 /// @returns {Array} Returns the new array of property names.
 /// @example
-/// _.functions(_);
-/// // => ['after', 'ary', 'assign', ...]
+/// _functions(_);
+/// // => ('after', 'ary', 'assign', ...)
 /// 
 @function _functions($args...) { @return call(__functions, $args...); }
 

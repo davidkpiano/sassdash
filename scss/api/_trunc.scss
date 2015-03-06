@@ -54,31 +54,31 @@
 /// /// @static
 /// @memberOf _
 /// @category String
-/// @param {string} [string=''] The string to truncate.
-/// @param {Object|number} [options] The options object or maximum string length.
-/// @param {number} [options.length=30] The maximum string length.
-/// @param {string} [options.omission='...'] The string to indicate text is omitted.
-/// @param {RegExp|string} [options.separator] The separator pattern to truncate to.
-/// @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+/// @param {string} (string='') The string to truncate.
+/// @param {Object|number} (options) The options object or maximum string length.
+/// @param {number} (options.length=30) The maximum string length.
+/// @param {string} (options.omission='...') The string to indicate text is omitted.
+/// @param {RegExp|string} (options.separator) The separator pattern to truncate to.
+/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the truncated string.
 /// @example
-/// /// _.trunc('hi-diddly-ho there, neighborino');
+/// /// _trunc('hi-diddly-ho there, neighborino');
 /// // => 'hi-diddly-ho there, neighbo...'
-/// /// _.trunc('hi-diddly-ho there, neighborino', 24);
+/// /// _trunc('hi-diddly-ho there, neighborino', 24);
 /// // => 'hi-diddly-ho there, n...'
-/// /// _.trunc('hi-diddly-ho there, neighborino', {
+/// /// _trunc('hi-diddly-ho there, neighborino', {
 ///   'length': 24,
 ///   'separator': ' '
 /// });
 /// // => 'hi-diddly-ho there,...'
-/// /// _.trunc('hi-diddly-ho there, neighborino', {
+/// /// _trunc('hi-diddly-ho there, neighborino', {
 ///   'length': 24,
 ///   'separator': /,? +/
 /// });
 /// //=> 'hi-diddly-ho there...'
-/// /// _.trunc('hi-diddly-ho there, neighborino', {
-///   'omission': ' [...]'
+/// /// _trunc('hi-diddly-ho there, neighborino', {
+///   'omission': ' (...)'
 /// });
-/// // => 'hi-diddly-ho there, neig [...]'
+/// // => 'hi-diddly-ho there, neig (...)'
 /// 
 @function _trunc($args...) { @return call(__trunc, $args...); }

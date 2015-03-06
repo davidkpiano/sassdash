@@ -76,7 +76,7 @@
 /// @static
 /// @memberOf _
 /// @category Function
-/// @param {...Function} [funcs] Functions to invoke.
+/// @param {...Function} (funcs) Functions to invoke.
 /// @returns {Function} Returns the new function.
 /// @example
 /// function add(x, y) {
@@ -85,20 +85,20 @@
 /// function square(n) {
 ///   return n/// n;
 /// }
-/// var addSquare = _.flow(add, square);
+/// var addSquare = _flow(add, square);
 /// addSquare(1, 2);
 /// // => 9
 /// 
 @function _flow($args...) { @return call(__flow, $args...); }
 
 /// 
-/// This method is like `_.flow` except that it creates a function that
+/// This method is like `_flow` except that it creates a function that
 /// invokes the provided functions from right to left.
 /// @static
 /// @memberOf _
 /// @alias backflow, compose
 /// @category Function
-/// @param {...Function} [funcs] Functions to invoke.
+/// @param {...Function} (funcs) Functions to invoke.
 /// @returns {Function} Returns the new function.
 /// @example
 /// function add(x, y) {
@@ -107,7 +107,7 @@
 /// function square(n) {
 ///   return n/// n;
 /// }
-/// var addSquare = _.flowRight(square, add);
+/// var addSquare = _flow-right(square, add);
 /// addSquare(1, 2);
 /// // => 9
 /// 

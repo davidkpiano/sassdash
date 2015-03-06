@@ -959,6 +959,12 @@ $test-before-count: 0 !global;
             @include assert-equal($actual, $expected);
         }
     }
+
+    @include test('should work with a list for target') {
+      // TODO
+      // @include assert-equal(_ends-with('abc', 'c' 'd' 'e'), true);
+      @include assert-equal(_ends-with('abc', 'bcc' 'zbc' 'cd'), false);
+    }
 }
 
 @include test-module('_escape') {
@@ -3803,34 +3809,44 @@ $test-before-count: 0 !global;
 //   }
 // }
 
-@include test-module('Sassdash') {
-  @include test('_starts-with') {
-    $string: 'abc';
+@include test-module('_starts-with') {
+  $string: 'abc';
 
-    @include assert-equal(_starts-with($string, 'a'), true,
-      'should return true if a string starts with target');
+  @include test('should return true if a string starts with target') {
+    @include assert-equal(_starts-with($string, 'a'), true);
+  }
 
-    @include assert-equal(_starts-with($string, 'b'), false,
-      'should return false if a string does not start with target');
+  @include test('should return false if a string does not start with target') {
+    @include assert-equal(_starts-with($string, 'b'), false);
+  }
 
-    @include assert-equal(_starts-with($string, 'b', 2), true,
-      'should work with a position argument');
+  @include test('should work with a position argument') {
+    @include assert-equal(_starts-with($string, 'b', 2), true);
+  }
 
-    @include assert-equal(_starts-with($string, 'a', 4), false,
-      'should work with position >= string length');
+  @include test('should work with position >= string length') {
+    @include assert-equal(_starts-with($string, 'a', 4), false);
+  }
 
+  @include test('should treat falsey position values as 1') {
     @each $value in $test-falsey {
-      @include assert-equal(_starts-with($string, 'a', $value), true,
-        'should treat falsey position values as 1');
+      @include assert-equal(_starts-with($string, 'a', $value), true);
     }
+  }
 
-    @include assert-equal(_starts-with($string, 'a', -1), true,
-      'should treat a negative position as 1');
+  @include test('should treat a negative position as 1') {
+    @include assert-equal(_starts-with($string, 'a', -1), true);
+  }
 
-    @each $position in -9999, -3, -1, 0, 1, 2, 3, 5 {    
-      @include assert-equal(_starts-with($string, '', $position), true,
-        'should return true when target is an empty string regardless of position');
+  @each $position in -9999, -3, -1, 0, 1, 2, 3, 5 {
+    @include test('should return true when target is an empty string regardless of position') {
+      @include assert-equal(_starts-with($string, '', $position), true);
     }
+  }
+
+  @include test('should work with a list for target') {
+    @include assert-equal(_starts-with('abc', 'e' 'a' 'q'), true);
+    @include assert-equal(_starts-with('abc', 'ac' 'abz' 'b'), false);
   }
 }
 

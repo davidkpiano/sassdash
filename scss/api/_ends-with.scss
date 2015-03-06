@@ -3,14 +3,23 @@
 @function __ends-with($string, $target, $position: str-length($string)) {
     $string: __base-to-string($string);
     $target: $target + '';
-
     $length: str-length($string);
-
     $position: if(__is-falsey($position), 0, $position);
-
     $position: min(if($position < 0, 0, $position), $length) + 1 - str-length($target);
 
-    @return if($position >= 1, __string-index-of($string, $target, $position) == $position, false);
+    $result: false;
+
+    @if __is-list-like($target) {
+        @each $target-string in $target {
+            $result: __either($result, __ends-with($string, $target-string, $position));
+        }
+
+        @return $result;
+    }
+
+    @return if($position >= 1,
+        __string-index-of($string, $target, $position) == $position,
+        false);
 }
 
 /// 

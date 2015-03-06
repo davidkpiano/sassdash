@@ -962,7 +962,7 @@ $test-before-count: 0 !global;
 
     @include test('should work with a list for target') {
       // TODO
-      // @include assert-equal(_ends-with('abc', 'c' 'd' 'e'), true);
+      @include assert-equal(_ends-with('abc', 'c' 'd' 'e'), true);
       @include assert-equal(_ends-with('abc', 'bcc' 'zbc' 'cd'), false);
     }
 }

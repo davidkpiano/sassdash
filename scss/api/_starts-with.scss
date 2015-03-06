@@ -1,18 +1,19 @@
 
 
 @function __starts-with($string, $target, $position: 1) {
-    $string: __base-to-string($string);
-    $position: if(__is-falsey($position), 0, $position);
-    $position: min(if($position <= 0, 1, $position), str-length($string));
-    $result: false;
-
     @if __is-list-like($target) {
+        $result: false;
         @each $target-string in $target {
             $result: __either($result, __starts-with($string, $target-string, $position));
         }
 
         @return $result;
     }
+
+    $string: __base-to-string($string);
+    $target: __base-to-string($target);
+    $position: if(__is-falsey($position), 0, $position);
+    $position: min(if($position <= 0, 1, $position), str-length($string));
 
     @return if($target == '',
         true,

@@ -354,8 +354,6 @@
 
 @function __merge-data() {}
 
-@function __ary() {} // todo
-
 @function __bind-all() {} // todo
 
 @function __bind-key() {} // todo
@@ -387,7 +385,6 @@
 // =======
 
 // // Add functions that return wrapped values when chaining
-@function _ary($args...) { @return call(__ary, $args...); }
 @function _bind-all($args...) { @return call(__bind-all, $args...); }
 @function _bind-key($args...) { @return call(__bind-key, $args...); }
 // @function _chain($args...) { @return call(__chain, $args...); }

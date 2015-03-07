@@ -2724,14 +2724,14 @@ $test-before-count: 0 !global;
     }
 
     @include test('should return -infinity for empty collections') {
-        @include assert-equal(_max(()), const-get('NEGATIVE_INFINITY'));
+        @include assert-equal(_max(()), __const('NEGATIVE_INFINITY'));
     }
 
     @include test('should return -infinity for non-numeric collection values') {
         $collections: (true, false), (true: true, false: false);
 
         @each $collection in $collections {
-            @include assert-equal(_max($collection), const-get('NEGATIVE_INFINITY'), inspect($collection));
+            @include assert-equal(_max($collection), __const('NEGATIVE_INFINITY'), inspect($collection));
         }
     }
 }
@@ -2797,10 +2797,10 @@ $test-before-count: 0 !global;
     @include assert-equal(_min(1 2 3), 1,
       'should return the smallest value from a collection');
 
-    @include assert-equal(_min(()), const-get('POSITIVE_INFINITY'),
+    @include assert-equal(_min(()), __const('POSITIVE_INFINITY'),
       'should return Infinity for empty collections');
 
-    @include assert-equal(_min(('a' 'b') ('a': 'a', 'b': 'b')), const-get('POSITIVE_INFINITY'),
+    @include assert-equal(_min(('a' 'b') ('a': 'a', 'b': 'b')), __const('POSITIVE_INFINITY'),
       'should return Infinity for non-numeric collection items');
   }
 }

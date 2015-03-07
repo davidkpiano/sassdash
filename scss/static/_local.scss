@@ -1,0 +1,108 @@
+
+@function pop($list) {
+    $length: length($list);
+    $index: 2;
+    $popped-list: ();
+
+    @while $index <= $length {
+        $popped-list: append($popped-list, nth($list, $index));
+        $index: $index + 1;
+    }
+
+    @return $popped-list;
+}
+
+
+@function get($map, $properties) {
+    @if type-of($map) == 'string' {
+        $string: $map;
+        $map: ();
+
+        @for $index from 1 through str-length($string) {
+            $map: append($map, str-slice($string, $index, $index));
+        }
+    } @else if (type-of($map) != 'list' and type-of($map) != 'map') {
+        $map: ($map,);
+    }
+
+    @if type-of($map) == 'list' {
+        $index: nth($properties, 1);
+
+        @if $index > length($map) {
+            @return null;
+        }
+
+        $map: nth($map, $index);
+    } @else {
+        $map: map-get($map, nth($properties, 1));
+    }
+
+    $properties: pop($properties);
+
+    @if not $map and length($properties) > 0 {
+        @return null;
+    }
+
+    @if length($properties) == 0 {
+        @return $map;
+    }
+
+    @return get($map, $properties);
+}
+
+@function set($map, $properties, $value) {
+    $property: nth($properties, 1);
+    $properties: pop($properties);
+    $child-map: null;
+
+    @if type-of($map) == 'list' and length($map) > 0 {
+        $child-map: nth($map, $property);
+    } @else {
+        $child-map: map-get($map, $property);
+    }
+
+    @if length($properties) == 0 {
+        @if type-of($map) == 'list' and length($map) > 0 {
+            @return set-nth($map, $property, $value);
+        }
+
+        @return map-merge($map, (
+            $property: $value,
+        ));
+    }
+
+    @if type-of($map) == 'list' and length($map) > 0 {
+        @return set-nth($map, $property, set($child-map, $properties, $value));
+    }
+
+    @return map-merge($map, (
+        $property: set($child-map, $properties, $value),
+    ));
+}
+
+
+@function push($map, $properties, $value) {
+    $list: append(get($map, $properties), $value);
+
+    @return set($map, $properties, $list);
+}
+
+@function new($type, $params: (), $extends: false, $prototype: ()) {
+    $instance-meta: (
+        '_type': $type,
+        '_constructor': $type,
+        '_extends': $extends,
+        '_prototype': $prototype,
+    );
+
+    $instance: ();
+
+    @if $extends {
+        $instance: map-merge($instance, new($extends, $params));
+    }
+
+    $instance: map-merge($instance, call($type, $params...));
+    $instance: map-merge($instance, $instance-meta);
+
+    @return $instance;
+}

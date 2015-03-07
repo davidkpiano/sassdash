@@ -17,7 +17,7 @@ This library contains most of the (Sass-implementable) functions from [lodash](h
 **WARNING:** There are *over 400* unit tests, and more to come. Running them all takes between 30 seconds and 2 minutes.
 
 1. `cd path/to/sassdash`
-2. [`gem install true`](https://github.com/ericam/true)
+2. [`bower install true`](https://github.com/ericam/true)
 3. `true-cli tests/true-tests.scss`
 
 ## Available Functions
@@ -189,7 +189,10 @@ Sassdash | lodash
 _max | _.max
 _min | _.min
 :clock130: | _.sum
-Number
+
+#### Number
+Sassdash | lodash
+---------|-------
 :clock130: | _.inRange
 _rand | _.random
 

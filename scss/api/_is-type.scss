@@ -40,8 +40,25 @@
     @return type-of($value) == 'bool';
 }
 
+@function __is-falsey($value) {
+    @if $value == null
+    or $value == ''
+    or $value == ""
+    or $value == $__undefined__
+    or $value == 0
+    or not $value {
+        @return true;
+    }
+
+    @return false;
+}
+
+@function __is-truthy($value) {
+    @return $value and not __is-falsey($value);
+}
+
 @function __is-finite($value, $args...) {
-    @return __is-number($value) and __native-is-finite($value);
+    @return __is-number($value);
 }
 
 @function __is-function($value, $args...) {

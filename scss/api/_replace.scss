@@ -1,0 +1,24 @@
+
+
+
+@function __string-replace($string, $target, $replacement: '') {
+    $found-index: str-index($string, $target);
+    $result: '';
+
+    @if not $found-index {
+        @return $string;
+    }
+
+    @if __function-exists($replacement) {
+        $replacement: __call($replacement, null, $target);
+    }
+
+    @return $result
+        + str-slice($string, 1, $found-index - 1)
+        + $replacement
+        + __string-replace(
+            str-slice($string, str-length($target) + $found-index),
+            $target,
+            $replacement
+        );
+}

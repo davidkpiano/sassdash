@@ -32,7 +32,7 @@
 }
 
 @function __compare-ascending($map, $other) {
-    @return either(__base-compare-ascending(get($map, 'criteria'), get($other, 'criteria')), (get($map, 'index') - get($other, 'index')));
+    @return __either(__base-compare-ascending(get($map, 'criteria'), get($other, 'criteria')), (get($map, 'index') - get($other, 'index')));
 }
 
 @function __compare-multiple-ascending($map, $other) {

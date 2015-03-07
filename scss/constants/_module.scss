@@ -1,9 +1,8 @@
 
-
 $__const__: () !global;
 
-@function __const($key) {
-    @return get($__const__, $key);
+@function __const($keys) {
+    @return get($__const__, $keys);
 }
 
 @mixin __const($key, $value) {

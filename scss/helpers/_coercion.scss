@@ -1,6 +1,5 @@
 
 
-
 @function __to-comparable($value, $customizer: null, $guard: null) {
     @if not (__function-exists($customizer)) {
         $customizer: if(__is-string($value), __get-char-code, __identity);

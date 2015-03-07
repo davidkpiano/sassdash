@@ -4,9 +4,9 @@
         $options: null;
     }
 
-    $length: either($length, __const('DEFAULT_TRUNC_LENGTH'));
-    $omission: either($omission, __const('DEFAULT_TRUNC_OMISSION'));
-    $separator: either($separator, null);
+    $length: __either($length, __const('DEFAULT_TRUNC_LENGTH'));
+    $omission: __either($omission, __const('DEFAULT_TRUNC_OMISSION'));
+    $separator: __either($separator, null);
 
     @if ($options != null) {
         @if (__is-map($options)) {

@@ -1,5 +1,30 @@
 
 
+@function __string-index-of($string, $target, $position: 0) {
+    $string: str-slice($string, $position);
+    $string-index: str-index($string, $target);
+
+    @if not $string-index {
+        @return -1;
+    }
+
+    @return $string-index + $position - 1;
+}
+
+
+@function __string-last-index-of($string, $target, $position: 0) {
+    $current-index: __string-index-of($string, $target, $position);
+    $last-index: -1;
+
+    @while $current-index != -1 {
+        $last-index: $current-index;
+        $current-index: __string-index-of($string, $target, $last-index + 1);
+    }
+
+    @return $last-index;
+}
+
+
 @function __base-index-of($list, $value, $from-index: 1) {
     $length: length($list);
     $index: $from-index;

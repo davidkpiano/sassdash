@@ -1,5 +1,9 @@
 
 
+@function __get-length($list, $args...) {
+    @return length($list);
+}
+
 @function __size($collection: null, $args...) {
     @if __is-string($collection) {
         $collection: __to-list($collection);

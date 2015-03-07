@@ -16,6 +16,14 @@
     @return $value;
 }
 
+@function __number-to-fixed($value, $digits: null) {
+    @if $digits == null {
+        @return round($value);
+    }
+
+    @return round($value * pow(10, $digits)) / pow(10, $digits);
+}
+
 @function __unit($value) {
     $units: (
         'vmax': 1vmax, 

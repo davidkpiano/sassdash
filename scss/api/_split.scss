@@ -1,0 +1,21 @@
+@function __string-split($string, $delimiter: '') {
+    @if not $delimiter
+    or length($delimiter) == 0
+    or $delimiter == '' {
+        @return __to-list($string);
+    }
+
+    $delimiter-index: str-index($string, $delimiter);
+
+    @if not $delimiter-index {
+        @return $string;
+    }
+
+    @return join(
+        str-slice($string, 1, $delimiter-index - 1),
+        __string-split(
+            str-slice($string, $delimiter-index + length($delimiter-index)),
+            $delimiter
+        )
+    );
+}

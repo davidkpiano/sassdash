@@ -378,11 +378,11 @@ $test-before-count: 0 !global;
     @include xit('should return a wrapped value when chaining') {}
 
     @include test('should work when in between lazy operators') {
-        $actual: _($test-falsey, slice, compact, slice, value);
+        $actual: _($test-falsey, slice, compact, slice);
 
         @include assert-equal(length($actual), 0);
 
-        $actual: _($test-falsey, slice, push true 1, compact, push 'a', slice, value);
+        $actual: _($test-falsey, slice, push true 1, compact, push 'a', slice);
         $expected: (true, 1, 'a');
 
         @include assert-true(test-lists-equal($actual, $expected));
@@ -777,22 +777,22 @@ $test-before-count: 0 !global;
         $list: 1 2 3 4 5 6 7 8 9 10;
         $predicate: test-drop-1;
 
-        $actual: _($list, drop 2, drop, value);
+        $actual: _($list, drop 2, drop);
         $expected: 4 5 6 7 8 9 10;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, filter $predicate, drop 2, drop, value);
+        $actual: _($list, filter $predicate, drop 2, drop);
         $expected: 6 7 8 9 10;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop 2, drop-right, drop, drop-right 2, value);
+        $actual: _($list, drop 2, drop-right, drop, drop-right 2);
         $expected: 4 5 6 7;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop, filter $predicate, drop 2, drop-right, drop, drop-right 2, value);
+        $actual: _($list, drop, filter $predicate, drop 2, drop-right, drop, drop-right 2);
         $expected: 6 7;
 
         @include assert-equal($actual, $expected);
@@ -851,22 +851,22 @@ $test-before-count: 0 !global;
         $list: 1 2 3 4 5 6 7 8 9 10;
         $predicate: test-drop-right-1;
 
-        $actual: _($list, drop-right 2, drop-right, value);
+        $actual: _($list, drop-right 2, drop-right);
         $expected: 1 2 3 4 5 6 7;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, filter $predicate, drop-right 2, drop-right, value);
+        $actual: _($list, filter $predicate, drop-right 2, drop-right);
         $expected: 1 2 3 4 5;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop-right 2, drop, drop-right, drop 2, value);
+        $actual: _($list, drop-right 2, drop, drop-right, drop 2);
         $expected: 4 5 6 7;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop-right, filter $predicate, drop-right 2, drop, drop-right, drop 2, value);
+        $actual: _($list, drop-right, filter $predicate, drop-right 2, drop, drop-right, drop 2);
         $expected: 4 5;
 
         @include assert-equal($actual, $expected);
@@ -1424,22 +1424,22 @@ $test-before-count: 0 !global;
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4 5 6 7 8 9 10;
 
-        $actual: _($list, take 2, take, value);
+        $actual: _($list, take 2, take);
         $expected: (1,);
 
         @include assert-true(test-lists-equal($actual, $expected));
 
-        $actual: _($list, filter test-take-1, take 2, take, value);
+        $actual: _($list, filter test-take-1, take 2, take);
         $expected: (3,);
 
         @include assert-true(test-lists-equal($actual, $expected));
 
-        $actual: _($list, take 6, take-right 4, take 2, take-right, value);
+        $actual: _($list, take 6, take-right 4, take 2, take-right);
         $expected: (4,);
 
         @include assert-true(test-lists-equal($actual, $expected));
 
-        $actual: _($list, take (length($list) - 1), filter test-take-1, take 6, take-right 4, take 2, take-right, value);
+        $actual: _($list, take (length($list) - 1), filter test-take-1, take 6, take-right 4, take 2, take-right);
         $expected: (6,);
 
         @include assert-true(test-lists-equal($actual, $expected));
@@ -1489,22 +1489,22 @@ $test-before-count: 0 !global;
     @include test-group() {
       $list: 1 2 3 4 5 6 7 8 9 10;
       $predicate: test-take-right-1;
-      $actual: _($list, take-right 2, take-right, value);
+      $actual: _($list, take-right 2, take-right);
 
       @include assert-true(test-lists-equal($actual, (10,)),
         'should work in a lazy chain sequence');
 
-      $actual: _($list, filter $predicate, take-right 2, take-right, value);
+      $actual: _($list, filter $predicate, take-right 2, take-right);
 
       @include assert-true(test-lists-equal($actual, (8,)),
         'should work in a lazy chain sequence');
 
-      $actual: _($list, take-right 6, take 4, take-right 2, take, value);
+      $actual: _($list, take-right 6, take 4, take-right 2, take);
 
       @include assert-true(test-lists-equal($actual, (7,)),
         'should work in a lazy chain sequence');
 
-      $actual: _($list, filter $predicate, take-right 6, take 4, take-right 2, take, value);
+      $actual: _($list, filter $predicate, take-right 6, take 4, take-right 2, take);
 
       @include assert-true(test-lists-equal($actual, (5,)),
         'should work in a lazy chain sequence');
@@ -1537,7 +1537,7 @@ $test-before-count: 0 !global;
     @include assert-equal(_take-right-while($maps, ('b': 2)), _slice($maps, 2),
       'should work with a _where style predicate');
 
-    @include assert-equal(_($list, take-right-while test-take-right-while-1, value), 2 3,
+    @include assert-equal(_($list, take-right-while test-take-right-while-1), 2 3,
       'should return expected value when chaining');
   }
 }
@@ -1569,7 +1569,7 @@ $test-before-count: 0 !global;
     @include assert-equal(_take-while($maps, ('b': 2)), _slice($maps, 0, 1),
       'should work with a _where style predicate');
 
-    @include assert-equal(_($list, take-while test-take-while-1, value), 1 2,
+    @include assert-equal(_($list, take-while test-take-while-1), 1 2,
       'should return expected value when chaining');
   }
 }
@@ -1857,7 +1857,7 @@ $test-before-count: 0 !global;
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 1 3;
 
-        $actual: _($list, index-by _identity, filter test-index-by-1, take, value);
+        $actual: _($list, index-by _identity, filter test-index-by-1, take);
 
         @include assert-true(test-lists-equal($actual, (2,)));
     }
@@ -1928,7 +1928,7 @@ $test-before-count: 0 !global;
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3;
 
-        @include assert-true(test-lists-equal(_($list, filter test-initial-1, initial, value), (1,)));
+        @include assert-true(test-lists-equal(_($list, filter test-initial-1, initial), (1,)));
     }
 }
 
@@ -1958,7 +1958,7 @@ $test-before-count: 0 !global;
     }
 
     @include test('should be chainable') {
-        @include assert-true(test-lists-equal(_(1 2 3, map test-square, intersection (9 4 7), value), 4 9));
+        @include assert-true(test-lists-equal(_(1 2 3, map test-square, intersection (9 4 7)), 4 9));
     }
 }
 
@@ -3222,12 +3222,12 @@ $test-before-count: 0 !global;
       'should work with nullish elements');
 
     $list: (('a': 1), null, ('a': 3), ('a': 4));
-    $actual: _($list, pluck 'a', value);
+    $actual: _($list, pluck 'a');
 
     @include assert-true(test-lists-equal($actual, 1 null 3 4),
       'should work in a lazy chain sequence');
 
-    @include assert-true(test-lists-equal(_($list, filter _identity, pluck 'a', value), 1 3 4),
+    @include assert-true(test-lists-equal(_($list, filter _identity, pluck 'a'), 1 3 4),
       'should work in a lazy chain sequence');
   }
 }
@@ -3480,14 +3480,14 @@ $test-before-count: 0 !global;
       $list: 1 2 3;
       $map: ('a': 1, 'b': 2, 'c': 3);
 
-      $actual: _($list, map test-square, $method-name test-filter-methods-1, value);
+      $actual: _($list, map test-square, $method-name test-filter-methods-1);
 
       @include assert-true(test-lists-equal(
         $actual,
         if($is-filter, 4 9, (1,))),
         '#{$func} should work in a lazy chain sequence');
 
-      @actual: _($map, map-values test-square, $method-name test-filter-methods-1, value);
+      @actual: _($map, map-values test-square, $method-name test-filter-methods-1);
 
       @include assert-true(test-lists-equal(
         $actual,
@@ -3577,7 +3577,7 @@ $test-before-count: 0 !global;
     @include assert-true(test-lists-equal($actual, (2 3, 5 6, 8 9)),
       'should work as an iteratee for _map');
 
-    @include assert-true(test-lists-equal(_($list, rest, filter test-is-even, value), (2,)),
+    @include assert-true(test-lists-equal(_($list, rest, filter test-is-even), (2,)),
       'should work in a lazy chain sequence');
 
     @include assert-equal(_tail($list), _rest($list),
@@ -4244,7 +4244,7 @@ $test-before-count: 0 !global;
       ('a': 1, 'b': 2)
     );
 
-    $actual: _($list, where ('a': 1), value);
+    $actual: _($list, where ('a': 1));
 
     @include assert-equal($actual, nth($list, 1) nth($list, 3),
       'should work in a lazy chain sequence');
@@ -4371,7 +4371,7 @@ $test-before-count: 0 !global;
 
     $list: ('a' 1, 'b' 2);
     $predicate: test-zip-map-1;
-    $actual: _($list, zip-map, map _to-string, filter $predicate, take, value);
+    $actual: _($list, zip-map, map _to-string, filter $predicate, take);
 
     @include assert-true(test-lists-equal($actual, ('2',)),
       'should work in a lazy chain sequence');

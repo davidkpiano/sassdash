@@ -3,7 +3,7 @@
     $callback: __this('callback');
 
     $index: 1;
-    $list: __words(__deburr($string));
+    $list: __words($string);
     $length: length($list);
     $result: '';
 

@@ -7,7 +7,7 @@ It's lodash for Sass. Sassdash.
 **NOTE: This is still a work in progress!**
 
 ## Getting Started
-This library contains most of the (Sass-implementable) functions from [lodash](http://lodash.com).
+This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
 
 1. [`git clone https://github.com/davidkpiano/sassdash.git sassdash`](https://github.com/davidkpiano/sassdash.git) inside your project (preferably in a `vendors/` directory)
 2. `@import 'path/to/sassdash'` in your project

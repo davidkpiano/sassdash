@@ -104,9 +104,9 @@
 }
 
 @function __sort-by-iteratee($value, $key, $collection) {
-    $result: this(result);
-    $iteratee: this(iteratee);
-    $index: this(index);
+    $result: __this(result);
+    $iteratee: __this(iteratee);
+    $index: __this(index);
 
     $result: append($result, (
             'criteria': __exec($iteratee, $value, $key, $collection),
@@ -114,8 +114,8 @@
             'value': $value
         ));
 
-    $_: this(result, $result);
-    $_: this(index, $index + 1);
+    $_: __this(result, $result);
+    $_: __this(index, $index + 1);
 
     @return true;
 }
@@ -150,9 +150,9 @@
 }
 
 @function __sort-by-all-iteratee($value, $key, $collection) {
-    $props: this(props);
-    $result: this(result);
-    $index: this(index);
+    $props: __this(props);
+    $result: __this(result);
+    $index: __this(index);
 
     $length: length($props);
     $criteria: ();
@@ -171,8 +171,8 @@
             'value': $value
         ));
 
-    $_: this(result, $result);
-    $_: this(index, $index + 1);
+    $_: __this(result, $result);
+    $_: __this(index, $index + 1);
 
     @return true;
 }

@@ -3,7 +3,7 @@
 @function __negate-function($arguments...) {
     $predicate: __this('predicate');
 
-    @return not __call($predicate, this(), $arguments...);
+    @return not __call($predicate, __this(), $arguments...);
 }
 @function __negate($predicate) {
     @if not (__function-exists($predicate)) {

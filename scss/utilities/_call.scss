@@ -46,10 +46,10 @@
         $__current-scope__: $scope-id !global;
     }
 
-    $method-name: this($function-name);
+    $method-name: __this($function-name);
 
-    @if $method-name != null and __function-exists(this($function-name)) {
-        $function-name: this($function-name);
+    @if $method-name != null and __function-exists(__this($function-name)) {
+        $function-name: __this($function-name);
     } @else if not ($function-name and __function-exists($function-name)) {
         $__current-scope__: $previous-scope !global;
 

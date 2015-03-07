@@ -1,21 +1,21 @@
 
 @function __create-aggregator-function-iteratee($value, $key, $collection) {
-    $result: this('result');
-    $setter: this('setter');
-    $iteratee: this('iteratee');
+    $result: __this('result');
+    $setter: __this('setter');
+    $iteratee: __this('iteratee');
 
     $result: __exec($setter, $result, $value, __exec($iteratee, $value, $key, $collection), $collection);
 
-    $_: this('result', $result);
+    $_: __this('result', $result);
 
     @return true;
 }
 @function __create-aggregator-function($collection, $iteratee: __identity, $this-arg: null) {
-    $setter: this('setter');
-    $initializer: this('initializer');
+    $setter: __this('setter');
+    $initializer: __this('initializer');
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
-    $_: this('iteratee', $iteratee);
+    $_: __this('iteratee', $iteratee);
 
     $result: if($initializer, __call($initializer), ());
 
@@ -30,11 +30,11 @@
             $index: $index + 1;
         }
     } @else {
-        $_: this('result', $result);
+        $_: __this('result', $result);
 
         $_: __base-each($collection, __create-aggregator-function-iteratee);
 
-        $result: this('result');
+        $result: __this('result');
     }
 
     @return $result;

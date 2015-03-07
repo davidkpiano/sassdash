@@ -1,5 +1,5 @@
 @function __constant-function($args...) {
-    @return this('value');
+    @return __this('value');
 }
 @function __constant($value: null) {
     $_: __scope(('value': $value));

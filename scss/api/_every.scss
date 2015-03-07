@@ -5,7 +5,7 @@
 
     $result: if(__is-truthy(__exec($predicate, $value, $index, $collection)), true, false);
 
-    $_: this('result', $result);
+    $_: __this('result', $result);
 
     @return null;
 }

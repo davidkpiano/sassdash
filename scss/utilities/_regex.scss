@@ -122,15 +122,15 @@
 
 
 @function peek($skip: 0) {
-    @return str-slice(this('input'), $skip + 1, $skip + 1);
+    @return str-slice(__this('input'), $skip + 1, $skip + 1);
 }
 
 
 @function eat($char) {
-    $input: this('input');
+    $input: __this('input');
 
     @if peek() == $char {
-        $_: this('input', str-slice($input, 2));
+        $_: __this('input', str-slice($input, 2));
     } @else {
         // @TODO
         @error 'Fuck';
@@ -149,7 +149,7 @@
 
 
 @function more() {
-    @return str-length(this('input')) > 0;
+    @return str-length(__this('input')) > 0;
 }
 
 

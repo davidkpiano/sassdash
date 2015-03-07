@@ -24,7 +24,7 @@
 }
 
 @function __create-assigner-function($arguments...) {
-    $assigner: this('assigner');
+    $assigner: __this('assigner');
     $length: length($arguments);
     $map: if($length >= 1, nth($arguments, 1), null);
     $customizer: null;

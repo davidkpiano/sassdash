@@ -1,22 +1,20 @@
 
 
 @function __base-map-iteratee($value, $key, $collection) {
-    $result: this('result');
-    $iteratee: this('iteratee');
+    $result: __this('result');
+    $iteratee: __this('iteratee');
 
     $result: append($result, __exec($iteratee, $value, $key, $collection));
-    $_: this('result', $result);
+    $_: __this('result', $result);
 
     @return $result;
 }
 @function __base-map($collection, $iteratee) {
-    $_: __scope();
-    $_: scope('result', ());
-    $_: scope('iteratee', $iteratee);
+    $_: __scope(('result': (), 'iteratee': $iteratee));
 
     $_: __base-each($collection, __base-map-iteratee);
 
-    $result: scope('result');
+    $result: __this('result');
     $_: __scope(false);
 
     @return $result;
@@ -72,7 +70,7 @@
 
     $_: __base-for-own($map, $map-values-iteratee);
 
-    $result: scope('result');
+    $result: __this('result');
     $_: __scope(false);
 
     @return $result;

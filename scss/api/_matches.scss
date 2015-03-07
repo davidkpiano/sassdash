@@ -1,7 +1,7 @@
 
 @function __base-matches-function-1($map, $args...) {
-    $value: this('value');
-    $key: this('key');
+    $value: __this('value');
+    $key: __this('key');
 
     @return __is-truthy($map)
         and map-has-key($map, $key)
@@ -10,9 +10,9 @@
 @function __base-matches-function-2($map, $args...) {
     @return __base-is-match(
         $map,
-        this('props'),
-        this('values'),
-        this('strict-compare-flags'));
+        __this('props'),
+        __this('values'),
+        __this('strict-compare-flags'));
 }
 @function __base-matches($source, $is-cloned: false) {
     $props: map-keys($source);

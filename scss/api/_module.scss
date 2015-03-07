@@ -18,7 +18,7 @@
 @import 'defaults';
 @import 'difference';
 @import 'drop';
-@import 'either'; // not unit tested
+@import 'either';
 @import 'ends-with';
 @import 'escape';
 @import 'every';
@@ -58,6 +58,7 @@
 @import 'once';
 @import 'pad';
 @import 'pairs';
+@import 'parse-int';
 @import 'partial';
 @import 'partition';
 @import 'pick';

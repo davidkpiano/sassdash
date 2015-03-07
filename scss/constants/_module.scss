@@ -1,0 +1,20 @@
+
+
+$__const__: () !global;
+
+@function __const($key) {
+    @return get($__const__, $key);
+}
+
+@mixin __const($key, $value) {
+    @if not map-has-key($__const__, $key) {
+        $__const__: set($__const__, $key, $value) !global;
+    }
+}
+
+@import 'escapes';
+@import 'number';
+@import 'trunc';
+@import 'flags';
+@import 'constructor';
+@import 'char';

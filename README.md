@@ -12,3 +12,10 @@ This library contains most of the (Sass-implementable) functions from [lodash](h
 1. [`git clone https://github.com/davidkpiano/sassdash.git sassdash`](https://github.com/davidkpiano/sassdash.git) inside your project (preferably in a `vendors/` directory)
 2. `@import 'path/to/sassdash'` in your project
 3. Use your new powers wisely.
+
+## Running Tests
+**WARNING:** There are *over 400* unit tests, and more to come. Running them all takes between 30 seconds and 2 minutes.
+
+1. `cd path/to/sassdash`
+2. [`gem install true`](https://github.com/ericam/true)
+3. `true-cli tests/true-tests.scss`

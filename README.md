@@ -13,6 +13,38 @@ This library contains most of the implementable functions from [lodash](http://l
 2. `@import 'path/to/sassdash'` in your project
 3. Use your new powers wisely.
 
+## Using Sassdash
+If you are familiar with lodash, Sassdash will feel very natural to you.
+
+```scss
+$maps: (
+  ('name': 'barney', 'age': 36),
+  ('name': 'fred', 'age': 40)
+);
+
+_pluck($maps, 'name'); // ('barney', 'fred')
+```
+
+Functions **are chainable** in Sassdash via `_(...)`, but there is **no lazy evaluation**. Results are output immediately. Since Sass does not have a natural concept of method linking, linking in Sassdash is done by having each link represent:
+
+* The **method name** (first item)
+* The **arguments** (2nd - nth items)
+
+```scss
+$foobar: ('a' 'b' 'c', 'd' 'e' 'f', 'g' 'h' 'i');
+
+_($foobar,
+  map _join,
+  reduce _str-concat,
+  concat 'jkl',
+  join ' -- '); // 'abcdefghi -- jkl'
+```
+
+Also, just as in lodash, iteratee functions (such as those used with `_map`) are called with three arguments: `$value, $index, $collection`. Keep this in mind when passing in your functions as iteratee functions. If your function only expects the `$value` argument, you can either:
+
+* Discard the rest of the arguments in the function definition: `@function is-even($value, $args...) { ... }`
+* Wrap the function with `_ary`: `_map($list, _ary(is-even));`
+
 ## Running Tests
 **WARNING:** There are *over 400* unit tests, and more to come. Running them all takes between 30 seconds and 2 minutes.
 

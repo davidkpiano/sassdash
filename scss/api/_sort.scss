@@ -114,8 +114,8 @@
             'value': $value
         ));
 
-    $_: __this(result, $result);
-    $_: __this(index, $index + 1);
+    $_: __this('result', $result);
+    $_: __this('index', $index + 1);
 
     @return true;
 }
@@ -134,25 +134,22 @@
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
 
-    $_: __scope();
-        $_: scope(result, $result);
-        $_: scope(iteratee, $iteratee);
-        $_: scope(index, $index);
+    $_: __scope(('result': $result, 'iteratee': $iteratee, 'index': $index));
 
         $sort-by-iteratee: __bind(__sort-by-iteratee);
 
         $_: __base-each($collection, $sort-by-iteratee);
 
-        $result: scope(result);
+        $result: __this('result');
     $_: __scope(false);
 
     @return __base-sort-by($result, __compare-ascending);
 }
 
 @function __sort-by-all-iteratee($value, $key, $collection) {
-    $props: __this(props);
-    $result: __this(result);
-    $index: __this(index);
+    $props: __this('props');
+    $result: __this('result');
+    $index: __this('index');
 
     $length: length($props);
     $criteria: ();
@@ -171,8 +168,8 @@
             'value': $value
         ));
 
-    $_: __this(result, $result);
-    $_: __this(index, $index + 1);
+    $_: __this('result', $result);
+    $_: __this('index', $index + 1);
 
     @return true;
 }
@@ -189,16 +186,13 @@
     $props: __base-flatten($args, false, false, 1);
     $result: ();
 
-    $_: __scope();
-        $_: scope(props, $props);
-        $_: scope(result, $result);
-        $_: scope(index, $index);
+    $_: __scope(('props': $props, 'result': $result, 'index': $index));
 
         $iteratee: __bind(__sort-by-all-iteratee);
 
         $_: __base-each($collection, $iteratee);
 
-        $result: scope(result);
+        $result: __this('result');
     $_: __scope(false);
 
     @return __base-sort-by($result, __compare-multiple-ascending);

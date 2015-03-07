@@ -40,9 +40,7 @@
     @return $result;
 }
 @function __create-aggregator($setter, $initializer: null) {
-    $_: __scope();
-        $_: scope('setter', $setter);
-        $_: scope('initializer', $initializer);
+    $_: __scope(('setter': $setter, 'initializer': $initializer));
 
         $function: __bind(__create-aggregator-function);
     $_: __scope(false);

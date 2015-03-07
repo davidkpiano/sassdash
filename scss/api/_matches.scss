@@ -24,8 +24,8 @@
         $key: nth($props, 1);
         $value: get($source, $key);
 
-        $_: scope('key', $key);
-        $_: scope('value', $value);
+        $_: __this('key', $key);
+        $_: __this('value', $value);
 
         @if (__is-strict-comparable($value)) {
             $result: __bind(__base-matches-function-1);
@@ -50,9 +50,9 @@
     $values: __to-list($values);
     $strict-compare-flags: __to-list($strict-compare-flags);
 
-    $_: scope('props', $props);
-    $_: scope('values', $values);
-    $_: scope('strict-compare-flags', $strict-compare-flags);
+    $_: __this('props', $props);
+    $_: __this('values', $values);
+    $_: __this('strict-compare-flags', $strict-compare-flags);
 
     $result: __bind(__base-matches-function-2);
 

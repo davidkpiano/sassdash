@@ -1,6 +1,6 @@
 
 @function __create-compounder-function($string) {
-    $callback: __this(callback);
+    $callback: __this('callback');
 
     $index: 1;
     $list: __words(__deburr($string));
@@ -16,8 +16,7 @@
     @return $result;
 }
 @function __create-compounder($callback) {
-    $_: __scope();
-    $_: scope(callback, $callback);
+    $_: __scope(('callback': $callback));
     $scoped-function: __bind(__create-compounder-function);
     $_: __scope(false);
 

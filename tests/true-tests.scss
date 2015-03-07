@@ -535,7 +535,6 @@ $test-before-count: 0 !global;
         $value: 'second';
 
         $_: __scope(('value': 'first'));
-        @debug __this('value');
         $actual: _call(test-call-3, $__current-scope__, $value);
         $_: __scope(false);
 
@@ -549,7 +548,7 @@ $test-before-count: 0 !global;
     @return join((), $args);
 }
 @function test-callback-2($args...) {
-    $result: this('a');
+    $result: __this('a');
     $result: join(($result), $args);
 
     @return $result;
@@ -860,7 +859,7 @@ $test-before-count: 0 !global;
     @return $value > 1;
 }
 @function test-drop-right-while-2($num, $index, $args...) {
-    @return nth(this('list'), $index) > 1;
+    @return nth(__this('list'), $index) > 1;
 }
 @include test-module('_drop-right-while') {
     $list: 1 2 3;
@@ -3505,7 +3504,7 @@ $test-before-count: 0 !global;
 }
 
 @function test-result-1() {
-  @return this('a');
+  @return __this('a');
 }
 @include test-module('Sassdash') {
   @include test('_result') {

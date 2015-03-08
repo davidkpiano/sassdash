@@ -66,7 +66,11 @@
 @function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
     $type: if(__function-exists($function), 'function', type-of($function));
 
-    @if ($type == 'function') {
+    @if __is-native($function) {
+        @return __ary($function, 1);
+    }
+
+    @if $type == 'function' {
         @return if(not __is-undefined($this-arg) and __is-function($function),
             __bind-callback($function, $this-arg, $arg-count),
             $function);

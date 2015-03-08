@@ -114,6 +114,10 @@
     @return __is-list($value) or __is-arglist($value);
 }
 
+@function __is-native($value, $args...) {
+    @return __is-function($value) and index(__const('NATIVE_FUNCTIONS'), $value);
+}
+
 @function _is-arglist($args...) { @return call(__is-arglist, $args...); }
 @function _is-list($args...) { @return call(__is-list, $args...); }
 @function _is-boolean($args...) { @return call(__is-boolean, $args...); }

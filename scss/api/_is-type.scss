@@ -118,6 +118,10 @@
     @return __is-function($value) and index(__const('NATIVE_FUNCTIONS'), $value);
 }
 
+@function __is-color($value, $args...) {
+    @return type-of($value) == 'color';
+}
+
 @function _is-arglist($args...) { @return call(__is-arglist, $args...); }
 @function _is-list($args...) { @return call(__is-list, $args...); }
 @function _is-boolean($args...) { @return call(__is-boolean, $args...); }
@@ -134,3 +138,5 @@
 @function _is-iterable($args...) { @return call(__is-iterable, $args...); }
 @function _is-map-like($args...) { @return call(__is-map-like, $args...); }
 @function _is-list-like($args...) { @return call(__is-list-like, $args...); }
+@function _is-color($args...) { @return call(__is-color, $args...); }
+

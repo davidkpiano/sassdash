@@ -104,9 +104,9 @@
 }
 
 @function __sort-by-iteratee($value, $key, $collection) {
-    $result: __this(result);
-    $iteratee: __this(iteratee);
-    $index: __this(index);
+    $result: __this('result');
+    $iteratee: __this('iteratee');
+    $index: __this('index');
 
     $result: append($result, (
             'criteria': __exec($iteratee, $value, $key, $collection),

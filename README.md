@@ -1,10 +1,8 @@
-# sassdash
+# sassdash (beta)
 
 [![Join the chat at https://gitter.im/davidkpiano/sassdash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/davidkpiano/sassdash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 It's lodash for Sass. Sassdash.
-
-**NOTE: This is still a work in progress!**
 
 ## Getting Started
 This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
@@ -12,6 +10,8 @@ This library contains most of the implementable functions from [lodash](http://l
 1. [`git clone https://github.com/davidkpiano/sassdash.git sassdash`](https://github.com/davidkpiano/sassdash.git) inside your project (preferably in a `vendors/` directory)
 2. `@import 'path/to/sassdash'` in your project
 3. Use your new powers wisely.
+
+FYI: Neither Compass nor Eyeglass are required! Sassdash *should* work in both Sass and Libsass (latest versions).
 
 ## Using Sassdash
 If you are familiar with lodash, Sassdash will feel very natural to you.

@@ -56,7 +56,7 @@
         @return __bind-callback-any;
     }
 
-    $result: __bind(get($arg-count-case, $arg-count), $this-arg);
+    $result: __bind(__get($arg-count-case, $arg-count), $this-arg);
 
     $_: __scope(false);
 

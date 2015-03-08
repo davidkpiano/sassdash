@@ -33,7 +33,7 @@
 
     @while ($index <= $length) {
         $key: nth($props, $index);
-        $map: set($map, $key, get($source, $key));
+        $map: set($map, $key, __get($source, $key));
 
         $index: $index + 1;
     }

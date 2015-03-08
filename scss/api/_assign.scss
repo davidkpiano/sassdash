@@ -11,8 +11,8 @@
     }
 
     @each $key in $props {
-        $value: if(map-has-key($map, $key), get($map, $key), $__undefined__);
-        $result: __exec($customizer, $value, get($source, $key), $key, $map, $source);
+        $value: if(map-has-key($map, $key), __get($map, $key), $__undefined__);
+        $result: __exec($customizer, $value, __get($source, $key), $key, $map, $source);
 
         @if ($result != $value)
             or ($value == null and not map-has-key($map, $key)) {

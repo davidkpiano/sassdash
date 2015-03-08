@@ -8,7 +8,7 @@
     $list: __to-map($list);
 
     @while ($length > 0) {
-        $list: set($list, $length, get(get($list, $length), 'value'));
+        $list: set($list, $length, __get(__get($list, $length), 'value'));
 
         $length: $length - 1;
     }
@@ -32,13 +32,13 @@
 }
 
 @function __compare-ascending($map, $other) {
-    @return __either(__base-compare-ascending(get($map, 'criteria'), get($other, 'criteria')), (get($map, 'index') - get($other, 'index')));
+    @return __either(__base-compare-ascending(__get($map, 'criteria'), __get($other, 'criteria')), (__get($map, 'index') - __get($other, 'index')));
 }
 
 @function __compare-multiple-ascending($map, $other) {
     $index: 1;
-    $map-criteria: get($map, 'criteria');
-    $other-criteria: get($other, 'criteria');
+    $map-criteria: __get($map, 'criteria');
+    $other-criteria: __get($other, 'criteria');
     $length: length($map-criteria);
 
     @while ($index <= $length) {
@@ -51,7 +51,7 @@
         $index: $index + 1;
     }
 
-    @return (get($map, 'index') - get($other, 'index'));
+    @return (__get($map, 'index') - __get($other, 'index'));
 }
 
 @function __sort-predicate-asc($first, $second) {
@@ -76,7 +76,7 @@
         'desc': __sort-predicate-desc
     );
 
-    $comparison-function: __either(get($predicate-map, $predicate), $predicate);
+    $comparison-function: __either(__get($predicate-map, $predicate), $predicate);
 
     $less:  ();
     $equal: ();
@@ -155,7 +155,7 @@
     $criteria: ();
 
     @while ($length > 0) {
-        $criteria: set($criteria, $length, if($value == null, $__undefined__, get($value, get($props, $length))));
+        $criteria: set($criteria, $length, if($value == null, $__undefined__, __get($value, __get($props, $length))));
 
         $length: $length - 1;
     }

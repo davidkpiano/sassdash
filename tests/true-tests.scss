@@ -290,7 +290,7 @@ $test-before-count: 0 !global;
 //         @include test('should convert string to #{$case-name} case') {
 //             @each $string in $strings {
 //                 $actual: call($method-name, $string);
-//                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, get($converted, $case-name));
+//                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
 
 //                 @include assert-equal($actual, $expected);
 //             }
@@ -299,7 +299,7 @@ $test-before-count: 0 !global;
 //         @include test('#{$method-name} should handle double-converting strings') {
 //             @each $string in $strings {
 //                 $actual: call($method-name, call($method-name, $string));
-//                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, get($converted, $case-name));
+//                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
 
 //                 @include assert-equal($actual, $expected);
 //             }
@@ -313,7 +313,7 @@ $test-before-count: 0 !global;
 
 //         @include test('#{$method-name} should return an unwrapped value when chaining') {
 //             $actual: _('foo bar', $case-name + '-case');
-//             $expected: get($converted, $case-name);
+//             $expected: __get($converted, $case-name);
 
 //             @include assert-equal($actual, $expected);
 //         }
@@ -685,13 +685,13 @@ $test-before-count: 0 !global;
     @include test('should not overwrite null values') {
         $actual: _defaults(('a': null), ('a': 1));
 
-        @include assert-equal(get($actual, 'a'), null);
+        @include assert-equal(__get($actual, 'a'), null);
     }
 
     @include test('should overwrite undefined values') {
         $actual: _defaults(('a': $__undefined__), ('a': 1));
 
-        @include assert-equal(get($actual, 'a'), 1);
+        @include assert-equal(__get($actual, 'a'), 1);
     }
 }
 
@@ -1180,10 +1180,10 @@ $test-before-count: 0 !global;
 }
 
 @function test-find-1($map, $args...) {
-    @return __is-truthy(get($map, 'a'));
+    @return __is-truthy(__get($map, 'a'));
 }
 @function test-find-2($map, $args...) {
-    @return get($map, 'a') == 3;
+    @return __get($map, 'a') == 3;
 }
 @function test-find-3($value, $args...) {
     @return if(type-of($value) == 'number', $value < 3, false);
@@ -1201,7 +1201,7 @@ $test-before-count: 0 !global;
             ('a': 2, 'b': 2),
         );
 
-        $expected-values: get((
+        $expected-values: __get((
             'find': nth($maps, 2) $__undefined__ nth($maps, 3) nth($maps, 2),
             'find-last': nth($maps, 3) $__undefined__ nth($maps, 3) nth($maps, 3),
             'find-index': 2 -1 3 2,
@@ -1249,7 +1249,7 @@ $test-before-count: 0 !global;
 
         @include test('should work with an object for collection') {
             $actual: _call($func, null, ('a': 1, 'b': 2, 'c': 3), test-find-3);
-            $expected: get((
+            $expected: __get((
                 'find': 1,
                 'find-last': 2,
                 'find-key': 'a',
@@ -1265,7 +1265,7 @@ $test-before-count: 0 !global;
 
         @include test('should work with a string for collection') {
             $actual: _call($func, null, 'abc', test-find-4);
-            $expected: get((
+            $expected: __get((
                 'find': 'a',
                 'find-last': 'b',
                 'find-index': 1,
@@ -2788,7 +2788,7 @@ $test-before-count: 0 !global;
   @include test('should assign null values') {
     $actual: _merge(('a': 1), ('a': null));
 
-    @include assert-equal(get($actual, 'a'), null);
+    @include assert-equal(__get($actual, 'a'), null);
   }
 }
 
@@ -3551,7 +3551,7 @@ $test-before-count: 0 !global;
     @include assert-equal(_result($map, 'd', 42), 42,
       'should return the specified default value for undefined properties');
 
-    @include assert-equal(_result($map, 'd', get($map, 'c')), 1,
+    @include assert-equal(_result($map, 'd', __get($map, 'c')), 1,
       'should execute default function values');
   }
 }
@@ -3815,10 +3815,10 @@ $test-before-count: 0 !global;
   @return ('a': $a, 'b': $b, 'c': $c);
 }
 @function test-sort-by-2($map, $args...) {
-  @return get($map, 'b');
+  @return __get($map, 'b');
 }
 @function test-sort-by-3($map, $args...) {
-  @return get($map, 'a');
+  @return __get($map, 'a');
 }
 @include test-module('Sassdash') {
   @include test('_sort-by') {
@@ -4137,7 +4137,7 @@ $test-before-count: 0 !global;
 }
 
 @function test-uniq-1($map, $args...) {
-  @return get($map, 'a');
+  @return __get($map, 'a');
 }
 @include test-module('Sassdash') {
   @include test('_uniq') {
@@ -4235,7 +4235,7 @@ $test-before-count: 0 !global;
       'z': ( 'a': 1, 'b': 2 )
     );
 
-    @include assert-equal(_where($map, ('a': 1)), get($map, 'x') get($map, 'z'),
+    @include assert-equal(_where($map, ('a': 1)), __get($map, 'x') __get($map, 'z'),
       'should work with a map for collection');
 
     $list: (

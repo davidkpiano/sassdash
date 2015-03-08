@@ -76,8 +76,8 @@
         $result: map-has-key($other, $key);
 
         @if ($result) {
-            $map-value: get($map, $key);
-            $other-value: get($other, $key);
+            $map-value: __get($map, $key);
+            $other-value: __get($other, $key);
 
             $result: $__undefined__;
 

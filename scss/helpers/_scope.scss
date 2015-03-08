@@ -14,13 +14,13 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 @function __scope($map: ()) {
     @if $map == false {
         $scope: static-get($__current-scope__);
-        $__current-scope__: get($scope, '_parent') !global;
+        $__current-scope__: __get($scope, '_parent') !global;
 
         @return true;
     }
 
     $scope: new(Scope);
-    $scope-id: get($scope, '_id');
+    $scope-id: __get($scope, '_id');
     $__current-scope__: $scope-id !global;
 
     @if __is-map($map) {

@@ -10,7 +10,7 @@
         $result: ();
 
         @for $index from 1 through max(map-keys($value)...) {
-            $map-value: get($value, $index);
+            $map-value: __get($value, $index);
             $result: append($result, $map-value);
         }
 

@@ -1,7 +1,7 @@
 
 
 @function static-get($properties) {
-    @return get($__static__, $properties);
+    @return __get($__static__, $properties);
 }
 
 

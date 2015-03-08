@@ -13,7 +13,7 @@
 }
 
 
-@function get($map, $properties) {
+@function __get($map, $properties) {
     @if type-of($map) == 'string' {
         $string: $map;
         $map: ();
@@ -47,7 +47,7 @@
         @return $map;
     }
 
-    @return get($map, $properties);
+    @return __get($map, $properties);
 }
 
 @function set($map, $properties, $value) {
@@ -82,7 +82,7 @@
 
 
 @function push($map, $properties, $value) {
-    $list: append(get($map, $properties), $value);
+    $list: append(__get($map, $properties), $value);
 
     @return set($map, $properties, $list);
 }

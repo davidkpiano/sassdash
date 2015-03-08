@@ -23,8 +23,8 @@
     $escapes: __sort-by($escapes, __property('index'));
 
     @each $escaped-map in $escapes {
-        $escaped: get($escaped-map, 'escaped');
-        $unescaped: get($escaped-map, 'unescaped');
+        $escaped: __get($escaped-map, 'escaped');
+        $unescaped: __get($escaped-map, 'unescaped');
 
         $string: __string-replace($string, $escaped, $unescaped);
     }

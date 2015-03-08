@@ -18,7 +18,7 @@
     $result: ();
     $function: if($is-func,
         $method-name,
-        if($value != null, get($value, $method-name), false));
+        if($value != null, __get($value, $method-name), false));
 
     @if $length == 0 {
         @return $result;

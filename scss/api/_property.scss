@@ -4,7 +4,7 @@
     $key: __this('key');
     $map: __to-map($map);
 
-    @return if($map == null, null, get($map, $key));
+    @return if($map == null, null, __get($map, $key));
 }
 @function __base-property($key) {
     $_: __scope(('key': $key));
@@ -23,7 +23,7 @@
 @function __property-of-function($key, $args...) {
     $map: __this('map');
 
-    @return if($map == null, null, get($map, $key));
+    @return if($map == null, null, __get($map, $key));
 }
 @function __property-of($map) {
     $_: __scope(('map', $map));

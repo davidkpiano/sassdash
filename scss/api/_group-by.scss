@@ -2,7 +2,7 @@
 
 @function __group-by-aggregator($result, $value, $key, $args...) {
     @if map-has-key($result, $key) {
-        $result: set($result, $key, append(get($result, $key), $value));
+        $result: set($result, $key, append(__get($result, $key), $value));
     } @else {
         $result: set($result, $key, ($value,));
     }

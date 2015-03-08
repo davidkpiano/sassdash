@@ -31,7 +31,7 @@
 
     @each $key in $props {
         @if (map-has-key($map, $key)) {
-            $result: set($result, $key, get($map, $key));
+            $result: set($result, $key, __get($map, $key));
         }
     }
 

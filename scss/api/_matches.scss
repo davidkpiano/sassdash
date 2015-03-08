@@ -5,7 +5,7 @@
 
     @return __is-truthy($map)
         and map-has-key($map, $key)
-        and $value == get($map, $key);
+        and $value == __get($map, $key);
 }
 @function __base-matches-function-2($map, $args...) {
     @return __base-is-match(
@@ -22,7 +22,7 @@
 
     @if ($length == 1) {
         $key: nth($props, 1);
-        $value: get($source, $key);
+        $value: __get($source, $key);
 
         $_: __this('key', $key);
         $_: __this('value', $value);
@@ -40,7 +40,7 @@
     $strict-compare-flags: (); // list
 
     @while ($length > 0) {
-        $value: get($source, nth($props, $length));
+        $value: __get($source, nth($props, $length));
         $values: set($values, $length, $value);
         $strict-compare-flags: set($strict-compare-flags, $length, __is-strict-comparable($value));
 

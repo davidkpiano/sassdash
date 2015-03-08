@@ -1,7 +1,7 @@
 
 
 @function __result($map, $key, $default-value: null) {
-    $value: if($map == null, $__undefined__, get($map, $key));
+    $value: if($map == null, $__undefined__, __get($map, $key));
     $result: null;
 
     @if __is-undefined($value) or __is-null($value) {

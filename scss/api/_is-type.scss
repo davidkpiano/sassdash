@@ -25,7 +25,7 @@
         $prereq: ($type == 'string');
     }
 
-    @return if($prereq, get($map, $index) == $value, false);
+    @return if($prereq, __get($map, $index) == $value, false);
 }
 
 @function __is-arglist($value, $args...) {

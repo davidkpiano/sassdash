@@ -3,7 +3,7 @@
     $result: ();
 
     @each $key in $props {
-        @if __function-exists(get($map, $key)) {
+        @if __function-exists(__get($map, $key)) {
             $result: append($result, $key);
         }
     }

@@ -9,11 +9,11 @@
     $result: ();
 
     @each $key in $props {
-        $value: get($map, $key);
+        $value: __get($map, $key);
 
         @if ($multi-value) {
             @if (map-has-key($result, $value)) {
-                $result: set($result, $value, append(get($result, $value), $key));
+                $result: set($result, $value, append(__get($result, $value), $key));
             } @else {
                 $result: set($result, $value, ($key,));
             }

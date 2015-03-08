@@ -9,7 +9,7 @@
             $key: __parse-float($key);
             $result: append($result, if(__is-index($key, $length), nth($collection, $key), null));
         } @else {
-            $result: append($result, get($collection, $key));
+            $result: append($result, __get($collection, $key));
         }   
     }
 

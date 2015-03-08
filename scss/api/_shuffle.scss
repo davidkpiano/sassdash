@@ -10,10 +10,10 @@
         $rand: __base-rand(1, $index);
 
         @if ($index != $rand) {
-            $result: set($result, $index, get($result, $rand));
+            $result: set($result, $index, __get($result, $rand));
         }
 
-        $result: set($result, $rand, get($collection, $index));
+        $result: set($result, $rand, __get($collection, $index));
 
         $index: $index + 1;
     }

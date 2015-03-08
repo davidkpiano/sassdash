@@ -12,7 +12,7 @@
 
     @while ($index <= $length) {
         @if if(($no-customizer and length($strict-compare-flags) > 0 and nth($strict-compare-flags, $index)),
-                (nth($values, $index) != get($map, nth($props, $index))),
+                (nth($values, $index) != __get($map, nth($props, $index))),
                 (not map-has-key($map, nth($props, $index)))
             ) {
             @return false;
@@ -29,7 +29,7 @@
         @if $no-customizer and nth($strict-compare-flags, $index) {
             $result: map-has-key($map, $key);
         } @else {        
-            $map-value: get($map, $key);
+            $map-value: __get($map, $key);
             $src-value: nth($values, $index);
 
             $result: if($customizer,
@@ -63,10 +63,10 @@
 
     @if (not $customizer and $length == 1) {
         $key: nth($props, 1);
-        $value: get($source, $key);
+        $value: __get($source, $key);
 
         @if (__is-strict-comparable($value)) {
-            @return if($map != null and $value == get($map, $key), map-has-key($map, $key), false);
+            @return if($map != null and $value == __get($map, $key), map-has-key($map, $key), false);
         }
     }
 
@@ -74,7 +74,7 @@
     $strict-compare-flags: ();
 
     @while ($length > 0) {
-        $value: get($source, nth($props, $length));
+        $value: __get($source, nth($props, $length));
         $values: set($values, $length, $value);
         $strict-compare-flags: set($strict-compare-flags, $length, __is-strict-comparable($value));
 

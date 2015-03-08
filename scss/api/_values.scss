@@ -6,7 +6,7 @@
     $result: ();
 
     @while ($index <= $length) {
-        $result: append($result, get($map, nth($props, $index)));
+        $result: append($result, __get($map, nth($props, $index)));
 
         $index: $index + 1;
     }

@@ -1,7 +1,7 @@
 @function __count-by-iteratee($result, $value, $key, $args...) {
     $result: if(
         map-has-key($result, $key),
-        set($result, $key, get($result, $key) + 1),
+        set($result, $key, __get($result, $key) + 1),
         set($result, $key, 1));
 
     @return $result;

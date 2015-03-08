@@ -10,9 +10,9 @@
 
     @if ($options != null) {
         @if (__is-map($options)) {
-            $separator: if(map-has-key($options, 'separator'), get($options, 'separator'), $separator);
-            $length: if(map-has-key($options, 'length'), get($options, 'length'), $length);
-            $omission: if(map-has-key($options, 'omission'), __base-to-string(get($options, 'omission')), $omission);
+            $separator: if(map-has-key($options, 'separator'), __get($options, 'separator'), $separator);
+            $length: if(map-has-key($options, 'length'), __get($options, 'length'), $length);
+            $omission: if(map-has-key($options, 'omission'), __base-to-string(__get($options, 'omission')), $omission);
         } @else {
             $length: __parse-int($options);
         }

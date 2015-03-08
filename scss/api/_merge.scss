@@ -1,7 +1,7 @@
 
 @function __base-merge-deep($map, $source, $key, $merge-function, $customizer, $stack-a: (), $stack-b: ()) {
     $length: length($stack-a);
-    $src-value: get($source, $key);
+    $src-value: __get($source, $key);
 
     @while $length > 0 {
         @if __is-equal(nth($stack-a, $length), $src-value) {
@@ -13,7 +13,7 @@
 
         $length: $length - 1;
     }
-    $value: get($map, $key);
+    $value: __get($map, $key);
 
     $result: if($customizer,
         __exec($customizer, $value, $src-value, $key, $map, $source),
@@ -62,7 +62,7 @@
         @return __exec($base-merge-deep, $map, $source, $key, __base-merge, $customizer, $stack-a, $stack-b);
     }
 
-    $value: get($map, $key);
+    $value: __get($map, $key);
 
     $result: if($customizer,
         __exec($customizer, $value, $src-value, $key, $map, $source),

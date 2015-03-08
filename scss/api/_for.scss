@@ -41,7 +41,7 @@
 
     $break: false;
     @while ($index <= $length and not $break) {
-        $iteration: __exec($iteratee, get($iterable, $index), $index, $iterable);
+        $iteration: __exec($iteratee, __get($iterable, $index), $index, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -68,7 +68,7 @@
 
     $break: false;
     @while ($length > 0 and not $break) {
-        $iteration: __exec($iteratee, get($iterable, $length), $length, $iterable);
+        $iteration: __exec($iteratee, __get($iterable, $length), $length, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -94,7 +94,7 @@
     $break: false;
     @while $index <= $length and not $break {
         $key: nth($props, $index);
-        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
+        $iteration: __exec($iteratee, __get($iterable, $key), $key, $iterable);
 
         @if ($iteration == false) {
             $break: true;
@@ -117,7 +117,7 @@
     $break: false;
     @while $length > 0 and not $break {
         $key: nth($props, $length);
-        $iteration: __exec($iteratee, get($iterable, $key), $key, $iterable);
+        $iteration: __exec($iteratee, __get($iterable, $key), $key, $iterable);
 
         @if ($iteration == false) {
             $break: true;

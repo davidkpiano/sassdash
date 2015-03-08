@@ -2,9 +2,9 @@
 
 [![Join the chat at https://gitter.im/davidkpiano/sassdash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/davidkpiano/sassdash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-It's lodash for Sass. Sassdash.
+It's [lodash](http://www.lodash.com) for Sass. Sassdash.
 
-**Why?** Developed with the framework developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
+**Why?** Developed with the framework developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](http://www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
 
 ## Getting Started
 This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
@@ -169,7 +169,7 @@ _before | _.before
 _bind | _.bind
 :clock130: | _.bindAll
 :clock130: | _.bindKey
-:clock130: | _.compose → flowRight
+_compose | _.compose → flowRight
 :x: | _.curry
 :x: | _.curryRight
 :x: | _.debounce

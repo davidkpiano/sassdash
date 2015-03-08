@@ -33,7 +33,7 @@
         $result: ();
 
         @while ($index <= $length) {
-            $result: set($result, $index, __char-at($value, $index));
+            $result: __set($result, $index, __char-at($value, $index));
 
             $index: $index + 1;
         }
@@ -45,7 +45,7 @@
         $result: ();
 
         @while ($index <= $length) {
-            $result: set($result, $index, nth($value, $index));
+            $result: __set($result, $index, nth($value, $index));
 
             $index: $index + 1;
         }

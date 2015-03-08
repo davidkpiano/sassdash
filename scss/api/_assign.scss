@@ -16,7 +16,7 @@
 
         @if ($result != $value)
             or ($value == null and not map-has-key($map, $key)) {
-            $map: set($map, $key, $result);    
+            $map: __set($map, $key, $result);    
         }
     }
 

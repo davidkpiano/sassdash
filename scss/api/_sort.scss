@@ -8,7 +8,7 @@
     $list: __to-map($list);
 
     @while ($length > 0) {
-        $list: set($list, $length, __get(__get($list, $length), 'value'));
+        $list: __set($list, $length, __get(__get($list, $length), 'value'));
 
         $length: $length - 1;
     }
@@ -155,7 +155,7 @@
     $criteria: ();
 
     @while ($length > 0) {
-        $criteria: set($criteria, $length, if($value == null, $__undefined__, __get($value, __get($props, $length))));
+        $criteria: __set($criteria, $length, if($value == null, $__undefined__, __get($value, __get($props, $length))));
 
         $length: $length - 1;
     }

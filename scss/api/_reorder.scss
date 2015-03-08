@@ -11,7 +11,7 @@
     @while ($length > 0) {
         $index: nth($indexes, $length);
 
-        $list: set($list, $length, if(__is-index($index, $list-length), nth($old-list, $index), $__undefined__));
+        $list: __set($list, $length, if(__is-index($index, $list-length), nth($old-list, $index), $__undefined__));
 
         $length: $length - 1;
     }

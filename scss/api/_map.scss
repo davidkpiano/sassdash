@@ -54,7 +54,7 @@
     $result: __this('result');
     $iteratee: __this('iteratee');
 
-    $result: set($result, $key, __exec($iteratee, $value, $key, $map));
+    $result: __set($result, $key, __exec($iteratee, $value, $key, $map));
 
     $_: __this('result', $result);
 

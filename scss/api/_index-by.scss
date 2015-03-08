@@ -1,7 +1,7 @@
 
 
 @function __index-by-aggregator($result, $value, $key, $args...) {
-    @return set($result, $key, $value);
+    @return __set($result, $key, $value);
 }
 @function __index-by($arguments...) {
     $function: __create-aggregator(__index-by-aggregator);

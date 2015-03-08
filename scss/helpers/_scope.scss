@@ -19,7 +19,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
         @return true;
     }
 
-    $scope: new(Scope);
+    $scope: __new(Scope);
     $scope-id: __get($scope, '_id');
     $__current-scope__: $scope-id !global;
 

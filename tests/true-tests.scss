@@ -168,7 +168,7 @@ $test-empty-list: ();
     $map-list: __to-map($list);
     $empty-list: ();
 
-    $map-list: set($map-list, 1.1, 1);
+    $map-list: __set($map-list, 1.1, 1);
 
     @include test('should return the elements corresponding to the specified keys') {
         $actual: _at($list, (1 3));
@@ -1740,7 +1740,7 @@ $test-before-count: 0 !global;
   }
 
   @include test('should not check for inherited properties') {
-    $map: new(TestHas, ('a': 1));
+    $map: __new(TestHas, ('a': 1));
 
     @include assert-equal(_has($map, '_type'), false);
     @include assert-equal(_has($map, 'a'), true);
@@ -2365,7 +2365,7 @@ $test-before-count: 0 !global;
     }
 
     @include test('should return false for constructed maps') {
-        $constructed-map: new(NonPlainMap, ('foo': 'bar'));
+        $constructed-map: __new(NonPlainMap, ('foo': 'bar'));
 
         @include assert-equal(_is-plain-map($constructed-map), false);
     }
@@ -2461,7 +2461,7 @@ $test-before-count: 0 !global;
         }
 
         @include test('#{$func} should skip meta properties of constructed maps') {
-            $test-map: new(TestKeysMap);
+            $test-map: __new(TestKeysMap);
 
             @include assert-true(test-lists-equal(_call($func, null, $test-map), ('foo',)));
         }

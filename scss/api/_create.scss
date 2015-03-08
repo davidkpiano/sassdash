@@ -5,7 +5,7 @@
         @return ();
     }
 
-    @return new($constructor, $args...);
+    @return __new($constructor, $args...);
 }
 
 @function __create($prototype, $properties, $guard: null) {

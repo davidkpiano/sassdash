@@ -6,7 +6,7 @@
     @while $length > 0 {
         @if __is-equal(nth($stack-a, $length), $src-value) {
             @debug 'anything?";';
-            $map: set($map, $key, nth($stack-b, $length));
+            $map: __set($map, $key, nth($stack-b, $length));
 
             @return $map;
         }
@@ -41,9 +41,9 @@
     $stack-b: append($stack-b, $result);
 
     @if $is-common {
-        $_: __this('map', set($map, $key, __exec($merge-function, $result, $src-value, $customizer, $stack-a, $stack-b)));
+        $_: __this('map', __set($map, $key, __exec($merge-function, $result, $src-value, $customizer, $stack-a, $stack-b)));
     } @else if not __is-equal($result, $value) {
-        $_: __this('map', set($map, $key, $result));
+        $_: __this('map', __set($map, $key, $result));
     }
 
     @return __this('map');
@@ -77,7 +77,7 @@
     @if ($is-source-list or not __is-undefined($result))
         and ($is-common or not __is-equal($result, $value))
     {
-        $map: __this('map', set($map, $key, $result));
+        $map: __this('map', __set($map, $key, $result));
     }
 
     @return true;

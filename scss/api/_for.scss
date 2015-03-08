@@ -46,7 +46,7 @@
         @if ($iteration == false) {
             $break: true;
         } @else {
-            $iterable: set($iterable, $index, $iteration);
+            $iterable: __set($iterable, $index, $iteration);
         }
 
         $index: $index + 1;
@@ -73,7 +73,7 @@
         @if ($iteration == false) {
             $break: true;
         } @else {
-            $iterable: set($iterable, $length, $iteration);
+            $iterable: __set($iterable, $length, $iteration);
         }
 
         $length: $length - 1;
@@ -99,7 +99,7 @@
         @if ($iteration == false) {
             $break: true;
         } @else {
-            $result-map: set($result-map, $key, $iteration);
+            $result-map: __set($result-map, $key, $iteration);
         }
 
         $index: $index + 1;
@@ -122,7 +122,7 @@
         @if ($iteration == false) {
             $break: true;
         } @else {
-            $result-map: set($result-map, $key, $iteration);
+            $result-map: __set($result-map, $key, $iteration);
         }
 
         $length: $length - 1;

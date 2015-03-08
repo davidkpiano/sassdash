@@ -13,12 +13,12 @@
 
         @if ($multi-value) {
             @if (map-has-key($result, $value)) {
-                $result: set($result, $value, append(__get($result, $value), $key));
+                $result: __set($result, $value, append(__get($result, $value), $key));
             } @else {
-                $result: set($result, $value, ($key,));
+                $result: __set($result, $value, ($key,));
             }
         } @else {
-            $result: set($result, $value, $key);
+            $result: __set($result, $value, $key);
         }
     }
 

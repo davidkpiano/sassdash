@@ -6,13 +6,13 @@
 
 
 @function static-set($properties, $value) {
-    $__static__: set($__static__, $properties, $value) !global;
+    $__static__: __set($__static__, $properties, $value) !global;
 
     @return $__static__;
 }
 
 @function static-push($properties, $value) {
-    $__static__: push($__static__, $properties, $value) !global;
+    $__static__: __push($__static__, $properties, $value) !global;
 
     @return $__static__;
 }

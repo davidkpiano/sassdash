@@ -1,5 +1,5 @@
 
-@function pop($list) {
+@function __pop($list) {
     $length: length($list);
     $index: 2;
     $popped-list: ();
@@ -37,7 +37,7 @@
         $map: map-get($map, nth($properties, 1));
     }
 
-    $properties: pop($properties);
+    $properties: __pop($properties);
 
     @if not $map and length($properties) > 0 {
         @return null;
@@ -50,9 +50,9 @@
     @return __get($map, $properties);
 }
 
-@function set($map, $properties, $value) {
+@function __set($map, $properties, $value) {
     $property: nth($properties, 1);
-    $properties: pop($properties);
+    $properties: __pop($properties);
     $child-map: null;
 
     @if type-of($map) == 'list' and length($map) > 0 {
@@ -72,22 +72,22 @@
     }
 
     @if type-of($map) == 'list' and length($map) > 0 {
-        @return set-nth($map, $property, set($child-map, $properties, $value));
+        @return set-nth($map, $property, __set($child-map, $properties, $value));
     }
 
     @return map-merge($map, (
-        $property: set($child-map, $properties, $value),
+        $property: __set($child-map, $properties, $value),
     ));
 }
 
 
-@function push($map, $properties, $value) {
+@function __push($map, $properties, $value) {
     $list: append(__get($map, $properties), $value);
 
-    @return set($map, $properties, $list);
+    @return __set($map, $properties, $list);
 }
 
-@function new($type, $params: (), $extends: false, $prototype: ()) {
+@function __new($type, $params: (), $extends: false, $prototype: ()) {
     $instance-meta: (
         '_type': $type,
         '_constructor': $type,
@@ -98,7 +98,7 @@
     $instance: ();
 
     @if $extends {
-        $instance: map-merge($instance, new($extends, $params));
+        $instance: map-merge($instance, __new($extends, $params));
     }
 
     $instance: map-merge($instance, call($type, $params...));

@@ -4,7 +4,7 @@
     $list: ();
 
     @while ($length > 0) {
-        $list: set($list, $length, nth($arguments, $length));
+        $list: __set($list, $length, nth($arguments, $length));
 
         $length: $length - 1;
     }
@@ -34,11 +34,11 @@
         $key: nth($props, $index);
 
         @if ($values and length($values) > 0) {
-            $result: set($result, $key, nth($values, $index));
+            $result: __set($result, $key, nth($values, $index));
         } @else if ($key) {
             $result-key: nth($key, 1);
             $result-value: if(length($key) > 1, nth($key, 2), null);
-            $result: set($result, $result-key, $result-value);
+            $result: __set($result, $result-key, $result-value);
         }
 
         $index: $index + 1;

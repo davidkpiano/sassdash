@@ -5,7 +5,7 @@
     $predicate: __this('predicate');
 
     @if __exec($predicate, $value, $key, $map) {
-        $_: __this('result', set($result, $key, $value));
+        $_: __this('result', __set($result, $key, $value));
     }
 
     @return true;
@@ -31,7 +31,7 @@
 
     @each $key in $props {
         @if (map-has-key($map, $key)) {
-            $result: set($result, $key, __get($map, $key));
+            $result: __set($result, $key, __get($map, $key));
         }
     }
 

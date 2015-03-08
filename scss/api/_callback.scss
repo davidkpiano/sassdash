@@ -63,8 +63,27 @@
     @return $result;
 }
 
+@function __base-callback-shifted($value, $args...) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+    $arguments: __this('arguments');
+
+    @return __call($function, $this-arg, $value, $arguments...);
+}
 @function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
     $type: if(__function-exists($function), 'function', type-of($function));
+
+    @if $type == 'list' {
+        $arguments: _drop($function, 1);
+        $function: nth($function, 1);
+        $_: __scope(('function': $function, 'this-arg': $this-arg, 'arguments': $arguments));
+
+        $base-callback-shifted: __bind(__base-callback-shifted);
+
+        $_: __scope(false);
+
+        @return $base-callback-shifted;
+    }
 
     @if __is-native($function) {
         @return __ary($function, 1);

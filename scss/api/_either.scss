@@ -1,6 +1,6 @@
 
 @function __either($this, $that: null, $predicate: __is-truthy) {
-    $this-bool: __exec($predicate, $this);
+    $this-bool: __exec(__base-callback($predicate), $this);
 
     @return if($this-bool, $this, $that);
 }

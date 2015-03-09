@@ -990,6 +990,15 @@ $test-before-count: 0 !global;
         @include assert-equal(_either(null, true, __is-falsey), null);
         @include assert-equal(_either('abc', 'def', _partial-right(_starts-with, 'q')), 'def');
     }
+
+    @include test('should work with shifted argument syntax for predicate') {
+        $list-1: 1 2 3;
+        $list-2: 4 5 6;
+
+        @include assert-equal(_either($list-1, $list-2, index 2), $list-1);
+        @include assert-equal(_either($list-1, $list-2, index 5), $list-2);
+        @include assert-equal(_either($list-1, $list-2, index 7), $list-2);
+    }
 }
 
 @include test-module('_ends-with') {
@@ -1184,6 +1193,12 @@ $test-before-count: 0 !global;
         $expected: _filter(1 2 3, test-filter-1);
 
         @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with shifted argument syntax for function') {
+        $actual: _filter(black white yellow purple, lightness);
+
+        @include assert-equal($actual, white yellow purple);
     }
 }
 

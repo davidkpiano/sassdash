@@ -1,15 +1,15 @@
 
 
-@function __partial-wrapper($args...) {
+@function __partial-wrapper($arguments...) {
     $partials: __this('partials');
     $func: __this('func');
 
-    $args: join($partials, $args);
+    $arguments: join($partials, $arguments);
 
-    @return __exec($func, $args...);
+    @return __exec($func, $arguments...);
 }
-@function __partial($func, $args...) {
-    $partials: $args;
+@function __partial($func, $arguments...) {
+    $partials: $arguments;
 
     $_: __scope(('partials': $partials, 'func': $func));
 
@@ -20,16 +20,16 @@
     @return $partial-wrapper;
 }
 
-@function __partial-right-wrapper($args...) {
+@function __partial-right-wrapper($arguments...) {
     $partials: __this('partials');
     $func: __this('func');
 
-    $args: join($args, $partials);
+    $arguments: join($arguments, $partials);
 
-    @return __exec($func, $args...);
+    @return __exec($func, $arguments...);
 }
-@function __partial-right($func, $args...) {
-    $partials: $args;
+@function __partial-right($func, $arguments...) {
+    $partials: $arguments;
 
     $_: __scope(('partials': $partials, 'func': $func));
 

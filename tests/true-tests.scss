@@ -272,54 +272,102 @@ $test-before-count: 0 !global;
     @include xit('should not set a this binding') {}
 }
 
-// @include test-module('case methods') {
-//     $strings: (
-//         'foo bar', 'Foo bar', 'foo Bar', 'Foo Bar',
-//         'FOO BAR', 'fooBar', '--foo-bar', '__foo_bar__'
-//     );
+@function test-bind-1($value) {
+    $foo: __this('foo');
+    @return $foo + $value;
+}
+@function test-bind-2($value) {
+    @return $value;
+}
+@function test-bind-3($greeting, $punc) {
+    @return $greeting + ' ' + __this('user') + $punc;
+}
+@include test-module('_bind') {
+    @include test('should bind a function to a scope') {
+        $_: __scope(('foo': 1));
+        $func: _bind(test-bind-1);
+        $_: __scope(false);
 
-//     $converted: (
-//         'camel': 'fooBar',
-//         'kebab': 'foo-bar',
-//         'snake': 'foo_bar',
-//         'start': 'Foo Bar'
-//     );
+        @include assert-equal(_exec($func, 3), 4);
+    }
 
-//     @each $case-name in ('camel' 'kebab' 'snake' 'start') {
-//         $method-name: '_' + $case-name + '-case';
+    @include test('should bind a function to a map') {
+        $_: __scope();
+        $func: _bind(test-bind-1, ('foo': 2));
+        $_: __scope(false);
+
+        @include assert-equal(_exec($func, 3), 5);
+    }
+
+    @include test('should accept a falsey this-arg argument') {
+        @each $value in $test-falsey {
+            $func: _bind(test-bind-2, $value);
+
+            @include assert-equal(_exec($func, 1), 1);
+        }
+    }
+
+    @include test('should partially apply arguments') {
+        $scope: __scope(('user': 'fred'));
+        $scope-id: __get($scope, '_id');
+        @debug $scope-id, $scope;
+        $func: _bind(test-bind-3, $scope-id, 'hi');
+        $_: __scope(false);
+
+        @include assert-equal(_exec($func, '!'), 'hi fred!');
+    }
+
+    @include xit('should support placeholders') {} // todo
+
+    @include test('should ensure new bound is an executable function') {
+        $func: _bind(test-bind-3, ('foo': 'bar'));
+
+        @include assert-true(_is-function($func));
+    }
+}
+
+@include test-module('case methods') {
+    $strings: (
+        'foo bar', 'Foo bar', 'foo Bar', 'Foo Bar',
+        'fooBar', '--foo-bar', '__foo_bar__'
+    );
+
+    $converted: (
+        'camel': 'fooBar',
+        'kebab': 'foo-bar',
+        'snake': 'foo_bar',
+        'start': 'Foo Bar'
+    );
+
+    @each $case-name in ('camel' 'kebab' 'snake' 'start') {
+        $method-name: '_' + $case-name + '-case';
         
-//         @include test('should convert string to #{$case-name} case') {
-//             @each $string in $strings {
-//                 $actual: call($method-name, $string);
-//                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
+        @include test('should convert string to #{$case-name} case') {
+            @each $string in $strings {
+                $actual: call($method-name, $string);
+                $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
 
-//                 @include assert-equal($actual, $expected);
-//             }
-//         }
+                @include assert-equal($actual, $expected);
+            }
+        }
 
-//         @include test('#{$method-name} should handle double-converting strings') {
-//             @each $string in $strings {
-//                 $actual: call($method-name, call($method-name, $string));
-//                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
+        @include test('#{$method-name} should handle double-converting strings') {
+            @each $string in $strings {
+                $actual: call($method-name, call($method-name, $string));
+                $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
 
-//                 @include assert-equal($actual, $expected);
-//             }
-//         }
+                @include assert-equal($actual, $expected);
+            }
+        }
 
-//         @include xit('#{$method-name} should deburr letters') {}
+        @include test('#{$method-name} should return an unwrapped value when chaining') {
+            $actual: _('foo bar', $case-name + '-case');
+            $expected: __get($converted, $case-name);
 
-//         @include xit('#{$method-name} should trim latin-1 mathematical operators') {}
-
-//         @include xit('#{$method-name} should coerce string to a string') {}
-
-//         @include test('#{$method-name} should return an unwrapped value when chaining') {
-//             $actual: _('foo bar', $case-name + '-case');
-//             $expected: __get($converted, $case-name);
-
-//             @include assert-equal($actual, $expected);
-//         }
-//     }
-// }
+            @include assert-equal($actual, $expected);
+        }
+    }
+}
 
 @include test-module('_capitalize') {
     @include test('should capitalize the first character of a string') {

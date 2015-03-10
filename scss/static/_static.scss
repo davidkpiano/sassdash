@@ -8,7 +8,7 @@
 @function static-set($properties, $value) {
     $__static__: __set($__static__, $properties, $value) !global;
 
-    @return $__static__;
+    @return __get($__static__, $properties);
 }
 
 @function static-push($properties, $value) {

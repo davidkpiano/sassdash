@@ -1,7 +1,24 @@
 
 
-@function __bind($function, $this-arg: $__current-scope__) {
-    @return '#{$function}#{$this-arg}';
+@function __bind($function, $this-arg: $__current-scope__, $arguments...) {
+    @if __is-falsey($this-arg) {
+        $this-arg: '';
+    }
+    
+    @if __is-map($this-arg) {
+        $scope: __scope($this-arg);
+        $_: __scope(false);
+
+        $this-arg: __get($scope, '_id');
+    }
+    
+    $function: '#{$function}#{$this-arg}';
+
+    @if length($arguments) > 0 {
+        @return __partial($function, $arguments...);
+    }
+
+    @return $function;
 }
 
 @function _bind($args...) { @return call(__bind, $args...); }

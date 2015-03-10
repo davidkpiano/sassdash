@@ -106,3 +106,8 @@
 
     @return $instance;
 }
+
+@function _get($args...) { @return call(__get, $args...); }
+@function _set($args...) { @return call(__set, $args...); }
+@function _new($args...) { @return call(__new, $args...); }
+

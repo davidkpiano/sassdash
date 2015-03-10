@@ -1,46 +1,47 @@
-
-
 @function __partial-wrapper($arguments...) {
     $partials: __this('partials');
     $func: __this('func');
-
     $arguments: join($partials, $arguments);
 
     @return __exec($func, $arguments...);
 }
+
+
 @function __partial($func, $arguments...) {
     $partials: $arguments;
-
-    $_: __scope(('partials': $partials, 'func': $func));
-
-    $partial-wrapper: __bind(__partial-wrapper);
-
+    $_: __scope((
+        'partials': $partials,
+        'func': $func
+    ));
+    $partial-wrapper: __bind('__partial-wrapper');
     $_: __scope(false);
 
     @return $partial-wrapper;
 }
+
 
 @function __partial-right-wrapper($arguments...) {
     $partials: __this('partials');
     $func: __this('func');
-
     $arguments: join($arguments, $partials);
 
     @return __exec($func, $arguments...);
 }
+
+
 @function __partial-right($func, $arguments...) {
     $partials: $arguments;
-
-    $_: __scope(('partials': $partials, 'func': $func));
-
-    $partial-wrapper: __bind(__partial-right-wrapper);
-
+    $_: __scope((
+        'partials': $partials,
+        'func': $func
+    ));
+    $partial-wrapper: __bind('__partial-right-wrapper');
     $_: __scope(false);
 
     @return $partial-wrapper;
 }
 
-/// 
+
 /// Creates a function that invokes `$function` with `partial` arguments prepended
 /// to those provided to the new function. This method is like `_bind` except
 /// it does/// not** alter the `this` binding.
@@ -49,7 +50,7 @@
 /// **Note:** This method does not set the `length` property of partially
 /// applied functions.
 ///
-/// 
+///
 /// @group Function
 /// @param {Function} func The function to partially apply arguments to.
 /// @param {...*} (args) The arguments to be partially applied.
@@ -65,10 +66,12 @@
 /// $greetFred: _partial(greet, _, 'fred');
 /// greetFred('hi');
 /// // => 'hi fred'
-/// 
-@function _partial($args...) { @return call(__partial, $args...); }
 
-/// 
+@function _partial($args...) {
+    @return call('__partial', $args...);
+}
+
+///
 /// This method is like `_partial` except that partially applied arguments
 /// are appended to those provided to the new function.
 /// The `_partialRight.placeholder` value, which defaults to `_` in monolithic
@@ -76,7 +79,7 @@
 /// **Note:** This method does not set the `length` property of partially
 /// applied functions.
 ///
-/// 
+///
 /// @group Function
 /// @param {Function} func The function to partially apply arguments to.
 /// @param {...*} (args) The arguments to be partially applied.
@@ -92,5 +95,7 @@
 /// $sayHelloTo: _partial-right(greet, 'hello', _);
 /// sayHelloTo('fred');
 /// // => 'hello fred'
-/// 
-@function _partial-right($args...) { @return call(__partial-right, $args...); }
+
+@function _partial-right($args...) {
+    @return call('__partial-right', $args...);
+}

@@ -1,27 +1,23 @@
-
-@function __times($n, $iteratee: __identity, $this-arg: null) {
+@function __times($n, $iteratee: '__identity', $this-arg: null) {
     $n: if(__is-falsey($n), 0, $n);
-
     $index: 1;
     $result: ();
-
     $iteratee: __bind-callback($iteratee, $this-arg, 1);
 
     @while $index <= $n {
         $result: append($result, __exec($iteratee, $index));
-
         $index: $index + 1;
     }
 
     @return $result;
 }
 
-/// 
+
 /// Invokes the iteratee function `$n` times, returning an list of the results
 /// of each invocation. The `iteratee` is bound to `$this-arg` and invoked with
 /// one argument; (index).
 ///
-/// 
+///
 /// @group Utility
 /// @param {number} n The number of times to invoke `iteratee`.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -38,5 +34,7 @@
 ///   this.cast(n);
 /// }, mage);
 /// // => also invokes `mage.castSpell(n)` three times
-/// 
-@function _times($args...) { @return call(__times, $args...); }
+
+@function _times($args...) {
+    @return call('__times', $args...);
+}

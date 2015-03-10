@@ -1,5 +1,3 @@
-
-
 @function __take($list, $n: 1, $guard: null) {
     $length: if($list, length($list), 0);
 
@@ -15,6 +13,7 @@
 
     @return __base-slice($list, 0, if($n < 0, 0, $n));
 }
+
 
 @function __take-right($list, $n: 1, $guard: null) {
     $length: if($list, length($list), 0);
@@ -32,7 +31,8 @@
     @return __base-slice($list, if($n < 0, 0, $n));
 }
 
-@function __take-right-while($list, $predicate: __identity, $this-arg: null) {
+
+@function __take-right-while($list, $predicate: '__identity', $this-arg: null) {
     $length: if($list, length($list), 0);
 
     @if __is-falsey($length) {
@@ -41,7 +41,7 @@
 
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    
+
     @while $length > 0
         and __is-truthy(__exec($predicate, nth($list, $length), $length, $list))
     {
@@ -52,7 +52,7 @@
 }
 
 
-@function __take-while($list, $predicate: __identity, $this-arg: null) {
+@function __take-while($list, $predicate: '__identity', $this-arg: null) {
     $length: if($list, length($list), 0);
 
     @if __is-falsey($length) {
@@ -72,10 +72,9 @@
 }
 
 
-/// 
 /// Creates a slice of `list` with `$n` elements taken from the beginning.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
@@ -90,13 +89,15 @@
 /// // => (1, 2, 3)
 /// _take((1, 2, 3), 0);
 /// // => []
-/// 
-@function _take($args...) { @return call(__take, $args...); }
 
-/// 
+@function _take($args...) {
+    @return call('__take', $args...);
+}
+
+
 /// Creates a slice of `list` with `$n` elements taken from the end.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
@@ -111,10 +112,12 @@
 /// // => (1, 2, 3)
 /// _take-right((1, 2, 3), 0);
 /// // => []
-/// 
-@function _take-right($args...) { @return call(__take-right, $args...); }
 
-/// 
+@function _take-right($args...) {
+    @return call('__take-right', $args...);
+}
+
+
 /// Creates a slice of `list` with elements taken from the end. Elements are
 /// taken until `predicate` returns falsey. The predicate is bound to `$this-arg`
 /// and invoked with three arguments; (value, index, list).
@@ -127,7 +130,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to query.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -153,10 +156,12 @@
 /// // using the `_property` callback shorthand
 /// _pluck(_take-right-while(users, 'active'), 'user');
 /// // => []
-/// 
-@function _take-right-while($args...) { @return call(__take-right-while, $args...); }
 
-/// 
+@function _take-right-while($args...) {
+    @return call('__take-right-while', $args...);
+}
+
+
 /// Creates a slice of `list` with elements taken from the beginning. Elements
 /// are taken until `predicate` returns falsey. The predicate is bound to
 /// `$this-arg` and invoked with three arguments; (value, index, list).
@@ -169,7 +174,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to query.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -195,5 +200,7 @@
 /// // using the `_property` callback shorthand
 /// _pluck(_take-while(users, 'active'), 'user');
 /// // => []
-/// 
-@function _take-while($args...) { @return call(__take-while, $args...); }
+
+@function _take-while($args...) {
+    @return call('__take-while', $args...);
+}

@@ -1,12 +1,13 @@
-
 @function __base-matches-function-1($map, $args...) {
     $value: __this('value');
     $key: __this('key');
 
     @return __is-truthy($map)
-        and map-has-key($map, $key)
-        and $value == __get($map, $key);
+    and map-has-key($map, $key)
+    and $value == __get($map, $key);
 }
+
+
 @function __base-matches-function-2($map, $args...) {
     @return __base-is-match(
         $map,
@@ -14,22 +15,21 @@
         __this('values'),
         __this('strict-compare-flags'));
 }
+
+
 @function __base-matches($source, $is-cloned: false) {
     $props: map-keys($source);
     $length: length($props);
-
     $_: __scope();
 
     @if ($length == 1) {
         $key: nth($props, 1);
         $value: __get($source, $key);
-
         $_: __this('key', $key);
         $_: __this('value', $value);
 
         @if (__is-strict-comparable($value)) {
-            $result: __bind(__base-matches-function-1);
-
+            $result: __bind('__base-matches-function-1');
             $_: __scope(false);
 
             @return $result;
@@ -43,29 +43,26 @@
         $value: __get($source, nth($props, $length));
         $values: __set($values, $length, $value);
         $strict-compare-flags: __set($strict-compare-flags, $length, __is-strict-comparable($value));
-
         $length: $length - 1;
     }
 
     $values: __to-list($values);
     $strict-compare-flags: __to-list($strict-compare-flags);
-
     $_: __this('props', $props);
     $_: __this('values', $values);
     $_: __this('strict-compare-flags', $strict-compare-flags);
-
-    $result: __bind(__base-matches-function-2);
-
+    $result: __bind('__base-matches-function-2');
     $_: __scope(false);
 
     @return $result;
 }
 
+
 @function __matches($source) {
     @return __base-matches($source, true);
 }
 
-/// 
+
 /// Creates a function which performs a deep comparison between a given object
 /// and `source`, returning `true` if the given object has equivalent property
 /// values, else `false`.
@@ -74,7 +71,7 @@
 /// their own, not inherited, enumerable properties. For comparing a single
 /// own or inherited property value see `_matches-property`.
 ///
-/// 
+///
 /// @group Utility
 /// @param {Map} source The object of property values to match.
 /// @returns {Function} Returns the new function.
@@ -85,5 +82,7 @@
 /// ];
 /// _filter(users, _matches({ 'age': 40, 'active': false }));
 /// // => ({ 'user': 'fred', 'age': 40, 'active': false })
-/// 
-@function _matches($args...) { @return call(__matches, $args...); }
+
+@function _matches($args...) {
+    @return call('__matches', $args...);
+}

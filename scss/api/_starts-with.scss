@@ -1,8 +1,7 @@
-
-
 @function __starts-with($string, $target, $position: 1) {
     @if __is-list-like($target) {
         $result: false;
+
         @each $target-string in $target {
             $result: __either($result, __starts-with($string, $target-string, $position));
         }
@@ -19,10 +18,11 @@
         true,
         __string-last-index-of($string, $target, $position) == $position);
 }
-/// 
+
+
 /// Checks if `string` starts with the given target string.
-/// ///
-/// 
+///
+///
 /// @group String
 /// @param {string} $string [''] - The string to search.
 /// @param {string} (target) The string to search for.
@@ -35,5 +35,7 @@
 /// // => false
 /// /// _starts-with('abc', 'b', 1);
 /// // => true
-/// 
-@function _starts-with($args...) { @return call(__starts-with, $args...); }
+
+@function _starts-with($args...) {
+    @return call('__starts-with', $args...);
+}

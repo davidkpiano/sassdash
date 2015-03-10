@@ -1,14 +1,11 @@
-
-
-
 @function __rest($list, $args...) {
     @return __drop($list, 1);
 }
 
-/// 
+
 /// Gets all but the first element of `list`.
 ///
-/// 
+///
 /// @alias tail
 /// @group Array
 /// @param {Array} list The list to query.
@@ -16,7 +13,12 @@
 /// @example scss
 /// _rest((1, 2, 3));
 /// // => (2, 3)
-/// 
-@function _rest($args...) { @return call(__rest, $args...); }
 
-@function _tail($args...) { @return call(__rest, $args...); }
+@function _rest($args...) {
+    @return call('__rest', $args...);
+}
+
+
+@function _tail($args...) {
+    @return call('__rest', $args...);
+}

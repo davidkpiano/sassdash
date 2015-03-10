@@ -1,8 +1,7 @@
-
-
 @function __base-rand($min, $max) {
     @return $min + floor(random() * ($max - $min + 1));
 }
+
 
 @function __rand($min: null, $max: null, $floating: null) {
     $min: __parse-float($min);
@@ -45,15 +44,17 @@
 
         @return min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
     }
+
     @return __base-rand($min, $max);
 }
-/// 
+
+
 /// Produces a random number between `min` and `max` (inclusive). If only one
 /// argument is provided a number between `0` and the given number is returned.
 /// If `floating` is `true`, or either `min` or `max` are floats, a floating-point
 /// number is returned instead of an integer.
 /// ///
-/// 
+///
 /// @group Number
 /// @param {number} $min [0] - The minimum possible value.
 /// @param {number} $max [1] - The maximum possible value.
@@ -68,5 +69,7 @@
 /// // => a floating-point number between 0 and 5
 /// /// _random(1.2, 5.2);
 /// // => a floating-point number between 1.2 and 5.2
-/// 
-@function _rand($args...) { @return call(__rand, $args...); }
+
+@function _rand($args...) {
+    @return call('__rand', $args...);
+}

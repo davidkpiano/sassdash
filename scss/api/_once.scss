@@ -1,14 +1,13 @@
-
 @function __once($function) {
     @return __before($function, 2);
 }
 
-/// 
+
 /// Creates a function that is restricted to invoking `$function` once. Repeat calls
 /// to the function return the value of the first call. The `$function` is invoked
 /// with the `this` binding of the created function.
 ///
-/// 
+///
 /// @group Function
 /// @param {Function} func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
@@ -17,5 +16,7 @@
 /// initialize();
 /// initialize();
 /// // `initialize` invokes `createApplication` once
-/// 
-@function _once($args...) { @return call(__once, $args...); }
+
+@function _once($args...) {
+    @return call('__once', $args...);
+}

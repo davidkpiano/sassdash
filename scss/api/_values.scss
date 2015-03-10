@@ -1,5 +1,3 @@
-
-
 @function __base-values($map, $props) {
     $index: 1;
     $length: length($props);
@@ -14,19 +12,21 @@
     @return $result;
 }
 
+
 @function __values($map) {
     @return __base-values($map, __keys($map));
 }
+
 
 @function __values-in($map) {
     @return __base-values($map, __keys-in($map));
 }
 
-/// 
+
 /// Creates an list of the own enumerable property values of `object`.
 /// **Note:** Non-object values are coerced to objects.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to query.
 /// @returns {Array} Returns the list of property values.
@@ -40,15 +40,17 @@
 /// // => (1, 2) (iteration order is not guaranteed)
 /// _values('hi');
 /// // => ('h', 'i')
-/// 
-@function _values($args...) { @return call(__values, $args...); }
 
-/// 
+@function _values($args...) {
+    @return call('__values', $args...);
+}
+
+
 /// Creates an list of the own and inherited enumerable property values
 /// of `object`.
 /// **Note:** Non-object values are coerced to objects.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to query.
 /// @returns {Array} Returns the list of property values.
@@ -60,5 +62,7 @@
 /// Foo.prototype.c = 3;
 /// _values-in(new Foo);
 /// // => (1, 2, 3) (iteration order is not guaranteed)
-/// 
-@function _values-in($args...) { @return call(__values-in, $args...); }
+
+@function _values-in($args...) {
+    @return call('__values-in', $args...);
+}

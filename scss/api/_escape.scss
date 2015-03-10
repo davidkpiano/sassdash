@@ -1,13 +1,14 @@
-
 @function __escape-string-char($char) {
     @return '\\#{__const('string-escapes' $char)}';
 }
+
 
 @function __escape-html-char($char) {
     $escaped-char: __const('html-escapes' $char);
 
     @return if($escaped-char, $escaped-char, $char);
 }
+
 
 @function __escape($string) {
     $string: __base-to-string($string);
@@ -19,7 +20,7 @@
     @return $string;
 }
 
-/// 
+
 /// Converts the characters "&", "<", ">", '"', "'", and '`', in `string` to
 /// their corresponding HTML entities.
 /// **Note:** No other characters are escaped. To escape additional characters
@@ -37,12 +38,14 @@
 /// XSS vectors. See [Ryan Grove's article](http://wonko.com/post/html-escaping)
 /// for more details.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to escape.
 /// @returns {string} Returns the escaped string.
 /// @example scss
 /// _escape('fred, barney, & pebbles');
 /// // => 'fred, barney, &amp; pebbles'
-/// 
-@function _escape($args...) { @return call(__escape, $args...); }
+
+@function _escape($args...) {
+    @return call('__escape', $args...);
+}

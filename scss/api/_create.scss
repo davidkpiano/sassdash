@@ -1,5 +1,3 @@
-
-
 @function __base-create($constructor, $args...) {
     @if not (__function-exists($constructor)) {
         @return ();
@@ -7,6 +5,7 @@
 
     @return __new($constructor, $args...);
 }
+
 
 @function __create($prototype, $properties, $guard: null) {
     $result: __base-create($prototype);
@@ -18,12 +17,12 @@
     @return if($properties, __base-copy($properties, $result, __keys($properties)), $result);
 }
 
-/// 
+
 /// Creates an object that inherits from the given `prototype` object. If a
 /// `properties` object is provided its own enumerable properties are assigned
 /// to the created object.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} prototype The object to inherit from.
 /// @param {Map} (properties) The properties to assign to the object.
@@ -45,5 +44,7 @@
 /// // => true
 /// circle instanceof Shape;
 /// // => true
-/// 
-@function _create($args...) { @return call(__create, $args...); }
+
+@function _create($args...) {
+    @return call('__create', $args...);
+}

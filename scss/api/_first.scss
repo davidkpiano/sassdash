@@ -1,12 +1,11 @@
-
 @function __first($list, $args...) {
     @return if($list and length($list) > 0, nth($list, 1), null);
 }
 
-/// 
+
 /// Gets the first element of `list`.
 ///
-/// 
+///
 /// @alias head
 /// @group Array
 /// @param {Array} list The list to query.
@@ -16,7 +15,11 @@
 /// // => 1
 /// _first([]);
 /// // => undefined
-/// 
-@function _first($args...) { @return call(__first, $args...); }
 
-@function _head($args...) { @return call(__first, $args...); }
+@function _first($args...) {
+    @return call('__first', $args...);
+}
+
+@function _head($args...) {
+    @return call('__first', $args...);
+}

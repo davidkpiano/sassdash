@@ -1,6 +1,3 @@
-
-
-
 @function __to-list($value) {
     @if __is-map($value) {
         @if __list-some(map-keys($value), __is-string) {
@@ -20,7 +17,7 @@
     @if __is-string($value) {
         $result: ();
 
-        @if str-length($value) >= 1 {        
+        @if str-length($value) >= 1 {
             @for $index from 1 through str-length($value) {
                 $result: append($result, str-slice($value, $index, $index));
             }
@@ -32,10 +29,10 @@
     @return if(__is-list-like($value), join((), $value), ());
 }
 
-/// 
+
 /// Converts `value` to an list.
 ///
-/// 
+///
 /// @group Lang
 /// @param {*} value The value to convert.
 /// @returns {Array} Returns the converted list.
@@ -44,5 +41,7 @@
 ///   return _to-list(arguments).slice(1);
 /// }(1, 2, 3));
 /// // => (2, 3)
-/// 
-@function _to-list($args...) { @return call(__to-list, $args...); }
+
+@function _to-list($args...) {
+    @return call('__to-list', $args...);
+}

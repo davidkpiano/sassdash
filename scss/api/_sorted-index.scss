@@ -1,6 +1,4 @@
-
-
-@function __sorted-index($list, $value, $iteratee: __identity, $this-arg: null) {
+@function __sorted-index($list, $value, $iteratee: '__identity', $this-arg: null) {
     $function: __get-callback($iteratee);
 
     @return if($function == __base-callback and $iteratee == null,
@@ -8,7 +6,8 @@
         __binary-index($list, $value, call($function, $iteratee, $this-arg, 1)));
 }
 
-@function __sorted-last-index($list, $value, $iteratee: __identity, $this-arg: null) {
+
+@function __sorted-last-index($list, $value, $iteratee: '__identity', $this-arg: null) {
     $function: __get-callback($iteratee);
 
     @return if($function == __base-callback and $iteratee == null,
@@ -16,11 +15,12 @@
         __binary-index($list, $value, call($function, $iteratee, $this-arg, 1), true));
 }
 
+
 @function __binary-index($list, $value, $ret-highest: false) {
     $low: 0;
     $high: if($list, length($list), $low);
 
-    @if (type-of($value) == number and $high <= __const(HALF_MAX_LIST_LENGTH)) {
+    @if (type-of($value) == number and $high <= __const('HALF_MAX_LIST_LENGTH')) {
         @while ($low < $high) {
             $mid: floor(($low + $high) / 2);
             $computed: nth($list, $mid);
@@ -35,8 +35,9 @@
         @return $high;
     }
 
-    @return __binary-index-by($list, $value, __identity, $ret-highest);
+    @return __binary-index-by($list, $value, '__identity', $ret-highest);
 }
+
 
 @function __binary-index-by($list, $value, $iteratee, $ret-highest) {
     $value: call($iteratee, $value);
@@ -62,9 +63,10 @@
         }
     }
 
-    @return call(native-min, $high, __const(MAX_LIST_INDEX));
+    @return call('native-min', $high, __const('MAX_LIST_INDEX'));
 }
-/// 
+
+
 /// Uses a binary search to determine the lowest index at which `value` should
 /// be inserted into `list` in order to maintain its sort order. If an iteratee
 /// function is provided it is invoked for `value` and each element of `list`
@@ -79,7 +81,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
@@ -102,14 +104,17 @@
 /// /// // using the `_property` callback shorthand
 /// _sorted-index(({ 'x': 30 }, { 'x': 50 }), { 'x': 40 }, 'x');
 /// // => 1
-/// 
-@function _sorted-index($args...) { @return call(__sorted-index, $args...); }
-/// 
+
+@function _sorted-index($args...) {
+    @return call('__sorted-index', $args...);
+}
+
+
 /// This method is like `_sorted-index` except that it returns the highest
 /// index at which `value` should be inserted into `list` in order to
 /// maintain its sort order.
 /// ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
@@ -121,5 +126,7 @@
 /// @example scss
 /// /// _sorted-last-index((4, 4, 5, 5), 5);
 /// // => 4
-/// 
-@function _sorted-last-index($args...) { @return call(__sorted-last-index, $args...); }
+
+@function _sorted-last-index($args...) {
+    @return call('__sorted-last-index', $args...);
+}

@@ -1,24 +1,24 @@
-
-
 @function __base-every-iteratee($value, $index, $collection) {
     $predicate: __this('predicate');
-
     $result: if(__is-truthy(__exec($predicate, $value, $index, $collection)), true, false);
-
     $_: __this('result', $result);
 
     @return null;
 }
+
+
 @function __base-every($collection, $predicate) {
-    $_: __scope(('result': true, 'predicate': $predicate));
-
-    $_: __base-each($collection, __base-every-iteratee);
-
+    $_: __scope((
+        'result': true,
+        'predicate': $predicate
+    ));
+    $_: __base-each($collection, '__base-every-iteratee');
     $result: __this('result');
     $_: __scope(false);
 
     @return if($result, true, false);
 }
+
 
 @function __list-every($list, $predicate) {
     $index: 1;
@@ -37,8 +37,9 @@
     @return true;
 }
 
-@function __every($collection, $predicate: __identity, $this-arg: $__undefined__) {
-    $function: if(__is-list($collection), __list-every, __base-every);
+
+@function __every($collection, $predicate: '__identity', $this-arg: $__undefined__) {
+    $function: if(__is-list($collection), '__list-every', '__base-every');
 
     @if not __function-exists($predicate)
         or not __is-undefined($this-arg) {
@@ -48,7 +49,7 @@
     @return __exec($function, $collection, $predicate);
 }
 
-/// 
+
 /// Checks if `predicate` returns truthy for/// all** elements of `collection`.
 /// The predicate is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
@@ -61,7 +62,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @alias all
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
@@ -86,8 +87,12 @@
 /// // using the `_property` callback shorthand
 /// _every(users, 'active');
 /// // => false
-/// 
-@function _every($args...) { @return call(__every, $args...); }
 
-@function _all($args...) { @return call(__every, $args...); }
+@function _every($args...) {
+    @return call('__every', $args...);
+}
 
+
+@function _all($args...) {
+    @return call('__every', $args...);
+}

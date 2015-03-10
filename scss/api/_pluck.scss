@@ -1,14 +1,11 @@
-
-
-
 @function __pluck($collection, $key) {
     @return __map($collection, __property($key));
 }
 
-/// 
+
 /// Gets the value of `key` from all elements in `collection`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {string} key The key of the property to pluck.
@@ -23,5 +20,7 @@
 /// $userIndex: _index-by(users, 'user');
 /// _pluck(userIndex, 'age');
 /// // => (36, 40) (iteration order is not guaranteed)
-/// 
-@function _pluck($args...) { @return call(__pluck, $args...); }
+
+@function _pluck($args...) {
+    @return call('__pluck', $args...);
+}

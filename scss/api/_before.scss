@@ -1,9 +1,7 @@
-
 @function __before-callback($arguments...) {
     $n: __this('n');
     $function: __this('function');
     $result: null;
-
     $n: $n - 1;
     $_: __this(n, $n);
 
@@ -15,6 +13,8 @@
 
     @return $result;
 }
+
+
 @function __before($n, $function) {
     @if not (__function-exists($function)) {
         @if (__function-exists($n)) {
@@ -26,21 +26,22 @@
         }
     }
 
-    $_: __scope(('function': $function, 'n': $n));
-
-    $after-callback: __bind(__before-callback);
-
-    $_: __scope(false);  
+    $_: __scope((
+        'function': $function,
+        'n': $n
+    ));
+    $after-callback: __bind('__before-callback');
+    $_: __scope(false);
 
     @return $after-callback;
 }
 
-/// 
+
 /// Creates a function that invokes `$function`, with the `this` binding and arguments
 /// of the created function, while it is called less than `$n` times. Subsequent
 /// calls to the created function return the result of the last `$function` invocation.
 ///
-/// 
+///
 /// @group Function
 /// @param {number} n The number of calls at which `$function` is no longer invoked.
 /// @param {Function} func The function to restrict.
@@ -48,5 +49,6 @@
 /// @example scss
 /// jQuery('#add').on('click', _before(5, addContactToList));
 /// // => allows adding up to 4 contacts to the list
-/// 
-@function _before($args...) { @return call(__before, $args...); }
+@function _before($args...) {
+    @return call('__before', $args...);
+}

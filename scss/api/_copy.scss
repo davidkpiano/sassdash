@@ -1,5 +1,3 @@
-
-
 @function __list-copy($list, $other: ()) {
     $index: 1;
     $length: length($list);

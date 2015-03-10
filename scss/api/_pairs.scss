@@ -1,6 +1,3 @@
-
-
-
 @function __pairs($map) {
     $result: ();
 
@@ -11,16 +8,18 @@
     @return $result;
 }
 
-/// 
+
 /// Creates a two dimensional list of the key-value pairs for `object`,
 /// e.g. `[(key1, value1), (key2, value2)]`.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to inspect.
 /// @returns {Array} Returns the new list of key-value pairs.
 /// @example scss
 /// _pairs({ 'barney': 36, 'fred': 40 });
 /// // => [('barney', 36), ('fred', 40)] (iteration order is not guaranteed)
-/// 
-@function _pairs($args...) { @return call(__pairs, $args...); }
+
+@function _pairs($args...) {
+    @return call('__pairs', $args...);
+}

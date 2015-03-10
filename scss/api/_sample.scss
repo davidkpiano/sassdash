@@ -1,8 +1,7 @@
-
-
 @function __sample($collection, $n: null, $guard: null) {
     @if (if($guard, __is-iteratee-call($collection, $n, $guard), ($n == null))) {
         $length: length($collection);
+
         @return if($length > 0, nth($collection, __base-rand(1, $length)), null);
     }
 
@@ -13,10 +12,10 @@
     @return $result;
 }
 
-/// 
+
 /// Gets a random element or `$n` random elements from a collection.
-/// ///
-/// 
+///
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to sample.
 /// @param {number} (n) The number of elements to sample.
@@ -27,5 +26,7 @@
 /// // => 2
 /// /// _sample((1, 2, 3, 4), 2);
 /// // => (3, 1)
-/// 
-@function _sample($args...) { @return call(__sample, $args...); }
+
+@function _sample($args...) {
+    @return call('__sample', $args...);
+}

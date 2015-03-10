@@ -1,5 +1,3 @@
-
-
 @function __list-each($list, $iteratee) {
     $index: 1;
     $length: length($list);
@@ -21,6 +19,7 @@
     @return $result-list;
 }
 
+
 @function __list-each-right($list, $iteratee) {
     $list: __list-reverse($list);
     $result-list: __list-each($list, $iteratee);
@@ -28,6 +27,7 @@
 
     @return $result-list;
 }
+
 
 @function __base-each($collection, $iteratee) {
     $length: if($collection, length($collection), 0);
@@ -38,8 +38,8 @@
 
     $index: 1;
     $iterable: __to-map($collection);
-
     $break: false;
+
     @while ($index <= $length and not $break) {
         $iteration: __exec($iteratee, __get($iterable, $index), $index, $iterable);
 
@@ -57,6 +57,7 @@
     @return $collection;
 }
 
+
 @function __base-each-right($collection, $iteratee) {
     $length: if($collection, length($collection), 0);
 
@@ -65,8 +66,8 @@
     }
 
     $iterable: __to-map($collection);
-
     $break: false;
+
     @while ($length > 0 and not $break) {
         $iteration: __exec($iteratee, __get($iterable, $length), $length, $iterable);
 
@@ -84,14 +85,15 @@
     @return $collection;
 }
 
+
 @function __base-for($map, $iteratee, $keys-function) {
     $index: 1;
     $iterable: __to-map($map);
     $props: __exec($keys-function, $map);
     $length: length($props);
     $result-map: ();
-
     $break: false;
+
     @while $index <= $length and not $break {
         $key: nth($props, $index);
         $iteration: __exec($iteratee, __get($iterable, $key), $key, $iterable);
@@ -108,13 +110,14 @@
     @return $result-map;
 }
 
+
 @function __base-for-right($map, $iteratee, $keys-function) {
     $iterable: __to-map($map);
     $props: __exec($keys-function, $map);
     $length: length($props);
     $result-map: ();
-
     $break: false;
+
     @while $length > 0 and not $break {
         $key: nth($props, $length);
         $iteration: __exec($iteratee, __get($iterable, $key), $key, $iterable);
@@ -131,50 +134,56 @@
     @return $result-map;
 }
 
+
 @function __base-for-in($map, $iteratee) {
-    @return __base-for($map, $iteratee, __keys-in);
+    @return __base-for($map, $iteratee, '__keys-in');
 }
+
 
 @function __base-for-own($map, $iteratee) {
-    @return __base-for($map, $iteratee, __keys);
+    @return __base-for($map, $iteratee, '__keys');
 }
+
 
 @function __base-for-own-right($map, $iteratee) {
-    @return __base-for-right($map, $iteratee, __keys);
+    @return __base-for-right($map, $iteratee, '__keys');
 }
 
-@function __for-each($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+
+@function __for-each($collection, $iteratee: '__identity', $this-arg: $__undefined__) {
     @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
         __list-each($collection, $iteratee),
         __base-each($collection, __bind-callback($iteratee, $this-arg, 3)));
 }
 
-@function __for-each-right($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+
+@function __for-each-right($collection, $iteratee: '__identity', $this-arg: $__undefined__) {
     @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
         __list-each-right($collection, $iteratee),
         __base-each-right($collection, __bind-callback($iteratee, $this-arg, 3)));
 }
 
-@function __for-in($map, $iteratee: __identity, $this-arg: $__undefined__) {
+
+@function __for-in($map, $iteratee: '__identity', $this-arg: $__undefined__) {
     @if not __function-exists($iteratee)
-        or not __is-undefined($this-arg)
-    {
+    or not __is-undefined($this-arg) {
         $iteratee: __bind-callback($iteratee, $this-arg, 3);
     }
 
-    @return __base-for($map, $iteratee, __keys-in);
+    @return __base-for($map, $iteratee, '__keys-in');
 }
 
-@function __for-in-right($map, $iteratee: __identity, $this-arg: null) {
+
+@function __for-in-right($map, $iteratee: '__identity', $this-arg: null) {
     $iteratee: __bind-callback($iteratee, $this-arg, 3);
 
-    @return __base-for-right($map, $iteratee, __keys-in);
+    @return __base-for-right($map, $iteratee, '__keys-in');
 }
 
-@function __for-own($map, $iteratee: __identity, $this-arg: $__undefined__) {
+
+@function __for-own($map, $iteratee: '__identity', $this-arg: $__undefined__) {
     @if not __function-exists($iteratee)
-        or not __is-undefined($this-arg)
-    {
+    or not __is-undefined($this-arg) {
         $iteratee: __bind-callback($iteratee, $this-arg, 3);
     }
 
@@ -182,13 +191,13 @@
 }
 
 
-@function __for-own-right($map, $iteratee: __identity, $this-arg: null) {
+@function __for-own-right($map, $iteratee: '__identity', $this-arg: null) {
     $iteratee: __bind-callback($iteratee, $this-arg, 3);
 
-    @return __base-for-right($map, $iteratee, __keys);
+    @return __base-for-right($map, $iteratee, '__keys');
 }
 
-/// 
+
 /// Iterates over elements of `collection` invoking `iteratee` for each element.
 /// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection). Iterator functions may exit iteration early
@@ -197,7 +206,7 @@
 /// are iterated like lists. To avoid this behavior `_for-in` or `_for-own`
 /// may be used for object iteration.
 ///
-/// 
+///
 /// @alias each
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
@@ -213,16 +222,20 @@
 ///   console.log(n, key);
 /// });
 /// // => logs each value-key pair and returns the object (iteration order is not guaranteed)
-/// 
-@function _for-each($args...) { @return call(__for-each, $args...); }
 
-@function _each($args...) { @return call(__for-each, $args...); }
+@function _for-each($args...) {
+    @return call('__for-each', $args...);
+}
 
-/// 
+
+@function _each($args...) {
+    @return call('__for-each', $args...);
+}
+
 /// This method is like `_for-each` except that it iterates over elements of
 /// `collection` from right to left.
 ///
-/// 
+///
 /// @alias eachRight
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
@@ -234,18 +247,23 @@
 ///   console.log(n);
 /// }).join(',');
 /// // => logs each value from right to left and returns the list
-/// 
-@function _for-each-right($args...) { @return call(__for-each-right, $args...); }
 
-@function _each-right($args...) { @return call(__for-each-right, $args...); }
+@function _for-each-right($args...) {
+    @return call('__for-each-right', $args...);
+}
 
-/// 
+
+@function _each-right($args...) {
+    @return call('__for-each-right', $args...);
+}
+
+
 /// Iterates over own and inherited enumerable properties of an object invoking
 /// `iteratee` for each property. The `iteratee` is bound to `$this-arg` and invoked
 /// with three arguments; (value, key, object). Iterator functions may exit
 /// iteration early by explicitly returning `false`.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -261,14 +279,16 @@
 ///   console.log(key);
 /// });
 /// // => logs 'a', 'b', and 'c' (iteration order is not guaranteed)
-/// 
-@function _for-in($args...) { @return call(__for-in, $args...); }
 
-/// 
+@function _for-in($args...) {
+    @return call('__for-in', $args...);
+}
+
+
 /// This method is like `_for-in` except that it iterates over properties of
 /// `object` in the opposite order.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -284,16 +304,18 @@
 ///   console.log(key);
 /// });
 /// // => logs 'c', 'b', and 'a' assuming `_forIn ` logs 'a', 'b', and 'c'
-/// 
-@function _for-in-right($args...) { @return call(__for-in-right, $args...); }
 
-/// 
+@function _for-in-right($args...) {
+    @return call('__for-in-right', $args...);
+}
+
+
 /// Iterates over own enumerable properties of an object invoking `iteratee`
 /// for each property. The `iteratee` is bound to `$this-arg` and invoked with
 /// three arguments; (value, key, object). Iterator functions may exit iteration
 /// early by explicitly returning `false`.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -309,14 +331,16 @@
 ///   console.log(key);
 /// });
 /// // => logs 'a' and 'b' (iteration order is not guaranteed)
-/// 
-@function _for-own($args...) { @return call(__for-own, $args...); }
 
-/// 
+@function _for-own($args...) {
+    @return call('__for-own', $args...);
+}
+
+
 /// This method is like `_for-own` except that it iterates over properties of
 /// `object` in the opposite order.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -332,5 +356,7 @@
 ///   console.log(key);
 /// });
 /// // => logs 'b' and 'a' assuming `_for-own` logs 'a' and 'b'
-/// 
-@function _for-own-right($args...) { @return call(__for-own-right, $args...); }
+
+@function _for-own-right($args...) {
+    @return call('__for-own-right', $args...);
+}

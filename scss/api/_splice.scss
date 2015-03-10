@@ -1,5 +1,3 @@
-
-
 @function __splice($list, $start, $delete-count: 1, $items...) {
     $result: ();
     $index: 1;

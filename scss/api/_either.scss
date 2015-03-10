@@ -1,8 +1,10 @@
-
-@function __either($this, $that: null, $predicate: __is-truthy) {
+@function __either($this, $that: null, $predicate: '__is-truthy') {
     $this-bool: __exec(__base-callback($predicate), $this);
 
     @return if($this-bool, $this, $that);
 }
 
-@function _either($args...) { @return call(__either, $args...); }
+
+@function _either($args...) {
+    @return call('__either', $args...);
+}

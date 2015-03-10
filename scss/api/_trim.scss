@@ -1,5 +1,3 @@
-
-
 @function __trimmed-left-index($string) {
     $index: 1;
     $length: str-length($string);
@@ -11,6 +9,7 @@
     @return $index;
 }
 
+
 @function __trimmed-right-index($string) {
     $index: str-length($string);
 
@@ -20,6 +19,7 @@
 
     @return $index;
 }
+
 
 @function __trim($string, $chars: null, $guard: null) {
     $value: $string;
@@ -40,6 +40,7 @@
         __chars-right-index($string, $chars));
 }
 
+
 @function __trim-left($string, $chars: null, $guard: null) {
     $value: $string;
     $string: __base-to-string($string);
@@ -58,6 +59,7 @@
         __chars-left-index($string, $chars));
 }
 
+
 @function __trim-right($string, $chars: null, $guard: null) {
     $value: $string;
     $string: __base-to-string($string);
@@ -75,10 +77,11 @@
     @return str-slice($string, 0,
         __chars-right-index($string, $chars));
 }
-/// 
+
+
 /// Removes leading and trailing whitespace or specified characters from `string`.
 /// ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to trim.
 /// @param {string} $chars [whitespace] - The characters to trim.
@@ -91,12 +94,15 @@
 /// // => 'abc'
 /// /// _map(('  foo  ', '  bar  '), _trim);
 /// // => ('foo', 'bar)
-/// 
-@function _trim($args...) { @return call(__trim, $args...); }
-/// 
+
+@function _trim($args...) {
+    @return call('__trim', $args...);
+}
+
+
 /// Removes leading whitespace or specified characters from `string`.
 /// ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to trim.
 /// @param {string} $chars [whitespace] - The characters to trim.
@@ -107,12 +113,15 @@
 /// // => 'abc  '
 /// /// _trim-left('-_-abc-_-', '_-');
 /// // => 'abc-_-'
-/// 
-@function _trim-left($args...) { @return call(__trim-left, $args...); }
-/// 
+
+@function _trim-left($args...) {
+    @return call('__trim-left', $args...);
+}
+
+
 /// Removes trailing whitespace or specified characters from `string`.
 /// ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to trim.
 /// @param {string} $chars [whitespace] - The characters to trim.
@@ -123,5 +132,7 @@
 /// // => '  abc'
 /// /// _trim-right('-_-abc-_-', '_-');
 /// // => '-_-abc'
-/// 
-@function _trim-right($args...) { @return call(__trim-right, $args...); }
+
+@function _trim-right($args...) {
+    @return call('__trim-right', $args...);
+}

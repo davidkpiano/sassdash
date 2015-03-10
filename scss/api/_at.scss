@@ -1,7 +1,6 @@
-
 @function __base-at($collection, $props) {
     $length: length($collection);
-    $is-list: type-of($collection) == list;
+    $is-list: type-of($collection) == 'list';
     $result: ();
 
     @each $key in $props {
@@ -10,11 +9,12 @@
             $result: append($result, if(__is-index($key, $length), nth($collection, $key), null));
         } @else {
             $result: append($result, __get($collection, $key));
-        }   
+        }
     }
 
     @return $result;
 }
+
 
 @function __at($arguments...) {
     $collection: nth($arguments, 1);
@@ -27,12 +27,12 @@
     @return __base-at($collection, __base-flatten($arguments, false, false, 2));
 }
 
-/// 
+
 /// Creates an list of elements corresponding to the given keys, or indexes,
 /// of `collection`. Keys may be specified as individual arguments or as lists
 /// of keys.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {...(number|number[]|string|string[])} (props) The property names
@@ -43,5 +43,7 @@
 /// // => ('a', 'c')
 /// _at(('fred', 'barney', 'pebbles'), 0, 2);
 /// // => ('fred', 'pebbles')
-/// 
-@function _at($args...) { @return call(__at, $args...); }
+
+@function _at($args...) {
+    @return call('__at', $args...);
+}

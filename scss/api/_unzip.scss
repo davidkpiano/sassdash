@@ -1,8 +1,6 @@
-
-
 @function __unzip($list) {
     $index: 1;
-    $length: if($list, if(length($list) > 0, __list-max(__list-map($list, __get-length)), 0), 0);
+    $length: if($list, if(length($list) > 0, __list-max(__list-map($list, '__get-length')), 0), 0);
     $result: ();
 
     @while ($index <= $length) {
@@ -14,12 +12,12 @@
     @return $result;
 }
 
-/// 
+
 /// This method is like `_zip` except that it accepts an list of grouped
 /// elements and creates an list regrouping the elements to their pre-`_zip`
 /// configuration.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list of grouped elements to process.
 /// @returns {Array} Returns the new list of regrouped elements.
@@ -28,5 +26,7 @@
 /// // => [('fred', 30, true), ('barney', 40, false)]
 /// _unzip(zipped);
 /// // => [('fred', 'barney'), (30, 40), (true, false)]
-/// 
-@function _unzip($args...) { @return call(__unzip, $args...); }
+
+@function _unzip($args...) {
+    @return call('__unzip', $args...);
+}

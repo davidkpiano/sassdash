@@ -6,13 +6,15 @@
 
     @return $result;
 }
+
+
 @function __count-by($arguments...) {
-    $function: __create-aggregator(__count-by-iteratee);
+    $function: __create-aggregator('__count-by-iteratee');
 
     @return __exec($function, $arguments...);
 }
 
-/// 
+
 /// Creates an object composed of keys generated from the results of running
 /// each element of `collection` through `iteratee`. The corresponding value
 /// of each key is the number of times the key was returned by `iteratee`.
@@ -27,7 +29,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $iteratee [_identity] - The function invoked
@@ -45,5 +47,7 @@
 /// // => { '4': 1, '6': 2 }
 /// _count-by(('one', 'two', 'three'), 'length');
 /// // => { '3': 2, '5': 1 }
-/// 
-@function _count-by($args...) { @return call(__count-by, $args...); }
+
+@function _count-by($args...) {
+  @return call('__count-by', $args...);
+}

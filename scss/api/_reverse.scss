@@ -1,4 +1,3 @@
-
 @function __list-reverse($list, $args...) {
     $length: length($list);
     $result-list: ();
@@ -12,13 +11,14 @@
     @return $result-list;
 }
 
+
 @function __str-reverse($string, $args...) {
     $string-list: __to-list($string);
-
     $result: __list-reverse($string-list);
 
     @return __join($result, '');
 }
+
 
 @function __reverse($value, $args...) {
     @if __is-string($value) {
@@ -28,6 +28,12 @@
     @return __list-reverse($value);
 }
 
-@function _reverse($args...) { @return call(__reverse, $args...); }
 
-@function _str-reverse($args...) { @return call(__str-reverse, $args...); }
+@function _reverse($args...) {
+    @return call('__reverse', $args...);
+}
+
+
+@function _str-reverse($args...) {
+    @return call('__str-reverse', $args...);
+}

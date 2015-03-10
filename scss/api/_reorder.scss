@@ -1,21 +1,14 @@
-
-
-
 @function __reorder($list, $indexes) {
     $list-length: length($list);
     $length: min(length($indexes), $list-length);
     $old-list: __list-copy($list);
-
     $list: __to-map($list);
 
     @while ($length > 0) {
         $index: nth($indexes, $length);
-
         $list: __set($list, $length, if(__is-index($index, $list-length), nth($old-list, $index), $__undefined__));
-
         $length: $length - 1;
     }
 
     @return __to-list($list);
 }
-

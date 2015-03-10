@@ -1,4 +1,3 @@
-
 @function __compact($list) {
     $result: ();
 
@@ -6,7 +5,7 @@
         @return $result;
     }
 
-    @each $value in $list {        
+    @each $value in $list {
         @if not (__is-falsey($value)) {
             $result: append($result, $value);
         }
@@ -15,16 +14,18 @@
     @return $result;
 }
 
-/// 
+
 /// Creates an list with all falsey values removed. The values `false`, `null`,
 /// `0`, `""`, `undefined`, and `NaN` are falsey.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to compact.
 /// @returns {Array} Returns the new list of filtered values.
 /// @example scss
 /// _compact((0, 1, false, 2, '', 3));
 /// // => (1, 2, 3)
-/// 
-@function _compact($args...) { @return call(__compact, $args...); }
+
+@function _compact($args...) {
+    @return call('__compact', $args...);
+}

@@ -1,10 +1,8 @@
-
-
 @function __where($collection, $source) {
     @return __filter($collection, __matches($source));
 }
 
-/// 
+
 /// Performs a deep comparison between each element in `collection` and the
 /// source object, returning an list of all elements that have equivalent
 /// property values.
@@ -13,7 +11,7 @@
 /// their own, not inherited, enumerable properties. For comparing a single
 /// own or inherited property value see `_matches-property`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {Map} source The object of property values to match.
@@ -27,5 +25,7 @@
 /// // => ('barney')
 /// _pluck(_where(users, { 'pets': ('dino') }), 'user');
 /// // => ('fred')
-/// 
-@function _where($args...) { @return call(__where, $args...); }
+
+@function _where($args...) {
+    @return call('__where', $args...);
+}

@@ -1,20 +1,16 @@
-
-
 @function __base-sort-by($list, $comparer) {
     $length: length($list);
-
     $list: __sort($list, $comparer);
-
     $list: __to-map($list);
 
     @while ($length > 0) {
         $list: __set($list, $length, __get(__get($list, $length), 'value'));
-
         $length: $length - 1;
     }
 
     @return __to-list($list);
 }
+
 
 @function __base-compare-ascending($value, $other) {
     $value: if(__is-falsey($value), 0, $value);
@@ -31,9 +27,11 @@
     @return 0;
 }
 
+
 @function __compare-ascending($map, $other) {
     @return __either(__base-compare-ascending(__get($map, 'criteria'), __get($other, 'criteria')), (__get($map, 'index') - __get($other, 'index')));
 }
+
 
 @function __compare-multiple-ascending($map, $other) {
     $index: 1;
@@ -54,17 +52,21 @@
     @return (__get($map, 'index') - __get($other, 'index'));
 }
 
+
 @function __sort-predicate-asc($first, $second) {
   @return if($first > $second, 1, if($first < $second, -1, 0));
 }
+
 
 @function __sort-predicate-desc($first, $second) {
   @return if($first < $second, 1, if($first > $second, -1, 0));
 }
 
+
 @function __sort-iteratee($value, $index, $collection, $predicate, $args...) {
   @return __sort($value, $predicate);
 }
+
 
 /// Quick sort
 /// @author Sam Richards
@@ -72,54 +74,55 @@
 /// @return {List}
 @function __sort($list, $predicate: 'asc') {
     $predicate-map: (
-        'asc': __sort-predicate-asc,
-        'desc': __sort-predicate-desc
+        'asc': '__sort-predicate-asc',
+        'desc': '__sort-predicate-desc'
     );
 
     $comparison-function: __either(__get($predicate-map, $predicate), $predicate);
-
     $less:  ();
     $equal: ();
     $large: ();
 
     @if length($list) > 1 {
-    $seed: nth($list, ceil(length($list) / 2));
 
-    @each $item in $list {
-        $comparison: __exec($comparison-function, $item, $seed);
+        $seed: nth($list, ceil(length($list) / 2));
 
-        @if $comparison == 0 {
-            $equal: append($equal, $item);
-        } @else if $comparison < 0 {
-            $less: append($less, $item);
-        } @else if $comparison > 0 {
-            $large: append($large, $item);
+        @each $item in $list {
+            $comparison: __exec($comparison-function, $item, $seed);
+
+            @if $comparison == 0 {
+                $equal: append($equal, $item);
+            } @else if $comparison < 0 {
+                $less: append($less, $item);
+            } @else if $comparison > 0 {
+                $large: append($large, $item);
+            }
         }
-    }
 
-    @return join(join(__sort($less, $predicate), $equal), __sort($large, $predicate));
+        @return join(join(__sort($less, $predicate), $equal), __sort($large, $predicate));
     }
 
     @return $list;
 }
 
+
 @function __sort-by-iteratee($value, $key, $collection) {
     $result: __this('result');
     $iteratee: __this('iteratee');
     $index: __this('index');
-
     $result: append($result, (
-            'criteria': __exec($iteratee, $value, $key, $collection),
-            'index': $index,
-            'value': $value
-        ));
-
+        'criteria': __exec($iteratee, $value, $key, $collection),
+        'index': $index,
+        'value': $value
+    ));
     $_: __this('result', $result);
     $_: __this('index', $index + 1);
 
     @return true;
 }
-@function __sort-by($collection, $iteratee: __identity, $this-arg: $__undefined__) {
+
+
+@function __sort-by($collection, $iteratee: '__identity', $this-arg: $__undefined__) {
     $index: 1;
     $length: if(__is-map-like($collection), length($collection), 0);
     $result: ();
@@ -133,46 +136,45 @@
     }
 
     $iteratee: __get-callback($iteratee, $this-arg, 3);
-
-    $_: __scope(('result': $result, 'iteratee': $iteratee, 'index': $index));
-
-        $sort-by-iteratee: __bind(__sort-by-iteratee);
-
-        $_: __base-each($collection, $sort-by-iteratee);
-
-        $result: __this('result');
+    $_: __scope((
+        'result': $result,
+        'iteratee': $iteratee,
+        'index': $index
+    ));
+    $sort-by-iteratee: __bind('__sort-by-iteratee');
+    $_: __base-each($collection, $sort-by-iteratee);
+    $result: __this('result');
     $_: __scope(false);
 
-    @return __base-sort-by($result, __compare-ascending);
+    @return __base-sort-by($result, '__compare-ascending');
 }
+
 
 @function __sort-by-all-iteratee($value, $key, $collection) {
     $props: __this('props');
     $result: __this('result');
     $index: __this('index');
-
     $length: length($props);
     $criteria: ();
 
     @while ($length > 0) {
         $criteria: __set($criteria, $length, if($value == null, $__undefined__, __get($value, __get($props, $length))));
-
         $length: $length - 1;
     }
 
     $criteria: __to-list($criteria);
-
     $result: append($result, (
-            'criteria': $criteria,
-            'index': $index,
-            'value': $value
-        ));
-
+        'criteria': $criteria,
+        'index': $index,
+        'value': $value
+    ));
     $_: __this('result', $result);
     $_: __this('index', $index + 1);
 
     @return true;
 }
+
+
 @function __sort-by-all($arguments...) {
     $collection: nth($arguments, 1);
     $args: $arguments;
@@ -186,21 +188,25 @@
     $props: __base-flatten($args, false, false, 1);
     $result: ();
 
-    $_: __scope(('props': $props, 'result': $result, 'index': $index));
-
-        $iteratee: __bind(__sort-by-all-iteratee);
-
-        $_: __base-each($collection, $iteratee);
-
-        $result: __this('result');
+    $_: __scope((
+        'props': $props,
+        'result': $result,
+        'index': $index
+    ));
+    $iteratee: __bind('__sort-by-all-iteratee');
+    $_: __base-each($collection, $iteratee);
+    $result: __this('result');
     $_: __scope(false);
 
-    @return __base-sort-by($result, __compare-multiple-ascending);
+    @return __base-sort-by($result, '__compare-multiple-ascending');
 }
 
-@function _sort($args...) { @return call(__sort, $args...); }
 
-/// 
+@function _sort($args...) {
+    @return call('__sort', $args...);
+}
+
+
 /// Creates an list of elements, sorted in ascending order by the results of
 /// running each element in a collection through `iteratee`. This method performs
 /// a stable sort, that is, it preserves the original sort order of equal elements.
@@ -215,7 +221,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Array|Function|Object|string} $iteratee [_identity] - The function
@@ -240,14 +246,16 @@
 /// // using the `_property` callback shorthand
 /// _pluck(_sort-by(users, 'user'), 'user');
 /// // => ('barney', 'fred', 'pebbles')
-/// 
-@function _sort-by($args...) { @return call(__sort-by, $args...); }
 
-/// 
+@function _sort-by($args...) {
+    @return call('__sort-by', $args...);
+}
+
+///
 /// This method is like `_sort-by` except that it sorts by property names
 /// instead of an iteratee function.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {...(string|string[])} props The property names to sort by,
@@ -262,5 +270,7 @@
 /// ];
 /// _map(_sort-by-all(users, ('user', 'age')), _values);
 /// // => [('barney', 26), ('barney', 36), ('fred', 30), ('fred', 40)]
-/// 
-@function _sort-by-all($args...) { @return call(__sort-by-all, $args...); }
+
+@function _sort-by-all($args...) {
+    @return call('__sort-by-all', $args...);
+}

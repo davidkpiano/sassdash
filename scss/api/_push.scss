@@ -1,7 +1,8 @@
-
-
 @function __push($list, $items...) {
     @return join($list, $items, $separator: auto);
 }
 
-@function _push($args...) { @return call(__push, $args...); }
+
+@function _push($args...) {
+    @return call('__push', $args...);
+}

@@ -1,4 +1,3 @@
-
 @function __base-flatten($list, $is-deep: false, $is-strict: false, $from-index: 1) {
     $index: $from-index;
     $length: length($list);
@@ -9,9 +8,8 @@
         $value: nth($list, $index);
 
         @if __is-map-like($value)
-            and __is-length(length($value))
-            and __is-list-like($value)
-        {
+        and __is-length(length($value))
+        and __is-list-like($value) {
             @if ($is-deep) {
                 $value: __base-flatten($value, $is-deep, $is-strict);
             }
@@ -21,7 +19,6 @@
 
             @while ($value-index <= $value-length) {
                 $result: append($result, nth($value, $value-index));
-
                 $value-index: $value-index + 1;
             }
         } @else if not ($is-strict) {
@@ -34,11 +31,13 @@
     @return $result;
 }
 
+
 @function __flatten-deep($list, $args...) {
     $length: if(__is-list-like($list), length($list), 0);
 
     @return if($length > 0, __base-flatten($list, true), ());
 }
+
 
 @function __flatten($list, $is-deep: false, $guard: null) {
     $length: if(__is-list-like($list), length($list), 0);
@@ -50,11 +49,11 @@
     @return if($length > 0, __base-flatten($list, $is-deep), ());
 }
 
-/// 
+
 /// Flattens a nested list. If `isDeep` is `true` the list is recursively
 /// flattened, otherwise it is only flattened a single level.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to flatten.
 /// @param {boolean} (isDeep) Specify a deep flatten.
@@ -66,18 +65,22 @@
 /// // using `isDeep`
 /// _flatten([1, [2, 3, (4)]], true);
 /// // => (1, 2, 3, 4);
-/// 
-@function _flatten($args...) { @return call(__flatten, $args...); }
 
-/// 
+@function _flatten($args...) {
+    @return call('__flatten', $args...);
+}
+
+
 /// Recursively flattens a nested list.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to recursively flatten.
 /// @returns {Array} Returns the new flattened list.
 /// @example scss
 /// _flatten-deep([1, [2, 3, (4)]]);
 /// // => (1, 2, 3, 4);
-/// 
-@function _flatten-deep($args...) { @return call(__flatten-deep, $args...); }
+
+@function _flatten-deep($args...) {
+    @return call('__flatten-deep', $args...);
+}

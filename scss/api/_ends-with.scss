@@ -1,15 +1,14 @@
-
-
 @function __ends-with($string, $target, $position: str-length($string)) {
     @if __is-list-like($target) {
         $result: false;
+
         @each $target-string in $target {
             $result: __either($result, __ends-with($string, $target-string, $position));
         }
 
         @return $result;
     }
-    
+
     $string: __base-to-string($string);
     $target: __base-to-string($target);
     $length: str-length($string);
@@ -21,10 +20,10 @@
         false);
 }
 
-/// 
+
 /// Checks if `string` ends with the given target string.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to search.
 /// @param {string} (target) The string to search for.
@@ -37,5 +36,7 @@
 /// // => false
 /// _ends-with('abc', 'b', 2);
 /// // => true
-/// 
-@function _ends-with($args...) { @return call(__ends-with, $args...); }
+
+@function _ends-with($args...) {
+    @return call('__ends-with', $args...);
+}

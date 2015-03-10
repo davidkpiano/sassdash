@@ -1,15 +1,11 @@
-
-
 @function __includes($collection, $target: null, $from-index: 1) {
     @if __is-string($collection) {
         @if not __is-number($from-index)
-            or -$from-index >= str-length($collection)
-        {
+        or -$from-index >= str-length($collection) {
             $from-index: 0;
         } @else if $from-index < 0 {
             $from-index: str-length($collection) + $from-index;
         }
-
 
         $collection: str-slice($collection, $from-index);
 
@@ -17,7 +13,6 @@
     }
 
     $collection: __to-list($collection);
-
     $length: if($collection, length($collection), 0);
 
     @if not __is-length($length) {
@@ -40,7 +35,7 @@
     @return __index-of($collection, $target, $from-index) > -1;
 }
 
-/// 
+
 /// Checks if `value` is in `collection` using `SameValueZero` for equality
 /// comparisons. If `fromIndex` is negative, it is used as the offset from
 /// the end of `collection`.
@@ -49,7 +44,7 @@
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
 ///
-/// 
+///
 /// @alias contains, include
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
@@ -65,10 +60,17 @@
 /// // => true
 /// _includes('pebbles', 'eb');
 /// // => true
-/// 
-@function _includes($args...) { @return call(__includes, $args...); }
 
-@function _include($args...) { @return call(__includes, $args...); }
+@function _includes($args...) {
+    @return call('__includes', $args...);
+}
 
-@function _contains($args...) { @return call(__includes, $args...); }
 
+@function _include($args...) {
+    @return call('__includes', $args...);
+}
+
+
+@function _contains($args...) {
+    @return call('__includes', $args...);
+}

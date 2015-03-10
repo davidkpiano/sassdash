@@ -1,5 +1,3 @@
-
-
 @function __result($map, $key, $default-value: null) {
     $value: if($map == null, $__undefined__, __get($map, $key));
     $result: null;
@@ -10,11 +8,8 @@
 
     @if __function-exists($value) {
         $_: __scope($map);
-
         $scoped-function: __bind($value);
-
         $result: __call($scoped-function, $__current-scope__);
-
         $_: __scope(false);
     } @else {
         $result: $value;
@@ -22,13 +17,14 @@
 
     @return $result;
 }
-/// 
+
+
 /// Resolves the value of property `key` on `object`. If the value of `key` is
 /// a function it is invoked with the `this` binding of `object` and its result
 /// is returned, else the property value is returned. If the property value is
 /// `undefined` the `defaultValue` is used in its place.
 /// ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to query.
 /// @param {string} key The key of the property to resolve.
@@ -45,5 +41,7 @@
 /// // => 'busy'
 /// /// _result(object, 'status', _constant('busy'));
 /// // => 'busy'
-/// 
-@function _result($args...) { @return call(__result, $args...); }
+
+@function _result($args...) {
+    @return call('__result', $args...);
+}

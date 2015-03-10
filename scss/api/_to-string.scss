@@ -1,5 +1,3 @@
-
-
 @function __base-to-string($value) {
     @if __is-string($value) {
         @return $value;
@@ -7,6 +5,7 @@
 
     @return if($value == null, '', $value + '');
 }
+
 
 @function __to-string($value, $args...) {
     @if __is-string($value) {
@@ -20,4 +19,7 @@
     @return inspect($value);
 }
 
-@function _to-string($args...) { @return call(__to-string, $args...); }
+
+@function _to-string($args...) {
+    @return call('__to-string', $args...);
+}

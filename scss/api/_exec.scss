@@ -1,7 +1,8 @@
-
-
 @function __exec($method, $args...) {
     @return __call($method, null, $args...);
 }
 
-@function _exec($args...) { @return call(__exec, $args...); }
+
+@function _exec($args...) {
+    @return call('__exec', $args...);
+}

@@ -1,12 +1,7 @@
-
-
 @function __words($string, $args...) {
     $string: __base-to-string($string);
-
     $result: ();
-
     $temp: '';
-
     $lowercase-letters: 'abcdefghijklmnopqrstuvwxyz';
     $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ';
 
@@ -16,10 +11,8 @@
         $letter-next: __char-at($string, $index + 1);
 
         @if not (str-index($lowercase-letters, $letter))
-            and not (
-                str-index($uppercase-letters, $letter-prev)
-                and str-index($uppercase-letters, $letter-next)
-            ) {
+        and not (str-index($uppercase-letters, $letter-prev)
+            and str-index($uppercase-letters, $letter-next)) {
             @if (str-length($temp) > 0) {
                 $result: append($result, $temp);
                 $temp: '';
@@ -40,10 +33,10 @@
     @return $result;
 }
 
-/// 
+
 /// Splits `$string` into an list of its words.
-/// ///
-/// 
+///
+///
 /// @group String
 /// @param {string} $string [''] - The string to inspect.
 /// @param {RegExp|string} (pattern) The pattern to match words.
@@ -54,5 +47,7 @@
 /// // => ('fred', 'barney', 'pebbles')
 /// /// _words('fred, barney, & pebbles', /(^, )+/g);
 /// // => ('fred', 'barney', '&', 'pebbles')
-/// 
-@function _words($args...) { @return call(__words, $args...); }
+
+@function _words($args...) {
+    @return call('__words', $args...);
+}

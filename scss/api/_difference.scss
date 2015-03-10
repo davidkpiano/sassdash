@@ -1,6 +1,3 @@
-
-
-
 @function __base-difference($list, $values) {
     $result: ();
 
@@ -12,6 +9,7 @@
 
     @return $result;
 }
+
 
 @function __difference($arguments...) {
     $index: 1;
@@ -34,7 +32,7 @@
     @return __base-difference($value, $values);
 }
 
-/// 
+
 /// Creates an list excluding all values of the provided lists using
 /// `SameValueZero` for equality comparisons.
 /// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
@@ -42,7 +40,7 @@
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to inspect.
 /// @param {...Array} (values) The lists of values to exclude.
@@ -50,5 +48,7 @@
 /// @example scss
 /// _difference((1, 2, 3), (4, 2));
 /// // => (1, 3)
-/// 
-@function _difference($args...) { @return call(__difference, $args...); }
+
+@function _difference($args...) {
+    @return call('__difference', $args...);
+}

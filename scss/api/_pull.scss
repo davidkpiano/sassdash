@@ -1,5 +1,3 @@
-
-
 @function __pull($arguments...) {
     $list: nth($arguments, 1);
 
@@ -16,7 +14,6 @@
 
         @while (__index-of($list, $value, $from-index) > -1) {
             $from-index: __index-of($list, $value, $from-index);
-
             $list: __splice($list, $from-index, 1);
         }
 
@@ -26,7 +23,7 @@
     @return $list;
 }
 
-/// 
+
 /// Removes all provided values from `list` using `SameValueZero` for equality
 /// comparisons.
 /// **Notes:**
@@ -35,7 +32,7 @@
 ///    except that `NaN` matches `NaN`. See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 ///    for more details.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to modify.
 /// @param {...*} (values) The values to remove.
@@ -45,5 +42,7 @@
 /// _pull(list, 2, 3);
 /// console.log(list);
 /// // => (1, 1)
-/// 
-@function _pull($args...) { @return call(__pull, $args...); }
+
+@function _pull($args...) {
+    @return call('__pull', $args...);
+}

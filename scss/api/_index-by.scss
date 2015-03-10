@@ -1,15 +1,15 @@
-
-
 @function __index-by-aggregator($result, $value, $key, $args...) {
     @return __set($result, $key, $value);
 }
+
+
 @function __index-by($arguments...) {
-    $function: __create-aggregator(__index-by-aggregator);
+    $function: __create-aggregator('__index-by-aggregator');
 
     @return __exec($function, $arguments...);
 }
 
-/// 
+
 /// Creates an object composed of keys generated from the results of running
 /// each element of `collection` through `iteratee`. The corresponding value
 /// of each key is the last element responsible for generating the key. The
@@ -24,7 +24,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $iteratee [_identity] - The function invoked
@@ -46,5 +46,7 @@
 ///   return this.fromCharCode(object.code);
 /// }, String);
 /// // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
-/// 
-@function _index-by($args...) { @return call(__index-by, $args...); }
+
+@function _index-by($args...) {
+    @return call('__index-by', $args...);
+}

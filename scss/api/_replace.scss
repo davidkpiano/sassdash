@@ -1,6 +1,3 @@
-
-
-
 @function __string-replace($string, $target, $replacement: '') {
     $found-index: str-index($string, $target);
     $result: '';

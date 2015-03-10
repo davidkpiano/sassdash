@@ -1,11 +1,8 @@
-
 @function __base-fill($list, $value, $start: null, $end: null) {
     $length: length($list);
-
     $start: if($start == null,
         1,
         if(__is-number($start), $start, if($start, 2, 1)));
-
     $end: if(__is-undefined($end) or $end > $length,
         $length,
         if(__is-number($end), $end, if($end, 2, 1)));
@@ -23,6 +20,7 @@
     @return $list;
 }
 
+
 @function __fill($list, $value, $start: null, $end: null) {
     $length: if($list, length($list), 0);
 
@@ -31,9 +29,8 @@
     }
 
     @if $start
-        and __is-number($start)
-        and __is-iteratee-call($list, $value, $start)
-    {
+    and __is-number($start)
+    and __is-iteratee-call($list, $value, $start) {
         $start: 1;
         $end: $length;
     }
@@ -41,17 +38,19 @@
     @return __base-fill($list, $value, $start, $end);
 }
 
-/// 
+
 /// Fills elements of `list` with `value` from `start` up to, but not
 /// including, `end`.
 /// **Note:** This method mutates `list`.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to fill.
 /// @param {*} value The value to fill `list` with.
 /// @param {number} $start [0] - The start position.
 /// @param {number} $end [list.length] - The end position.
 /// @returns {Array} Returns `list`.
-/// 
-@function _fill($args...) { @return call(__fill, $args...); }
+
+@function _fill($args...) {
+    @return call('__fill', $args...);
+}

@@ -1,10 +1,8 @@
-
-
 @function __repeat($string, $value: 0) {
     $value: __parse-int($value);
     $result: '';
 
-    @if $value >= 1 {    
+    @if $value >= 1 {
         @for $iteration from 1 through $value {
             $result: $result + $string;
         }
@@ -12,10 +10,11 @@
 
     @return $result;
 }
-/// 
+
+
 /// Repeats the given string `$n` times.
 /// ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to repeat.
 /// @param {number} $n [0] - The number of times to repeat the string.
@@ -27,5 +26,7 @@
 /// // => 'abcabc'
 /// /// _repeat('abc', 0);
 /// // => ''
-/// 
-@function _repeat($args...) { @return call(__repeat, $args...); }
+
+@function _repeat($args...) {
+    @return call('__repeat', $args...);
+}

@@ -1,4 +1,3 @@
-
 @function __camel-case-compounder($result, $word, $index) {
     $word: to-lower-case($word);
 
@@ -6,11 +5,14 @@
         $result + to-upper-case(__char-at($word, 1)) + str-slice($word, 2),
         $word);
 }
+
+
 @function __camel-case($arguments...) {
-    $compounder: __create-compounder(__camel-case-compounder);
+    $compounder: __create-compounder('__camel-case-compounder');
 
     @return __exec($compounder, $arguments...);
 }
+
 
 @function __capitalize($string) {
     $string: __base-to-string($string);
@@ -20,39 +22,47 @@
         false);
 }
 
+
 @function __kebab-case-compounder($result, $word, $index: 0) {
     @return $result + if($index > 1, '-', '') + to-lower-case($word);
 }
+
+
 @function __kebab-case($arguments...) {
-    $compounder: __create-compounder(__kebab-case-compounder);
+    $compounder: __create-compounder('__kebab-case-compounder');
 
     @return __exec($compounder, $arguments...);
 }
+
 
 @function __snake-case-compounder($result, $word, $index) {
     @return $result + if($index > 1, '_', '') + to-lower-case($word);
 }
+
+
 @function __snake-case($arguments...) {
-    $compounder: __create-compounder(__snake-case-compounder);
+    $compounder: __create-compounder('__snake-case-compounder');
 
     @return __exec($compounder, $arguments...);
 }
+
 
 @function __start-case-compounder($result, $word, $index) {
     @return $result + if($index > 1, ' ', '') + to-upper-case(__char-at($word, 1)) + str-slice($word, 2);
 }
+
+
 @function __start-case($arguments...) {
-    $compounder: __create-compounder(__start-case-compounder);
+    $compounder: __create-compounder('__start-case-compounder');
 
     @return __exec($compounder, $arguments...);
 }
 
 
-/// 
 /// Converts `string` to camel case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the camel cased string.
@@ -63,28 +73,32 @@
 /// // => 'fooBar'
 /// _camel-case('__foo_bar__');
 /// // => 'fooBar'
-/// 
-@function _camel-case($args...) { @return call(__camel-case, $args...); }
 
-/// 
+@function _camel-case($args...) {
+    @return call('__camel-case', $args...);
+}
+
+
 /// Capitalizes the first character of `string`.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to capitalize.
 /// @returns {string} Returns the capitalized string.
 /// @example scss
 /// _capitalize('fred');
 /// // => 'Fred'
-/// 
-@function _capitalize($args...) { @return call(__capitalize, $args...); }
 
-/// 
+@function _capitalize($args...) {
+    @return call('__capitalize', $args...);
+}
+
+
 /// Converts `string` to kebab case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for
 /// more details.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the kebab cased string.
@@ -95,14 +109,16 @@
 /// // => 'foo-bar'
 /// _kebab-case('__foo_bar__');
 /// // => 'foo-bar'
-/// 
-@function _kebab-case($args...) { @return call(__kebab-case, $args...); }
 
-/// 
+@function _kebab-case($args...) {
+    @return call('__kebab-case', $args...);
+}
+
+
 /// Converts `string` to snake case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the snake cased string.
@@ -113,15 +129,17 @@
 /// // => 'foo_bar'
 /// _snake-case('--foo-bar');
 /// // => 'foo_bar'
-/// 
-@function _snake-case($args...) { @return call(__snake-case, $args...); }
 
-/// 
+@function _snake-case($args...) {
+    @return call('__snake-case', $args...);
+}
+
+
 /// Converts `string` to start case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage)
 /// for more details.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the start cased string.
@@ -132,6 +150,7 @@
 /// // => 'Foo Bar'
 /// _start-case('__foo_bar__');
 /// // => 'Foo Bar'
-/// 
-@function _start-case($args...) { @return call(__start-case, $args...); }
 
+@function _start-case($args...) {
+    @return call('__start-case', $args...);
+}

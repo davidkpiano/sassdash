@@ -1,13 +1,11 @@
-
-
 @function __identity($value: null, $args...) {
     @return $value;
 }
 
-/// 
+
 /// This method returns the first argument provided to it.
 ///
-/// 
+///
 /// @group Utility
 /// @param {*} value Any value.
 /// @returns {*} Returns `value`.
@@ -15,5 +13,7 @@
 /// $object: { 'user': 'fred' };
 /// _identity(object) === object;
 /// // => true
-/// 
-@function _identity($args...) { @return call(__identity, $args...); }
+
+@function _identity($args...) {
+    @return call('__identity', $args...);
+}

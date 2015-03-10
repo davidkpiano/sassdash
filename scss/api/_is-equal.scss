@@ -1,5 +1,3 @@
-
-
 @function __equal-lists($list, $other, $equal-func, $customizer, $is-where) {
     $index: 1;
     $list-length: length($list);
@@ -8,15 +6,13 @@
 
 
     @if not ($list-length == $other-length)
-        and not ($is-where and ($other-length > $list-length))
-    {
+    and not ($is-where and ($other-length > $list-length)) {
         @return false;
     }
 
     @while ($result and ($index <= $list-length)) {
         $list-value: nth($list, $index);
         $other-value: nth($other, $index);
-
         $result: $__undefined__;
 
         @if ($customizer) {
@@ -28,11 +24,10 @@
         @if (__is-undefined($result)) {
             @if ($is-where) {
                 $other-index: $other-length;
-
                 $break: false;
+
                 @while ($other-index > 0 and not $break) {
                     $other-value: nth($other, $other-index);
-
                     $result: if($list-value == $other-value,
                         true,
                         __exec($equal-func, $list-value, $other-value, $customizer, $is-where));
@@ -56,7 +51,9 @@
     @return if($result, true, false);
 }
 
+
 @function __equal-by-tag() {}
+
 
 @function __equal-maps($map, $other, $equal-func: false, $customizer: false, $is-where: false) {
     $map-props: map-keys($map);
@@ -78,7 +75,6 @@
         @if ($result) {
             $map-value: __get($map, $key);
             $other-value: __get($other, $key);
-
             $result: $__undefined__;
 
             @if ($customizer) {
@@ -99,7 +95,6 @@
         }
 
         $has-ctor: if($has-ctor, true, ($key == '_constructor'));
-
         $index: $index + 1;
     }
 
@@ -110,11 +105,12 @@
     @return true;
 }
 
+
 @function __base-is-equal($value, $other, $customizer: null, $is-where: null) {
     @if $value == $other {
         @return true;
     }
-    
+
     @if __is-string($value) or not __is-iterable($value) {
         @return false;
     }
@@ -122,11 +118,13 @@
     @return __base-is-equal-deep($value, $other, $customizer, $is-where);
 }
 
-@function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null) {
-    $func: if(__is-list-like($value), __equal-lists, __equal-maps);
 
-    @return __exec($func, $value, $other, __base-is-equal, $customizer, $is-where);
+@function __base-is-equal-deep($value, $other, $customizer: null, $is-where: null) {
+    $func: if(__is-list-like($value), '__equal-lists', '__equal-maps');
+
+    @return __exec($func, $value, $other, '__base-is-equal', $customizer, $is-where);
 }
+
 
 @function __is-equal($value, $other, $customizer: null, $this-arg: null) {
     $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 3), false);
@@ -140,7 +138,7 @@
     @return if(__is-undefined($result) or __is-null($result), __base-is-equal($value, $other, $customizer), ($result and true));
 }
 
-/// 
+
 /// Performs a deep comparison between two values to determine if they are
 /// equivalent. If `$customizer` is provided it is invoked to compare values.
 /// If `$customizer` returns `undefined` comparisons are handled by the method
@@ -152,7 +150,7 @@
 /// are/// not** supported. Provide a customizer function to extend support
 /// for comparing other values.
 ///
-/// 
+///
 /// @group Lang
 /// @param {*} value The value to compare.
 /// @param {*} other The other value to compare.
@@ -175,5 +173,7 @@
 ///   }
 /// });
 /// // => true
-/// 
-@function _is-equal($args...) { @return call(__is-equal, $args...); }
+
+@function _is-equal($args...) {
+    @return call('__is-equal', $args...);
+}

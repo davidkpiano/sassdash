@@ -1,4 +1,3 @@
-
 @function __is-empty($value: null) {
     @if ($value == null) {
         @return true;
@@ -19,12 +18,12 @@
     @return not __length(__keys($value));
 }
 
-/// 
+
 /// Checks if a value is empty. A value is considered empty unless it is an
 /// `arguments` object, list, string, or jQuery-like collection with a length
 /// greater than `0` or an object with own enumerable properties.
 ///
-/// 
+///
 /// @group Lang
 /// @param {Array|Object|string} value The value to inspect.
 /// @returns {boolean} Returns `true` if `value` is empty, else `false`.
@@ -39,5 +38,7 @@
 /// // => false
 /// _is-empty({ 'a': 1 });
 /// // => false
-/// 
-@function _is-empty($args...) { @return call(__is-empty, $args...); }
+
+@function _is-empty($args...) {
+    @return call('__is-empty', $args...);
+}

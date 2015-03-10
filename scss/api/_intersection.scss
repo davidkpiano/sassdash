@@ -1,32 +1,27 @@
-
-
 @function __intersection($arguments...) {
     $args: ();
 
-    @each $arg-value in $arguments {        
+    @each $arg-value in $arguments {
         @if __is-list-like($arg-value) {
             $args: append($args, $arg-value);
         }
     }
 
     $args-length: length($args);
-
     $list: nth($args, 1);
     $result: ();
     $seen: false;
-
     $continue-outer: false;
+
     @each $value in $list {
         $continue-outer: false;
 
         @if (if($seen,
-                __cache-index-of($seen, $value),
-                __index-of($result, $value)) < 0)
-        {
+        __cache-index-of($seen, $value),
+        __index-of($result, $value)) < 0) {
             $args-index: $args-length;
 
             @while ($args-index > 0 and not $continue-outer) {
-
                 @if __index-of(nth($args, $args-index), $value) < 0 {
                     $continue-outer: true;
                 }
@@ -37,7 +32,6 @@
                     }
 
                     $result: append($result, $value);
-
                     $args-index: $args-index - 1;
                 }
             }
@@ -47,7 +41,7 @@
     @return __base-uniq($result);
 }
 
-/// 
+
 /// Creates an list of unique values in all provided lists using `SameValueZero`
 /// for equality comparisons.
 /// ////// Note:** `SameValueZero` comparisons are like strict equality comparisons,
@@ -55,12 +49,14 @@
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
 ///
-/// 
+///
 /// @group Array
 /// @param {...Array} (lists) The lists to inspect.
 /// @returns {Array} Returns the new list of shared values.
 /// @example scss
 /// _intersection((1, 2), (4, 2), (2, 1));
 /// // => (2)
-/// 
-@function _intersection($args...) { @return call(__intersection, $args...); }
+
+@function _intersection($args...) {
+    @return call('__intersection', $args...);
+}

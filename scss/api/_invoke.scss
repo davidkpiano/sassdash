@@ -1,4 +1,3 @@
-
 @function __base-invoke-iteratee($value, $index, $collection) {
     $function: __this('function');
     $args: __this('args');
@@ -11,6 +10,8 @@
 
     @return true;
 }
+
+
 @function __base-invoke($collection, $method-name, $args...) {
     $index: 1;
     $is-func: __function-exists($method-name);
@@ -25,33 +26,31 @@
     }
 
     $_: __scope((
-        'result': $result, 
-        'function': $function, 
-        'args': $args, 
-        'index': $index));
-
-    $iteratee: __bind(__base-invoke-iteratee);
-
+        'result': $result,
+        'function': $function,
+        'args': $args,
+        'index': $index
+    ));
+    $iteratee: __bind('__base-invoke-iteratee');
     $_: __base-each($collection, $iteratee);
-
     $result: __this('result');
-
     $_: __scope(false);
 
     @return $result;
 }
 
+
 @function __invoke($collection, $method-name: _identity, $args...) {
     @return __base-invoke($collection, $method-name, $args...);
 }
 
-/// 
+
 /// Invokes the method named by `methodName` on each element in `collection`,
 /// returning an list of the results of each invoked method. Any additional
 /// arguments are provided to each invoked method. If `methodName` is a function
 /// it is invoked for, and `this` bound to, each element in `collection`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|string} methodName The name of the method to invoke or
@@ -63,5 +62,7 @@
 /// // => [(1, 5, 7), (1, 2, 3)]
 /// _invoke((123, 456), String.prototype.split, '');
 /// // => [('1', '2', '3'), ('4', '5', '6')]
-/// 
-@function _invoke($args...) { @return call(__invoke, $args...); }
+
+@function _invoke($args...) {
+    @return call('__invoke', $args...);
+}

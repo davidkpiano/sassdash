@@ -1,42 +1,48 @@
-
-
 @function __base-property-function($map: null, $args...) {
     $key: __this('key');
     $map: __to-map($map);
 
     @return if($map == null, null, __get($map, $key));
 }
+
+
 @function __base-property($key) {
-    $_: __scope(('key': $key));
-
-    $base-property-function: __bind(__base-property-function);
-
+    $_: __scope((
+        'key': $key
+    ));
+    $base-property-function: __bind('__base-property-function');
     $_: __scope(false);
 
     @return $base-property-function;
 }
 
+
 @function __property($key) {
     @return __base-property($key);
 }
+
 
 @function __property-of-function($key, $args...) {
     $map: __this('map');
 
     @return if($map == null, null, __get($map, $key));
 }
+
+
 @function __property-of($map) {
-    $_: __scope(('map', $map));
-    $property-of-function: __bind(__property-of-function);
+    $_: __scope((
+        'map', $map
+    ));
+    $property-of-function: __bind('__property-of-function');
     $_: __scope(false);
 
     @return $property-of-function;
 }
 
-/// 
+
 /// Creates a function which returns the property value of `key` on a given object.
 ///
-/// 
+///
 /// @group Utility
 /// @param {string} key The key of the property to get.
 /// @returns {Function} Returns the new function.
@@ -50,14 +56,16 @@
 /// // => ('fred', barney')
 /// _pluck(_sort-by(users, getName), 'user');
 /// // => ('barney', 'fred')
-/// 
-@function _property($args...) { @return call(__property, $args...); }
 
-/// 
+@function _property($args...) {
+    @return call('__property', $args...);
+}
+
+
 /// The inverse of `_property`; this method creates a function which returns
 /// the property value of a given key on `object`.
 ///
-/// 
+///
 /// @group Utility
 /// @param {Map} object The object to inspect.
 /// @returns {Function} Returns the new function.
@@ -67,5 +75,7 @@
 /// // => (3, 2)
 /// _sort-by(('a', 'b', 'c'), _property-of(object));
 /// // => ('b', 'c', 'a')
-/// 
-@function _property-of($args...) { @return call(__property-of, $args...); }
+
+@function _property-of($args...) {
+    @return call('__property-of', $args...);
+}

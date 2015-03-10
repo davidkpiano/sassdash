@@ -1,5 +1,3 @@
-
-
 @function __extremum-by-iteratee($value, $index, $collection) {
     $collection: __this('collection');
     $iteratee: __this('iteratee');
@@ -11,30 +9,36 @@
     $current: __exec($iteratee, $value, $index, $collection);
 
     @if (if($is-min, $current < $computed, $current > $computed))
-        or ($current == $ex-value and $current == $result)
-    {
+    or ($current == $ex-value and $current == $result) {
         $_: __this('computed', $current);
         $_: __this('result', $value);
     }
 
     @return true;
 }
+
+
 @function __extremum-by($collection, $iteratee, $is-min: false) {
     $ex-value: if($is-min, __const('POSITIVE_INFINITY'), __const('NEGATIVE_INFINITY'));
     $computed: $ex-value;
     $result: $computed;
 
-    $_: __scope(('collection': $collection, 'iteratee': $iteratee, 'is-min': $is-min, 'ex-value': $ex-value, 'computed': $computed, 'result': $result));
-
-        $iteratee: __bind(__extremum-by-iteratee);
-
-        $_: __base-each($collection, $iteratee);
-
-        $result: __this('result');
+    $_: __scope((
+        'collection': $collection,
+        'iteratee': $iteratee,
+        'is-min': $is-min,
+        'ex-value': $ex-value,
+        'computed': $computed,
+        'result': $result
+    ));
+    $iteratee: __bind('__extremum-by-iteratee');
+    $_: __base-each($collection, $iteratee);
+    $result: __this('result');
     $_: __scope(false);
 
     @return $result;
 }
+
 
 @function __create-extremum-function($collection, $iteratee: null, $this-arg: null) {
     $list-function: __this('list-function');
@@ -47,7 +51,7 @@
     $function: __get-callback();
     $no-iteratee: ($iteratee == null);
 
-    @if not ($function == __base-callback and $no-iteratee) {
+    @if not ($function == '__base-callback' and $no-iteratee) {
         $no-iteratee: false;
         $iteratee: __exec($function, $iteratee, $this-arg, 3);
     }
@@ -64,26 +68,29 @@
 
     @return __extremum-by($collection, $iteratee, $is-min);
 }
+
+
 @function __create-extremum($list-function, $is-min: false) {
-
-    $_: __scope(('list-function': $list-function, 'is-min': $is-min));
-
-    $create-extremum-function: __bind(__create-extremum-function);
-
+    $_: __scope((
+        'list-function': $list-function,
+        'is-min': $is-min
+    ));
+    $create-extremum-function: __bind('__create-extremum-function');
     $_: __scope(false);
 
     @return $create-extremum-function;
 }
 
+
 @function __max($arguments...) {
-    $function: __create-extremum(__list-max);
+    $function: __create-extremum('__list-max');
 
     @return __exec($function, $arguments...);
 }
 
 
 @function __min($arguments...) {
-    $function: __create-extremum(__list-min, true);
+    $function: __create-extremum('__list-min', true);
 
     @return __exec($function, $arguments...);
 }
@@ -94,7 +101,7 @@
         $list: __values($list);
     }
 
-    $list: __list-each($list, __to-comparable);
+    $list: __list-each($list, '__to-comparable');
     $result: __const('NEGATIVE_INFINITY');
 
     // TODO use Hugo's comparison for strings
@@ -107,12 +114,13 @@
     @return $result;
 }
 
+
 @function __list-min($list) {
     @if (__is-map($list)) {
         $list: __values($list);
     }
 
-    $list: __list-each($list, __to-comparable);
+    $list: __list-each($list, '__to-comparable');
     $result: __const('POSITIVE_INFINITY');
 
     // TODO use Hugo's comparison for strings
@@ -125,7 +133,7 @@
     @return $result;
 }
 
-/// 
+
 /// Gets the maximum value of `collection`. If `collection` is empty or falsey
 /// `-Infinity` is returned. If an iteratee function is provided it is invoked
 /// for each value in `collection` to generate the criterion by which the value
@@ -140,7 +148,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
@@ -162,10 +170,12 @@
 /// // using the `_property` callback shorthand
 /// _max(users, 'age');
 /// // => { 'user': 'fred', 'age': 40 };
-/// 
-@function _max($args...) { @return call(__max, $args...); }
 
-/// 
+@function _max($args...) {
+    @return call('__max', $args...);
+}
+
+
 /// Gets the minimum value of `collection`. If `collection` is empty or falsey
 /// `Infinity` is returned. If an iteratee function is provided it is invoked
 /// for each value in `collection` to generate the criterion by which the value
@@ -180,7 +190,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
@@ -202,5 +212,7 @@
 /// // using the `_property` callback shorthand
 /// _min(users, 'age');
 /// // => { 'user': 'barney', 'age': 36 };
-/// 
-@function _min($args...) { @return call(__min, $args...); }
+
+@function _min($args...) {
+    @return call('__min', $args...);
+}

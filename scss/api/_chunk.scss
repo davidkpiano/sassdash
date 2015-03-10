@@ -11,7 +11,6 @@
 
     @while ($index <= $length) {
         $result: append($result, __base-slice($list, $index - 1, $index + $size - 1));
-
         $index: $index + $size;
     }
 
@@ -22,12 +21,12 @@
     @return $result;
 }
 
-/// 
+
 /// Creates an list of elements split into groups the length of `size`.
 /// If `collection` can't be split evenly, the final chunk will be the remaining
 /// elements.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to process.
 /// @param {number} $size [1] - The length of each chunk.
@@ -38,5 +37,7 @@
 /// // => [('a', 'b'), ('c', 'd')]
 /// _chunk(('a', 'b', 'c', 'd'), 3);
 /// // => [('a', 'b', 'c'), ('d')]
-/// 
-@function _chunk($args...) { @return call(__chunk, $args...); }
+
+@function _chunk($args...) {
+    @return call('__chunk', $args...);
+}

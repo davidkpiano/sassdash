@@ -1,8 +1,7 @@
-
 @function __has($map, $key) {
     $skip-keys: __const('CONSTRUCTOR_KEYS');
 
-    @if __is-map($map) {    
+    @if __is-map($map) {
         $map: __omit($map, $skip-keys);
 
         @return if(__is-map($map), map-has-key($map, $key), false);
@@ -11,11 +10,11 @@
     @return false;
 }
 
-/// 
+
 /// Checks if `key` exists as a direct property of `object` instead of an
 /// inherited property.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to inspect.
 /// @param {string} key The key to check.
@@ -24,5 +23,7 @@
 /// $object: { 'a': 1, 'b': 2, 'c': 3 };
 /// _has(object, 'b');
 /// // => true
-/// 
-@function _has($args...) { @return call(__has, $args...); }
+
+@function _has($args...) {
+    @return call('__has', $args...);
+}

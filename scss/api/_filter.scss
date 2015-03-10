@@ -1,10 +1,6 @@
-
-
-
 @function __base-filter-iteratee($value, $index, $collection) {
     $result: __this('result');
     $predicate: __this('predicate');
-
     $iteration: __exec($predicate, $value, $index, $collection);
 
     @if __is-truthy($iteration) {
@@ -13,14 +9,20 @@
 
     @return null;
 }
+
+
 @function __base-filter($collection, $predicate) {
-    $_: __scope(('result': (), 'predicate': $predicate));
-    $_: __base-each($collection, __base-filter-iteratee);
+    $_: __scope((
+        'result': (),
+        'predicate': $predicate
+    ));
+    $_: __base-each($collection, '__base-filter-iteratee');
     $result: __this('result');
     $_: __scope(false);
 
     @return $result;
 }
+
 
 @function __list-filter($list, $predicate) {
     $index: 1;
@@ -29,7 +31,6 @@
 
     @while ($index <= $length) {
         $value: nth($list, $index);
-
         $iteration: __exec($predicate, $value, $index, $list);
 
         @if (__is-truthy($iteration)) {
@@ -42,14 +43,15 @@
     @return $result;
 }
 
-@function __filter($collection, $predicate: __identity, $this-arg: null) {
-    $function: if(__is-list($collection), __list-filter, __base-filter);
 
+@function __filter($collection, $predicate: __identity, $this-arg: null) {
+    $function: if(__is-list($collection), '__list-filter', '__base-filter');
     $predicate: __get-callback($predicate, $this-arg, 3);
 
     @return __call($function, $this-arg, $collection, $predicate);
 }
-/// 
+
+
 /// Iterates over elements of `collection`, returning an list of all elements
 /// `predicate` returns truthy for. The predicate is bound to `$this-arg` and
 /// invoked with three arguments; (value, index|key, collection).
@@ -62,7 +64,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @alias select
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
@@ -88,8 +90,11 @@
 /// // using the `_property` callback shorthand
 /// _pluck(_filter(users, 'active'), 'user');
 /// // => ('barney')
-/// 
-@function _filter($args...) { @return call(__filter, $args...); }
 
-@function _select($args...) { @return call(__filter, $args...); }
+@function _filter($args...) {
+    @return call('__filter', $args...);
+}
 
+@function _select($args...) {
+    @return call('__filter', $args...);
+}

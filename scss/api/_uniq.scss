@@ -1,20 +1,20 @@
-
-
-
-@function __base-uniq($list, $iteratee: __identity, $guard: null) {
+@function __base-uniq($list, $iteratee: '__identity', $guard: null) {
     $result: ();
 
-    $iteratee: if(__is-iteratee-call($list, $iteratee, $guard), __identity, $iteratee);
+    $iteratee: if(__is-iteratee-call($list, $iteratee, $guard), '__identity', $iteratee);
 
     @each $item in $list {
         $iteration: __exec($iteratee, $item);
-        $result: map-merge($result, ($iteration: $item));
+        $result: map-merge($result, (
+            $iteration: $item
+        ));
     }
 
     @return map-values($result);
 }
 
-@function __uniq($list, $iteratee: __identity, $this-arg: null) {
+
+@function __uniq($list, $iteratee: '__identity', $this-arg: null) {
     $length: if($list, length($list), 0);
 
     @if __is-falsey($length) {
@@ -22,7 +22,7 @@
     }
 
     @if __is-iteratee-call($list, $iteratee, $this-arg) {
-        $iteratee: __identity;
+        $iteratee: '__identity';
         $this-arg: null;
     }
 
@@ -31,7 +31,7 @@
     @return __base-uniq($list, $iteratee);
 }
 
-/// 
+
 /// Creates a duplicate-value-free version of an list using `SameValueZero`
 /// for equality comparisons. Providing `true` for `isSorted` performs a faster
 /// search algorithm for sorted lists. If an iteratee function is provided it
@@ -51,7 +51,7 @@
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
 ///
-/// 
+///
 /// @alias unique
 /// @group Array
 /// @param {Array} list The list to inspect.
@@ -73,8 +73,12 @@
 /// // using the `_property` callback shorthand
 /// _uniq(({ 'x': 1 }, { 'x': 2 }, { 'x': 1 }), 'x');
 /// // => ({ 'x': 1 }, { 'x': 2 })
-/// 
-@function _uniq($args...) { @return call(__uniq, $args...); }
 
-@function _unique($args...) { @return call(__uniq, $args...); }
+@function _uniq($args...) {
+    @return call('__uniq', $args...);
+}
 
+
+@function _unique($args...) {
+    @return call('__uniq', $args...);
+}

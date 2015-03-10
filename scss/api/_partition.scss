@@ -1,9 +1,8 @@
-
-
-
 @function __partition-initializer() {
     @return ((), ());
 }
+
+
 @function __partition-aggregator($result, $value, $key, $args...) {
     $result-index: if(__is-truthy($key), 1, 2);
     $result-value: nth($result, $result-index);
@@ -11,13 +10,15 @@
 
     @return set-nth($result, $result-index, append($result-value, $value));
 }
+
+
 @function __partition($arguments...) {
-    $function: __create-aggregator(__partition-aggregator, __partition-initializer);
+    $function: __create-aggregator('__partition-aggregator', '__partition-initializer');
 
     @return __exec($function, $arguments...);
 }
 
-/// 
+
 /// Creates an list of elements split into two groups, the first of which
 /// contains elements `predicate` returns truthy for, while the second of which
 /// contains elements `predicate` returns falsey for. The predicate is bound
@@ -31,7 +32,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -64,5 +65,7 @@
 /// // using the `_property` callback shorthand
 /// _map(_partition(users, 'active'), mapper);
 /// // => [('fred'), ('barney', 'pebbles')]
-/// 
-@function _partition($args...) { @return call(__partition, $args...); }
+
+@function _partition($args...) {
+    @return call('__partition', $args...);
+}

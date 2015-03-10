@@ -1,11 +1,10 @@
-
-
 @function __base-clone($value, $is-deep: false, $customizer: null, $key: null, $map: null) {
     // todo
 
     // Sass does not copy by reference, so returning same value is safe
     @return $value;
 }
+
 
 @function __clone($value, $is-deep: null, $customizer: null, $this-arg: null) {
     @if (type-of($is-deep) != 'bool' and $is-deep != null) {
@@ -19,13 +18,14 @@
     @return __base-clone($value, $is-deep, $customizer);
 }
 
+
 @function __clone-deep($value, $customizer: null, $this-arg: null) {
     $customizer: if(__function-exists($customizer), __bind-callback($customizer, $this-arg, 1), false);
 
     @return __base-clone($value, true, $customizer);
 }
 
-/// 
+
 /// Creates a clone of `value`. If `isDeep` is `true` nested objects are cloned,
 /// otherwise they are assigned by reference. If `$customizer` is provided it is
 /// invoked to produce the cloned values. If `$customizer` returns `undefined`
@@ -38,7 +38,7 @@
 /// Maps, Sets, and WeakMaps. See the [HTML5 specification](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm)
 /// for more details.
 ///
-/// 
+///
 /// @group Lang
 /// @param {*} value The value to clone.
 /// @param {boolean} (isDeep) Specify a deep clone.
@@ -68,10 +68,12 @@
 /// // => BODY
 /// el.childNodes.length;
 /// // => 0
-/// 
-@function _clone($args...) { @return call(__clone, $args...); }
 
-/// 
+@function _clone($args...) {
+    @return call('__clone', $args...);
+}
+
+
 /// Creates a deep clone of `value`. If `$customizer` is provided it is invoked
 /// to produce the cloned values. If `$customizer` returns `undefined` cloning
 /// is handled by the method instead. The `$customizer` is bound to `$this-arg`
@@ -83,7 +85,7 @@
 /// Maps, Sets, and WeakMaps. See the [HTML5 specification](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm)
 /// for more details.
 ///
-/// 
+///
 /// @group Lang
 /// @param {*} value The value to deep clone.
 /// @param {Function} (customizer) The function to customize cloning values.
@@ -109,5 +111,7 @@
 /// // => BODY
 /// el.childNodes.length;
 /// // => 20
-/// 
-@function _clone-deep($args...) { @return call(__clone-deep, $args...); }
+
+@function _clone-deep($args...) {
+    @return call('__clone-deep', $args...);
+}

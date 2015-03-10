@@ -1,4 +1,3 @@
-
 @function __create-pad($string, $length, $chars: ' ') {
     $str-length: str-length($string);
 
@@ -14,9 +13,9 @@
     @return str-slice(__repeat($chars, $repeat-chars), 1, $pad-length);
 }
 
+
 @function __pad($string, $length: 0, $chars: ' ') {
     $string: __base-to-string($string);
-
     $str-length: str-length($string);
 
     @if $str-length >= $length {
@@ -26,11 +25,11 @@
     $mid: ($length - $str-length) / 2;
     $left-length: floor($mid);
     $right-length: ceil($mid);
-
     $chars: __create-pad('', $right-length, $chars);
 
     @return str-slice($chars, 0, $left-length) + $string + $chars;
 }
+
 
 @function __pad-left($string, $length: 0, $chars: ' ') {
     $string: __base-to-string($string);
@@ -40,6 +39,7 @@
         $string);
 }
 
+
 @function __pad-right($string, $length: 0, $chars: ' ') {
     $string: __base-to-string($string);
 
@@ -48,12 +48,12 @@
         $string);
 }
 
-/// 
+
 /// Pads `string` on the left and right sides if it is shorter then the given
 /// padding length. The `chars` string may be truncated if the number of padding
 /// characters can't be evenly divided by the padding length.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to pad.
 /// @param {number} $length [0] - The padding length.
@@ -66,15 +66,15 @@
 /// // => '_-abc_-_'
 /// _pad('abc', 3);
 /// // => 'abc'
-/// 
+///
 @function _pad($args...) { @return call(__pad, $args...); }
 
-/// 
+///
 /// Pads `string` on the left side if it is shorter then the given padding
 /// length. The `chars` string may be truncated if the number of padding
 /// characters exceeds the padding length.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to pad.
 /// @param {number} $length [0] - The padding length.
@@ -87,15 +87,17 @@
 /// // => '_-_abc'
 /// _pad-left('abc', 3);
 /// // => 'abc'
-/// 
-@function _pad-left($args...) { @return call(__pad-left, $args...); }
 
-/// 
+@function _pad-left($args...) {
+    @return call('__pad-left', $args...);
+}
+
+
 /// Pads `string` on the right side if it is shorter then the given padding
 /// length. The `chars` string may be truncated if the number of padding
 /// characters exceeds the padding length.
 ///
-/// 
+///
 /// @group String
 /// @param {string} $string [''] - The string to pad.
 /// @param {number} $length [0] - The padding length.
@@ -108,5 +110,7 @@
 /// // => 'abc_-_'
 /// _pad-right('abc', 3);
 /// // => 'abc'
-/// 
-@function _pad-right($args...) { @return call(__pad-right, $args...); }
+
+@function _pad-right($args...) {
+    @return call('__pad-right', $args...);
+}

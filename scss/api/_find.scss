@@ -1,5 +1,3 @@
-
-
 @function __base-find-iteratee($value, $key, $collection) {
     $predicate: __this('predicate');
     $return-key: __this('return-key');
@@ -15,21 +13,24 @@
     @return true;
 }
 
-@function __base-find($collection, $predicate, $each-function: __base-each, $return-key: false) {
+
+@function __base-find($collection, $predicate, $each-function: '__base-each', $return-key: false) {
     $result: null;
-
-    $_: __scope(('result': null, 'predicate': $predicate, 'return-key': $return-key));
+    $_: __scope((
+        'result': null,
+        'predicate': $predicate,
+        'return-key': $return-key
+    ));
     $iteratee: __bind(__base-find-iteratee);
-
     $_: __exec($each-function, $collection, $iteratee);
-
     $result: __this('result');
     $_: __scope(false);
 
     @return $result;
 }
 
-@function __find($collection, $predicate: __identity, $this-arg: null) {
+
+@function __find($collection, $predicate: '__identity', $this-arg: null) {
     @if __is-string($collection) {
         $collection: __to-list($collection);
     }
@@ -42,10 +43,11 @@
 
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @return __base-find($collection, $predicate, __base-each);
+    @return __base-find($collection, $predicate, '__base-each');
 }
 
-@function __find-last($collection, $predicate: __identity, $this-arg: null) {
+
+@function __find-last($collection, $predicate: '__identity', $this-arg: null) {
     @if __is-string($collection) {
         $collection: __to-list($collection);
     }
@@ -58,14 +60,16 @@
 
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @return __base-find($collection, $predicate, __base-each-right);
+    @return __base-find($collection, $predicate, '__base-each-right');
 }
+
 
 @function __find-where($collection, $source) {
     @return __find($collection, __matches($source));
 }
 
-@function __find-index($list, $predicate: __identity, $this-arg: null) {
+
+@function __find-index($list, $predicate: '__identity', $this-arg: null) {
     $index: 1;
     $length: if($list, length($list), 0);
 
@@ -84,7 +88,8 @@
     @return -1;
 }
 
-@function __find-last-index($list, $predicate: __identity, $this-arg: null) {
+
+@function __find-last-index($list, $predicate: '__identity', $this-arg: null) {
     $length: if($list, length($list), 0);
 
     $predicate: __get-callback($predicate, $this-arg, 3);
@@ -100,19 +105,21 @@
     @return -1;
 }
 
-@function __find-key($map, $predicate: __identity, $this-arg: null) {
+
+@function __find-key($map, $predicate: '__identity', $this-arg: null) {
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @return __base-find($map, $predicate, __base-for-own, true);
+    @return __base-find($map, $predicate, '__base-for-own', true);
 }
 
-@function __find-last-key($map, $predicate: __identity, $this-arg: null) {
+
+@function __find-last-key($map, $predicate: '__identity', $this-arg: null) {
     $predicate: __get-callback($predicate, $this-arg, 3);
 
-    @return __base-find($map, $predicate, __base-for-own-right, true);
+    @return __base-find($map, $predicate, '__base-for-own-right', true);
 }
 
-/// 
+
 /// Iterates over elements of `collection`, returning the first element
 /// `predicate` returns truthy for. The predicate is bound to `$this-arg` and
 /// invoked with three arguments; (value, index|key, collection).
@@ -125,7 +132,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @alias detect
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
@@ -152,13 +159,17 @@
 /// // using the `_property` callback shorthand
 /// _result(_find(users, 'active'), 'user');
 /// // => 'barney'
-/// 
-@function _find($args...) { @return call(__find, $args...); }
 
-@function _detect($args...) { @return call(__find, $args...); }
+@function _find($args...) {
+    @return call(__find, $args...);
+}
 
 
-/// 
+@function _detect($args...) {
+    @return call(__find, $args...);
+}
+
+
 /// This method is like `_find` except that it returns the index of the first
 /// element `predicate` returns truthy for, instead of the element itself.
 /// If a property name is provided for `predicate` the created `_property`
@@ -170,7 +181,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -196,10 +207,12 @@
 /// // using the `_property` callback shorthand
 /// _find-index(users, 'active');
 /// // => 2
-/// 
-@function _find-index($args...) { @return call(__find-index, $args...); }
 
-/// 
+@function _find-index($args...) {
+    @return call('__find-index', $args...);
+}
+
+
 /// This method is like `_find-index` except that it returns the key of the
 /// first element `predicate` returns truthy for, instead of the element itself.
 /// If a property name is provided for `predicate` the created `_property`
@@ -211,7 +224,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -237,14 +250,16 @@
 /// // using the `_property` callback shorthand
 /// _find-key(users, 'active');
 /// // => 'barney'
-/// 
-@function _find-key($args...) { @return call(__find-key, $args...); }
 
-/// 
+@function _find-key($args...) {
+    @return call('__find-key', $args...);
+}
+
+
 /// This method is like `_find` except that it iterates over elements of
 /// `collection` from right to left.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -256,10 +271,12 @@
 ///   return n % 2 == 1;
 /// });
 /// // => 3
-/// 
-@function _find-last($args...) { @return call(__find-last, $args...); }
 
-/// 
+@function _find-last($args...) {
+    @return call('__find-last', $args...);
+}
+
+
 /// This method is like `_find-index` except that it iterates over elements
 /// of `collection` from right to left.
 /// If a property name is provided for `predicate` the created `_property`
@@ -271,7 +288,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -297,10 +314,12 @@
 /// // using the `_property` callback shorthand
 /// _find-last-index(users, 'active');
 /// // => 0
-/// 
-@function _find-last-index($args...) { @return call(__find-last-index, $args...); }
 
-/// 
+@function _find-last-index($args...) {
+    @return call('__find-last-index', $args...);
+}
+
+
 /// This method is like `_find-key` except that it iterates over elements of
 /// a collection in the opposite order.
 /// If a property name is provided for `predicate` the created `_property`
@@ -312,7 +331,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The object to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -338,10 +357,12 @@
 /// // using the `_property` callback shorthand
 /// _find-last-key(users, 'active');
 /// // => 'pebbles'
-/// 
-@function _find-last-key($args...) { @return call(__find-last-key, $args...); }
 
-/// 
+@function _find-last-key($args...) {
+    @return call('__find-last-key', $args...);
+}
+
+
 /// Performs a deep comparison between each element in `collection` and the
 /// source object, returning the first element that has equivalent property
 /// values.
@@ -350,7 +371,7 @@
 /// their own, not inherited, enumerable properties. For comparing a single
 /// own or inherited property value see `_matches-property`.
 ///
-/// 
+///
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {Map} source The object of property values to match.
@@ -364,5 +385,7 @@
 /// // => 'barney'
 /// _result(_find-where(users, { 'age': 40, 'active': false }), 'user');
 /// // => 'fred'
-/// 
-@function _find-where($args...) { @return call(__find-where, $args...); }
+
+@function _find-where($args...) {
+    @return call('__find-where', $args...);
+}

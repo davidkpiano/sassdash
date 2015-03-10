@@ -1,6 +1,3 @@
-
-
-
 @function __xor($arguments...) {
     $index: 1;
     $length: length($arguments);
@@ -19,17 +16,19 @@
     @return if(__is-truthy($result), __base-uniq($result), ());
 }
 
-/// 
+
 /// Creates an list that is the symmetric difference of the provided lists.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
 /// more details.
 ///
-/// 
+///
 /// @group Array
 /// @param {...Array} (lists) The lists to inspect.
 /// @returns {Array} Returns the new list of values.
 /// @example scss
 /// _xor((1, 2), (4, 2));
 /// // => (1, 4)
-/// 
-@function _xor($args...) { @return call(__xor, $args...); }
+
+@function _xor($args...) {
+    @return call('__xor', $args...);
+}

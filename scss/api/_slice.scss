@@ -1,5 +1,3 @@
-
-
 @function __base-slice($list, $start: 0, $end: length($list)) {
     $index: 1;
     $length: length($list);
@@ -18,17 +16,16 @@
     }
 
     $length: if($start > $end, 0, ($end - $start));
-
     $result: ();
 
     @while ($index <= $length) {
         $result: append($result, nth($list, ($index + $start)));
-
         $index: $index + 1;
     }
 
     @return $result;
 }
+
 
 @function __slice($list, $start: 0, $end: length($list)) {
     $length: if(__is-list-like($list), length($list), 0);
@@ -45,16 +42,18 @@
     @return __base-slice($list, $start, $end);
 }
 
-/// 
+
 /// Creates a slice of `list` from `start` up to, but not including, `end`.
 /// **Note:** This function is used instead of `Array#slice` to support node
 /// lists in IE < 9 and to ensure dense lists are returned.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to slice.
 /// @param {number} $start [0] - The start position.
 /// @param {number} $end [list.length] - The end position.
 /// @returns {Array} Returns the slice of `list`.
-/// 
-@function _slice($args...) { @return call(__slice, $args...); }
+
+@function _slice($args...) {
+    @return call('__slice', $args...);
+}

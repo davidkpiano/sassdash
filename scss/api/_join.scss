@@ -1,6 +1,3 @@
-
-
-
 @function __list-join($list, $separator: '') {
     $length: length($list);
     $result: nth($list, 1);
@@ -23,8 +20,11 @@
     @if __is-list-like($separator) {
         @return join($list, $separator);
     }
-    
+
     @return __list-join($list, $separator);
 }
 
-@function _join($args...) { @return call(__join, $args...); }
+
+@function _join($args...) {
+    @return call('__join', $args...);
+}

@@ -1,17 +1,18 @@
-
 @function __initial($list, $args...) {
     @return __drop-right($list, 1);
 }
 
-/// 
+
 /// Gets all but the last element of `list`.
 ///
-/// 
+///
 /// @group Array
 /// @param {Array} list The list to query.
 /// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _initial((1, 2, 3));
 /// // => (1, 2)
-/// 
-@function _initial($args...) { @return call(__initial, $args...); }
+
+@function _initial($args...) {
+    @return call('__initial', $args...);
+}

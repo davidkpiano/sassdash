@@ -1,5 +1,3 @@
-
-
 @function __pick-by-callback-iteratee($value, $key, $map) {
     $result: __this('result');
     $predicate: __this('predicate');
@@ -10,14 +8,17 @@
 
     @return true;
 }
+
+
 @function __pick-by-callback($map, $predicate) {
     $result: ();
-
-    $_: __scope(('map': $map, 'predicate': $predicate, 'result': $result));
-    $pick-by-callback-iteratee: __bind(__pick-by-callback-iteratee);
-
+    $_: __scope((
+        'map': $map,
+        'predicate': $predicate,
+        'result': $result
+    ));
+    $pick-by-callback-iteratee: __bind('__pick-by-callback-iteratee');
     $_: __base-for-in($map, $pick-by-callback-iteratee);
-
     $result: __this('result');
     $_: __scope(false);
 
@@ -38,14 +39,14 @@
     @return if($type == 'list', __to-list($result), $result);
 }
 
-/// 
+
 /// Creates an object composed of the picked `object` properties. Property
 /// names may be specified as individual arguments or as lists of property
 /// names. If `predicate` is provided it is invoked for each property of `object`
 /// picking the properties `predicate` returns truthy for. The predicate is
 /// bound to `$this-arg` and invoked with three arguments; (value, key, object).
 ///
-/// 
+///
 /// @group Map
 /// @param {Map} object The source object.
 /// @param {Function|...(string|string[])} (predicate) The function invoked per
@@ -59,8 +60,8 @@
 /// // => { 'user': 'fred' }
 /// _pick(object, _isString);
 /// // => { 'user': 'fred' }
-/// 
-@function __pick($map, $predicate: __identity, $this-arg: null) {
+
+@function __pick($map, $predicate: '__identity', $this-arg: null) {
     @if $map == null {
         @return ();
     }
@@ -72,4 +73,7 @@
         __pick-by-list($map, __base-flatten(($map, $predicate, $this-arg), false, false, 1)));
 }
 
-@function _pick($args...) { @return call(__pick, $args...); }
+
+@function _pick($args...) {
+    @return call('__pick', $args...);
+}

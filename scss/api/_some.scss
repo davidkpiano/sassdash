@@ -1,5 +1,3 @@
-
-
 @function __list-some($list, $predicate) {
     $index: 1;
     $length: length($list);
@@ -18,31 +16,33 @@
     @return false;
 }
 
+
 @function __base-some-iteratee($value, $index, $collection) {
     $predicate: __this('predicate');
     $result: __this('result');
-
     $result: __exec($predicate, $value, $index, $collection);
-
     $_: __this('result', $result);
 
     @return if($result, false, true);
 }
+
+
 @function __base-some($collection, $predicate) {
     $result: false;
-
-    $_: __scope(('predicate': $predicate, 'result': $result));
-    $_: __base-each($collection, __base-some-iteratee);
-
+    $_: __scope((
+        'predicate': $predicate,
+        'result': $result
+    ));
+    $_: __base-each($collection, '__base-some-iteratee');
     $result: __this('result');
-
     $_: __scope(false);
 
     @return if($result, true, false);
 }
 
-@function __some($collection, $predicate: __identity, $this-arg: $__undefined__) {
-    $function: if(__is-list($collection), __list-some, __base-some);
+
+@function __some($collection, $predicate: '__identity', $this-arg: $__undefined__) {
+    $function: if(__is-list($collection), '__list-some', '__base-some');
 
     @if (not __function-exists($predicate)) or (not __is-undefined($this-arg)) {
         $predicate: __get-callback($predicate, $this-arg, 3);
@@ -50,7 +50,8 @@
 
     @return __exec($function, $collection, $predicate);
 }
-/// 
+
+
 /// Checks if `predicate` returns truthy for **any** element of `collection`.
 /// The function returns as soon as it finds a passing value and does not iterate
 /// over the entire collection. The predicate is bound to `$this-arg` and invoked
@@ -64,7 +65,7 @@
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// ///
-/// 
+///
 /// @alias any
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
@@ -89,8 +90,12 @@
 /// /// // using the `_property` callback shorthand
 /// _some(users, 'active');
 /// // => true
-/// 
-@function _some($args...) { @return call(__some, $args...); }
 
-@function _any($args...) { @return call(__some, $args...); }
+@function _some($args...) {
+    @return call('__some', $args...);
+}
 
+
+@function _any($args...) {
+    @return call('__some', $args...);
+}

@@ -52,9 +52,9 @@
 /// argument is provided a number between `0` and the given number is returned.
 /// If `floating` is `true`, or either `min` or `max` are floats, a floating-point
 /// number is returned instead of an integer.
-/// /// @static
-/// @memberOf _
-/// @category Number
+/// ///
+/// 
+/// @group Number
 /// @param {number} (min=0) The minimum possible value.
 /// @param {number} (max=1) The maximum possible value.
 /// @param {boolean} (floating) Specify returning a floating-point number.

@@ -53,9 +53,9 @@
 /// 
 /// Flattens a nested array. If `isDeep` is `true` the array is recursively
 /// flattened, otherwise it is only flattened a single level.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to flatten.
 /// @param {boolean} (isDeep) Specify a deep flatten.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
@@ -71,9 +71,9 @@
 
 /// 
 /// Recursively flattens a nested array.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to recursively flatten.
 /// @returns {Array} Returns the new flattened array.
 /// @example

@@ -51,9 +51,9 @@
 /// 
 /// Converts `string` to camel case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
-/// @static
-/// @memberOf _
-/// @category String
+///
+/// 
+/// @group String
 /// @param {string} (string='') The string to convert.
 /// @returns {string} Returns the camel cased string.
 /// @example
@@ -68,9 +68,9 @@
 
 /// 
 /// Capitalizes the first character of `string`.
-/// @static
-/// @memberOf _
-/// @category String
+///
+/// 
+/// @group String
 /// @param {string} (string='') The string to capitalize.
 /// @returns {string} Returns the capitalized string.
 /// @example
@@ -83,9 +83,9 @@
 /// Converts `string` to kebab case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for
 /// more details.
-/// @static
-/// @memberOf _
-/// @category String
+///
+/// 
+/// @group String
 /// @param {string} (string='') The string to convert.
 /// @returns {string} Returns the kebab cased string.
 /// @example
@@ -101,9 +101,9 @@
 /// 
 /// Converts `string` to snake case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
-/// @static
-/// @memberOf _
-/// @category String
+///
+/// 
+/// @group String
 /// @param {string} (string='') The string to convert.
 /// @returns {string} Returns the snake cased string.
 /// @example
@@ -120,9 +120,9 @@
 /// Converts `string` to start case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category String
+///
+/// 
+/// @group String
 /// @param {string} (string='') The string to convert.
 /// @returns {string} Returns the start cased string.
 /// @example

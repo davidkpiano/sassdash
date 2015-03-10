@@ -24,12 +24,12 @@
 }
 
 ///
-/// Creates a function that accepts up to `n` arguments ignoring any
+/// Creates a function that accepts up to `$n` arguments ignoring any
 /// additional arguments.
 ///
-/// @static
-/// @memberOf _
-/// @category Function
+///
+/// 
+/// @group Function
 /// @param {Function} func The function to cap arguments for.
 /// @param {number} (n=func.length) The arity cap.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.

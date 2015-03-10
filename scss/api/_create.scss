@@ -22,9 +22,9 @@
 /// Creates an object that inherits from the given `prototype` object. If a
 /// `properties` object is provided its own enumerable properties are assigned
 /// to the created object.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} prototype The object to inherit from.
 /// @param {Object} (properties) The properties to assign to the object.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.

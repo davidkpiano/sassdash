@@ -21,9 +21,9 @@
 /// **Note:** Non-object values are coerced to objects. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.keys)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to inspect.
 /// @returns {Array} Returns the array of property names.
 /// @example
@@ -42,9 +42,9 @@
 /// 
 /// Creates an array of the own and inherited enumerable property names of `object`.
 /// **Note:** Non-object values are coerced to objects.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to inspect.
 /// @returns {Array} Returns the array of property names.
 /// @example

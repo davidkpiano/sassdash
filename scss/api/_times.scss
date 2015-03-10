@@ -17,12 +17,12 @@
 }
 
 /// 
-/// Invokes the iteratee function `n` times, returning an array of the results
+/// Invokes the iteratee function `$n` times, returning an array of the results
 /// of each invocation. The `iteratee` is bound to `thisArg` and invoked with
 /// one argument; (index).
-/// @static
-/// @memberOf _
-/// @category Utility
+///
+/// 
+/// @group Utility
 /// @param {number} n The number of times to invoke `iteratee`.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -33,7 +33,7 @@
 /// _times(3, function(n) {
 ///   mage.castSpell(n);
 /// });
-/// // => invokes `mage.castSpell(n)` three times with `n` of `0`, `1`, and `2` respectively
+/// // => invokes `mage.castSpell(n)` three times with `$n` of `0`, `1`, and `2` respectively
 /// _times(3, function(n) {
 ///   this.cast(n);
 /// }, mage);

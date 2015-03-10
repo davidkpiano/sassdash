@@ -50,10 +50,10 @@
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
-/// @static
-/// @memberOf _
+///
+/// 
 /// @alias unique
-/// @category Array
+/// @group Array
 /// @param {Array} array The array to inspect.
 /// @param {boolean} (isSorted) Specify the array is sorted.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.

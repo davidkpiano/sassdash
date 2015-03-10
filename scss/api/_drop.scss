@@ -69,10 +69,10 @@
 }
 
 /// 
-/// Creates a slice of `array` with `n` elements dropped from the beginning.
-/// @static
-/// @memberOf _
-/// @category Array
+/// Creates a slice of `array` with `$n` elements dropped from the beginning.
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to query.
 /// @param {number} (n=1) The number of elements to drop.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
@@ -90,10 +90,10 @@
 @function _drop($args...) { @return call(__drop, $args...); }
 
 /// 
-/// Creates a slice of `array` with `n` elements dropped from the end.
-/// @static
-/// @memberOf _
-/// @category Array
+/// Creates a slice of `array` with `$n` elements dropped from the end.
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to query.
 /// @param {number} (n=1) The number of elements to drop.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
@@ -122,9 +122,9 @@
 /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that match the properties of the given
 /// object, else `false`.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to query.
 /// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.
@@ -164,9 +164,9 @@
 /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to query.
 /// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.

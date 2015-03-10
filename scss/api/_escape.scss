@@ -36,9 +36,9 @@
 /// When working with HTML you should always quote attribute values to reduce
 /// XSS vectors. See [Ryan Grove's article](http://wonko.com/post/html-escaping)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category String
+///
+/// 
+/// @group String
 /// @param {string} (string='') The string to escape.
 /// @returns {string} Returns the escaped string.
 /// @example

@@ -49,9 +49,9 @@
 /// Creates a slice of `array` from `start` up to, but not including, `end`.
 /// **Note:** This function is used instead of `Array#slice` to support node
 /// lists in IE < 9 and to ensure dense arrays are returned.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to slice.
 /// @param {number} (start=0) The start position.
 /// @param {number} (end=array.length) The end position.

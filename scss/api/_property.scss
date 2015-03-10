@@ -35,9 +35,9 @@
 
 /// 
 /// Creates a function which returns the property value of `key` on a given object.
-/// @static
-/// @memberOf _
-/// @category Utility
+///
+/// 
+/// @group Utility
 /// @param {string} key The key of the property to get.
 /// @returns {Function} Returns the new function.
 /// @example
@@ -56,9 +56,9 @@
 /// 
 /// The inverse of `_property`; this method creates a function which returns
 /// the property value of a given key on `object`.
-/// @static
-/// @memberOf _
-/// @category Utility
+///
+/// 
+/// @group Utility
 /// @param {Object} object The object to inspect.
 /// @returns {Function} Returns the new function.
 /// @example

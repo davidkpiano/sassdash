@@ -34,9 +34,9 @@
 ///  - `SameValueZero` comparisons are like strict equality comparisons, e.g. `===`,
 ///    except that `NaN` matches `NaN`. See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 ///    for more details.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to modify.
 /// @param {...*} (values) The values to remove.
 /// @returns {Array} Returns `array`.

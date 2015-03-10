@@ -44,9 +44,9 @@
 /// names. If `predicate` is provided it is invoked for each property of `object`
 /// picking the properties `predicate` returns truthy for. The predicate is
 /// bound to `thisArg` and invoked with three arguments; (value, key, object).
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The source object.
 /// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to pick, specified as individual property

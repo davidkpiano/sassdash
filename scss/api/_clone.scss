@@ -37,9 +37,9 @@
 /// empty object is returned for uncloneable values such as functions, DOM nodes,
 /// Maps, Sets, and WeakMaps. See the [HTML5 specification](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category Lang
+///
+/// 
+/// @group Lang
 /// @param {*} value The value to clone.
 /// @param {boolean} (isDeep) Specify a deep clone.
 /// @param {Function} (customizer) The function to customize cloning values.
@@ -82,9 +82,9 @@
 /// empty object is returned for uncloneable values such as functions, DOM nodes,
 /// Maps, Sets, and WeakMaps. See the [HTML5 specification](http://www.w3.org/TR/html5/infrastructure.html#internal-structured-cloning-algorithm)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category Lang
+///
+/// 
+/// @group Lang
 /// @param {*} value The value to deep clone.
 /// @param {Function} (customizer) The function to customize cloning values.
 /// @param {*} (thisArg) The `this` binding of `customizer`.

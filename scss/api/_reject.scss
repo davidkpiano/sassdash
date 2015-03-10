@@ -29,9 +29,9 @@
 /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// @static
-/// @memberOf _
-/// @category Collection
+///
+/// 
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (predicate=_.identity) The function invoked
 ///  per iteration.

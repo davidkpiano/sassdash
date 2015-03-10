@@ -102,9 +102,9 @@
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} (fromIndex=0) The index to search from or `true`
@@ -125,9 +125,9 @@
 /// 
 /// This method is like `_index-of` except that it iterates over elements of
 /// `array` from right to left.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} (fromIndex=array.length-1) The index to search from

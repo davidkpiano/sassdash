@@ -196,10 +196,10 @@
 /// **Note:** As with other "Collections" methods, objects with a `length` property
 /// are iterated like arrays. To avoid this behavior `_for-in` or `_for-own`
 /// may be used for object iteration.
-/// @static
-/// @memberOf _
+///
+/// 
 /// @alias each
-/// @category Collection
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -221,10 +221,10 @@
 /// 
 /// This method is like `_for-each` except that it iterates over elements of
 /// `collection` from right to left.
-/// @static
-/// @memberOf _
+///
+/// 
 /// @alias eachRight
-/// @category Collection
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -244,9 +244,9 @@
 /// `iteratee` for each property. The `iteratee` is bound to `thisArg` and invoked
 /// with three arguments; (value, key, object). Iterator functions may exit
 /// iteration early by explicitly returning `false`.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to iterate over.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -267,9 +267,9 @@
 /// 
 /// This method is like `_for-in` except that it iterates over properties of
 /// `object` in the opposite order.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to iterate over.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -292,9 +292,9 @@
 /// for each property. The `iteratee` is bound to `thisArg` and invoked with
 /// three arguments; (value, key, object). Iterator functions may exit iteration
 /// early by explicitly returning `false`.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to iterate over.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -315,9 +315,9 @@
 /// 
 /// This method is like `_for-own` except that it iterates over properties of
 /// `object` in the opposite order.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to iterate over.
 /// @param {Function} (iteratee=_.identity) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.

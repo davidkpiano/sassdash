@@ -12,9 +12,9 @@
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {...Array} (arrays) The arrays to inspect.
 /// @returns {Array} Returns the new array of combined values.
 /// @example

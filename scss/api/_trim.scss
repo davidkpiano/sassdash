@@ -77,9 +77,9 @@
 }
 /// 
 /// Removes leading and trailing whitespace or specified characters from `string`.
-/// /// @static
-/// @memberOf _
-/// @category String
+/// ///
+/// 
+/// @group String
 /// @param {string} (string='') The string to trim.
 /// @param {string} (chars=whitespace) The characters to trim.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
@@ -95,9 +95,9 @@
 @function _trim($args...) { @return call(__trim, $args...); }
 /// 
 /// Removes leading whitespace or specified characters from `string`.
-/// /// @static
-/// @memberOf _
-/// @category String
+/// ///
+/// 
+/// @group String
 /// @param {string} (string='') The string to trim.
 /// @param {string} (chars=whitespace) The characters to trim.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
@@ -111,9 +111,9 @@
 @function _trim-left($args...) { @return call(__trim-left, $args...); }
 /// 
 /// Removes trailing whitespace or specified characters from `string`.
-/// /// @static
-/// @memberOf _
-/// @category String
+/// ///
+/// 
+/// @group String
 /// @param {string} (string='') The string to trim.
 /// @param {string} (chars=whitespace) The characters to trim.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.

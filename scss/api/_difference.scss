@@ -41,9 +41,9 @@
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to inspect.
 /// @param {...Array} (values) The arrays of values to exclude.
 /// @returns {Array} Returns the new array of filtered values.

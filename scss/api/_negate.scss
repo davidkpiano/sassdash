@@ -19,12 +19,12 @@
 }
 
 /// 
-/// Creates a function that negates the result of the predicate `func`. The
-/// `func` predicate is invoked with the `this` binding and arguments of the
+/// Creates a function that negates the result of the predicate `$function`. The
+/// `$function` predicate is invoked with the `this` binding and arguments of the
 /// created function.
-/// @static
-/// @memberOf _
-/// @category Function
+///
+/// 
+/// @group Function
 /// @param {Function} predicate The predicate to negate.
 /// @returns {Function} Returns the new function.
 /// @example

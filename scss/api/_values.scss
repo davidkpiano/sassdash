@@ -25,9 +25,9 @@
 /// 
 /// Creates an array of the own enumerable property values of `object`.
 /// **Note:** Non-object values are coerced to objects.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to query.
 /// @returns {Array} Returns the array of property values.
 /// @example
@@ -47,9 +47,9 @@
 /// Creates an array of the own and inherited enumerable property values
 /// of `object`.
 /// **Note:** Non-object values are coerced to objects.
-/// @static
-/// @memberOf _
-/// @category Object
+///
+/// 
+/// @group Object
 /// @param {Object} object The object to query.
 /// @returns {Array} Returns the array of property values.
 /// @example

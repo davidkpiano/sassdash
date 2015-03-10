@@ -78,9 +78,9 @@
 /// /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// /// @static
-/// @memberOf _
-/// @category Array
+/// ///
+/// 
+/// @group Array
 /// @param {Array} array The sorted array to inspect.
 /// @param {*} value The value to evaluate.
 /// @param {Function|Object|string} (iteratee=_.identity) The function invoked
@@ -108,9 +108,9 @@
 /// This method is like `_sorted-index` except that it returns the highest
 /// index at which `value` should be inserted into `array` in order to
 /// maintain its sort order.
-/// /// @static
-/// @memberOf _
-/// @category Array
+/// ///
+/// 
+/// @group Array
 /// @param {Array} array The sorted array to inspect.
 /// @param {*} value The value to evaluate.
 /// @param {Function|Object|string} (iteratee=_.identity) The function invoked

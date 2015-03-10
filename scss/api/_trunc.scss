@@ -51,9 +51,9 @@
 /// Truncates `string` if it is longer than the given maximum string length.
 /// The last characters of the truncated string are replaced with the omission
 /// string which defaults to "...".
-/// /// @static
-/// @memberOf _
-/// @category String
+/// ///
+/// 
+/// @group String
 /// @param {string} (string='') The string to truncate.
 /// @param {Object|number} (options) The options object or maximum string length.
 /// @param {number} (options.length=30) The maximum string length.

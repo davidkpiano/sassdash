@@ -26,9 +26,9 @@
 /// Creates an array of elements split into groups the length of `size`.
 /// If `collection` can't be split evenly, the final chunk will be the remaining
 /// elements.
-/// @static
-/// @memberOf _
-/// @category Array
+///
+/// 
+/// @group Array
 /// @param {Array} array The array to process.
 /// @param {number} (size=1) The length of each chunk.
 /// @param- {Object} (guard) Enables use as a callback for functions like `_map`.

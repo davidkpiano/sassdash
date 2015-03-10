@@ -35,14 +35,27 @@
 
 /// 
 /// The opposite of `_before`; this method creates a function that invokes
-/// `func` once it is called `n` or more times.
-/// @static
-/// @memberOf _
-/// @category Function
-/// @param {number} n The number of calls before `func` is invoked.
+/// `$function` once it is called `$n` or more times.
+///
+/// 
+/// @group Function
+/// @param {number} n The number of calls before `$function` is invoked.
 /// @param {Function} func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
-/// @example
-/// // todo
+/// @example scss
+///     @function warn-overuse() {
+///         @warn 'You are using this mixin too many times.';   
+///     }
+///     
+///     $warn-overuse: _after(3, warn-overuse);
+///     
+///     @mixin my-mixin() {
+///         // ...
+///         $overuse: _exec($warn-overuse);
+///     }
+///     
+///     @each $selector in '.one', '.two', '.three', '.four' {
+///         @include my-mixin();
+///     }
 /// 
 @function _after($args...) { @return call(__after, $args...); }

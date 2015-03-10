@@ -73,9 +73,9 @@
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. For comparing a single
 /// own or inherited property value see `_matches-property`.
-/// @static
-/// @memberOf _
-/// @category Utility
+///
+/// 
+/// @group Utility
 /// @param {Object} source The object of property values to match.
 /// @returns {Function} Returns the new function.
 /// @example

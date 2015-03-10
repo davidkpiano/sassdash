@@ -139,9 +139,9 @@
 /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// @static
-/// @memberOf _
-/// @category Collection
+///
+/// 
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
@@ -179,9 +179,9 @@
 /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// @static
-/// @memberOf _
-/// @category Collection
+///
+/// 
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.

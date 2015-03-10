@@ -214,9 +214,9 @@
 /// If an object is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// @static
-/// @memberOf _
-/// @category Collection
+///
+/// 
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {Array|Function|Object|string} (iteratee=_.identity) The function
 ///  invoked per iteration. If a property name or an object is provided it is
@@ -246,9 +246,9 @@
 /// 
 /// This method is like `_sort-by` except that it sorts by property names
 /// instead of an iteratee function.
-/// @static
-/// @memberOf _
-/// @category Collection
+///
+/// 
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
 /// @param {...(string|string[])} props The property names to sort by,
 ///  specified as individual property names or arrays of property names.

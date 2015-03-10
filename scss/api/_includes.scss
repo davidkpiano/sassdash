@@ -48,10 +48,10 @@
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 /// for more details.
-/// @static
-/// @memberOf _
+///
+/// 
 /// @alias contains, include
-/// @category Collection
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {*} target The value to search for.
 /// @param {number} (fromIndex=0) The index to search from.

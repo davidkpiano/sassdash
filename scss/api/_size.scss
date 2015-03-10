@@ -16,9 +16,9 @@
 /// 
 /// Gets the size of `collection` by returning `collection.length` for
 /// array-like values or the number of own enumerable properties for objects.
-/// /// @static
-/// @memberOf _
-/// @category Collection
+/// ///
+/// 
+/// @group Collection
 /// @param {Array|Object|string} collection The collection to inspect.
 /// @returns {number} Returns the size of `collection`.
 /// @example

@@ -190,7 +190,7 @@
 
 
 @function _is-plain-map($args...) {
-    @return call('__is-plain'-map, $args...);
+    @return call('__is-plain-map', $args...);
 }
 
 

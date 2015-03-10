@@ -46,15 +46,15 @@
 }
 
 /// 
-/// Creates a slice of `array` from `start` up to, but not including, `end`.
+/// Creates a slice of `list` from `start` up to, but not including, `end`.
 /// **Note:** This function is used instead of `Array#slice` to support node
-/// lists in IE < 9 and to ensure dense arrays are returned.
+/// lists in IE < 9 and to ensure dense lists are returned.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to slice.
+/// @param {Array} list The list to slice.
 /// @param {number} $start [0] - The start position.
-/// @param {number} $end [array.length] - The end position.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {number} $end [list.length] - The end position.
+/// @returns {Array} Returns the slice of `list`.
 /// 
 @function _slice($args...) { @return call(__slice, $args...); }

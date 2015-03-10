@@ -90,31 +90,31 @@
 
 /// 
 /// Performs a deep comparison between `object` and `source` to determine if
-/// `object` contains equivalent property values. If `customizer` is provided
-/// it is invoked to compare values. If `customizer` returns `undefined`
-/// comparisons are handled by the method instead. The `customizer` is bound
-/// to `thisArg` and invoked with three arguments; (value, other, index|key).
-/// **Note:** This method supports comparing properties of arrays, booleans,
+/// `object` contains equivalent property values. If `$customizer` is provided
+/// it is invoked to compare values. If `$customizer` returns `undefined`
+/// comparisons are handled by the method instead. The `$customizer` is bound
+/// to `$this-arg` and invoked with three arguments; (value, other, index|key).
+/// **Note:** This method supports comparing properties of lists, booleans,
 /// `Date` objects, numbers, `Object` objects, regexes, and strings. Functions
 /// and DOM nodes are/// not** supported. Provide a customizer function to extend
 /// support for comparing other values.
 ///
 /// 
 /// @group Lang
-/// @param {Object} object The object to inspect.
-/// @param {Object} source The object of property values to match.
+/// @param {Map} object The object to inspect.
+/// @param {Map} source The object of property values to match.
 /// @param {Function} (customizer) The function to customize comparing values.
-/// @param {*} (thisArg) The `this` binding of `customizer`.
+/// @param {*} ($this-arg) The `this` binding of `$customizer`.
 /// @returns {boolean} Returns `true` if `object` is a match, else `false`.
 /// @example scss
-/// var object = { 'user': 'fred', 'age': 40 };
+/// $object: { 'user': 'fred', 'age': 40 };
 /// _is-match(object, { 'age': 40 });
 /// // => true
 /// _is-match(object, { 'age': 36 });
 /// // => false
 /// // using a customizer callback
-/// var object = { 'greeting': 'hello' };
-/// var source = { 'greeting': 'hi' };
+/// $object: { 'greeting': 'hello' };
+/// $source: { 'greeting': 'hi' };
 /// _is-match(object, source, function(value, other) {
 ///   return _every((value, other), RegExp.prototype.test, /^h(?:i|ello)$/) || undefined;
 /// });

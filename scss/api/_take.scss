@@ -73,14 +73,14 @@
 
 
 /// 
-/// Creates a slice of `array` with `$n` elements taken from the beginning.
+/// Creates a slice of `list` with `$n` elements taken from the beginning.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to query.
+/// @param {Array} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
-/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _take((1, 2, 3));
 /// // => (1)
@@ -94,14 +94,14 @@
 @function _take($args...) { @return call(__take, $args...); }
 
 /// 
-/// Creates a slice of `array` with `$n` elements taken from the end.
+/// Creates a slice of `list` with `$n` elements taken from the end.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to query.
+/// @param {Array} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
-/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _take-right((1, 2, 3));
 /// // => (3)
@@ -115,12 +115,12 @@
 @function _take-right($args...) { @return call(__take-right, $args...); }
 
 /// 
-/// Creates a slice of `array` with elements taken from the end. Elements are
-/// taken until `predicate` returns falsey. The predicate is bound to `thisArg`
-/// and invoked with three arguments; (value, index, array).
+/// Creates a slice of `list` with elements taken from the end. Elements are
+/// taken until `predicate` returns falsey. The predicate is bound to `$this-arg`
+/// and invoked with three arguments; (value, index, list).
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -129,17 +129,17 @@
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to query.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Array} list The list to query.
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _take-right-while((1, 2, 3), function(n) {
 ///   return n > 1;
 /// });
 /// // => (2, 3)
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney',  'active': true },
 ///   { 'user': 'fred',    'active': false },
 ///   { 'user': 'pebbles', 'active': false }
@@ -157,12 +157,12 @@
 @function _take-right-while($args...) { @return call(__take-right-while, $args...); }
 
 /// 
-/// Creates a slice of `array` with elements taken from the beginning. Elements
+/// Creates a slice of `list` with elements taken from the beginning. Elements
 /// are taken until `predicate` returns falsey. The predicate is bound to
-/// `thisArg` and invoked with three arguments; (value, index, array).
+/// `$this-arg` and invoked with three arguments; (value, index, list).
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -171,17 +171,17 @@
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to query.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Array} list The list to query.
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _take-while((1, 2, 3), function(n) {
 ///   return n < 3;
 /// });
 /// // => (1, 2)
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney',  'active': false },
 ///   { 'user': 'fred',    'active': false},
 ///   { 'user': 'pebbles', 'active': true }

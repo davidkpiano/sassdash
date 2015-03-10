@@ -42,16 +42,16 @@
 }
 
 /// 
-/// Fills elements of `array` with `value` from `start` up to, but not
+/// Fills elements of `list` with `value` from `start` up to, but not
 /// including, `end`.
-/// **Note:** This method mutates `array`.
+/// **Note:** This method mutates `list`.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to fill.
-/// @param {*} value The value to fill `array` with.
+/// @param {Array} list The list to fill.
+/// @param {*} value The value to fill `list` with.
 /// @param {number} $start [0] - The start position.
-/// @param {number} $end [array.length] - The end position.
-/// @returns {Array} Returns `array`.
+/// @param {number} $end [list.length] - The end position.
+/// @returns {Array} Returns `list`.
 /// 
 @function _fill($args...) { @return call(__fill, $args...); }

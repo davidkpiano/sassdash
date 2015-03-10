@@ -22,14 +22,14 @@
 }
 
 /// 
-/// Creates an array of shuffled values, using a version of the Fisher-Yates
+/// Creates an list of shuffled values, using a version of the Fisher-Yates
 /// shuffle. See [Wikipedia](https://en.wikipedia.org/wiki/Fisher-Yates_shuffle)
 /// for more details.
 ///
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to shuffle.
-/// @returns {Array} Returns the new shuffled array.
+/// @returns {Array} Returns the new shuffled list.
 /// @example scss
 /// _shuffle((1, 2, 3, 4));
 /// // => (4, 1, 3, 2)

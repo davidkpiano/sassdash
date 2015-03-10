@@ -6,13 +6,13 @@
 }
 
 /// 
-/// Gets all but the first element of `array`.
+/// Gets all but the first element of `list`.
 ///
 /// 
 /// @alias tail
 /// @group Array
-/// @param {Array} array The array to query.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {Array} list The list to query.
+/// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _rest((1, 2, 3));
 /// // => (2, 3)

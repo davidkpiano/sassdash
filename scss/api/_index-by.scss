@@ -13,11 +13,11 @@
 /// Creates an object composed of keys generated from the results of running
 /// each element of `collection` through `iteratee`. The corresponding value
 /// of each key is the last element responsible for generating the key. The
-/// iteratee function is bound to `thisArg` and invoked with three arguments;
+/// iteratee function is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -27,12 +27,12 @@
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
+/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns the composed aggregate object.
 /// @example scss
-/// var keyData = [
+/// $keyData: [
 ///   { 'dir': 'left', 'code': 97 },
 ///   { 'dir': 'right', 'code': 100 }
 /// ];

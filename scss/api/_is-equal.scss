@@ -142,11 +142,11 @@
 
 /// 
 /// Performs a deep comparison between two values to determine if they are
-/// equivalent. If `customizer` is provided it is invoked to compare values.
-/// If `customizer` returns `undefined` comparisons are handled by the method
-/// instead. The `customizer` is bound to `thisArg` and invoked with three
+/// equivalent. If `$customizer` is provided it is invoked to compare values.
+/// If `$customizer` returns `undefined` comparisons are handled by the method
+/// instead. The `$customizer` is bound to `$this-arg` and invoked with three
 /// arguments; (value, other (, index|key)).
-/// **Note:** This method supports comparing arrays, booleans, `Date` objects,
+/// **Note:** This method supports comparing lists, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. Functions and DOM nodes
 /// are/// not** supported. Provide a customizer function to extend support
@@ -157,19 +157,19 @@
 /// @param {*} value The value to compare.
 /// @param {*} other The other value to compare.
 /// @param {Function} (customizer) The function to customize comparing values.
-/// @param {*} (thisArg) The `this` binding of `customizer`.
+/// @param {*} ($this-arg) The `this` binding of `$customizer`.
 /// @returns {boolean} Returns `true` if the values are equivalent, else `false`.
 /// @example scss
-/// var object = { 'user': 'fred' };
-/// var other = { 'user': 'fred' };
+/// $object: { 'user': 'fred' };
+/// $other: { 'user': 'fred' };
 /// object == other;
 /// // => false
 /// _is-equal(object, other);
 /// // => true
 /// // using a customizer callback
-/// var array = ('hello', 'goodbye');
-/// var other = ('hi', 'goodbye');
-/// _is-equal(array, other, function(value, other) {
+/// $list: ('hello', 'goodbye');
+/// $other: ('hi', 'goodbye');
+/// _is-equal(list, other, function(value, other) {
 ///   if (_every((value, other), RegExp.prototype.test, /^h(?:i|ello)$/)) {
 ///     return true;
 ///   }

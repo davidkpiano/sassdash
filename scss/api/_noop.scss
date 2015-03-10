@@ -11,7 +11,7 @@
 /// 
 /// @group Utility
 /// @example scss
-/// var object = { 'user': 'fred' };
+/// $object: { 'user': 'fred' };
 /// _noop(object) === null;
 /// // => true
 /// 

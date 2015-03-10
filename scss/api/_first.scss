@@ -4,13 +4,13 @@
 }
 
 /// 
-/// Gets the first element of `array`.
+/// Gets the first element of `list`.
 ///
 /// 
 /// @alias head
 /// @group Array
-/// @param {Array} array The array to query.
-/// @returns {*} Returns the first element of `array`.
+/// @param {Array} list The list to query.
+/// @returns {*} Returns the first element of `list`.
 /// @example scss
 /// _first((1, 2, 3));
 /// // => 1

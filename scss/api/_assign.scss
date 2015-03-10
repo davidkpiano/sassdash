@@ -72,29 +72,29 @@
 }
 
 /// 
-/// Assigns own enumerable properties of source object(s) to the destination
-/// object. Subsequent sources overwrite property assignments of previous sources.
-/// If `customizer` is provided it is invoked to produce the assigned values.
-/// The `customizer` is bound to `thisArg` and invoked with five arguments;
-/// (objectValue, sourceValue, key, object, source).
+/// Assigns own enumerable properties of source map(s) to the destination
+/// map. Subsequent sources overwrite property assignments of previous sources.
+/// If `$customizer` is provided it is invoked to produce the assigned values.
+/// The `$customizer` is bound to `$this-arg` and invoked with five arguments;
+/// ($map-value, $map-value, $key, $map, $source).
 ///
 /// 
-/// @alias extend
-/// @group Object
-/// @param {Object} object The destination object.
-/// @param {...Object} (sources) The source objects.
+/// @alias _extend
+/// @group Map
+/// @param {Map} map The destination map.
+/// @param {...Map} (sources) The source maps.
 /// @param {Function} (customizer) The function to customize assigning values.
-/// @param {*} (thisArg) The `this` binding of `customizer`.
-/// @returns {Object} Returns `object`.
+/// @param {*} $this-arg - The `this` binding of `$customizer`.
+/// @returns {Object} Returns `map`.
+/// 
 /// @example scss
-/// _assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
-/// // => { 'user': 'fred', 'age': 40 }
+/// _assign(( 'user': 'barney' ), ( 'age': 40 ), ( 'user': 'fred' ));
+/// // => ( 'user': 'fred', 'age': 40 )
+/// 
 /// // using a customizer callback
-/// var defaults = _partial-right(_.assign, function(value, other) {
-///   return typeof value == 'undefined' ? other : value;
-/// });
-/// defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
-/// // => { 'user': 'barney', 'age': 36 }
+/// $defaults: _partial-right(_assign, _either);
+/// _exec($defaults, (( 'user': 'barney' ), ( 'age': 36 ), ( 'user': 'fred' )));
+/// // => ( 'user': 'barney', 'age': 36 )
 /// 
 @function _assign($args...) { @return call(__assign, $args...); }
 

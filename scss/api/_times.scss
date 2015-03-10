@@ -17,18 +17,18 @@
 }
 
 /// 
-/// Invokes the iteratee function `$n` times, returning an array of the results
-/// of each invocation. The `iteratee` is bound to `thisArg` and invoked with
+/// Invokes the iteratee function `$n` times, returning an list of the results
+/// of each invocation. The `iteratee` is bound to `$this-arg` and invoked with
 /// one argument; (index).
 ///
 /// 
 /// @group Utility
 /// @param {number} n The number of times to invoke `iteratee`.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
-/// @returns {Array} Returns the array of results.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @returns {Array} Returns the list of results.
 /// @example scss
-/// var diceRolls = _times(3, _partial(_.random, 1, 6, false));
+/// $diceRolls: _times(3, _partial(_random, 1, 6, false));
 /// // => (3, 6, 4)
 /// _times(3, function(n) {
 ///   mage.castSpell(n);

@@ -17,8 +17,8 @@
 /// @param {*} value The value to return from the new function.
 /// @returns {Function} Returns the new function.
 /// @example scss
-/// var object = { 'user': 'fred' };
-/// var getter = _constant(object);
+/// $object: { 'user': 'fred' };
+/// $getter: _constant(object);
 /// getter() === object;
 /// // => true
 /// 

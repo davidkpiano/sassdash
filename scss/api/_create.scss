@@ -24,10 +24,10 @@
 /// to the created object.
 ///
 /// 
-/// @group Object
-/// @param {Object} prototype The object to inherit from.
-/// @param {Object} (properties) The properties to assign to the object.
-/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @group Map
+/// @param {Map} prototype The object to inherit from.
+/// @param {Map} (properties) The properties to assign to the object.
+/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Object} Returns the new object.
 /// @example scss
 /// function Shape() {
@@ -40,7 +40,7 @@
 /// Circle.prototype = _create(Shape.prototype, {
 ///   'constructor': Circle
 /// });
-/// var circle = new Circle;
+/// $circle: new Circle;
 /// circle instanceof Circle;
 /// // => true
 /// circle instanceof Shape;

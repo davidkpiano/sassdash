@@ -16,12 +16,12 @@
 /// inherited property.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to inspect.
+/// @group Map
+/// @param {Map} object The object to inspect.
 /// @param {string} key The key to check.
 /// @returns {boolean} Returns `true` if `key` is a direct property, else `false`.
 /// @example scss
-/// var object = { 'a': 1, 'b': 2, 'c': 3 };
+/// $object: { 'a': 1, 'b': 2, 'c': 3 };
 /// _has(object, 'b');
 /// // => true
 /// 

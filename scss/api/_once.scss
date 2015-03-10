@@ -13,7 +13,7 @@
 /// @param {Function} func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
 /// @example scss
-/// var initialize = _once(createApplication);
+/// $initialize: _once(createApplication);
 /// initialize();
 /// initialize();
 /// // `initialize` invokes `createApplication` once

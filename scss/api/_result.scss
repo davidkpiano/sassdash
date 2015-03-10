@@ -29,14 +29,14 @@
 /// `undefined` the `defaultValue` is used in its place.
 /// ///
 /// 
-/// @group Object
-/// @param {Object} object The object to query.
+/// @group Map
+/// @param {Map} object The object to query.
 /// @param {string} key The key of the property to resolve.
 /// @param {*} (defaultValue) The value returned if the property value
 ///  resolves to `undefined`.
 /// @returns {*} Returns the resolved value.
 /// @example scss
-/// /// var object = { 'user': 'fred', 'age': _constant(40) };
+/// /// $object: { 'user': 'fred', 'age': _constant(40) };
 /// /// _result(object, 'user');
 /// // => 'fred'
 /// /// _result(object, 'age');

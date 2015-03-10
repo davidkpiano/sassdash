@@ -66,13 +66,13 @@
 }
 /// 
 /// Uses a binary search to determine the lowest index at which `value` should
-/// be inserted into `array` in order to maintain its sort order. If an iteratee
-/// function is provided it is invoked for `value` and each element of `array`
-/// to compute their sort ranking. The iteratee is bound to `thisArg` and
+/// be inserted into `list` in order to maintain its sort order. If an iteratee
+/// function is provided it is invoked for `value` and each element of `list`
+/// to compute their sort ranking. The iteratee is bound to `$this-arg` and
 /// invoked with one argument; (value).
 /// /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// /// If a value is also provided for `thisArg` the created `_matches-property`
+/// /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// /// If an object is provided for `predicate` the created `_matches` style
@@ -81,19 +81,19 @@
 /// ///
 /// 
 /// @group Array
-/// @param {Array} array The sorted array to inspect.
+/// @param {Array} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
-/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
+/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {number} Returns the index at which `value` should be inserted
-///  into `array`.
+///  into `list`.
 /// @example scss
 /// /// _sorted-index((30, 50), 40);
 /// // => 1
 /// /// _sorted-index((4, 4, 5, 5), 5);
 /// // => 2
-/// /// var dict = { 'data': { 'thirty': 30, 'forty': 40, 'fifty': 50 } };
+/// /// $dict: { 'data': { 'thirty': 30, 'forty': 40, 'fifty': 50 } };
 /// /// // using an iteratee function
 /// _sorted-index(('thirty', 'fifty'), 'forty', function(word) {
 ///   return this.data(word);
@@ -106,18 +106,18 @@
 @function _sorted-index($args...) { @return call(__sorted-index, $args...); }
 /// 
 /// This method is like `_sorted-index` except that it returns the highest
-/// index at which `value` should be inserted into `array` in order to
+/// index at which `value` should be inserted into `list` in order to
 /// maintain its sort order.
 /// ///
 /// 
 /// @group Array
-/// @param {Array} array The sorted array to inspect.
+/// @param {Array} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
-/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
+/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {number} Returns the index at which `value` should be inserted
-///  into `array`.
+///  into `list`.
 /// @example scss
 /// /// _sorted-last-index((4, 4, 5, 5), 5);
 /// // => 4

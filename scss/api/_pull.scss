@@ -27,23 +27,23 @@
 }
 
 /// 
-/// Removes all provided values from `array` using `SameValueZero` for equality
+/// Removes all provided values from `list` using `SameValueZero` for equality
 /// comparisons.
 /// **Notes:**
-///  - Unlike `_without`, this method mutates `array`.
+///  - Unlike `_without`, this method mutates `list`.
 ///  - `SameValueZero` comparisons are like strict equality comparisons, e.g. `===`,
 ///    except that `NaN` matches `NaN`. See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
 ///    for more details.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to modify.
+/// @param {Array} list The list to modify.
 /// @param {...*} (values) The values to remove.
-/// @returns {Array} Returns `array`.
+/// @returns {Array} Returns `list`.
 /// @example scss
-/// var array = (1, 2, 3, 1, 2, 3);
-/// _pull(array, 2, 3);
-/// console.log(array);
+/// $list: (1, 2, 3, 1, 2, 3);
+/// _pull(list, 2, 3);
+/// console.log(list);
 /// // => (1, 1)
 /// 
 @function _pull($args...) { @return call(__pull, $args...); }

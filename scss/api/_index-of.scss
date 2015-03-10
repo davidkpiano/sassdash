@@ -94,9 +94,9 @@
 }
 
 /// 
-/// Gets the index at which the first occurrence of `value` is found in `array`
+/// Gets the index at which the first occurrence of `value` is found in `list`
 /// using `SameValueZero` for equality comparisons. If `fromIndex` is negative,
-/// it is used as the offset from the end of `array`. If `array` is sorted
+/// it is used as the offset from the end of `list`. If `list` is sorted
 /// providing `true` for `fromIndex` performs a faster binary search.
 /// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
@@ -105,10 +105,10 @@
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to search.
+/// @param {Array} list The list to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} $fromIndex [0] - The index to search from or `true`
-///  to perform a binary search on a sorted array.
+///  to perform a binary search on a sorted list.
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example scss
 /// _index-of((1, 2, 1, 2), 2);
@@ -124,14 +124,14 @@
 
 /// 
 /// This method is like `_index-of` except that it iterates over elements of
-/// `array` from right to left.
+/// `list` from right to left.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to search.
+/// @param {Array} list The list to search.
 /// @param {*} value The value to search for.
-/// @param {boolean|number} $fromIndex [array.length-1] - The index to search from
-///  or `true` to perform a binary search on a sorted array.
+/// @param {boolean|number} $fromIndex [list.length-1] - The index to search from
+///  or `true` to perform a binary search on a sorted list.
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example scss
 /// _last-index-of((1, 2, 1, 2), 2);

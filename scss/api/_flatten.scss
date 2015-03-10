@@ -51,15 +51,15 @@
 }
 
 /// 
-/// Flattens a nested array. If `isDeep` is `true` the array is recursively
+/// Flattens a nested list. If `isDeep` is `true` the list is recursively
 /// flattened, otherwise it is only flattened a single level.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to flatten.
+/// @param {Array} list The list to flatten.
 /// @param {boolean} (isDeep) Specify a deep flatten.
-/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
-/// @returns {Array} Returns the new flattened array.
+/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @returns {Array} Returns the new flattened list.
 /// @example scss
 /// _flatten([1, [2, 3, (4)]]);
 /// // => [1, 2, 3, (4)];
@@ -70,12 +70,12 @@
 @function _flatten($args...) { @return call(__flatten, $args...); }
 
 /// 
-/// Recursively flattens a nested array.
+/// Recursively flattens a nested list.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to recursively flatten.
-/// @returns {Array} Returns the new flattened array.
+/// @param {Array} list The list to recursively flatten.
+/// @returns {Array} Returns the new flattened list.
 /// @example scss
 /// _flatten-deep([1, [2, 3, (4)]]);
 /// // => (1, 2, 3, 4);

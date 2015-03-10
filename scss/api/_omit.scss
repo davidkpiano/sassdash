@@ -24,25 +24,25 @@
 /// 
 /// The opposite of `_pick`; this method creates an object composed of the
 /// own and inherited enumerable properties of `object` that are not omitted.
-/// Property names may be specified as individual arguments or as arrays of
+/// Property names may be specified as individual arguments or as lists of
 /// property names. If `predicate` is provided it is invoked for each property
 /// of `object` omitting the properties `predicate` returns truthy for. The
-/// predicate is bound to `thisArg` and invoked with three arguments;
+/// predicate is bound to `$this-arg` and invoked with three arguments;
 /// (value, key, object).
 ///
 /// 
-/// @group Object
-/// @param {Object} object The source object.
+/// @group Map
+/// @param {Map} object The source object.
 /// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to omit, specified as individual property
-///  names or arrays of property names.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+///  names or lists of property names.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {Object} Returns the new object.
 /// @example scss
-/// var object = { 'user': 'fred', 'age': 40 };
+/// $object: { 'user': 'fred', 'age': 40 };
 /// _omit(object, 'age');
 /// // => { 'user': 'fred' }
-/// _omit(object, _.isNumber);
+/// _omit(object, _isNumber);
 /// // => { 'user': 'fred' }
 /// 
 @function _omit($args...) { @return call(__omit, $args...); }

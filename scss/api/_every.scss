@@ -50,11 +50,11 @@
 
 /// 
 /// Checks if `predicate` returns truthy for/// all** elements of `collection`.
-/// The predicate is bound to `thisArg` and invoked with three arguments;
+/// The predicate is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -65,15 +65,15 @@
 /// @alias all
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {boolean} Returns `true` if all elements pass the predicate check,
 ///  else `false`.
 /// @example scss
 /// _every((true, 1, null, 'yes'), Boolean);
 /// // => false
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney', 'active': false },
 ///   { 'user': 'fred',   'active': false }
 /// ];

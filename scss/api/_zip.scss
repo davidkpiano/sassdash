@@ -48,14 +48,14 @@
 }
 
 /// 
-/// Creates an array of grouped elements, the first of which contains the first
-/// elements of the given arrays, the second of which contains the second elements
-/// of the given arrays, and so on.
+/// Creates an list of grouped elements, the first of which contains the first
+/// elements of the given lists, the second of which contains the second elements
+/// of the given lists, and so on.
 ///
 /// 
 /// @group Array
-/// @param {...Array} (arrays) The arrays to process.
-/// @returns {Array} Returns the new array of grouped elements.
+/// @param {...Array} (lists) The lists to process.
+/// @returns {Array} Returns the new list of grouped elements.
 /// @example scss
 /// _zip(('fred', 'barney'), (30, 40), (true, false));
 /// // => [('fred', 30, true), ('barney', 40, false)]
@@ -63,9 +63,9 @@
 @function _zip($args...) { @return call(__zip, $args...); }
 
 /// 
-/// Creates an object composed from arrays of property names and values. Provide
-/// either a single two dimensional array, e.g. `[(key1, value1), (key2, value2)]`
-/// or two arrays, one of property names and one of corresponding values.
+/// Creates an object composed from lists of property names and values. Provide
+/// either a single two dimensional list, e.g. `[(key1, value1), (key2, value2)]`
+/// or two lists, one of property names and one of corresponding values.
 ///
 /// 
 /// @alias object

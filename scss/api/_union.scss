@@ -6,7 +6,7 @@
 }
 
 /// 
-/// Creates an array of unique values, in order, of the provided arrays using
+/// Creates an list of unique values, in order, of the provided lists using
 /// `SameValueZero` for equality comparisons.
 /// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
@@ -15,8 +15,8 @@
 ///
 /// 
 /// @group Array
-/// @param {...Array} (arrays) The arrays to inspect.
-/// @returns {Array} Returns the new array of combined values.
+/// @param {...Array} (lists) The lists to inspect.
+/// @returns {Array} Returns the new list of combined values.
 /// @example scss
 /// _union((1, 2), (4, 2), (2, 1));
 /// // => (1, 2, 4)

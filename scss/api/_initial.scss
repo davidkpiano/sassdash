@@ -4,12 +4,12 @@
 }
 
 /// 
-/// Gets all but the last element of `array`.
+/// Gets all but the last element of `list`.
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to query.
-/// @returns {Array} Returns the slice of `array`.
+/// @param {Array} list The list to query.
+/// @returns {Array} Returns the slice of `list`.
 /// @example scss
 /// _initial((1, 2, 3));
 /// // => (1, 2)

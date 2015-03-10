@@ -59,7 +59,7 @@
 /// @param {number} $options.length [30] - The maximum string length.
 /// @param {string} $options.omission ['...'] - The string to indicate text is omitted.
 /// @param {RegExp|string} (options.separator) The separator pattern to truncate to.
-/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the truncated string.
 /// @example scss
 /// /// _trunc('hi-diddly-ho there, neighborino');

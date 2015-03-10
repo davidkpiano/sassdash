@@ -35,7 +35,7 @@
 }
 
 /// 
-/// Creates an array excluding all values of the provided arrays using
+/// Creates an list excluding all values of the provided lists using
 /// `SameValueZero` for equality comparisons.
 /// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
@@ -44,9 +44,9 @@
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to inspect.
-/// @param {...Array} (values) The arrays of values to exclude.
-/// @returns {Array} Returns the new array of filtered values.
+/// @param {Array} list The list to inspect.
+/// @param {...Array} (values) The lists of values to exclude.
+/// @returns {Array} Returns the new list of filtered values.
 /// @example scss
 /// _difference((1, 2, 3), (4, 2));
 /// // => (1, 3)

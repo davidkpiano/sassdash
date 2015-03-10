@@ -114,11 +114,11 @@
 
 /// 
 /// Iterates over elements of `collection`, returning the first element
-/// `predicate` returns truthy for. The predicate is bound to `thisArg` and
+/// `predicate` returns truthy for. The predicate is bound to `$this-arg` and
 /// invoked with three arguments; (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -129,12 +129,12 @@
 /// @alias detect
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney',  'age': 36, 'active': true },
 ///   { 'user': 'fred',    'age': 40, 'active': false },
 ///   { 'user': 'pebbles', 'age': 1,  'active': true }
@@ -163,7 +163,7 @@
 /// element `predicate` returns truthy for, instead of the element itself.
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -172,13 +172,13 @@
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to search.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Array} list The list to search.
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney',  'active': false },
 ///   { 'user': 'fred',    'active': false },
 ///   { 'user': 'pebbles', 'active': true }
@@ -204,7 +204,7 @@
 /// first element `predicate` returns truthy for, instead of the element itself.
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -212,14 +212,14 @@
 /// object, else `false`.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to search.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @group Map
+/// @param {Map} object The object to search.
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
-/// var users = {
+/// $users: {
 ///   'barney':  { 'age': 36, 'active': true },
 ///   'fred':    { 'age': 40, 'active': false },
 ///   'pebbles': { 'age': 1,  'active': true }
@@ -247,9 +247,9 @@
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// _find-last((1, 2, 3, 4), function(n) {
@@ -264,7 +264,7 @@
 /// of `collection` from right to left.
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -273,13 +273,13 @@
 ///
 /// 
 /// @group Array
-/// @param {Array} array The array to search.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @param {Array} list The list to search.
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney',  'active': true },
 ///   { 'user': 'fred',    'active': false },
 ///   { 'user': 'pebbles', 'active': false }
@@ -305,7 +305,7 @@
 /// a collection in the opposite order.
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// If a value is also provided for `thisArg` the created `_matches-property`
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
 /// If an object is provided for `predicate` the created `_matches` style
@@ -313,14 +313,14 @@
 /// object, else `false`.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to search.
-/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
+/// @group Map
+/// @param {Map} object The object to search.
+/// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} (thisArg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `this` binding of `predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
-/// var users = {
+/// $users: {
 ///   'barney':  { 'age': 36, 'active': true },
 ///   'fred':    { 'age': 40, 'active': false },
 ///   'pebbles': { 'age': 1,  'active': true }
@@ -345,7 +345,7 @@
 /// Performs a deep comparison between each element in `collection` and the
 /// source object, returning the first element that has equivalent property
 /// values.
-/// **Note:** This method supports comparing arrays, booleans, `Date` objects,
+/// **Note:** This method supports comparing lists, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
 /// their own, not inherited, enumerable properties. For comparing a single
 /// own or inherited property value see `_matches-property`.
@@ -353,10 +353,10 @@
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
-/// @param {Object} source The object of property values to match.
+/// @param {Map} source The object of property values to match.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
-/// var users = [
+/// $users: [
 ///   { 'user': 'barney', 'age': 36, 'active': true },
 ///   { 'user': 'fred',   'age': 40, 'active': false }
 /// ];

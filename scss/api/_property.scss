@@ -41,11 +41,11 @@
 /// @param {string} key The key of the property to get.
 /// @returns {Function} Returns the new function.
 /// @example scss
-/// var users = [
+/// $users: [
 ///   { 'user': 'fred' },
 ///   { 'user': 'barney' }
 /// ];
-/// var getName = _property('user');
+/// $getName: _property('user');
 /// _map(users, getName);
 /// // => ('fred', barney')
 /// _pluck(_sort-by(users, getName), 'user');
@@ -59,10 +59,10 @@
 ///
 /// 
 /// @group Utility
-/// @param {Object} object The object to inspect.
+/// @param {Map} object The object to inspect.
 /// @returns {Function} Returns the new function.
 /// @example scss
-/// var object = { 'a': 3, 'b': 1, 'c': 2 };
+/// $object: { 'a': 3, 'b': 1, 'c': 2 };
 /// _map(('a', 'c'), _property-of(object));
 /// // => (3, 2)
 /// _sort-by(('a', 'b', 'c'), _property-of(object));

@@ -190,25 +190,25 @@
 
 /// 
 /// Iterates over elements of `collection` invoking `iteratee` for each element.
-/// The `iteratee` is bound to `thisArg` and invoked with three arguments;
+/// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection). Iterator functions may exit iteration early
 /// by explicitly returning `false`.
 /// **Note:** As with other "Collections" methods, objects with a `length` property
-/// are iterated like arrays. To avoid this behavior `_for-in` or `_for-own`
+/// are iterated like lists. To avoid this behavior `_for-in` or `_for-own`
 /// may be used for object iteration.
 ///
 /// 
 /// @alias each
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Array|Object|string} Returns `collection`.
 /// @example scss
 /// _((1, 2)).forEach(function(n) {
 ///   console.log(n);
 /// }).value();
-/// // => logs each value from left to right and returns the array
+/// // => logs each value from left to right and returns the list
 /// _for-each({ 'a': 1, 'b': 2 }, function(n, key) {
 ///   console.log(n, key);
 /// });
@@ -226,14 +226,14 @@
 /// @alias eachRight
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Array|Object|string} Returns `collection`.
 /// @example scss
 /// _((1, 2)).forEachRight(function(n) {
 ///   console.log(n);
 /// }).join(',');
-/// // => logs each value from right to left and returns the array
+/// // => logs each value from right to left and returns the list
 /// 
 @function _for-each-right($args...) { @return call(__for-each-right, $args...); }
 
@@ -241,15 +241,15 @@
 
 /// 
 /// Iterates over own and inherited enumerable properties of an object invoking
-/// `iteratee` for each property. The `iteratee` is bound to `thisArg` and invoked
+/// `iteratee` for each property. The `iteratee` is bound to `$this-arg` and invoked
 /// with three arguments; (value, key, object). Iterator functions may exit
 /// iteration early by explicitly returning `false`.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to iterate over.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @group Map
+/// @param {Map} object The object to iterate over.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {
@@ -269,10 +269,10 @@
 /// `object` in the opposite order.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to iterate over.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @group Map
+/// @param {Map} object The object to iterate over.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {
@@ -283,21 +283,21 @@
 /// _for-in-right(new Foo, function(value, key) {
 ///   console.log(key);
 /// });
-/// // => logs 'c', 'b', and 'a' assuming `_.forIn ` logs 'a', 'b', and 'c'
+/// // => logs 'c', 'b', and 'a' assuming `_forIn ` logs 'a', 'b', and 'c'
 /// 
 @function _for-in-right($args...) { @return call(__for-in-right, $args...); }
 
 /// 
 /// Iterates over own enumerable properties of an object invoking `iteratee`
-/// for each property. The `iteratee` is bound to `thisArg` and invoked with
+/// for each property. The `iteratee` is bound to `$this-arg` and invoked with
 /// three arguments; (value, key, object). Iterator functions may exit iteration
 /// early by explicitly returning `false`.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to iterate over.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @group Map
+/// @param {Map} object The object to iterate over.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {
@@ -317,10 +317,10 @@
 /// `object` in the opposite order.
 ///
 /// 
-/// @group Object
-/// @param {Object} object The object to iterate over.
-/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
-/// @param {*} (thisArg) The `this` binding of `iteratee`.
+/// @group Map
+/// @param {Map} object The object to iterate over.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} ($this-arg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {

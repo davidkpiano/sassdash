@@ -38,7 +38,7 @@
 /// @param {...(number|number[]|string|string[])} (props) The property names
 ///  or indexes of elements to pick, specified individually or in arrays.
 /// @returns {Array} Returns the new array of picked elements.
-/// @example
+/// @example scss
 /// _at(('a', 'b', 'c'), (0, 2));
 /// // => ('a', 'c')
 /// _at(('fred', 'barney', 'pebbles'), 0, 2);

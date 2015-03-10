@@ -27,9 +27,9 @@
 /// @group Object
 /// @param {Object} prototype The object to inherit from.
 /// @param {Object} (properties) The properties to assign to the object.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Object} Returns the new object.
-/// @example
+/// @example scss
 /// function Shape() {
 ///   this.x = 0;
 ///   this.y = 0;

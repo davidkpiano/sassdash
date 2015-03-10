@@ -83,12 +83,12 @@
 /// @group Array
 /// @param {Array} array The sorted array to inspect.
 /// @param {*} value The value to evaluate.
-/// @param {Function|Object|string} (iteratee=_.identity) The function invoked
+/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {number} Returns the index at which `value` should be inserted
 ///  into `array`.
-/// @example
+/// @example scss
 /// /// _sorted-index((30, 50), 40);
 /// // => 1
 /// /// _sorted-index((4, 4, 5, 5), 5);
@@ -113,12 +113,12 @@
 /// @group Array
 /// @param {Array} array The sorted array to inspect.
 /// @param {*} value The value to evaluate.
-/// @param {Function|Object|string} (iteratee=_.identity) The function invoked
+/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {number} Returns the index at which `value` should be inserted
 ///  into `array`.
-/// @example
+/// @example scss
 /// /// _sorted-last-index((4, 4, 5, 5), 5);
 /// // => 4
 /// 

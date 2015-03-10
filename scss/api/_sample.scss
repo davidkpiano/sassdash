@@ -20,9 +20,9 @@
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to sample.
 /// @param {number} (n) The number of elements to sample.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {*} Returns the random sample(s).
-/// @example
+/// @example scss
 /// /// _sample((1, 2, 3, 4));
 /// // => 2
 /// /// _sample((1, 2, 3, 4), 2);

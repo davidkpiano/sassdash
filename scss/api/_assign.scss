@@ -86,7 +86,7 @@
 /// @param {Function} (customizer) The function to customize assigning values.
 /// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// _assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
 /// // => { 'user': 'fred', 'age': 40 }
 /// // using a customizer callback

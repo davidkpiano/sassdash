@@ -54,7 +54,7 @@
 /// @param {Function} func The function to partially apply arguments to.
 /// @param {...*} (args) The arguments to be partially applied.
 /// @returns {Function} Returns the new partially applied function.
-/// @example
+/// @example scss
 /// var greet = function(greeting, name) {
 ///   return greeting + ' ' + name;
 /// };
@@ -81,7 +81,7 @@
 /// @param {Function} func The function to partially apply arguments to.
 /// @param {...*} (args) The arguments to be partially applied.
 /// @returns {Function} Returns the new partially applied function.
-/// @example
+/// @example scss
 /// var greet = function(greeting, name) {
 ///   return greeting + ' ' + name;
 /// };

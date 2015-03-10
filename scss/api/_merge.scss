@@ -131,7 +131,7 @@
 /// @param {Function} (customizer) The function to customize merging properties.
 /// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// var users = {
 ///   'data': ({ 'user': 'barney' }, { 'user': 'fred' })
 /// };

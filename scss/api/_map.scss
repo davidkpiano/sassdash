@@ -100,12 +100,12 @@
 /// @alias collect
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} (iteratee=_.identity) The function invoked
+/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
 ///  per iteration.
 ///  create a `_property` or `_matches` style callback respectively.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Array} Returns the new mapped array.
-/// @example
+/// @example scss
 /// function timesThree(n) {
 ///   return n/// 3;
 /// }
@@ -142,11 +142,11 @@
 /// 
 /// @group Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function|Object|string} (iteratee=_.identity) The function invoked
+/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns the new mapped object.
-/// @example
+/// @example scss
 /// _map-values({ 'a': 1, 'b': 2 }, function(n) {
 ///   return n/// 3;
 /// });

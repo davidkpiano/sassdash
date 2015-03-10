@@ -24,11 +24,11 @@
 /// ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to search.
+/// @param {string} $string [''] - The string to search.
 /// @param {string} (target) The string to search for.
-/// @param {number} (position=0) The position to search from.
+/// @param {number} $position [0] - The position to search from.
 /// @returns {boolean} Returns `true` if `string` starts with `target`, else `false`.
-/// @example
+/// @example scss
 /// /// _starts-with('abc', 'a');
 /// // => true
 /// /// _starts-with('abc', 'b');

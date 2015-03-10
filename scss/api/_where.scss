@@ -18,7 +18,7 @@
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {Object} source The object of property values to match.
 /// @returns {Array} Returns the new filtered array.
-/// @example
+/// @example scss
 /// var users = [
 ///   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy') },
 ///   { 'user': 'fred',   'age': 40, 'active': true, 'pets': ('baby puss', 'dino') }

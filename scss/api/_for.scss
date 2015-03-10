@@ -201,10 +201,10 @@
 /// @alias each
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Array|Object|string} Returns `collection`.
-/// @example
+/// @example scss
 /// _((1, 2)).forEach(function(n) {
 ///   console.log(n);
 /// }).value();
@@ -226,10 +226,10 @@
 /// @alias eachRight
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Array|Object|string} Returns `collection`.
-/// @example
+/// @example scss
 /// _((1, 2)).forEachRight(function(n) {
 ///   console.log(n);
 /// }).join(',');
@@ -248,10 +248,10 @@
 /// 
 /// @group Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// function Foo() {
 ///   this.a = 1;
 ///   this.b = 2;
@@ -271,10 +271,10 @@
 /// 
 /// @group Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// function Foo() {
 ///   this.a = 1;
 ///   this.b = 2;
@@ -296,10 +296,10 @@
 /// 
 /// @group Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// function Foo() {
 ///   this.a = 1;
 ///   this.b = 2;
@@ -319,10 +319,10 @@
 /// 
 /// @group Object
 /// @param {Object} object The object to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// function Foo() {
 ///   this.a = 1;
 ///   this.b = 2;

@@ -58,7 +58,7 @@
 ///  the function invoked per iteration.
 /// @param {...*} (args) The arguments to invoke the method with.
 /// @returns {Array} Returns the array of results.
-/// @example
+/// @example scss
 /// _invoke([(5, 1, 7), (3, 2, 1)], 'sort');
 /// // => [(1, 5, 7), (1, 2, 3)]
 /// _invoke((123, 456), String.prototype.split, '');

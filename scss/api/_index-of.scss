@@ -107,10 +107,10 @@
 /// @group Array
 /// @param {Array} array The array to search.
 /// @param {*} value The value to search for.
-/// @param {boolean|number} (fromIndex=0) The index to search from or `true`
+/// @param {boolean|number} $fromIndex [0] - The index to search from or `true`
 ///  to perform a binary search on a sorted array.
 /// @returns {number} Returns the index of the matched value, else `-1`.
-/// @example
+/// @example scss
 /// _index-of((1, 2, 1, 2), 2);
 /// // => 1
 /// // using `fromIndex`
@@ -130,10 +130,10 @@
 /// @group Array
 /// @param {Array} array The array to search.
 /// @param {*} value The value to search for.
-/// @param {boolean|number} (fromIndex=array.length-1) The index to search from
+/// @param {boolean|number} $fromIndex [array.length-1] - The index to search from
 ///  or `true` to perform a binary search on a sorted array.
 /// @returns {number} Returns the index of the matched value, else `-1`.
-/// @example
+/// @example scss
 /// _last-index-of((1, 2, 1, 2), 2);
 /// // => 3
 /// // using `fromIndex`

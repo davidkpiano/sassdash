@@ -34,11 +34,11 @@
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} (predicate=_.identity) The function invoked
+/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {Array} Returns the array of grouped elements.
-/// @example
+/// @example scss
 /// _partition((1, 2, 3), function(n) {
 ///   return n % 2;
 /// });

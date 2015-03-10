@@ -45,7 +45,7 @@
 /// @param {number} n The number of calls at which `$function` is no longer invoked.
 /// @param {Function} func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
-/// @example
+/// @example scss
 /// jQuery('#add').on('click', _before(5, addContactToList));
 /// // => allows adding up to 4 contacts to the list
 /// 

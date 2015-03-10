@@ -40,7 +40,7 @@
 /// @param {Array} array The array to modify.
 /// @param {...*} (values) The values to remove.
 /// @returns {Array} Returns `array`.
-/// @example
+/// @example scss
 /// var array = (1, 2, 3, 1, 2, 3);
 /// _pull(array, 2, 3);
 /// console.log(array);

@@ -78,10 +78,10 @@
 /// 
 /// @group Array
 /// @param {Array} array The array to query.
-/// @param {number} (n=1) The number of elements to take.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {number} $n [1] - The number of elements to take.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Array} Returns the slice of `array`.
-/// @example
+/// @example scss
 /// _take((1, 2, 3));
 /// // => (1)
 /// _take((1, 2, 3), 2);
@@ -99,10 +99,10 @@
 /// 
 /// @group Array
 /// @param {Array} array The array to query.
-/// @param {number} (n=1) The number of elements to take.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {number} $n [1] - The number of elements to take.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Array} Returns the slice of `array`.
-/// @example
+/// @example scss
 /// _take-right((1, 2, 3));
 /// // => (3)
 /// _take-right((1, 2, 3), 2);
@@ -130,11 +130,11 @@
 /// 
 /// @group Array
 /// @param {Array} array The array to query.
-/// @param {Function|Object|string} (predicate=_.identity) The function invoked
+/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {Array} Returns the slice of `array`.
-/// @example
+/// @example scss
 /// _take-right-while((1, 2, 3), function(n) {
 ///   return n > 1;
 /// });
@@ -172,11 +172,11 @@
 /// 
 /// @group Array
 /// @param {Array} array The array to query.
-/// @param {Function|Object|string} (predicate=_.identity) The function invoked
+/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {Array} Returns the slice of `array`.
-/// @example
+/// @example scss
 /// _take-while((1, 2, 3), function(n) {
 ///   return n < 3;
 /// });

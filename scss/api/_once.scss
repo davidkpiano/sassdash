@@ -12,7 +12,7 @@
 /// @group Function
 /// @param {Function} func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
-/// @example
+/// @example scss
 /// var initialize = _once(createApplication);
 /// initialize();
 /// initialize();

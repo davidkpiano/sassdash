@@ -11,7 +11,7 @@
 /// @group Utility
 /// @param {*} value Any value.
 /// @returns {*} Returns `value`.
-/// @example
+/// @example scss
 /// var object = { 'user': 'fred' };
 /// _identity(object) === object;
 /// // => true

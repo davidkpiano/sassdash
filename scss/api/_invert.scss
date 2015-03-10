@@ -34,9 +34,9 @@
 /// @group Object
 /// @param {Object} object The object to invert.
 /// @param {boolean} (multiValue) Allow multiple values per key.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Object} Returns the new inverted object.
-/// @example
+/// @example scss
 /// var object = { 'a': 1, 'b': 2, 'c': 1 };
 /// _invert(object);
 /// // => { '1': 'c', '2': 'b' }

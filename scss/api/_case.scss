@@ -54,9 +54,9 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to convert.
+/// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the camel cased string.
-/// @example
+/// @example scss
 /// _camel-case('Foo Bar');
 /// // => 'fooBar'
 /// _camel-case('--foo-bar');
@@ -71,9 +71,9 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to capitalize.
+/// @param {string} $string [''] - The string to capitalize.
 /// @returns {string} Returns the capitalized string.
-/// @example
+/// @example scss
 /// _capitalize('fred');
 /// // => 'Fred'
 /// 
@@ -86,9 +86,9 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to convert.
+/// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the kebab cased string.
-/// @example
+/// @example scss
 /// _kebab-case('Foo Bar');
 /// // => 'foo-bar'
 /// _kebab-case('fooBar');
@@ -104,9 +104,9 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to convert.
+/// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the snake cased string.
-/// @example
+/// @example scss
 /// _snake-case('Foo Bar');
 /// // => 'foo_bar'
 /// _snake-case('fooBar');
@@ -123,9 +123,9 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to convert.
+/// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the start cased string.
-/// @example
+/// @example scss
 /// _start-case('--foo-bar');
 /// // => 'Foo Bar'
 /// _start-case('fooBar');

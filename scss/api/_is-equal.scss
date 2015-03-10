@@ -159,7 +159,7 @@
 /// @param {Function} (customizer) The function to customize comparing values.
 /// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {boolean} Returns `true` if the values are equivalent, else `false`.
-/// @example
+/// @example scss
 /// var object = { 'user': 'fred' };
 /// var other = { 'user': 'fred' };
 /// object == other;

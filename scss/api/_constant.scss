@@ -16,7 +16,7 @@
 /// @group Utility
 /// @param {*} value The value to return from the new function.
 /// @returns {Function} Returns the new function.
-/// @example
+/// @example scss
 /// var object = { 'user': 'fred' };
 /// var getter = _constant(object);
 /// getter() === object;

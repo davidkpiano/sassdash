@@ -146,7 +146,7 @@
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the maximum value.
-/// @example
+/// @example scss
 /// _max((4, 2, 8, 6));
 /// // => 8
 /// _max([]);
@@ -186,7 +186,7 @@
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the minimum value.
-/// @example
+/// @example scss
 /// _min((4, 2, 8, 6));
 /// // => 2
 /// _min([]);

@@ -17,10 +17,10 @@
 /// ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to repeat.
-/// @param {number} (n=0) The number of times to repeat the string.
+/// @param {string} $string [''] - The string to repeat.
+/// @param {number} $n [0] - The number of times to repeat the string.
 /// @returns {string} Returns the repeated string.
-/// @example
+/// @example scss
 /// /// _repeat('*', 3);
 /// // => '***'
 /// /// _repeat('abc', 2);

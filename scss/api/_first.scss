@@ -11,7 +11,7 @@
 /// @group Array
 /// @param {Array} array The array to query.
 /// @returns {*} Returns the first element of `array`.
-/// @example
+/// @example scss
 /// _first((1, 2, 3));
 /// // => 1
 /// _first([]);

@@ -23,7 +23,7 @@
 /// @group Array
 /// @param {Array} array The array to compact.
 /// @returns {Array} Returns the new array of filtered values.
-/// @example
+/// @example scss
 /// _compact((0, 1, false, 2, '', 3));
 /// // => (1, 2, 3)
 /// 

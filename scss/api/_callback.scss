@@ -122,11 +122,11 @@
 /// 
 /// @alias iteratee
 /// @group Utility
-/// @param {*} (func=_.identity) The value to convert to a callback.
+/// @param {*} $func [_.identity] - The value to convert to a callback.
 /// @param {*} (thisArg) The `this` binding of `$function`.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Function} Returns the callback.
-/// @example
+/// @example scss
 /// var users = [
 ///   { 'user': 'barney', 'age': 36 },
 ///   { 'user': 'fred',   'age': 40 }

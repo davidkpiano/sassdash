@@ -39,9 +39,9 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to escape.
+/// @param {string} $string [''] - The string to escape.
 /// @returns {string} Returns the escaped string.
-/// @example
+/// @example scss
 /// _escape('fred, barney, & pebbles');
 /// // => 'fred, barney, &amp; pebbles'
 /// 

@@ -65,12 +65,12 @@
 /// @alias all
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} (predicate=_.identity) The function invoked
+/// @param {Function|Object|string} $predicate [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {boolean} Returns `true` if all elements pass the predicate check,
 ///  else `false`.
-/// @example
+/// @example scss
 /// _every((true, 1, null, 'yes'), Boolean);
 /// // => false
 /// var users = [

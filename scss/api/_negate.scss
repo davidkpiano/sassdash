@@ -27,7 +27,7 @@
 /// @group Function
 /// @param {Function} predicate The predicate to negate.
 /// @returns {Function} Returns the new function.
-/// @example
+/// @example scss
 /// function isEven(n) {
 ///   return n % 2 == 0;
 /// }

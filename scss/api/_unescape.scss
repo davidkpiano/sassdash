@@ -41,9 +41,9 @@
 /// ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to unescape.
+/// @param {string} $string [''] - The string to unescape.
 /// @returns {string} Returns the unescaped string.
-/// @example
+/// @example scss
 /// /// _unescape('fred, barney, &amp; pebbles');
 /// // => 'fred, barney, & pebbles'
 /// 

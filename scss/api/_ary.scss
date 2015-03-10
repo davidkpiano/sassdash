@@ -27,16 +27,14 @@
 /// Creates a function that accepts up to `$n` arguments ignoring any
 /// additional arguments.
 ///
-///
 /// 
 /// @group Function
-/// @param {Function} func The function to cap arguments for.
-/// @param {number} (n=func.length) The arity cap.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Function} $func The function to cap arguments for.
+/// @param {number} $n [1] - The arity cap.
 /// @returns {Function} Returns the new function.
-/// @example
+/// @example scss
 ///
-/// _map(('6', '8', '10'), _ary(parseInt, 1));
+/// $foo: _map(('6', '8', '10'), _ary(_parse-int, 1));
 /// // => (6, 8, 10)
 ///
 @function _ary($args...) { @return call(__ary, $args...); }

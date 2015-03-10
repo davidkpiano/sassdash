@@ -59,7 +59,7 @@
 /// @group Array
 /// @param {...Array} (arrays) The arrays to inspect.
 /// @returns {Array} Returns the new array of shared values.
-/// @example
+/// @example scss
 /// _intersection((1, 2), (4, 2), (2, 1));
 /// // => (2)
 /// 

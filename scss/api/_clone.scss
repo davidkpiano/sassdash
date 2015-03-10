@@ -45,7 +45,7 @@
 /// @param {Function} (customizer) The function to customize cloning values.
 /// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {*} Returns the cloned value.
-/// @example
+/// @example scss
 /// var users = [
 ///   { 'user': 'barney' },
 ///   { 'user': 'fred' }
@@ -89,7 +89,7 @@
 /// @param {Function} (customizer) The function to customize cloning values.
 /// @param {*} (thisArg) The `this` binding of `customizer`.
 /// @returns {*} Returns the deep cloned value.
-/// @example
+/// @example scss
 /// var users = [
 ///   { 'user': 'barney' },
 ///   { 'user': 'fred' }

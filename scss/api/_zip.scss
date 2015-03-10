@@ -56,7 +56,7 @@
 /// @group Array
 /// @param {...Array} (arrays) The arrays to process.
 /// @returns {Array} Returns the new array of grouped elements.
-/// @example
+/// @example scss
 /// _zip(('fred', 'barney'), (30, 40), (true, false));
 /// // => [('fred', 30, true), ('barney', 40, false)]
 /// 
@@ -73,7 +73,7 @@
 /// @param {Array} props The property names.
 /// @param {Array} [values=[]] The property values.
 /// @returns {Object} Returns the new object.
-/// @example
+/// @example scss
 /// _zip-object(('fred', 'barney'), (30, 40));
 /// // => { 'fred': 30, 'barney': 40 }
 /// 

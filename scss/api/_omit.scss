@@ -38,7 +38,7 @@
 ///  names or arrays of property names.
 /// @param {*} (thisArg) The `this` binding of `predicate`.
 /// @returns {Object} Returns the new object.
-/// @example
+/// @example scss
 /// var object = { 'user': 'fred', 'age': 40 };
 /// _omit(object, 'age');
 /// // => { 'user': 'fred' }

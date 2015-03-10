@@ -218,12 +218,12 @@
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Array|Function|Object|string} (iteratee=_.identity) The function
+/// @param {Array|Function|Object|string} $iteratee [_.identity] - The function
 ///  invoked per iteration. If a property name or an object is provided it is
 ///  used to create a `_property` or `_matches` style callback respectively.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Array} Returns the new sorted array.
-/// @example
+/// @example scss
 /// _sort-by((1, 2, 3), function(n) {
 ///   return Math.sin(n);
 /// });
@@ -253,7 +253,7 @@
 /// @param {...(string|string[])} props The property names to sort by,
 ///  specified as individual property names or arrays of property names.
 /// @returns {Array} Returns the new sorted array.
-/// @example
+/// @example scss
 /// var users = [
 ///   { 'user': 'barney', 'age': 36 },
 ///   { 'user': 'fred',   'age': 40 },

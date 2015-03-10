@@ -89,11 +89,11 @@
 /// @alias foldl, inject
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (accumulator) The initial value.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the accumulated value.
-/// @example
+/// @example scss
 /// /// _reduce((1, 2), function(sum, n) {
 ///   return sum + n;
 /// });
@@ -118,11 +118,11 @@
 /// @alias foldr
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function} (iteratee=_.identity) The function invoked per iteration.
+/// @param {Function} $iteratee [_.identity] - The function invoked per iteration.
 /// @param {*} (accumulator) The initial value.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {*} Returns the accumulated value.
-/// @example
+/// @example scss
 /// /// var array = [(0, 1), (2, 3), (4, 5)];
 /// /// _reduce-right(array, function(flattened, other) {
 ///   return flattened.concat(other);

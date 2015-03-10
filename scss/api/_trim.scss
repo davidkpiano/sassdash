@@ -80,11 +80,11 @@
 /// ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to trim.
-/// @param {string} (chars=whitespace) The characters to trim.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {string} $string [''] - The string to trim.
+/// @param {string} $chars [whitespace] - The characters to trim.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the trimmed string.
-/// @example
+/// @example scss
 /// /// _trim('  abc  ');
 /// // => 'abc'
 /// /// _trim('-_-abc-_-', '_-');
@@ -98,11 +98,11 @@
 /// ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to trim.
-/// @param {string} (chars=whitespace) The characters to trim.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {string} $string [''] - The string to trim.
+/// @param {string} $chars [whitespace] - The characters to trim.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the trimmed string.
-/// @example
+/// @example scss
 /// /// _trim-left('  abc  ');
 /// // => 'abc  '
 /// /// _trim-left('-_-abc-_-', '_-');
@@ -114,11 +114,11 @@
 /// ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to trim.
-/// @param {string} (chars=whitespace) The characters to trim.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {string} $string [''] - The string to trim.
+/// @param {string} $chars [whitespace] - The characters to trim.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {string} Returns the trimmed string.
-/// @example
+/// @example scss
 /// /// _trim-right('  abc  ');
 /// // => '  abc'
 /// /// _trim-right('-_-abc-_-', '_-');

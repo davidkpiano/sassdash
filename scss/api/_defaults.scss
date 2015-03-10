@@ -27,7 +27,7 @@
 /// @param {Object} object The destination object.
 /// @param {...Object} (sources) The source objects.
 /// @returns {Object} Returns `object`.
-/// @example
+/// @example scss
 /// _defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
 /// // => { 'user': 'barney', 'age': 36 }
 /// 

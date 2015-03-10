@@ -21,7 +21,7 @@
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to inspect.
 /// @returns {number} Returns the size of `collection`.
-/// @example
+/// @example scss
 /// /// _size((1, 2, 3));
 /// // => 3
 /// /// _size({ 'a': 1, 'b': 2 });

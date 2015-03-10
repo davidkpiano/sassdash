@@ -55,11 +55,11 @@
 /// ///
 /// 
 /// @group Number
-/// @param {number} (min=0) The minimum possible value.
-/// @param {number} (max=1) The maximum possible value.
+/// @param {number} $min [0] - The minimum possible value.
+/// @param {number} $max [1] - The maximum possible value.
 /// @param {boolean} (floating) Specify returning a floating-point number.
 /// @returns {number} Returns the random number.
-/// @example
+/// @example scss
 /// /// _random(0, 5);
 /// // => an integer between 0 and 5
 /// /// _random(5);

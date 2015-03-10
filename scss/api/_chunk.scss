@@ -30,10 +30,10 @@
 /// 
 /// @group Array
 /// @param {Array} array The array to process.
-/// @param {number} (size=1) The length of each chunk.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {number} $size [1] - The length of each chunk.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Array} Returns the new array containing chunks.
-/// @example
+/// @example scss
 /// _chunk(('a', 'b', 'c', 'd'), 2);
 /// // => [('a', 'b'), ('c', 'd')]
 /// _chunk(('a', 'b', 'c', 'd'), 3);

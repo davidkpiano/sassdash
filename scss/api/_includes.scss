@@ -54,9 +54,9 @@
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to search.
 /// @param {*} target The value to search for.
-/// @param {number} (fromIndex=0) The index to search from.
+/// @param {number} $fromIndex [0] - The index to search from.
 /// @returns {boolean} Returns `true` if a matching element is found, else `false`.
-/// @example
+/// @example scss
 /// _includes((1, 2, 3), 1);
 /// // => true
 /// _includes((1, 2, 3), 1, 2);

@@ -27,11 +27,11 @@
 /// 
 /// @group Collection
 /// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} (iteratee=_.identity) The function invoked
+/// @param {Function|Object|string} $iteratee [_.identity] - The function invoked
 ///  per iteration.
 /// @param {*} (thisArg) The `this` binding of `iteratee`.
 /// @returns {Object} Returns the composed aggregate object.
-/// @example
+/// @example scss
 /// var keyData = [
 ///   { 'dir': 'left', 'code': 97 },
 ///   { 'dir': 'right', 'code': 100 }

@@ -47,7 +47,7 @@
 /// @param {Array} array The array to inspect.
 /// @param {...Array} (values) The arrays of values to exclude.
 /// @returns {Array} Returns the new array of filtered values.
-/// @example
+/// @example scss
 /// _difference((1, 2, 3), (4, 2));
 /// // => (1, 3)
 /// 

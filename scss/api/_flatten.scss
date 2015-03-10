@@ -58,9 +58,9 @@
 /// @group Array
 /// @param {Array} array The array to flatten.
 /// @param {boolean} (isDeep) Specify a deep flatten.
-/// @param- {Object} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Object} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Array} Returns the new flattened array.
-/// @example
+/// @example scss
 /// _flatten([1, [2, 3, (4)]]);
 /// // => [1, 2, 3, (4)];
 /// // using `isDeep`
@@ -76,7 +76,7 @@
 /// @group Array
 /// @param {Array} array The array to recursively flatten.
 /// @returns {Array} Returns the new flattened array.
-/// @example
+/// @example scss
 /// _flatten-deep([1, [2, 3, (4)]]);
 /// // => (1, 2, 3, 4);
 /// 

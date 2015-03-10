@@ -26,11 +26,11 @@
 ///
 /// 
 /// @group String
-/// @param {string} (string='') The string to search.
+/// @param {string} $string [''] - The string to search.
 /// @param {string} (target) The string to search for.
-/// @param {number} (position=string.length) The position to search from.
+/// @param {number} $position [string.length] - The position to search from.
 /// @returns {boolean} Returns `true` if `string` ends with `target`, else `false`.
-/// @example
+/// @example scss
 /// _ends-with('abc', 'c');
 /// // => true
 /// _ends-with('abc', 'b');

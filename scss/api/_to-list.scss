@@ -39,7 +39,7 @@
 /// @group Lang
 /// @param {*} value The value to convert.
 /// @returns {Array} Returns the converted array.
-/// @example
+/// @example scss
 /// (function() {
 ///   return _to-array(arguments).slice(1);
 /// }(1, 2, 3));

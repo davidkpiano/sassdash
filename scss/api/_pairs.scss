@@ -19,7 +19,7 @@
 /// @group Object
 /// @param {Object} object The object to inspect.
 /// @returns {Array} Returns the new array of key-value pairs.
-/// @example
+/// @example scss
 /// _pairs({ 'barney': 36, 'fred': 40 });
 /// // => [('barney', 36), ('fred', 40)] (iteration order is not guaranteed)
 /// 

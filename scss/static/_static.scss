@@ -1,5 +1,3 @@
-
-
 @function static-get($properties) {
     @return __get($__static__, $properties);
 }
@@ -11,11 +9,13 @@
     @return __get($__static__, $properties);
 }
 
+
 @function static-push($properties, $value) {
     $__static__: __push($__static__, $properties, $value) !global;
 
     @return $__static__;
 }
+
 
 @function static($properties: $__undefined__, $value: $__undefined__) {
     @if __is-undefined($properties) and __is-undefined($value) {

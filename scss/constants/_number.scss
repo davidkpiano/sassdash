@@ -1,4 +1,3 @@
-
 @include __const('POSITIVE_INFINITY', 999999);
 @include __const('NEGATIVE_INFINITY', -999999);
 @include __const('MAX_SAFE_INTEGER', (pow(2, 53) - 1));

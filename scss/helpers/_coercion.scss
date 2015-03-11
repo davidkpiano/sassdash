@@ -1,14 +1,13 @@
-
-
 @function __to-comparable($value, $customizer: null, $guard: null) {
     @if not (__function-exists($customizer)) {
-        $customizer: if(__is-string($value), __get-char-code, __identity);
+        $customizer: if(__is-string($value), '__get-char-code', '__identity');
     }
 
     $value: __exec($customizer, $value);
 
     @return $value;
 }
+
 
 @function __to-iterable($value) {
     @if ($value == null) {
@@ -26,6 +25,7 @@
     @return if(__is-map($value), $value, __to-map($value));
 }
 
+
 @function __to-map($value) {
     @if (__is-string($value)) {
         $index: 1;
@@ -34,7 +34,6 @@
 
         @while ($index <= $length) {
             $result: __set($result, $index, __char-at($value, $index));
-
             $index: $index + 1;
         }
 
@@ -46,7 +45,6 @@
 
         @while ($index <= $length) {
             $result: __set($result, $index, nth($value, $index));
-
             $index: $index + 1;
         }
 

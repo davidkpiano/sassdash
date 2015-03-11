@@ -1,8 +1,7 @@
-
-
 @function __is-space($char-code) {
     @return $char-code == ' ';
 }
+
 
 @function __chars-index($string, $chars, $direction) {
     $index: 1;
@@ -11,20 +10,23 @@
     $increment: map-get($direction-map, $direction);
 
     @while str-index($chars, __char-at($string, $index))
-        and $index <= $length {
+    and $index <= $length {
         $index: $index + $increment;
     }
 
     @return $index;
 }
 
+
 @function __chars-left-index($string, $chars) {
     @return __chars-index($string, $chars, $direction: left);
 }
 
+
 @function __chars-right-index($string, $chars) {
     @return __chars-index($string, $chars, $direction: right);
 }
+
 
 @function __get-char-code($char, $args...) {
     $chars: join(__const('ASCII_PRINTABLE'), __const('ASCII_EXTENDED'));
@@ -39,17 +41,27 @@
     @return false;
 }
 
+
 @function __char-at-callback($string, $args...) {
     @return __get-char-code(str-slice($string, 1, 1));
 }
+
 
 @function __char-at($string, $index) {
     @return str-slice($string, $index, $index);
 }
 
-@function _char-at($args...) { @return call(__char-at, $args...); }
 
-@function _get-char-code($args...) { @return call(__get-char-code, $args...); }
+@function _char-at($args...) {
+    @return call('__char-at', $args...);
+}
 
-@function _char-code($args...) { @return call(__get-char-code, $args...); }
 
+@function _get-char-code($args...) {
+    @return call('__get-char-code', $args...);
+}
+
+
+@function _char-code($args...) {
+    @return call('__get-char-code', $args...);
+}

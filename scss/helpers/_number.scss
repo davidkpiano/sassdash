@@ -1,5 +1,3 @@
-
-
 @function pow($number, $exp) {
     $value: 1;
 
@@ -16,6 +14,7 @@
     @return $value;
 }
 
+
 @function __number-to-fixed($value, $digits: null) {
     @if $digits == null {
         @return round($value);
@@ -24,23 +23,24 @@
     @return round($value * pow(10, $digits)) / pow(10, $digits);
 }
 
+
 @function __unit($value) {
     $units: (
-        'vmax': 1vmax, 
-        'vmin': 1vmin, 
-        'pica': 1pica, 
-        'rem': 1rem, 
-        'vh': 1vh, 
-        'vw': 1vw, 
-        'ex': 1ex, 
-        'pc': 1pc, 
-        'pt': 1pt, 
-        'em': 1em, 
-        'in': 1in, 
-        'ch': 1ch, 
-        'mm': 1mm, 
-        'cm': 1cm, 
-        'px': 1px, 
+        'vmax': 1vmax,
+        'vmin': 1vmin,
+        'rem': 1rem,
+        'pc': 1pc,
+        'vh': 1vh,
+        'vw': 1vw,
+        'ex': 1ex,
+        'pc': 1pc,
+        'pt': 1pt,
+        'em': 1em,
+        'in': 1in,
+        'ch': 1ch,
+        'mm': 1mm,
+        'cm': 1cm,
+        'px': 1px,
         '%': 1%
     );
 
@@ -56,6 +56,7 @@
 
     @return 1;
 }
+
 
 @function __parse-float($string, $radix: 10) {
     @if not __is-string($string) {
@@ -94,7 +95,11 @@
 }
 
 
-@function _parse-float($args...) { @return call(__parse-float, $args...); }
-@function _to-number($args...) { @return call(__parse-float, $args...); }
+@function _parse-float($args...) {
+    @return call('__parse-float', $args...);
+}
 
 
+@function _to-number($args...) {
+    @return call('__parse-float', $args...);
+}

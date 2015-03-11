@@ -310,7 +310,6 @@ $test-before-count: 0 !global;
     @include test('should partially apply arguments') {
         $scope: __scope(('user': 'fred'));
         $scope-id: __get($scope, '_id');
-        @debug $scope-id, $scope;
         $func: _bind(test-bind-3, $scope-id, 'hi');
         $_: __scope(false);
 

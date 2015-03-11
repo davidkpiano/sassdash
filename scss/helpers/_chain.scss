@@ -1,13 +1,10 @@
-
 @function _($value, $method-calls...) {
     $result: $value;
 
     @each $method-call in $method-calls {
         $method: __first($method-call);
         $args: __drop($method-call);
-
         $method: if(__starts-with($method, '_'), $method, '_' + $method);
-
         $result: __exec($method, $result, $args...);
     }
 

@@ -1,4 +1,3 @@
-
 @function __function-exists($function, $args...) {
     @if type-of($function) != 'string' {
         @return false;
@@ -26,6 +25,7 @@
     @return $scope-id;
 }
 
+
 @function __function-name($function) {
     @if type-of($function) != 'string' {
         @return null;
@@ -36,11 +36,11 @@
     @return if($scope-index, str-slice($function, 1, $scope-index - 1), $function);
 }
 
+
 @function __call($method, $this-arg: $__current-scope__, $args...) {
     $function-name: __function-name($method);
     $scope-id: __function-scope($method);
     $previous-scope: $__current-scope__;
-
     $scope-id: if($scope-id, $scope-id, $this-arg);
 
     @if $scope-id {
@@ -58,13 +58,15 @@
     }
 
     $result: call($function-name, $args...);
-    
     $__current-scope__: $previous-scope !global;
 
     @return $result;
 }
 
-@function _call($args...) { @return call(__call, $args...); }
+
+@function _call($args...) {
+    @return call(__call, $args...);
+}
 
 
 

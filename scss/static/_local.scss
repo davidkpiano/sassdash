@@ -1,4 +1,3 @@
-
 @function __pop($list) {
     $length: length($list);
     $index: 2;
@@ -50,6 +49,7 @@
     @return __get($map, $properties);
 }
 
+
 @function __set($map, $properties, $value) {
     $property: nth($properties, 1);
     $properties: __pop($properties);
@@ -87,6 +87,7 @@
     @return __set($map, $properties, $list);
 }
 
+
 @function __new($type, $params: (), $extends: false, $prototype: ()) {
     $instance-meta: (
         '_type': $type,
@@ -107,7 +108,16 @@
     @return $instance;
 }
 
-@function _get($args...) { @return call(__get, $args...); }
-@function _set($args...) { @return call(__set, $args...); }
-@function _new($args...) { @return call(__new, $args...); }
+@function _get($args...) {
+    @return call('__get', $args...);
+}
 
+
+@function _set($args...) {
+    @return call('__set', $args...);
+}
+
+
+@function _new($args...) {
+    @return call('__new', $args...);
+}

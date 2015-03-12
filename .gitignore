@@ -3,3 +3,4 @@ node_modules
 css
 bower_components
 tests/tests.scss
+sassdoc

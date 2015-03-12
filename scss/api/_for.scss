@@ -198,7 +198,7 @@
 }
 
 
-/// Iterates over elements of `collection` invoking `iteratee` for each element.
+/// Iterates over elements of `$collection` invoking `iteratee` for each element.
 /// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection). Iterator functions may exit iteration early
 /// by explicitly returning `false`.
@@ -209,10 +209,10 @@
 ///
 /// @alias each
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} ($this-arg) The `this` binding of `iteratee`.
-/// @returns {Array|Object|string} Returns `collection`.
+/// @returns {List|Object|string} Returns `$collection`.
 /// @example scss
 /// _((1, 2)).forEach(function(n) {
 ///   console.log(n);
@@ -233,15 +233,15 @@
 }
 
 /// This method is like `_for-each` except that it iterates over elements of
-/// `collection` from right to left.
+/// `$collection` from right to left.
 ///
 ///
 /// @alias eachRight
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} ($this-arg) The `this` binding of `iteratee`.
-/// @returns {Array|Object|string} Returns `collection`.
+/// @returns {List|Object|string} Returns `$collection`.
 /// @example scss
 /// _((1, 2)).forEachRight(function(n) {
 ///   console.log(n);

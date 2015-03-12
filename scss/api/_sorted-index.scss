@@ -82,8 +82,8 @@
 /// object, else `false`.
 /// ///
 ///
-/// @group Array
-/// @param {Array} list The sorted list to inspect.
+/// @group List
+/// @param {List} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
 /// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
@@ -115,8 +115,8 @@
 /// maintain its sort order.
 /// ///
 ///
-/// @group Array
-/// @param {Array} list The sorted list to inspect.
+/// @group List
+/// @param {List} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
 /// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.

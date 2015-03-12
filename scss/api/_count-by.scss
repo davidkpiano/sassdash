@@ -16,7 +16,7 @@
 
 
 /// Creates an object composed of keys generated from the results of running
-/// each element of `collection` through `iteratee`. The corresponding value
+/// each element of `$collection` through `iteratee`. The corresponding value
 /// of each key is the number of times the key was returned by `iteratee`.
 /// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
@@ -31,7 +31,7 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `iteratee`.

@@ -86,11 +86,11 @@
 ///
 /// @alias _extend
 /// @group Map
-/// @param {Map} map The destination map.
-/// @param {...Map} (sources) The source maps.
-/// @param {Function} (customizer) The function to customize assigning values.
+/// @param {Map} $map - The destination map.
+/// @param {...Map} $sources... - The source maps.
+/// @param {Function} $customizer [false] - The function to customize assigning values.
 /// @param {*} $this-arg - The `this` binding of `$customizer`.
-/// @returns {Object} Returns `map`.
+/// @returns {Map} Returns `map`.
 ///
 /// @example scss
 /// _assign(( 'user': 'barney' ), ( 'age': 40 ), ( 'user': 'fred' ));

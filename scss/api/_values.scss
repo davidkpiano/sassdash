@@ -23,13 +23,13 @@
 }
 
 
-/// Creates an list of the own enumerable property values of `object`.
+/// Creates a list of the own enumerable property values of `object`.
 /// **Note:** Non-object values are coerced to objects.
 ///
 ///
 /// @group Map
 /// @param {Map} object The object to query.
-/// @returns {Array} Returns the list of property values.
+/// @returns {List} Returns the list of property values.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;
@@ -46,14 +46,14 @@
 }
 
 
-/// Creates an list of the own and inherited enumerable property values
+/// Creates a list of the own and inherited enumerable property values
 /// of `object`.
 /// **Note:** Non-object values are coerced to objects.
 ///
 ///
 /// @group Map
 /// @param {Map} object The object to query.
-/// @returns {Array} Returns the list of property values.
+/// @returns {List} Returns the list of property values.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;

@@ -76,7 +76,7 @@
 }
 
 
-/// Creates an list of values by running each element in `collection` through
+/// Creates a list of values by running each element in `$collection` through
 /// `iteratee`. The `iteratee` is bound to `$this-arg` and invoked with three
 /// arguments; (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
@@ -98,12 +98,12 @@
 ///
 /// @alias collect
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
 ///  create a `_property` or `_matches` style callback respectively.
 /// @param {*} ($this-arg) The `this` binding of `iteratee`.
-/// @returns {Array} Returns the new mapped list.
+/// @returns {List} Returns the new mapped list.
 /// @example scss
 /// function timesThree(n) {
 ///   return n/// 3;

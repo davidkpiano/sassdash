@@ -30,12 +30,12 @@
 }
 
 
-/// Converts `value` to an list.
+/// Converts `value` to a list.
 ///
 ///
 /// @group Lang
 /// @param {*} value The value to convert.
-/// @returns {Array} Returns the converted list.
+/// @returns {List} Returns the converted list.
 /// @example scss
 /// (function() {
 ///   return _to-list(arguments).slice(1);

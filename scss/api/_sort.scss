@@ -207,7 +207,7 @@
 }
 
 
-/// Creates an list of elements, sorted in ascending order by the results of
+/// Creates a list of elements, sorted in ascending order by the results of
 /// running each element in a collection through `iteratee`. This method performs
 /// a stable sort, that is, it preserves the original sort order of equal elements.
 /// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
@@ -223,12 +223,12 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {Array|Function|Object|string} $iteratee [_identity] - The function
+/// @param {List|Object|string} collection The collection to iterate over.
+/// @param {List|Function|Object|string} $iteratee [_identity] - The function
 ///  invoked per iteration. If a property name or an object is provided it is
 ///  used to create a `_property` or `_matches` style callback respectively.
 /// @param {*} ($this-arg) The `this` binding of `iteratee`.
-/// @returns {Array} Returns the new sorted list.
+/// @returns {List} Returns the new sorted list.
 /// @example scss
 /// _sort-by((1, 2, 3), function(n) {
 ///   return Math.sin(n);
@@ -257,10 +257,10 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {...(string|string[])} props The property names to sort by,
 ///  specified as individual property names or lists of property names.
-/// @returns {Array} Returns the new sorted list.
+/// @returns {List} Returns the new sorted list.
 /// @example scss
 /// $users: [
 ///   { 'user': 'barney', 'age': 36 },

@@ -17,14 +17,14 @@
 }
 
 
-/// Creates an list that is the symmetric difference of the provided lists.
+/// Creates a list that is the symmetric difference of the provided lists.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
 /// more details.
 ///
 ///
-/// @group Array
-/// @param {...Array} (lists) The lists to inspect.
-/// @returns {Array} Returns the new list of values.
+/// @group List
+/// @param {...List} (lists) The lists to inspect.
+/// @returns {List} Returns the new list of values.
 /// @example scss
 /// _xor((1, 2), (4, 2));
 /// // => (1, 4)

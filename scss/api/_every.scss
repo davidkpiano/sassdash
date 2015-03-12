@@ -50,7 +50,7 @@
 }
 
 
-/// Checks if `predicate` returns truthy for/// all** elements of `collection`.
+/// Checks if `predicate` returns truthy for/// all** elements of `$collection`.
 /// The predicate is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
@@ -65,7 +65,7 @@
 ///
 /// @alias all
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.

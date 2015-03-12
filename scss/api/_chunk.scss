@@ -22,16 +22,16 @@
 }
 
 
-/// Creates an list of elements split into groups the length of `size`.
-/// If `collection` can't be split evenly, the final chunk will be the remaining
+/// Creates a list of elements split into groups the length of `size`.
+/// If `$collection` can't be split evenly, the final chunk will be the remaining
 /// elements.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to process.
+/// @group List
+/// @param {List} list The list to process.
 /// @param {number} $size [1] - The length of each chunk.
 /// @param {Map} (guard) Enables use as a callback for functions like `_map`.
-/// @returns {Array} Returns the new list containing chunks.
+/// @returns {List} Returns the new list containing chunks.
 /// @example scss
 /// _chunk(('a', 'b', 'c', 'd'), 2);
 /// // => [('a', 'b'), ('c', 'd')]

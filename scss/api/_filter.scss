@@ -52,7 +52,7 @@
 }
 
 
-/// Iterates over elements of `collection`, returning an list of all elements
+/// Iterates over elements of `$collection`, returning a list of all elements
 /// `predicate` returns truthy for. The predicate is bound to `$this-arg` and
 /// invoked with three arguments; (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
@@ -67,11 +67,11 @@
 ///
 /// @alias select
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
-/// @returns {Array} Returns the new filtered list.
+/// @returns {List} Returns the new filtered list.
 /// @example scss
 /// _filter((4, 5, 6), function(n) {
 ///   return n % 2 == 0;

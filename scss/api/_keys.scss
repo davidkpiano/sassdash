@@ -16,7 +16,7 @@
 }
 
 
-/// Creates an list of the own enumerable property names of `object`.
+/// Creates a list of the own enumerable property names of `object`.
 /// **Note:** Non-object values are coerced to objects. See the
 /// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.keys)
 /// for more details.
@@ -24,7 +24,7 @@
 ///
 /// @group Map
 /// @param {Map} object The object to inspect.
-/// @returns {Array} Returns the list of property names.
+/// @returns {List} Returns the list of property names.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;
@@ -41,13 +41,13 @@
 }
 
 
-/// Creates an list of the own and inherited enumerable property names of `object`.
+/// Creates a list of the own and inherited enumerable property names of `object`.
 /// **Note:** Non-object values are coerced to objects.
 ///
 ///
 /// @group Map
 /// @param {Map} object The object to inspect.
-/// @returns {Array} Returns the list of property names.
+/// @returns {List} Returns the list of property names.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;

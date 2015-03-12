@@ -3,8 +3,8 @@
 }
 
 
-/// Performs a deep comparison between each element in `collection` and the
-/// source object, returning an list of all elements that have equivalent
+/// Performs a deep comparison between each element in `$collection` and the
+/// source object, returning a list of all elements that have equivalent
 /// property values.
 /// **Note:** This method supports comparing lists, booleans, `Date` objects,
 /// numbers, `Object` objects, regexes, and strings. Objects are compared by
@@ -13,9 +13,9 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to search.
+/// @param {List|Object|string} collection The collection to search.
 /// @param {Map} source The object of property values to match.
-/// @returns {Array} Returns the new filtered list.
+/// @returns {List} Returns the new filtered list.
 /// @example scss
 /// $users: [
 ///   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy') },

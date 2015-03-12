@@ -104,8 +104,8 @@
 /// for more details.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to search.
+/// @group List
+/// @param {List} list The list to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} $fromIndex [0] - The index to search from or `true`
 ///  to perform a binary search on a sorted list.
@@ -129,8 +129,8 @@
 /// `list` from right to left.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to search.
+/// @group List
+/// @param {List} list The list to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} $fromIndex [list.length-1] - The index to search from
 ///  or `true` to perform a binary search on a sorted list.

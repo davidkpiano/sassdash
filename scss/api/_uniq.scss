@@ -32,7 +32,7 @@
 }
 
 
-/// Creates a duplicate-value-free version of an list using `SameValueZero`
+/// Creates a duplicate-value-free version of a list using `SameValueZero`
 /// for equality comparisons. Providing `true` for `isSorted` performs a faster
 /// search algorithm for sorted lists. If an iteratee function is provided it
 /// is invoked for each value in the list to generate the criterion by which
@@ -53,12 +53,12 @@
 ///
 ///
 /// @alias unique
-/// @group Array
-/// @param {Array} list The list to inspect.
+/// @group List
+/// @param {List} list The list to inspect.
 /// @param {boolean} (isSorted) Specify the list is sorted.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
 /// @param {*} ($this-arg) The `this` binding of `iteratee`.
-/// @returns {Array} Returns the new duplicate-value-free list.
+/// @returns {List} Returns the new duplicate-value-free list.
 /// @example scss
 /// _uniq((1, 2, 1));
 /// // => (1, 2)

@@ -44,12 +44,12 @@
 /// **Note:** This method mutates `list`.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to fill.
+/// @group List
+/// @param {List} list The list to fill.
 /// @param {*} value The value to fill `list` with.
 /// @param {number} $start [0] - The start position.
 /// @param {number} $end [list.length] - The end position.
-/// @returns {Array} Returns `list`.
+/// @returns {List} Returns `list`.
 
 @function _fill($args...) {
     @return call('__fill', $args...);

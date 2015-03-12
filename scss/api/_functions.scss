@@ -16,14 +16,14 @@
 }
 
 
-/// Creates an list of function property names from all enumerable properties,
+/// Creates a list of function property names from all enumerable properties,
 /// own and inherited, of `object`.
 ///
 ///
 /// @alias methods
 /// @group Map
 /// @param {Map} object The object to inspect.
-/// @returns {Array} Returns the new list of property names.
+/// @returns {List} Returns the new list of property names.
 /// @example scss
 /// _functions(_);
 /// // => ('after', 'ary', 'assign', ...)

@@ -45,14 +45,14 @@
 }
 
 
-/// Creates an list of grouped elements, the first of which contains the first
+/// Creates a list of grouped elements, the first of which contains the first
 /// elements of the given lists, the second of which contains the second elements
 /// of the given lists, and so on.
 ///
 ///
-/// @group Array
-/// @param {...Array} (lists) The lists to process.
-/// @returns {Array} Returns the new list of grouped elements.
+/// @group List
+/// @param {...List} (lists) The lists to process.
+/// @returns {List} Returns the new list of grouped elements.
 /// @example scss
 /// _zip(('fred', 'barney'), (30, 40), (true, false));
 /// // => [('fred', 30, true), ('barney', 40, false)]
@@ -68,9 +68,9 @@
 ///
 ///
 /// @alias object
-/// @group Array
-/// @param {Array} props The property names.
-/// @param {Array} [values=[]] The property values.
+/// @group List
+/// @param {List} props The property names.
+/// @param {List} [values=[]] The property values.
 /// @returns {Object} Returns the new object.
 /// @example scss
 /// _zip-object(('fred', 'barney'), (30, 40));

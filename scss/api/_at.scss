@@ -28,20 +28,20 @@
 }
 
 
-/// Creates an list of elements corresponding to the given keys, or indexes,
-/// of `collection`. Keys may be specified as individual arguments or as lists
+/// Creates a list of elements corresponding to the given keys, or indexes,
+/// of `$collection`. Keys may be specified as individual arguments or as lists
 /// of keys.
 ///
-///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
-/// @param {...(number|number[]|string|string[])} (props) The property names
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {...(number|number[]|string|string[])} $props... The property names
 ///  or indexes of elements to pick, specified individually or in lists.
-/// @returns {Array} Returns the new list of picked elements.
+/// @returns {List} Returns the new list of picked elements.
 /// @example scss
-/// _at(('a', 'b', 'c'), (0, 2));
+/// _at(('a', 'b', 'c'), (1, 3));
 /// // => ('a', 'c')
-/// _at(('fred', 'barney', 'pebbles'), 0, 2);
+/// 
+/// _at(('fred', 'barney', 'pebbles'), 1, 3);
 /// // => ('fred', 'pebbles')
 
 @function _at($args...) {

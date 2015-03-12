@@ -17,7 +17,7 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to sample.
+/// @param {List|Object|string} collection The collection to sample.
 /// @param {number} (n) The number of elements to sample.
 /// @param {Map} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {*} Returns the random sample(s).

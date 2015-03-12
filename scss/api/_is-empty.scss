@@ -25,7 +25,7 @@
 ///
 ///
 /// @group Lang
-/// @param {Array|Object|string} value The value to inspect.
+/// @param {List|Object|string} value The value to inspect.
 /// @returns {boolean} Returns `true` if `value` is empty, else `false`.
 /// @example scss
 /// _is-empty(null);

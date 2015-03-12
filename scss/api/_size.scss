@@ -14,13 +14,13 @@
 }
 
 
-/// Gets the size of `collection` by returning `collection.length` for
+/// Gets the size of `$collection` by returning `collection.length` for
 /// list-like values or the number of own enumerable properties for objects.
 /// ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to inspect.
-/// @returns {number} Returns the size of `collection`.
+/// @param {List|Object|string} collection The collection to inspect.
+/// @returns {number} Returns the size of `$collection`.
 /// @example scss
 /// /// _size((1, 2, 3));
 /// // => 3

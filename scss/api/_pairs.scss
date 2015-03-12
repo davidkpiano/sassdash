@@ -15,7 +15,7 @@
 ///
 /// @group Map
 /// @param {Map} object The object to inspect.
-/// @returns {Array} Returns the new list of key-value pairs.
+/// @returns {List} Returns the new list of key-value pairs.
 /// @example scss
 /// _pairs({ 'barney': 36, 'fred': 40 });
 /// // => [('barney', 36), ('fred', 40)] (iteration order is not guaranteed)

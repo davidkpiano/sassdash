@@ -75,11 +75,11 @@
 /// Creates a slice of `list` with `$n` elements taken from the beginning.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to query.
+/// @group List
+/// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
 /// @param {Map} (guard) Enables use as a callback for functions like `_map`.
-/// @returns {Array} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _take((1, 2, 3));
 /// // => (1)
@@ -98,11 +98,11 @@
 /// Creates a slice of `list` with `$n` elements taken from the end.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to query.
+/// @group List
+/// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
 /// @param {Map} (guard) Enables use as a callback for functions like `_map`.
-/// @returns {Array} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _take-right((1, 2, 3));
 /// // => (3)
@@ -131,12 +131,12 @@
 /// object, else `false`.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to query.
+/// @group List
+/// @param {List} list The list to query.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
-/// @returns {Array} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _take-right-while((1, 2, 3), function(n) {
 ///   return n > 1;
@@ -175,12 +175,12 @@
 /// object, else `false`.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to query.
+/// @group List
+/// @param {List} list The list to query.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
-/// @returns {Array} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _take-while((1, 2, 3), function(n) {
 ///   return n < 3;

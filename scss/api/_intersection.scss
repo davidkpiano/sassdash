@@ -42,7 +42,7 @@
 }
 
 
-/// Creates an list of unique values in all provided lists using `SameValueZero`
+/// Creates a list of unique values in all provided lists using `SameValueZero`
 /// for equality comparisons.
 /// ////// Note:** `SameValueZero` comparisons are like strict equality comparisons,
 /// e.g. `===`, except that `NaN` matches `NaN`. See the
@@ -50,9 +50,9 @@
 /// for more details.
 ///
 ///
-/// @group Array
-/// @param {...Array} (lists) The lists to inspect.
-/// @returns {Array} Returns the new list of shared values.
+/// @group List
+/// @param {...List} (lists) The lists to inspect.
+/// @returns {List} Returns the new list of shared values.
 /// @example scss
 /// _intersection((1, 2), (4, 2), (2, 1));
 /// // => (2)

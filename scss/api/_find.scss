@@ -120,7 +120,7 @@
 }
 
 
-/// Iterates over elements of `collection`, returning the first element
+/// Iterates over elements of `$collection`, returning the first element
 /// `predicate` returns truthy for. The predicate is bound to `$this-arg` and
 /// invoked with three arguments; (value, index|key, collection).
 /// If a property name is provided for `predicate` the created `_property`
@@ -135,7 +135,7 @@
 ///
 /// @alias detect
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to search.
+/// @param {List|Object|string} collection The collection to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
@@ -182,8 +182,8 @@
 /// object, else `false`.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to search.
+/// @group List
+/// @param {List} list The list to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
@@ -257,11 +257,11 @@
 
 
 /// This method is like `_find` except that it iterates over elements of
-/// `collection` from right to left.
+/// `$collection` from right to left.
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to search.
+/// @param {List|Object|string} collection The collection to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
@@ -278,7 +278,7 @@
 
 
 /// This method is like `_find-index` except that it iterates over elements
-/// of `collection` from right to left.
+/// of `$collection` from right to left.
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
@@ -289,8 +289,8 @@
 /// object, else `false`.
 ///
 ///
-/// @group Array
-/// @param {Array} list The list to search.
+/// @group List
+/// @param {List} list The list to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
@@ -363,7 +363,7 @@
 }
 
 
-/// Performs a deep comparison between each element in `collection` and the
+/// Performs a deep comparison between each element in `$collection` and the
 /// source object, returning the first element that has equivalent property
 /// values.
 /// **Note:** This method supports comparing lists, booleans, `Date` objects,
@@ -373,7 +373,7 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to search.
+/// @param {List|Object|string} collection The collection to search.
 /// @param {Map} source The object of property values to match.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss

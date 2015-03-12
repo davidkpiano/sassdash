@@ -18,7 +18,7 @@
 }
 
 ///
-/// The opposite of `_filter`; this method returns the elements of `collection`
+/// The opposite of `_filter`; this method returns the elements of `$collection`
 /// that `predicate` does/// not** return truthy for.
 /// If a property name is provided for `predicate` the created `_property`
 /// style callback returns the property value of the given element.
@@ -31,11 +31,11 @@
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} ($this-arg) The `this` binding of `predicate`.
-/// @returns {Array} Returns the new filtered list.
+/// @returns {List} Returns the new filtered list.
 /// @example scss
 /// _reject((1, 2, 3, 4), function(n) {
 ///   return n % 2 == 0;

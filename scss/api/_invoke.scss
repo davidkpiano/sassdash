@@ -45,18 +45,18 @@
 }
 
 
-/// Invokes the method named by `methodName` on each element in `collection`,
-/// returning an list of the results of each invoked method. Any additional
+/// Invokes the method named by `methodName` on each element in `$collection`,
+/// returning a list of the results of each invoked method. Any additional
 /// arguments are provided to each invoked method. If `methodName` is a function
-/// it is invoked for, and `this` bound to, each element in `collection`.
+/// it is invoked for, and `this` bound to, each element in `$collection`.
 ///
 ///
 /// @group Collection
-/// @param {Array|Object|string} collection The collection to iterate over.
+/// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|string} methodName The name of the method to invoke or
 ///  the function invoked per iteration.
 /// @param {...*} (args) The arguments to invoke the method with.
-/// @returns {Array} Returns the list of results.
+/// @returns {List} Returns the list of results.
 /// @example scss
 /// _invoke([(5, 1, 7), (3, 2, 1)], 'sort');
 /// // => [(1, 5, 7), (1, 2, 3)]

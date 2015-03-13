@@ -62,12 +62,12 @@
 }
 
 ///
-/// Creates an object composed from lists of property names and values. Provide
+/// Creates a map composed from lists of property names and values. Provide
 /// either a single two dimensional list, e.g. `[(key1, value1), (key2, value2)]`
 /// or two lists, one of property names and one of corresponding values.
 ///
 ///
-/// @alias object
+/// @alias _object
 /// @group List
 /// @param {List} props The property names.
 /// @param {List} [values=[]] The property values.

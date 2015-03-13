@@ -217,7 +217,7 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
@@ -225,7 +225,7 @@
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {List|Function|Object|string} $iteratee [_identity] - The function
-///  invoked per iteration. If a property name or an object is provided it is
+///  invoked per iteration. If a property name or a map is provided it is
 ///  used to create a `_property` or `_matches` style callback respectively.
 /// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {List} Returns the new sorted list.

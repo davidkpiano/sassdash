@@ -207,7 +207,7 @@
 /// may be used for object iteration.
 ///
 ///
-/// @alias each
+/// @alias _each
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -236,7 +236,7 @@
 /// `$collection` from right to left.
 ///
 ///
-/// @alias eachRight
+/// @alias _eachRight
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
@@ -258,7 +258,7 @@
 }
 
 
-/// Iterates over own and inherited enumerable properties of an object invoking
+/// Iterates over own and inherited enumerable properties of a map invoking
 /// `iteratee` for each property. The `iteratee` is bound to `$this-arg` and invoked
 /// with three arguments; (value, key, object). Iterator functions may exit
 /// iteration early by explicitly returning `false`.
@@ -310,7 +310,7 @@
 }
 
 
-/// Iterates over own enumerable properties of an object invoking `iteratee`
+/// Iterates over own enumerable properties of a map invoking `iteratee`
 /// for each property. The `iteratee` is bound to `$this-arg` and invoked with
 /// three arguments; (value, key, object). Iterator functions may exit iteration
 /// early by explicitly returning `false`.

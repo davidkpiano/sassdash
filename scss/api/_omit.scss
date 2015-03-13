@@ -18,7 +18,7 @@
 }
 
 
-/// The opposite of `_pick`; this method creates an object composed of the
+/// The opposite of `_pick`; this method creates a map composed of the
 /// own and inherited enumerable properties of `object` that are not omitted.
 /// Property names may be specified as individual arguments or as lists of
 /// property names. If `predicate` is provided it is invoked for each property

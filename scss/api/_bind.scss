@@ -19,7 +19,27 @@
     @return $function;
 }
 
-
+///
+/// Creates a function that invokes `$func` with the `$this` binding of `$this-arg`
+/// and prepends any additional `_bind` arguments to those provided to the
+/// bound function.
+///
+/// @group Function
+/// @param {Function} $func The function to bind.
+/// @param {*} $this-arg The `$this` binding of `$func`.
+/// @param {...*} $args... The arguments to be partially applied.
+/// @returns {Function} Returns the new bound function.
+/// @example scss
+///     @function greet($greeting, $punctuation) {
+///         @return $greeting + ' ' + _this('user') + $punctuation;
+///     }
+///    
+///     $map: ('user': 'fred');
+///    
+///     $bound: _bind('greet', $map, 'hi');
+///    
+///     $result: _exec($bound, '!');
+///     // => 'hi fred!'
 @function _bind($args...) {
     @return call('__bind', $args...);
 }

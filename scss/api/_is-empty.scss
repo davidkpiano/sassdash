@@ -21,7 +21,7 @@
 
 /// Checks if a value is empty. A value is considered empty unless it is an
 /// `arguments` object, list, string, or jQuery-like collection with a length
-/// greater than `0` or an object with own enumerable properties.
+/// greater than `0` or a map with own enumerable properties.
 ///
 ///
 /// @group Lang

@@ -128,12 +128,12 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
-/// @alias detect
+/// @alias _detect
 /// @group Collection
 /// @param {List|Object|string} collection The collection to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
@@ -177,7 +177,7 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
@@ -220,7 +220,7 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
@@ -284,7 +284,7 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
@@ -327,7 +327,7 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///

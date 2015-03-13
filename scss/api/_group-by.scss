@@ -16,7 +16,7 @@
 }
 
 
-/// Creates an object composed of keys generated from the results of running
+/// Creates a map composed of keys generated from the results of running
 /// each element of `$collection` through `iteratee`. The corresponding value
 /// of each key is a list of the elements responsible for generating the key.
 /// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
@@ -26,7 +26,7 @@
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If an object is provided for `predicate` the created `_matches` style
+/// If a map is provided for `predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///

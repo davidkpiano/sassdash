@@ -131,42 +131,32 @@
 
 
 /// Creates a function that invokes `$function` with the `$this` binding of `$this-arg`
-/// and arguments of the created function. If `$function` is a property name the
-/// created callback returns the property value for a given element. If `$function`
-/// is an object the created callback returns `true` for elements that contain
-/// the equivalent object properties, otherwise it returns `false`.
+/// and arguments of the created function.
+/// 
+/// If `$function` is a property name the
+/// created callback returns the property value for a given element.
+/// 
+/// If `$function`
+/// is a map the created callback returns `true` for elements that contain
+/// the equivalent map properties, otherwise it returns `false`.
+/// 
+/// If `$function` is a list the created callback returns the result of
+/// the function (first item of the list) right-partially applied with the
+/// rest of the list items, called with the value as the first argument (see example).
 ///
-///
-/// @alias iteratee
 /// @group Utility
 /// @param {*} $func [_identity] - The value to convert to a callback.
-/// @param {*} ($this-arg) The `$this` binding of `$function`.
-/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @param {*} $this-arg [null] - The `$this` binding of `$function`.
+/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {Function} Returns the callback.
 /// @example scss
-/// $users: [
-///   { 'user': 'barney', 'age': 36 },
-///   { 'user': 'fred',   'age': 40 }
-/// ];
-/// // wrap to create custom callback shorthands
-/// _callback = _wrap(_callback, function(callback, func, $this-arg) {
-///   $match: /^(.+?)__((gl)t)(.+)$/.exec(func);
-///   if (!match) {
-///     return callback(func, $this-arg);
-///   }
-///   return function(object) {
-///     return match(2) == 'gt'
-///       ? object[match(1)] > match(3)
-///       : object[match(1)] < match(3);
-///   };
-/// });
-/// _filter(users, 'age__gt36');
-/// // => ({ 'user': 'fred', 'age': 40 })
+///     $fully-lighten: _callback(lighten 100%);
+///     $lightened-color: _exec($fully-lighten, black);
+///     // => white
 
 @function _callback($args...) {
     @return call('__callback', $args...);
 }
-
 
 @function _iteratee($args...) {
     @return call('__callback', $args...);

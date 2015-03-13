@@ -95,7 +95,7 @@
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} (accumulator) The initial value.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example scss
 /// /// _reduce((1, 2), function(sum, n) {
@@ -132,7 +132,7 @@
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} (accumulator) The initial value.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example scss
 /// /// $list: [(0, 1), (2, 3), (4, 5)];

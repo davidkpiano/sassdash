@@ -37,18 +37,27 @@
 }
 
 
-/// Creates a function that invokes `$function`, with the `this` binding and arguments
+/// Creates a function that invokes `$function`, with the `$this` binding and arguments
 /// of the created function, while it is called less than `$n` times. Subsequent
 /// calls to the created function return the result of the last `$function` invocation.
 ///
 ///
 /// @group Function
-/// @param {number} n The number of calls at which `$function` is no longer invoked.
-/// @param {Function} func The function to restrict.
+/// @param {number} $n The number of calls at which `$function` is no longer invoked.
+/// @param {Function} $func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
 /// @example scss
-/// jQuery('#add').on('click', _before(5, addContactToList));
-/// // => allows adding up to 4 contacts to the list
+///     @function limit-mixin() { @return true; }
+///
+///     $limit-mixin: _before(5, 'limit-mixin');
+///
+///     @mixin my-mixin() {
+///         @if _exec($limit-mixin) {
+///             // ... include mixin
+///         } @else {
+///             @extend %placeholder; // extend after mixin used 4 times
+///         }
+///     }
 @function _before($args...) {
     @return call('__before', $args...);
 }

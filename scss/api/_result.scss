@@ -20,7 +20,7 @@
 
 
 /// Resolves the value of property `key` on `object`. If the value of `key` is
-/// a function it is invoked with the `this` binding of `object` and its result
+/// a function it is invoked with the `$this` binding of `object` and its result
 /// is returned, else the property value is returned. If the property value is
 /// `undefined` the `defaultValue` is used in its place.
 /// ///

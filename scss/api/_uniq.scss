@@ -57,7 +57,7 @@
 /// @param {List} list The list to inspect.
 /// @param {boolean} (isSorted) Specify the list is sorted.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {List} Returns the new duplicate-value-free list.
 /// @example scss
 /// _uniq((1, 2, 1));

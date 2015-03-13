@@ -227,7 +227,7 @@
 /// @param {List|Function|Object|string} $iteratee [_identity] - The function
 ///  invoked per iteration. If a property name or an object is provided it is
 ///  used to create a `_property` or `_matches` style callback respectively.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {List} Returns the new sorted list.
 /// @example scss
 /// _sort-by((1, 2, 3), function(n) {

@@ -44,7 +44,7 @@
 
 /// Creates a function that invokes `$function` with `partial` arguments prepended
 /// to those provided to the new function. This method is like `_bind` except
-/// it does/// not** alter the `this` binding.
+/// it does/// not** alter the `$this` binding.
 /// The `_partial.placeholder` value, which defaults to `_` in monolithic
 /// builds, may be used as a placeholder for partially applied arguments.
 /// **Note:** This method does not set the `length` property of partially

@@ -135,7 +135,7 @@
 /// @param {List} list The list to query.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _take-right-while((1, 2, 3), function(n) {
@@ -179,7 +179,7 @@
 /// @param {List} list The list to query.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _take-while((1, 2, 3), function(n) {

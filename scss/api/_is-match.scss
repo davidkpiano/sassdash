@@ -100,7 +100,7 @@
 /// @param {Map} object The object to inspect.
 /// @param {Map} source The object of property values to match.
 /// @param {Function} (customizer) The function to customize comparing values.
-/// @param {*} ($this-arg) The `this` binding of `$customizer`.
+/// @param {*} ($this-arg) The `$this` binding of `$customizer`.
 /// @returns {boolean} Returns `true` if `object` is a match, else `false`.
 /// @example scss
 /// $object: { 'user': 'fred', 'age': 40 };

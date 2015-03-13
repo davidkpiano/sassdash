@@ -78,7 +78,7 @@
 
 
 /// Creates a function that returns the result of invoking the provided
-/// functions with the `this` binding of the created function, where each
+/// functions with the `$this` binding of the created function, where each
 /// successive invocation is supplied the return value of the previous.
 ///
 ///

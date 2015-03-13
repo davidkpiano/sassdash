@@ -152,7 +152,7 @@
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {*} Returns the maximum value.
 /// @example scss
 /// _max((4, 2, 8, 6));
@@ -194,7 +194,7 @@
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function|Object|string} (iteratee) The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {*} Returns the minimum value.
 /// @example scss
 /// _min((4, 2, 8, 6));

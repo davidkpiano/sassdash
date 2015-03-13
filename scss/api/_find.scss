@@ -138,7 +138,7 @@
 /// @param {List|Object|string} collection The collection to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// $users: [
@@ -186,7 +186,7 @@
 /// @param {List} list The list to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
 /// $users: [
@@ -229,7 +229,7 @@
 /// @param {Map} object The object to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
 /// $users: {
@@ -264,7 +264,7 @@
 /// @param {List|Object|string} collection The collection to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// _find-last((1, 2, 3, 4), function(n) {
@@ -293,7 +293,7 @@
 /// @param {List} list The list to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
 /// $users: [
@@ -336,7 +336,7 @@
 /// @param {Map} object The object to search.
 /// @param {Function|Object|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
 /// $users: {

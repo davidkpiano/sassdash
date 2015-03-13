@@ -43,7 +43,7 @@
 /// @param {*} value The value to clone.
 /// @param {boolean} (isDeep) Specify a deep clone.
 /// @param {Function} (customizer) The function to customize cloning values.
-/// @param {*} ($this-arg) The `this` binding of `$customizer`.
+/// @param {*} ($this-arg) The `$this` binding of `$customizer`.
 /// @returns {*} Returns the cloned value.
 /// @example scss
 /// $users: [
@@ -89,7 +89,7 @@
 /// @group Lang
 /// @param {*} value The value to deep clone.
 /// @param {Function} (customizer) The function to customize cloning values.
-/// @param {*} ($this-arg) The `this` binding of `$customizer`.
+/// @param {*} ($this-arg) The `$this` binding of `$customizer`.
 /// @returns {*} Returns the deep cloned value.
 /// @example scss
 /// $users: [

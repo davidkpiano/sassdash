@@ -130,7 +130,7 @@
 }
 
 
-/// Creates a function that invokes `$function` with the `this` binding of `$this-arg`
+/// Creates a function that invokes `$function` with the `$this` binding of `$this-arg`
 /// and arguments of the created function. If `$function` is a property name the
 /// created callback returns the property value for a given element. If `$function`
 /// is an object the created callback returns `true` for elements that contain
@@ -140,7 +140,7 @@
 /// @alias iteratee
 /// @group Utility
 /// @param {*} $func [_identity] - The value to convert to a callback.
-/// @param {*} ($this-arg) The `this` binding of `$function`.
+/// @param {*} ($this-arg) The `$this` binding of `$function`.
 /// @param {Map} (guard) Enables use as a callback for functions like `_map`.
 /// @returns {Function} Returns the callback.
 /// @example scss

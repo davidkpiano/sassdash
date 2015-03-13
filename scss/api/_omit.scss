@@ -32,7 +32,7 @@
 /// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to omit, specified as individual property
 ///  names or lists of property names.
-/// @param {*} ($this-arg) The `this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `predicate`.
 /// @returns {Object} Returns the new object.
 /// @example scss
 /// $object: { 'user': 'fred', 'age': 40 };

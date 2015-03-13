@@ -211,7 +211,7 @@
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {List|Object|string} Returns `$collection`.
 /// @example scss
 /// _((1, 2)).forEach(function(n) {
@@ -240,7 +240,7 @@
 /// @group Collection
 /// @param {List|Object|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {List|Object|string} Returns `$collection`.
 /// @example scss
 /// _((1, 2)).forEachRight(function(n) {
@@ -267,7 +267,7 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {
@@ -292,7 +292,7 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {
@@ -319,7 +319,7 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {
@@ -344,7 +344,7 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
 /// @returns {Object} Returns `object`.
 /// @example scss
 /// function Foo() {

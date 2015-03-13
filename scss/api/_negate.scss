@@ -21,7 +21,7 @@
 
 
 /// Creates a function that negates the result of the predicate `$function`. The
-/// `$function` predicate is invoked with the `this` binding and arguments of the
+/// `$function` predicate is invoked with the `$this` binding and arguments of the
 /// created function.
 ///
 ///

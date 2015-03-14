@@ -33,20 +33,15 @@
 }
 
 
-/// Creates a list excluding all values of the provided lists using
-/// `SameValueZero` for equality comparisons.
-/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
+/// Creates a list excluding all values of the provided lists.
 ///
 ///
 /// @group List
-/// @param {List} list The list to inspect.
-/// @param {...List} (values) The lists of values to exclude.
+/// @param {List} $list The list to inspect.
+/// @param {List...} $values... The lists of values to exclude.
 /// @returns {List} Returns the new list of filtered values.
 /// @example scss
-/// _difference((1, 2, 3), (4, 2));
+/// $foo: _difference((1, 2, 3), (4, 2));
 /// // => (1, 3)
 
 @function _difference($args...) {

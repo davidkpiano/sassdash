@@ -137,22 +137,22 @@
 /// Gets the maximum value of `$collection`. If `$collection` is empty or falsey
 /// `-Infinity` is returned. If an iteratee function is provided it is invoked
 /// for each value in `$collection` to generate the criterion by which the value
-/// is ranked. The `iteratee` is bound to `$this-arg` and invoked with three
+/// is ranked. The `$iteratee` is bound to `$this-arg` and invoked with three
 /// arguments; (value, index, collection).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} (iteratee) The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
+/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {Function|Map|string} (iteratee) The function invoked per iteration.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
 /// @returns {*} Returns the maximum value.
 /// @example scss
 /// _max((4, 2, 8, 6));
@@ -179,22 +179,22 @@
 /// Gets the minimum value of `$collection`. If `$collection` is empty or falsey
 /// `Infinity` is returned. If an iteratee function is provided it is invoked
 /// for each value in `$collection` to generate the criterion by which the value
-/// is ranked. The `iteratee` is bound to `$this-arg` and invoked with three
+/// is ranked. The `$iteratee` is bound to `$this-arg` and invoked with three
 /// arguments; (value, index, collection).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} (iteratee) The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
+/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {Function|Map|string} (iteratee) The function invoked per iteration.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
 /// @returns {*} Returns the minimum value.
 /// @example scss
 /// _min((4, 2, 8, 6));

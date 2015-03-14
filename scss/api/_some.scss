@@ -52,26 +52,26 @@
 }
 
 
-/// Checks if `predicate` returns truthy for **any** element of `$collection`.
+/// Checks if `$predicate` returns truthy for **any** element of `$collection`.
 /// The function returns as soon as it finds a passing value and does not iterate
 /// over the entire collection. The predicate is bound to `$this-arg` and invoked
 /// with three arguments; (value, index|key, collection).
-/// /// If a property name is provided for `predicate` the created `_property`
+/// /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// /// If a map is provided for `predicate` the created `_matches` style
+/// /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// ///
 ///
 /// @alias _any
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {boolean} Returns `true` if any element passes the predicate check,
 ///  else `false`.
 /// @example scss

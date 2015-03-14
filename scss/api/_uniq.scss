@@ -36,14 +36,14 @@
 /// for equality comparisons. Providing `true` for `isSorted` performs a faster
 /// search algorithm for sorted lists. If an iteratee function is provided it
 /// is invoked for each value in the list to generate the criterion by which
-/// uniqueness is computed. The `iteratee` is bound to `$this-arg` and invoked
+/// uniqueness is computed. The `$iteratee` is bound to `$this-arg` and invoked
 /// with three arguments; (value, index, list).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
@@ -56,8 +56,8 @@
 /// @group List
 /// @param {List} list The list to inspect.
 /// @param {boolean} (isSorted) Specify the list is sorted.
-/// @param {Function|Object|string} (iteratee) The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
+/// @param {Function|Map|string} (iteratee) The function invoked per iteration.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
 /// @returns {List} Returns the new duplicate-value-free list.
 /// @example scss
 /// _uniq((1, 2, 1));

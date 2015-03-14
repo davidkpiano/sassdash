@@ -128,7 +128,7 @@
 /// @param {...Map} (sources) The source objects.
 /// @param {Function} (customizer) The function to customize merging properties.
 /// @param {*} ($this-arg) The `$this` binding of `$customizer`.
-/// @returns {Object} Returns `object`.
+/// @returns {Map} Returns `object`.
 /// @example scss
 /// $users: {
 ///   'data': ({ 'user': 'barney' }, { 'user': 'fred' })

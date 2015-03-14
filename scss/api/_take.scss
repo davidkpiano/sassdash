@@ -72,14 +72,14 @@
 }
 
 
-/// Creates a slice of `list` with `$n` elements taken from the beginning.
+/// Creates a slice of `$list` with `$n` elements taken from the beginning.
 ///
 ///
 /// @group List
 /// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
 /// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
-/// @returns {List} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _take((1, 2, 3));
 /// // => (1)
@@ -95,14 +95,14 @@
 }
 
 
-/// Creates a slice of `list` with `$n` elements taken from the end.
+/// Creates a slice of `$list` with `$n` elements taken from the end.
 ///
 ///
 /// @group List
 /// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
 /// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
-/// @returns {List} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _take-right((1, 2, 3));
 /// // => (3)
@@ -118,25 +118,25 @@
 }
 
 
-/// Creates a slice of `list` with elements taken from the end. Elements are
-/// taken until `predicate` returns falsey. The predicate is bound to `$this-arg`
+/// Creates a slice of `$list` with elements taken from the end. Elements are
+/// taken until `$predicate` returns falsey. The predicate is bound to `$this-arg`
 /// and invoked with three arguments; (value, index, list).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group List
 /// @param {List} list The list to query.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
-/// @returns {List} Returns the slice of `list`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _take-right-while((1, 2, 3), function(n) {
 ///   return n > 1;
@@ -162,25 +162,25 @@
 }
 
 
-/// Creates a slice of `list` with elements taken from the beginning. Elements
-/// are taken until `predicate` returns falsey. The predicate is bound to
+/// Creates a slice of `$list` with elements taken from the beginning. Elements
+/// are taken until `$predicate` returns falsey. The predicate is bound to
 /// `$this-arg` and invoked with three arguments; (value, index, list).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group List
 /// @param {List} list The list to query.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
-/// @returns {List} Returns the slice of `list`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _take-while((1, 2, 3), function(n) {
 ///   return n < 3;

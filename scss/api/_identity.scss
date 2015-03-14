@@ -8,7 +8,7 @@
 ///
 /// @group Utility
 /// @param {*} value Any value.
-/// @returns {*} Returns `value`.
+/// @returns {*} Returns `$value`.
 /// @example scss
 /// $object: { 'user': 'fred' };
 /// _identity(object) === object;

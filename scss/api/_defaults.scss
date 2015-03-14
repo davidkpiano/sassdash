@@ -2,12 +2,6 @@
     @return if(__is-undefined($map-value), $source-value, $map-value);
 }
 
-
-@function __assign-own-defaults() {
-    // todo
-}
-
-
 @function __defaults($map: null, $args...) {
     @if ($map == null) {
         @return $map;
@@ -19,18 +13,18 @@
 }
 
 
-/// Assigns own enumerable properties of source object(s) to the destination
-/// object for all destination properties that resolve to `undefined`. Once a
+/// Assigns own enumerable properties of source map(s) to the destination
+/// map for all undefined destination properties. Once a
 /// property is set, additional defaults of the same property are ignored.
 ///
 ///
 /// @group Map
-/// @param {Map} object The destination object.
-/// @param {...Map} (sources) The source objects.
-/// @returns {Object} Returns `object`.
+/// @param {Map} $map The destination map.
+/// @param {Map...} $source... The source maps.
+/// @returns {Map} Returns `$map` with defaults.
 /// @example scss
-/// _defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
-/// // => { 'user': 'barney', 'age': 36 }
+/// $foo: _defaults(( 'user': 'barney' ), ( 'age': 36 ), ( 'user': 'fred' ));
+/// // => ( 'user': 'barney', 'age': 36 )
 
 @function _defaults($args...) {
     @return call('__defaults', $args...);

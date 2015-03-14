@@ -14,14 +14,14 @@
 
 
 /// Invokes the iteratee function `$n` times, returning a list of the results
-/// of each invocation. The `iteratee` is bound to `$this-arg` and invoked with
+/// of each invocation. The `$iteratee` is bound to `$this-arg` and invoked with
 /// one argument; (index).
 ///
 ///
 /// @group Utility
-/// @param {number} n The number of times to invoke `iteratee`.
+/// @param {number} n The number of times to invoke `$iteratee`.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
 /// @returns {List} Returns the list of results.
 /// @example scss
 /// $diceRolls: _times(3, _partial(_random, 1, 6, false));

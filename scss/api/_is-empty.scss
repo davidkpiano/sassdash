@@ -25,8 +25,8 @@
 ///
 ///
 /// @group Lang
-/// @param {List|Object|string} value The value to inspect.
-/// @returns {boolean} Returns `true` if `value` is empty, else `false`.
+/// @param {List|Map|string} value The value to inspect.
+/// @returns {boolean} Returns `true` if `$value` is empty, else `false`.
 /// @example scss
 /// _is-empty(null);
 /// // => true

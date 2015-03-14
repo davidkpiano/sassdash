@@ -198,8 +198,8 @@
 }
 
 
-/// Iterates over elements of `$collection` invoking `iteratee` for each element.
-/// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
+/// Iterates over elements of `$collection` invoking `$iteratee` for each element.
+/// The `$iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection). Iterator functions may exit iteration early
 /// by explicitly returning `false`.
 /// **Note:** As with other "Collections" methods, objects with a `length` property
@@ -209,10 +209,10 @@
 ///
 /// @alias _each
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
+/// @param {List|Map|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {List|Object|string} Returns `$collection`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {List|Map|string} Returns `$collection`.
 /// @example scss
 /// _((1, 2)).forEach(function(n) {
 ///   console.log(n);
@@ -238,10 +238,10 @@
 ///
 /// @alias _eachRight
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
+/// @param {List|Map|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {List|Object|string} Returns `$collection`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {List|Map|string} Returns `$collection`.
 /// @example scss
 /// _((1, 2)).forEachRight(function(n) {
 ///   console.log(n);
@@ -259,7 +259,7 @@
 
 
 /// Iterates over own and inherited enumerable properties of a map invoking
-/// `iteratee` for each property. The `iteratee` is bound to `$this-arg` and invoked
+/// `$iteratee` for each property. The `$iteratee` is bound to `$this-arg` and invoked
 /// with three arguments; (value, key, object). Iterator functions may exit
 /// iteration early by explicitly returning `false`.
 ///
@@ -267,8 +267,8 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {Object} Returns `object`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {Map} Returns `object`.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;
@@ -292,8 +292,8 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {Object} Returns `object`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {Map} Returns `object`.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;
@@ -310,8 +310,8 @@
 }
 
 
-/// Iterates over own enumerable properties of a map invoking `iteratee`
-/// for each property. The `iteratee` is bound to `$this-arg` and invoked with
+/// Iterates over own enumerable properties of a map invoking `$iteratee`
+/// for each property. The `$iteratee` is bound to `$this-arg` and invoked with
 /// three arguments; (value, key, object). Iterator functions may exit iteration
 /// early by explicitly returning `false`.
 ///
@@ -319,8 +319,8 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {Object} Returns `object`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {Map} Returns `object`.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;
@@ -344,8 +344,8 @@
 /// @group Map
 /// @param {Map} object The object to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {Object} Returns `object`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {Map} Returns `object`.
 /// @example scss
 /// function Foo() {
 ///   this.a = 1;

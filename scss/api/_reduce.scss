@@ -79,10 +79,10 @@
 
 
 /// Reduces `$collection` to a value which is the accumulated result of running
-/// each element in `$collection` through `iteratee`, where each successive
+/// each element in `$collection` through `$iteratee`, where each successive
 /// invocation is supplied the return value of the previous. If `accumulator`
 /// is not provided the first element of `$collection` is used as the initial
-/// value. The `iteratee` is bound to `$this-arg`and invoked with four arguments;
+/// value. The `$iteratee` is bound to `$this-arg`and invoked with four arguments;
 /// (accumulator, value, index|key, collection).
 /// /// Many lodash methods are guarded to work as interatees for methods like
 /// `_reduce`, `_reduce-right`, and `_transform`.
@@ -92,10 +92,10 @@
 ///
 /// @alias _foldl, inject
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
+/// @param {List|Map|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} (accumulator) The initial value.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example scss
 /// /// _reduce((1, 2), function(sum, n) {
@@ -129,10 +129,10 @@
 ///
 /// @alias _foldr
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
+/// @param {List|Map|string} collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} (accumulator) The initial value.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example scss
 /// /// $list: [(0, 1), (2, 3), (4, 5)];

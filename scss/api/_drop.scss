@@ -70,22 +70,24 @@
 }
 
 
-/// Creates a slice of `list` with `$n` elements dropped from the beginning.
+/// Creates a slice of `$list` with `$n` elements dropped from the beginning.
 ///
 ///
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @param {number} $n [1] - The number of elements to drop.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
-/// @returns {List} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _drop((1, 2, 3));
+/// $foo: _drop((1, 2, 3));
 /// // => (2, 3)
-/// _drop((1, 2, 3), 2);
-/// // => (3)
-/// _drop((1, 2, 3), 5);
-/// // => []
-/// _drop((1, 2, 3), 0);
+/// 
+/// $foo: _drop((1, 2, 3), 2);
+/// // => (3,)
+/// 
+/// $foo: _drop((1, 2, 3), 5);
+/// // => ()
+/// 
+/// $foo: _drop((1, 2, 3), 0);
 /// // => (1, 2, 3)
 
 @function _drop($args...) {
@@ -93,21 +95,23 @@
 }
 
 
-/// Creates a slice of `list` with `$n` elements dropped from the end.
+/// Creates a slice of `$list` with `$n` elements dropped from the end.
 ///
 ///
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @param {number} $n [1] - The number of elements to drop.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
-/// @returns {List} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _drop-right((1, 2, 3));
 /// // => (1, 2)
+/// 
 /// _drop-right((1, 2, 3), 2);
-/// // => (1)
+/// // => (1,)
+/// 
 /// _drop-right((1, 2, 3), 5);
-/// // => []
+/// // => ()
+/// 
 /// _drop-right((1, 2, 3), 0);
 /// // => (1, 2, 3)
 
@@ -116,88 +120,102 @@
 }
 
 
-/// Creates a slice of `list` excluding elements dropped from the end.
-/// Elements are dropped until `predicate` returns falsey. The predicate is
+/// Creates a slice of `$list` excluding elements dropped from the end.
+/// Elements are dropped until `$predicate` returns falsey. The predicate is
 /// bound to `$this-arg` and invoked with three arguments; (value, index, list).
-/// If a property name is provided for `predicate` the created `_property`
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that match the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group List
-/// @param {List} list The list to query.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {List} $list - The list to query.
+/// @param {Function|Map|String} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
-/// @returns {List} Returns the slice of `list`.
+/// @param {*} $this-arg [null] - The `$this` binding of `$predicate`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _drop-right-while((1, 2, 3), function(n) {
-///   return n > 1;
-/// });
-/// // => (1)
-/// $users: [
-///   { 'user': 'barney',  'active': true },
-///   { 'user': 'fred',    'active': false },
-///   { 'user': 'pebbles', 'active': false }
-/// ];
-/// // using the `_matches` callback shorthand
-/// _pluck(_drop-right-while(users, { 'user': 'pebbles', 'active': false }), 'user');
-/// // => ('barney', 'fred')
-/// // using the `_matches-property` callback shorthand
-/// _pluck(_drop-right-while(users, 'active', false), 'user');
-/// // => ('barney')
-/// // using the `_property` callback shorthand
-/// _pluck(_drop-right-while(users, 'active'), 'user');
-/// // => ('barney', 'fred', 'pebbles')
+///     @function greater-than-two($value, $args...) {
+///         @return $value > 2;
+///     }
+///     
+///     $foo: _drop-right-while((1, 2, 3, 4), greater-than-two);
+///     // => (1, 2)
+///     
+///     $users: (
+///       ( 'user': 'barney',  'active': true ),
+///       ( 'user': 'fred',    'active': false ),
+///       ( 'user': 'pebbles', 'active': false )
+///     );
+///     
+///     // using the `_matches` callback shorthand
+///     _pluck(_drop-right-while($users, ( 'user': 'pebbles', 'active': false )), 'user');
+///     // => ('barney', 'fred')
+///     
+///     // using the `_matches-property` callback shorthand
+///     _pluck(_drop-right-while($users, 'active', false), 'user');
+///     // => ('barney')
+///     
+///     // using the `_property` callback shorthand
+///     _pluck(_drop-right-while($users, 'active'), 'user');
+///     // => ('barney', 'fred', 'pebbles')
 
 @function _drop-right-while($args...) {
     @return call('__drop-right-while', $args...);
 }
 
 
-/// Creates a slice of `list` excluding elements dropped from the beginning.
-/// Elements are dropped until `predicate` returns falsey. The predicate is
+/// Creates a slice of `$list` excluding elements dropped from the beginning.
+/// Elements are dropped until `$predicate` returns falsey. The predicate is
 /// bound to `$this-arg` and invoked with three arguments; (value, index, list).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group List
-/// @param {List} list The list to query.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {List} $list - The list to query.
+/// @param {Function|Map|String} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
-/// @returns {List} Returns the slice of `list`.
+/// @param {*} $this-arg [null] - The `$this` binding of `$predicate`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _drop-while((1, 2, 3), function(n) {
-///   return n < 3;
-/// });
-/// // => (3)
-/// $users: [
-///   { 'user': 'barney',  'active': false },
-///   { 'user': 'fred',    'active': false },
-///   { 'user': 'pebbles', 'active': true }
-/// ];
-/// // using the `_matches` callback shorthand
-/// _pluck(_drop-while(users, { 'user': 'barney', 'active': false }), 'user');
-/// // => ('fred', 'pebbles')
-/// // using the `_matches-property` callback shorthand
-/// _pluck(_drop-while(users, 'active', false), 'user');
-/// // => ('pebbles')
-/// // using the `_property` callback shorthand
-/// _pluck(_drop-while(users, 'active'), 'user');
-/// // => ('barney', 'fred', 'pebbles')
+///     @function less-than-three($value, $args...) {
+///         @return $value < 3;
+///     }
+///     
+///     _drop-while((1, 2, 3, 4), less-than-three);
+///     // => (3, 4)
+///     
+///     $users: (
+///       ( 'user': 'barney',  'active': false ),
+///       ( 'user': 'fred',    'active': false ),
+///       ( 'user': 'pebbles', 'active': true )
+///     );
+///     
+///     // using the `_matches` callback shorthand
+///     _pluck(_drop-while($users, ( 'user': 'barney', 'active': false )), 'user');
+///     // => ('fred', 'pebbles')
+///     
+///     // using the `_matches-property` callback shorthand
+///     _pluck(_drop-while($users, 'active', false), 'user');
+///     // => ('pebbles')
+///     
+///     // using the `_property` callback shorthand
+///     _pluck(_drop-while($users, 'active'), 'user');
+///     // => ('barney', 'fred', 'pebbles')
 
 @function _drop-while($args...) {
     @return call('__drop-while', $args...);

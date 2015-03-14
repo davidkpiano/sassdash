@@ -121,24 +121,24 @@
 
 
 /// Iterates over elements of `$collection`, returning the first element
-/// `predicate` returns truthy for. The predicate is bound to `$this-arg` and
+/// `$predicate` returns truthy for. The predicate is bound to `$this-arg` and
 /// invoked with three arguments; (value, index|key, collection).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @alias _detect
 /// @group Collection
-/// @param {List|Object|string} collection The collection to search.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {List|Map|string} collection The collection to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// $users: [
@@ -171,22 +171,22 @@
 
 
 /// This method is like `_find` except that it returns the index of the first
-/// element `predicate` returns truthy for, instead of the element itself.
-/// If a property name is provided for `predicate` the created `_property`
+/// element `$predicate` returns truthy for, instead of the element itself.
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group List
 /// @param {List} list The list to search.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
 /// $users: [
@@ -214,22 +214,22 @@
 
 
 /// This method is like `_find-index` except that it returns the key of the
-/// first element `predicate` returns truthy for, instead of the element itself.
-/// If a property name is provided for `predicate` the created `_property`
+/// first element `$predicate` returns truthy for, instead of the element itself.
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group Map
 /// @param {Map} object The object to search.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
 /// $users: {
@@ -261,10 +261,10 @@
 ///
 ///
 /// @group Collection
-/// @param {List|Object|string} collection The collection to search.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {List|Map|string} collection The collection to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// _find-last((1, 2, 3, 4), function(n) {
@@ -279,21 +279,21 @@
 
 /// This method is like `_find-index` except that it iterates over elements
 /// of `$collection` from right to left.
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group List
 /// @param {List} list The list to search.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
 /// $users: [
@@ -322,21 +322,21 @@
 
 /// This method is like `_find-key` except that it iterates over elements of
 /// a collection in the opposite order.
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group Map
 /// @param {Map} object The object to search.
-/// @param {Function|Object|string} $predicate [_identity] - The function invoked
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
 /// $users: {
@@ -373,7 +373,7 @@
 ///
 ///
 /// @group Collection
-/// @param {List|Object|string} collection The collection to search.
+/// @param {List|Map|string} collection The collection to search.
 /// @param {Map} source The object of property values to match.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss

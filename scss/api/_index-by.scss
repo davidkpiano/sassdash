@@ -11,26 +11,26 @@
 
 
 /// Creates a map composed of keys generated from the results of running
-/// each element of `$collection` through `iteratee`. The corresponding value
+/// each element of `$collection` through `$iteratee`. The corresponding value
 /// of each key is the last element responsible for generating the key. The
 /// iteratee function is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
-/// If a property name is provided for `predicate` the created `_property`
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
+/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {Object} Returns the composed aggregate object.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {Map} Returns the composed aggregate object.
 /// @example scss
 /// $keyData: [
 ///   { 'dir': 'left', 'code': 97 },

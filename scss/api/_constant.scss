@@ -14,18 +14,18 @@
 }
 
 
-/// Creates a function that returns `value`.
+/// Creates a function that returns `$value`.
 ///
 ///
 /// @group Utility
 /// @param {*} value The value to return from the new function.
 /// @returns {Function} Returns the new function.
 /// @example scss
-/// $object: { 'user': 'fred' };
-/// $getter: _constant(object);
-/// getter() === object;
+/// $map: ( 'user': 'fred' );
+/// $getter: _constant($map);
+/// 
+/// $foo: _exec($getter) === $map;
 /// // => true
-
 @function _constant($args...) {
   @return call('__constant', $args...);
 }

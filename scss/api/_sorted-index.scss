@@ -67,17 +67,17 @@
 }
 
 
-/// Uses a binary search to determine the lowest index at which `value` should
-/// be inserted into `list` in order to maintain its sort order. If an iteratee
-/// function is provided it is invoked for `value` and each element of `list`
+/// Uses a binary search to determine the lowest index at which `$value` should
+/// be inserted into `$list` in order to maintain its sort order. If an iteratee
+/// function is provided it is invoked for `$value` and each element of `$list`
 /// to compute their sort ranking. The iteratee is bound to `$this-arg` and
 /// invoked with one argument; (value).
-/// /// If a property name is provided for `predicate` the created `_property`
+/// /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// /// If a map is provided for `predicate` the created `_matches` style
+/// /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 /// ///
@@ -85,11 +85,11 @@
 /// @group List
 /// @param {List} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
-/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {number} Returns the index at which `value` should be inserted
-///  into `list`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {number} Returns the index at which `$value` should be inserted
+///  into `$list`.
 /// @example scss
 /// /// _sorted-index((30, 50), 40);
 /// // => 1
@@ -111,18 +111,18 @@
 
 
 /// This method is like `_sorted-index` except that it returns the highest
-/// index at which `value` should be inserted into `list` in order to
+/// index at which `$value` should be inserted into `$list` in order to
 /// maintain its sort order.
 /// ///
 ///
 /// @group List
 /// @param {List} list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
-/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {number} Returns the index at which `value` should be inserted
-///  into `list`.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {number} Returns the index at which `$value` should be inserted
+///  into `$list`.
 /// @example scss
 /// /// _sorted-last-index((4, 4, 5, 5), 5);
 /// // => 4

@@ -42,8 +42,8 @@
 
 /// Creates a map composed of the picked `object` properties. Property
 /// names may be specified as individual arguments or as lists of property
-/// names. If `predicate` is provided it is invoked for each property of `object`
-/// picking the properties `predicate` returns truthy for. The predicate is
+/// names. If `$predicate` is provided it is invoked for each property of `object`
+/// picking the properties `$predicate` returns truthy for. The predicate is
 /// bound to `$this-arg` and invoked with three arguments; (value, key, object).
 ///
 ///
@@ -52,8 +52,8 @@
 /// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to pick, specified as individual property
 ///  names or lists of property names.
-/// @param {*} ($this-arg) The `$this` binding of `predicate`.
-/// @returns {Object} Returns the new object.
+/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @returns {Map} Returns the new object.
 /// @example scss
 /// $object: { 'user': 'fred', 'age': 40 };
 /// _pick(object, 'user');

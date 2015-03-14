@@ -71,7 +71,7 @@
 /// @group List
 /// @param {List} props The property names.
 /// @param {List} [values=[]] The property values.
-/// @returns {Object} Returns the new object.
+/// @returns {Map} Returns the new object.
 /// @example scss
 /// _zip-object(('fred', 'barney'), (30, 40));
 /// // => { 'fred': 30, 'barney': 40 }

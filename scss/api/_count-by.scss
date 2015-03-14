@@ -16,38 +16,35 @@
 
 
 /// Creates a map composed of keys generated from the results of running
-/// each element of `$collection` through `iteratee`. The corresponding value
-/// of each key is the number of times the key was returned by `iteratee`.
-/// The `iteratee` is bound to `$this-arg` and invoked with three arguments;
+/// each element of `$collection` through `$iteratee`. The corresponding value
+/// of each key is the number of times the key was returned by `$iteratee`.
+/// The `$iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
-/// If a property name is provided for `predicate` the created `_property`
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// If a map is provided for `predicate` the created `_matches` style
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
-/// object, else `false`.
+/// map, else `false`.
 ///
 ///
 /// @group Collection
-/// @param {List|Object|string} collection The collection to iterate over.
-/// @param {Function|Object|string} $iteratee [_identity] - The function invoked
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `iteratee`.
-/// @returns {Object} Returns the composed aggregate object.
+/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @returns {Map} Returns the composed aggregate map.
 /// @example scss
-/// _count-by((4.3, 6.1, 6.4), function(n) {
-///   return Math.floor(n);
-/// });
-/// // => { '4': 1, '6': 2 }
-/// _count-by((4.3, 6.1, 6.4), function(n) {
-///   return this.floor(n);
-/// }, Math);
-/// // => { '4': 1, '6': 2 }
-/// _count-by(('one', 'two', 'three'), 'length');
-/// // => { '3': 2, '5': 1 }
-
+/// $foo: _count-by((4.3, 6.1, 6.4), 'floor');
+/// // => ( 4: 1, 6: 2 )
+/// 
+/// $foo: _count-by(('one', 'two', 'three'), 'str-length');
+/// // => ( 3: 2, 5: 1 )
 @function _count-by($args...) {
   @return call('__count-by', $args...);
 }

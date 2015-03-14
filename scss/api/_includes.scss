@@ -36,7 +36,7 @@
 }
 
 
-/// Checks if `value` is in `$collection` using `SameValueZero` for equality
+/// Checks if `$value` is in `$collection` using `SameValueZero` for equality
 /// comparisons. If `fromIndex` is negative, it is used as the offset from
 /// the end of `$collection`.
 /// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
@@ -47,7 +47,7 @@
 ///
 /// @alias _contains, include
 /// @group Collection
-/// @param {List|Object|string} collection The collection to search.
+/// @param {List|Map|string} collection The collection to search.
 /// @param {*} target The value to search for.
 /// @param {number} $fromIndex [0] - The index to search from.
 /// @returns {boolean} Returns `true` if a matching element is found, else `false`.

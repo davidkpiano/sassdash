@@ -3,12 +3,12 @@
 }
 
 
-/// Gets all but the last element of `list`.
+/// Gets all but the last element of `$list`.
 ///
 ///
 /// @group List
 /// @param {List} list The list to query.
-/// @returns {List} Returns the slice of `list`.
+/// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _initial((1, 2, 3));
 /// // => (1, 2)

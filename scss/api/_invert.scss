@@ -32,7 +32,7 @@
 /// @group Map
 /// @param {Map} object The object to invert.
 /// @param {boolean} (multiValue) Allow multiple values per key.
-/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {Object} Returns the new inverted object.
 /// @example scss
 /// $object: { 'a': 1, 'b': 2, 'c': 1 };

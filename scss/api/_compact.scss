@@ -16,14 +16,14 @@
 
 
 /// Creates a list with all falsey values removed. The values `false`, `null`,
-/// `0`, `""`, `undefined`, and `NaN` are falsey.
+/// `0`, and `""` are considered falsey.
 ///
 ///
 /// @group List
 /// @param {List} list The list to compact.
 /// @returns {List} Returns the new list of filtered values.
 /// @example scss
-/// _compact((0, 1, false, 2, '', 3));
+/// $foo: _compact((0, 1, false, 2, '', 3));
 /// // => (1, 2, 3)
 
 @function _compact($args...) {

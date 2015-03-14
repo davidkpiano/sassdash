@@ -11,8 +11,9 @@
 }
 
 
-@function __is-iteratee-call($value: null, $index: null, $map: null) {
-    @if not (__is-map-like($map)) {
+@function __is-iteratee-call($value: null, $index: null, $map: null, $args...) {
+    @if not __is-map-like($map)
+    or length($args) > 0 {
         @return false;
     }
 

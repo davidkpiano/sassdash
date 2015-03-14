@@ -59,7 +59,7 @@
 }
 
 
-/// Converts `string` to camel case.
+/// Converts `$string` to camel case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
 ///
 ///
@@ -67,11 +67,11 @@
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the camel cased string.
 /// @example scss
-/// _camel-case('Foo Bar');
+/// $foo: _camel-case('Foo Bar');
 /// // => 'fooBar'
-/// _camel-case('--foo-bar');
+/// $foo: _camel-case('--foo-bar');
 /// // => 'fooBar'
-/// _camel-case('__foo_bar__');
+/// $foo: _camel-case('__foo_bar__');
 /// // => 'fooBar'
 
 @function _camel-case($args...) {
@@ -79,14 +79,14 @@
 }
 
 
-/// Capitalizes the first character of `string`.
+/// Capitalizes the first character of `$string`.
 ///
 ///
 /// @group String
 /// @param {string} $string [''] - The string to capitalize.
 /// @returns {string} Returns the capitalized string.
 /// @example scss
-/// _capitalize('fred');
+/// $foo: _capitalize('fred');
 /// // => 'Fred'
 
 @function _capitalize($args...) {
@@ -94,7 +94,7 @@
 }
 
 
-/// Converts `string` to kebab case.
+/// Converts `$string` to kebab case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles) for
 /// more details.
 ///
@@ -103,11 +103,11 @@
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the kebab cased string.
 /// @example scss
-/// _kebab-case('Foo Bar');
+/// $foo: _kebab-case('Foo Bar');
 /// // => 'foo-bar'
-/// _kebab-case('fooBar');
+/// $foo: _kebab-case('fooBar');
 /// // => 'foo-bar'
-/// _kebab-case('__foo_bar__');
+/// $foo: _kebab-case('__foo_bar__');
 /// // => 'foo-bar'
 
 @function _kebab-case($args...) {
@@ -115,7 +115,7 @@
 }
 
 
-/// Converts `string` to snake case.
+/// Converts `$string` to snake case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
 ///
 ///
@@ -123,11 +123,11 @@
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the snake cased string.
 /// @example scss
-/// _snake-case('Foo Bar');
+/// $foo: _snake-case('Foo Bar');
 /// // => 'foo_bar'
-/// _snake-case('fooBar');
+/// $foo: _snake-case('fooBar');
 /// // => 'foo_bar'
-/// _snake-case('--foo-bar');
+/// $foo: _snake-case('--foo-bar');
 /// // => 'foo_bar'
 
 @function _snake-case($args...) {
@@ -135,7 +135,7 @@
 }
 
 
-/// Converts `string` to start case.
+/// Converts `$string` to start case.
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage)
 /// for more details.
 ///
@@ -144,11 +144,11 @@
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the start cased string.
 /// @example scss
-/// _start-case('--foo-bar');
+/// $foo: _start-case('--foo-bar');
 /// // => 'Foo Bar'
-/// _start-case('fooBar');
+/// $foo: _start-case('fooBar');
 /// // => 'Foo Bar'
-/// _start-case('__foo_bar__');
+/// $foo: _start-case('__foo_bar__');
 /// // => 'Foo Bar'
 
 @function _start-case($args...) {

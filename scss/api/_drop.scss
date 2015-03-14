@@ -76,7 +76,7 @@
 /// @group List
 /// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to drop.
-/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _drop((1, 2, 3));
@@ -99,7 +99,7 @@
 /// @group List
 /// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to drop.
-/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the slice of `list`.
 /// @example scss
 /// _drop-right((1, 2, 3));

@@ -4500,6 +4500,35 @@ $test-before-count: 0 !global;
   }
 }
 
+@include test-module('_str-concat') {
+    @include test('should concatenate strings') {
+        @include assert-equal(_str-concat('hello', ' world'), 'hello world');
+    }
+
+    @include test('should concatenate multiple strings') {
+        @include assert-equal(_str-concat('one', 'two', 'three'), 'onetwothree');
+    }
+
+    @include test('should coerce arguments to strings') {
+        @include assert-equal(_str-concat('one', 2, 3), 'one23');
+        @include assert-equal(_str-concat(1, 2, 3, 4, 5), '12345');
+    }
+
+    @include test('should return an empty string when provided no arguments') {
+        @include assert-equal(_str-concat(), '');
+    }
+
+    @include test('should return initial source when provided no extra arguments') {
+        @include assert-equal(_str-concat('foo'), 'foo');
+    }
+
+    @include test('should work as iteratee for _reduce') {
+        $list: ('a', 'b', 'c', 'd', 'e');
+
+        @include assert-equal(_reduce($list, _str-concat), 'abcde');
+    }
+}
+
 @include test-module('Sassdash') {
   $list: 'a' 'b' 'c' 'd' 'e';
   $list-list: ('a' 'b' 'c', 'd' 'e' 'f', 'g' 'h' 'i');

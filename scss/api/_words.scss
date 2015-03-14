@@ -40,7 +40,7 @@
 /// @group String
 /// @param {string} $string [''] - The string to inspect.
 /// @param {RegExp|string} (pattern) The pattern to match words.
-/// @param {Map} (guard) Enables use as a callback for functions like `_map`.
+/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the words of `$string`.
 /// @example scss
 /// /// _words('fred, barney, & pebbles');

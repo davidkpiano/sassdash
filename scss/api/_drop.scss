@@ -103,16 +103,16 @@
 /// @param {number} $n [1] - The number of elements to drop.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _drop-right((1, 2, 3));
+/// $foo: _drop-right((1, 2, 3));
 /// // => (1, 2)
 /// 
-/// _drop-right((1, 2, 3), 2);
+/// $foo: _drop-right((1, 2, 3), 2);
 /// // => (1,)
 /// 
-/// _drop-right((1, 2, 3), 5);
+/// $foo: _drop-right((1, 2, 3), 5);
 /// // => ()
 /// 
-/// _drop-right((1, 2, 3), 0);
+/// $foo: _drop-right((1, 2, 3), 0);
 /// // => (1, 2, 3)
 
 @function _drop-right($args...) {
@@ -156,15 +156,15 @@
 ///     );
 ///     
 ///     // using the `_matches` callback shorthand
-///     _pluck(_drop-right-while($users, ( 'user': 'pebbles', 'active': false )), 'user');
+///     $foo: _pluck(_drop-right-while($users, ( 'user': 'pebbles', 'active': false )), 'user');
 ///     // => ('barney', 'fred')
 ///     
 ///     // using the `_matches-property` callback shorthand
-///     _pluck(_drop-right-while($users, 'active', false), 'user');
+///     $foo: _pluck(_drop-right-while($users, 'active', false), 'user');
 ///     // => ('barney')
 ///     
 ///     // using the `_property` callback shorthand
-///     _pluck(_drop-right-while($users, 'active'), 'user');
+///     $foo: _pluck(_drop-right-while($users, 'active'), 'user');
 ///     // => ('barney', 'fred', 'pebbles')
 
 @function _drop-right-while($args...) {
@@ -196,7 +196,7 @@
 ///         @return $value < 3;
 ///     }
 ///     
-///     _drop-while((1, 2, 3, 4), less-than-three);
+///     $foo: _drop-while((1, 2, 3, 4), less-than-three);
 ///     // => (3, 4)
 ///     
 ///     $users: (
@@ -206,15 +206,15 @@
 ///     );
 ///     
 ///     // using the `_matches` callback shorthand
-///     _pluck(_drop-while($users, ( 'user': 'barney', 'active': false )), 'user');
+///     $foo: _pluck(_drop-while($users, ( 'user': 'barney', 'active': false )), 'user');
 ///     // => ('fred', 'pebbles')
 ///     
 ///     // using the `_matches-property` callback shorthand
-///     _pluck(_drop-while($users, 'active', false), 'user');
+///     $foo: _pluck(_drop-while($users, 'active', false), 'user');
 ///     // => ('pebbles')
 ///     
 ///     // using the `_property` callback shorthand
-///     _pluck(_drop-while($users, 'active'), 'user');
+///     $foo: _pluck(_drop-while($users, 'active'), 'user');
 ///     // => ('barney', 'fred', 'pebbles')
 
 @function _drop-while($args...) {

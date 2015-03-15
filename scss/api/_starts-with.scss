@@ -19,23 +19,58 @@
         __string-last-index-of($string, $target, $position) == $position);
 }
 
+@function __starts-with-any($string, $targets: (), $position: 1) {
+    $result: false;
+    $index: 1;
+
+    @while $index <= length($targets) and not $result {
+        $target-string: nth($targets, $index);
+        $result: __starts-with($string, $target-string, $position);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
 
 /// Checks if `string` starts with the given target string.
 ///
 ///
 /// @group String
 /// @param {string} $string [''] - The string to search.
-/// @param {string} (target) The string to search for.
-/// @param {number} $position [0] - The position to search from.
-/// @returns {boolean} Returns `true` if `string` starts with `target`, else `false`.
+/// @param {string} $target - The string to search for.
+/// @param {number} $position [1] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` starts with `$target`, else `false`.
 /// @example scss
-/// /// _starts-with('abc', 'a');
+/// $foo: _starts-with('abc', 'a');
 /// // => true
-/// /// _starts-with('abc', 'b');
+/// 
+/// $foo: _starts-with('abc', 'b');
 /// // => false
-/// /// _starts-with('abc', 'b', 1);
+/// 
+/// $foo: _starts-with('abc', 'b', 1);
 /// // => true
 
 @function _starts-with($args...) {
     @return call('__starts-with', $args...);
+}
+
+/// Checks if `$string` starts with any of the strings in `$targets` list.
+///
+///
+/// @group String
+/// @param {string} $string [''] - The string to search.
+/// @param {string} $targets [()] - The list of strings to search for.
+/// @param {number} $position [1] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` starts with any of the strings in `$targets`, else `false`.
+/// @example scss
+/// $foo: _starts-with-any('abc', 'a' 'b');
+/// // => true
+/// $foo: _starts-with-any('abc', 'b' 'c');
+/// // => false
+/// $foo: _starts-with-any('abc', 'b' 'c', 1);
+/// // => true
+
+@function _starts-with-any($args...) {
+    @return call('__starts-with-any', $args...);
 }

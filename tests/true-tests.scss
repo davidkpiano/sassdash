@@ -1109,11 +1109,12 @@ $test-before-count: 0 !global;
             @include assert-equal($actual, $expected);
         }
     }
+}
 
+@include test-module('_ends-with-any') {
     @include test('should work with a list for target') {
-      // TODO
-      @include assert-equal(_ends-with('abc', 'c' 'd' 'e'), true);
-      @include assert-equal(_ends-with('abc', 'bcc' 'zbc' 'cd'), false);
+      @include assert-equal(_ends-with-any('abc', 'c' 'd' 'e'), true);
+      @include assert-equal(_ends-with-any('abc', 'bcc' 'zbc' 'cd'), false);
     }
 }
 
@@ -4023,11 +4024,13 @@ $test-before-count: 0 !global;
       @include assert-equal(_starts-with($string, '', $position), true);
     }
   }
+}
 
+@include test-module('_starts-with-any') {
   @include test('should work with a list for target') {
-    @include assert-equal(_starts-with('abc', 'e' 'a' 'q'), true);
-    @include assert-equal(_starts-with('abc', 'ac' 'abz' 'b'), false);
-  }
+    @include assert-equal(_starts-with-any('abc', 'e' 'a' 'q'), true);
+    @include assert-equal(_starts-with-any('abc', 'ac' 'abz' 'b'), false);
+  } 
 }
 
 @include test-module('Sassdash') {

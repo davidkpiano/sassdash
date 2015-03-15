@@ -1,12 +1,6 @@
-@function __ends-with($string, $target, $position: str-length($string)) {
-    @if __is-list-like($target) {
-        $result: false;
-
-        @each $target-string in $target {
-            $result: __either($result, __ends-with($string, $target-string, $position));
-        }
-
-        @return $result;
+@function __ends-with($string, $target: $__undefined__, $position: str-length($string)) {
+    @if __is-undefined($target) {
+        @return false;
     }
 
     $string: __base-to-string($string);
@@ -20,23 +14,61 @@
         false);
 }
 
+@function __ends-with-any($string, $targets: (), $position: str-length($string)) {
+    $result: false;
+    $index: 1;
 
-/// Checks if `string` ends with the given target string.
+    @while $index <= length($targets) and not $result {
+        $target-string: nth($targets, $index);
+        $result: __ends-with($string, $target-string, $position);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+/// Checks if `$string` ends with the given target string.
 ///
 ///
 /// @group String
 /// @param {string} $string [''] - The string to search.
-/// @param {string} (target) The string to search for.
-/// @param {number} $position [string.length] - The position to search from.
-/// @returns {boolean} Returns `true` if `string` ends with `target`, else `false`.
+/// @param {string} $target - The string to search for.
+/// @param {number} $position [str-length($string)] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` ends with `$target`, else `false`.
 /// @example scss
-/// _ends-with('abc', 'c');
+/// $foo: _ends-with('abc', 'c');
 /// // => true
-/// _ends-with('abc', 'b');
+/// 
+/// $foo: _ends-with('abc', 'b');
 /// // => false
-/// _ends-with('abc', 'b', 2);
+/// 
+/// $foo: _ends-with('abc', 'b', 2);
 /// // => true
 
 @function _ends-with($args...) {
     @return call('__ends-with', $args...);
+}
+
+/// Checks if `$string` ends with any of the strings in `$targets` list.
+///
+///
+/// @group String
+/// @param {string} $string [''] - The string to search.
+/// @param {string} $targets [()] - The list of strings to search for.
+/// @param {number} $position [str-length($string)] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` ends with any of the strings in `$targets`, else `false`.
+/// @example scss
+/// $foo: _ends-with-any('abc', 'a' 'c');
+/// // => true
+/// 
+/// $foo: _ends-with-any('abc', 'a' 'b');
+/// // => false
+/// 
+/// $foo: _ends-with-any('abc', 'a' 'b', 2);
+/// // => true
+
+@function _ends-with-any($args...) {
+    @return call('__ends-with-any', $args...);
 }

@@ -43,6 +43,7 @@
 /// Creates a function which returns the property value of `key` on a given object.
 ///
 ///
+/// @access public
 /// @group Utility
 /// @param {string} key The key of the property to get.
 /// @returns {Function} Returns the new function.
@@ -66,6 +67,7 @@
 /// the property value of a given key on `object`.
 ///
 ///
+/// @access public
 /// @group Utility
 /// @param {Map} object The object to inspect.
 /// @returns {Function} Returns the new function.

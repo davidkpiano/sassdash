@@ -130,7 +130,7 @@
 }
 
 
-/// Creates a function that invokes `$function` with the `$this` binding of `$this-arg`
+/// Creates a function that invokes `$function` with the `_this` binding of `$this-arg`
 /// and arguments of the created function.
 /// 
 /// If `$function` is a property name the
@@ -144,9 +144,10 @@
 /// the function (first item of the list) right-partially applied with the
 /// rest of the list items, called with the value as the first argument (see example).
 ///
+/// @access public
 /// @group Utility
 /// @param {*} $func [_identity] - The value to convert to a callback.
-/// @param {*} $this-arg [null] - The `$this` binding of `$function`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$function`.
 /// @returns {Function} Returns the callback.
 /// @example scss
 ///     $fully-lighten: _callback(lighten 100%);

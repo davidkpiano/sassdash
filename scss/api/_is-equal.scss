@@ -151,11 +151,12 @@
 /// for comparing other values.
 ///
 ///
+/// @access public
 /// @group Lang
 /// @param {*} value The value to compare.
 /// @param {*} other The other value to compare.
 /// @param {Function} (customizer) The function to customize comparing values.
-/// @param {*} ($this-arg) The `$this` binding of `$customizer`.
+/// @param {*} ($this-arg) The `_this` binding of `$customizer`.
 /// @returns {boolean} Returns `true` if the values are equivalent, else `false`.
 /// @example scss
 /// $object: { 'user': 'fred' };

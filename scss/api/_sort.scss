@@ -222,12 +222,13 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to iterate over.
 /// @param {List|Function|Map|string} $iteratee [_identity] - The function
 ///  invoked per iteration. If a property name or a map is provided it is
 ///  used to create a `_property` or `_matches` style callback respectively.
-/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @param {*} ($this-arg) The `_this` binding of `$iteratee`.
 /// @returns {List} Returns the new sorted list.
 /// @example scss
 /// _sort-by((1, 2, 3), function(n) {
@@ -256,6 +257,7 @@
 /// instead of an iteratee function.
 ///
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to iterate over.
 /// @param {...(string|string[])} props The property names to sort by,

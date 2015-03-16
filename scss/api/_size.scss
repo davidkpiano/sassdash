@@ -18,6 +18,7 @@
 /// list-like values or the number of own enumerable properties for objects.
 /// ///
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to inspect.
 /// @returns {number} Returns the size of `$collection`.

@@ -54,6 +54,7 @@
 /// flattened, otherwise it is only flattened a single level.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to flatten.
 /// @param {boolean} (isDeep) Specify a deep flatten.
@@ -74,6 +75,7 @@
 /// Recursively flattens a nested list.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to recursively flatten.
 /// @returns {List} Returns the new flattened list.

@@ -32,6 +32,7 @@
 /// Checks if `$string` ends with the given target string.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to search.
 /// @param {string} $target - The string to search for.
@@ -54,6 +55,7 @@
 /// Checks if `$string` ends with any of the strings in `$targets` list.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to search.
 /// @param {string} $targets [()] - The list of strings to search for.

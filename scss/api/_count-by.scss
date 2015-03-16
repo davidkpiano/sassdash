@@ -33,11 +33,12 @@
 /// map, else `false`.
 ///
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @param {*} ($this-arg) The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns the composed aggregate map.
 /// @example scss
 /// $foo: _count-by((4.3, 6.1, 6.4), 'floor');

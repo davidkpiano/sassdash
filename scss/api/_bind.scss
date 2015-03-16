@@ -20,13 +20,14 @@
 }
 
 ///
-/// Creates a function that invokes `$func` with the `$this` binding of `$this-arg`
+/// Creates a function that invokes `$func` with the `_this` binding of `$this-arg`
 /// and prepends any additional `_bind` arguments to those provided to the
 /// bound function.
 ///
+/// @access public
 /// @group Function
 /// @param {Function} $func The function to bind.
-/// @param {*} $this-arg The `$this` binding of `$func`.
+/// @param {*} $this-arg The `_this` binding of `$func`.
 /// @param {...*} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new bound function.
 /// @example scss

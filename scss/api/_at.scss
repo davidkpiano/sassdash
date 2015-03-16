@@ -32,6 +32,7 @@
 /// of `$collection`. Keys may be specified as individual arguments or as lists
 /// of keys.
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {...(number|number[]|string|string[])} $props... The property names

@@ -134,11 +134,12 @@
 ///
 ///
 /// @alias _detect
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// $users: [
@@ -182,11 +183,12 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
 /// $users: [
@@ -225,11 +227,12 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group Map
 /// @param {Map} object The object to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
 /// $users: {
@@ -260,11 +263,12 @@
 /// `$collection` from right to left.
 ///
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {*} Returns the matched element, else `undefined`.
 /// @example scss
 /// _find-last((1, 2, 3, 4), function(n) {
@@ -289,11 +293,12 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
 /// $users: [
@@ -332,11 +337,12 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group Map
 /// @param {Map} object The object to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
 /// @example scss
 /// $users: {
@@ -372,6 +378,7 @@
 /// own or inherited property value see `_matches-property`.
 ///
 ///
+/// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to search.
 /// @param {Map} source The object of property values to match.

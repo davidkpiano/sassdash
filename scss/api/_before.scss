@@ -37,11 +37,12 @@
 }
 
 
-/// Creates a function that invokes `$function`, with the `$this` binding and arguments
+/// Creates a function that invokes `$function`, with the `_this` binding and arguments
 /// of the created function, while it is called less than `$n` times. Subsequent
 /// calls to the created function return the result of the last `$function` invocation.
 ///
 ///
+/// @access public
 /// @group Function
 /// @param {number} $n The number of calls at which `$function` is no longer invoked.
 /// @param {Function} $func The function to restrict.

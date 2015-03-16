@@ -75,6 +75,7 @@
 /// Creates a slice of `$list` with `$n` elements taken from the beginning.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
@@ -98,6 +99,7 @@
 /// Creates a slice of `$list` with `$n` elements taken from the end.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
@@ -131,11 +133,12 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to query.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _take-right-while((1, 2, 3), function(n) {
@@ -175,11 +178,12 @@
 /// object, else `false`.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {List} list The list to query.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _take-while((1, 2, 3), function(n) {

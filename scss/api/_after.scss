@@ -40,6 +40,7 @@
 /// `$function` once it is called `$n` or more times.
 ///
 ///
+/// @access public
 /// @group Function
 /// @param {number} n The number of calls before `$function` is invoked.
 /// @param {Function} func The function to restrict.

@@ -32,6 +32,7 @@
 /// The separator of the returned list will be the same as the
 /// separator of the `$source` list.
 ///
+/// @access public
 /// @group List
 /// @param {List} $source The initial list
 /// @param {List...|*...} $args... Lists and/or values to concatenate into the source list. 
@@ -48,6 +49,7 @@
 
 /// Combines the text of two or more strings and returns a new string.
 /// 
+/// @access public
 /// @group String
 /// @param {String} $source [''] - Source string
 /// @param {String...|*...} $args... - Other strings to concatenate

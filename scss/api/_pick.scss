@@ -47,12 +47,13 @@
 /// bound to `$this-arg` and invoked with three arguments; (value, key, object).
 ///
 ///
+/// @access public
 /// @group Map
 /// @param {Map} object The source object.
 /// @param {Function|...(string|string[])} (predicate) The function invoked per
 ///  iteration or property names to pick, specified as individual property
 ///  names or lists of property names.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
 /// @returns {Map} Returns the new object.
 /// @example scss
 /// $object: { 'user': 'fred', 'age': 40 };

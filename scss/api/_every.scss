@@ -50,40 +50,48 @@
 }
 
 
-/// Checks if `$predicate` returns truthy for/// all** elements of `$collection`.
-/// The predicate is bound to `$this-arg` and invoked with three arguments;
+/// Checks if `$predicate` returns truthy for **all** elements of `$collection`.
+/// The predicate is bound to `$this-arg` and invoked with three arguments:
 /// (value, index|key, collection).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
 ///
 ///
 /// @alias _all
+/// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$predicate`.
+/// @param {*} $this-arg [undefined] - The `_this` binding of `$predicate`.
 /// @returns {boolean} Returns `true` if all elements pass the predicate check,
 ///  else `false`.
 /// @example scss
-/// _every((true, 1, null, 'yes'), Boolean);
+/// $foo: _every((true, 1, null, 'yes'), _is-boolean);
 /// // => false
-/// $users: [
-///   { 'user': 'barney', 'active': false },
-///   { 'user': 'fred',   'active': false }
-/// ];
+/// 
+/// $users: (
+///   ( 'user': 'barney', 'active': false ),
+///   ( 'user': 'fred',   'active': false )
+/// );
+/// 
 /// // using the `_matches` callback shorthand
-/// _every(users, { 'user': 'barney', 'active': false });
+/// _every(users, ( 'user': 'barney', 'active': false ));
 /// // => false
+/// 
 /// // using the `_matches-property` callback shorthand
 /// _every(users, 'active', false);
 /// // => true
+/// 
 /// // using the `_property` callback shorthand
 /// _every(users, 'active');
 /// // => false

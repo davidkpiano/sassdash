@@ -50,6 +50,7 @@
 /// of the given lists, and so on.
 ///
 ///
+/// @access public
 /// @group List
 /// @param {...List} (lists) The lists to process.
 /// @returns {List} Returns the new list of grouped elements.
@@ -68,6 +69,7 @@
 ///
 ///
 /// @alias _object
+/// @access public
 /// @group List
 /// @param {List} props The property names.
 /// @param {List} [values=[]] The property values.

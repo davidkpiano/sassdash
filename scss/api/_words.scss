@@ -37,6 +37,7 @@
 /// Splits `$string` into a list of its words.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to inspect.
 /// @param {RegExp|string} (pattern) The pattern to match words.

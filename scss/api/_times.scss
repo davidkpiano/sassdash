@@ -18,10 +18,11 @@
 /// one argument; (index).
 ///
 ///
+/// @access public
 /// @group Utility
 /// @param {number} n The number of times to invoke `$iteratee`.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} ($this-arg) The `$this` binding of `$iteratee`.
+/// @param {*} ($this-arg) The `_this` binding of `$iteratee`.
 /// @returns {List} Returns the list of results.
 /// @example scss
 /// $diceRolls: _times(3, _partial(_random, 1, 6, false));

@@ -63,6 +63,7 @@
 /// See [Wikipedia](https://en.wikipedia.org/wiki/CamelCase) for more details.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the camel cased string.
@@ -82,6 +83,7 @@
 /// Capitalizes the first character of `$string`.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to capitalize.
 /// @returns {string} Returns the capitalized string.
@@ -99,6 +101,7 @@
 /// more details.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the kebab cased string.
@@ -119,6 +122,7 @@
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Snake_case) for more details.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the snake cased string.
@@ -140,6 +144,7 @@
 /// for more details.
 ///
 ///
+/// @access public
 /// @group String
 /// @param {string} $string [''] - The string to convert.
 /// @returns {string} Returns the start cased string.

@@ -103,7 +103,7 @@
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
 ///  create a `_property` or `_matches` style callback respectively.
-/// @param {*} ($this-arg) The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
 /// @returns {List} Returns the new mapped list.
 /// @example scss
 /// function timesThree(n) {
@@ -150,7 +150,7 @@
 /// @param {Map} object The object to iterate over.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns the new mapped object.
 /// @example scss
 /// _map-values({ 'a': 1, 'b': 2 }, function(n) {

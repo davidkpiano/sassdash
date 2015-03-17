@@ -108,6 +108,14 @@
     @return $instance;
 }
 
+@function __instance-of($value, $constructor) {
+    @if not type-of($value) == 'map' {
+        @return false;
+    }
+
+    @return __get($value, '_constructor') == $constructor;
+}
+
 @function _get($args...) {
     @return call('__get', $args...);
 }
@@ -120,4 +128,8 @@
 
 @function _new($args...) {
     @return call('__new', $args...);
+}
+
+@function _instance-of($args...) {
+    @return call('__instance-of', $args...);
 }

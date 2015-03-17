@@ -72,7 +72,7 @@
 /// @param {List|Map|string} collection The collection to iterate over.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} ($this-arg) The `_this` binding of `$predicate`.
+/// @param {*} $this-arg - The `_this` binding of `$predicate`.
 /// @returns {boolean} Returns `true` if any element passes the predicate check,
 ///  else `false`.
 /// @example scss

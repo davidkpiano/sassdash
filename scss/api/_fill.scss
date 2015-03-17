@@ -13,15 +13,17 @@
 
     $length: if($start > $end, 0, $end);
 
-    @for $start from $start through $length {
-        $list: set-nth($list, $start, $value);
+    @if $length > 0 {    
+        @for $start from $start through $length {
+            $list: set-nth($list, $start, $value);
+        }
     }
 
     @return $list;
 }
 
 
-@function __fill($list, $value, $start: null, $end: null) {
+@function __fill($list, $value: null, $start: 1, $end: length($list)) {
     $length: if($list, length($list), 0);
 
     @if not ($length) {
@@ -40,17 +42,16 @@
 
 
 /// Fills elements of `$list` with `$value` from `start` up to, but not
-/// including, `end`.
-/// **Note:** This method mutates `$list`.
+/// including, `$end`. Returns new list.
 ///
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to fill.
-/// @param {*} value The value to fill `$list` with.
-/// @param {number} $start [0] - The start position.
-/// @param {number} $end [list.length] - The end position.
-/// @returns {List} Returns `$list`.
+/// @param {List} $list - The list to fill.
+/// @param {*} $value [null] - The value to fill `$list` with.
+/// @param {number} $start [1] - The start position.
+/// @param {number} $end [length($list)] - The end position.
+/// @returns {List} Returns new list with filled values.
 
 @function _fill($args...) {
     @return call('__fill', $args...);

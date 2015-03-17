@@ -52,6 +52,14 @@
 /// @param {number} $start [1] - The start position.
 /// @param {number} $end [length($list)] - The end position.
 /// @returns {List} Returns new list with filled values.
+/// @example scss
+/// $list: 1 2 3;
+/// 
+/// $foo: _fill($list, 'a');
+/// // => 'a' 'a' 'a'
+/// 
+/// $foo: _fill($list, 'a', 2);
+/// // => 1 'a' 'a'
 
 @function _fill($args...) {
     @return call('__fill', $args...);

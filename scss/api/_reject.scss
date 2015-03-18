@@ -47,13 +47,13 @@
 ///   { 'user': 'fred',   'age': 40, 'active': true }
 /// ];
 /// // using the `_matches` callback shorthand
-/// _pluck(_reject(users, { 'age': 40, 'active': true }), 'user');
+/// _pluck(_reject($users, { 'age': 40, 'active': true }), 'user');
 /// // => ('barney')
 /// // using the `_matches-property` callback shorthand
-/// _pluck(_reject(users, 'active', false), 'user');
+/// _pluck(_reject($users, 'active', false), 'user');
 /// // => ('fred')
 /// // using the `_property` callback shorthand
-/// _pluck(_reject(users, 'active'), 'user');
+/// _pluck(_reject($users, 'active'), 'user');
 /// // => ('barney')
 
 @function _reject($args...) {

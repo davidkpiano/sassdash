@@ -245,7 +245,7 @@
 ///   { 'user': 'barney' }
 /// ];
 /// // using the `_property` callback shorthand
-/// _pluck(_sort-by(users, 'user'), 'user');
+/// _pluck(_sort-by($users, 'user'), 'user');
 /// // => ('barney', 'fred', 'pebbles')
 
 @function _sort-by($args...) {
@@ -270,7 +270,7 @@
 ///   { 'user': 'barney', 'age': 26 },
 ///   { 'user': 'fred',   'age': 30 }
 /// ];
-/// _map(_sort-by-all(users, ('user', 'age')), _values);
+/// _map(_sort-by-all($users, ('user', 'age')), _values);
 /// // => [('barney', 26), ('barney', 36), ('fred', 30), ('fred', 40)]
 
 @function _sort-by-all($args...) {

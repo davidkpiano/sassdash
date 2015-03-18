@@ -53,9 +53,9 @@
 ///   { 'user': 'barney' }
 /// ];
 /// $getName: _property('user');
-/// _map(users, getName);
+/// _map($users, getName);
 /// // => ('fred', barney')
-/// _pluck(_sort-by(users, getName), 'user');
+/// _pluck(_sort-by($users, getName), 'user');
 /// // => ('barney', 'fred')
 
 @function _property($args...) {

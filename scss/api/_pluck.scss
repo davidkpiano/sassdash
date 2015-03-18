@@ -16,9 +16,9 @@
 ///   { 'user': 'barney', 'age': 36 },
 ///   { 'user': 'fred',   'age': 40 }
 /// ];
-/// _pluck(users, 'user');
+/// _pluck($users, 'user');
 /// // => ('barney', 'fred')
-/// $userIndex: _index-by(users, 'user');
+/// $userIndex: _index-by($users, 'user');
 /// _pluck(userIndex, 'age');
 /// // => (36, 40) (iteration order is not guaranteed)
 

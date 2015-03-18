@@ -58,13 +58,13 @@
 ///   return _pluck(list, 'user');
 /// };
 /// // using the `_matches` callback shorthand
-/// _map(_partition(users, { 'age': 1, 'active': false }), mapper);
+/// _map(_partition($users, { 'age': 1, 'active': false }), mapper);
 /// // => [('pebbles'), ('barney', 'fred')]
 /// // using the `_matches-property` callback shorthand
-/// _map(_partition(users, 'active', false), mapper);
+/// _map(_partition($users, 'active', false), mapper);
 /// // => [('barney', 'pebbles'), ('fred')]
 /// // using the `_property` callback shorthand
-/// _map(_partition(users, 'active'), mapper);
+/// _map(_partition($users, 'active'), mapper);
 /// // => [('fred'), ('barney', 'pebbles')]
 
 @function _partition($args...) {

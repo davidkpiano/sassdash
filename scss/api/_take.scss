@@ -151,13 +151,13 @@
 ///   { 'user': 'pebbles', 'active': false }
 /// ];
 /// // using the `_matches` callback shorthand
-/// _pluck(_take-right-while(users, { 'user': 'pebbles', 'active': false }), 'user');
+/// _pluck(_take-right-while($users, { 'user': 'pebbles', 'active': false }), 'user');
 /// // => ('pebbles')
 /// // using the `_matches-property` callback shorthand
-/// _pluck(_take-right-while(users, 'active', false), 'user');
+/// _pluck(_take-right-while($users, 'active', false), 'user');
 /// // => ('fred', 'pebbles')
 /// // using the `_property` callback shorthand
-/// _pluck(_take-right-while(users, 'active'), 'user');
+/// _pluck(_take-right-while($users, 'active'), 'user');
 /// // => []
 
 @function _take-right-while($args...) {
@@ -196,13 +196,13 @@
 ///   { 'user': 'pebbles', 'active': true }
 /// ];
 /// // using the `_matches` callback shorthand
-/// _pluck(_take-while(users, { 'user': 'barney', 'active': false }), 'user');
+/// _pluck(_take-while($users, { 'user': 'barney', 'active': false }), 'user');
 /// // => ('barney')
 /// // using the `_matches-property` callback shorthand
-/// _pluck(_take-while(users, 'active', false), 'user');
+/// _pluck(_take-while($users, 'active', false), 'user');
 /// // => ('barney', 'fred')
 /// // using the `_property` callback shorthand
-/// _pluck(_take-while(users, 'active'), 'user');
+/// _pluck(_take-while($users, 'active'), 'user');
 /// // => []
 
 @function _take-while($args...) {

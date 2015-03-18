@@ -22,9 +22,9 @@
 ///   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy') },
 ///   { 'user': 'fred',   'age': 40, 'active': true, 'pets': ('baby puss', 'dino') }
 /// ];
-/// _pluck(_where(users, { 'age': 36, 'active': false }), 'user');
+/// _pluck(_where($users, { 'age': 36, 'active': false }), 'user');
 /// // => ('barney')
-/// _pluck(_where(users, { 'pets': ('dino') }), 'user');
+/// _pluck(_where($users, { 'pets': ('dino') }), 'user');
 /// // => ('fred')
 
 @function _where($args...) {

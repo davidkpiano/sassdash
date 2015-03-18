@@ -85,15 +85,15 @@
 /// );
 /// 
 /// // using the `_matches` callback shorthand
-/// $foo: _every(users, ( 'user': 'barney', 'active': false ));
+/// $foo: _every($users, ( 'user': 'barney', 'active': false ));
 /// // => false
 /// 
 /// // using the `_matches-property` callback shorthand
-/// $foo: _every(users, 'active', false);
+/// $foo: _every($users, 'active', false);
 /// // => true
 /// 
 /// // using the `_property` callback shorthand
-/// $foo: _every(users, 'active');
+/// $foo: _every($users, 'active');
 /// // => false
 
 @function _every($args...) {

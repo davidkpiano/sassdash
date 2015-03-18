@@ -83,13 +83,13 @@
 ///   { 'user': 'fred',   'active': false }
 /// ];
 /// /// // using the `_matches` callback shorthand
-/// _some(users, { 'user': 'barney', 'active': false });
+/// _some($users, { 'user': 'barney', 'active': false });
 /// // => false
 /// /// // using the `_matches-property` callback shorthand
-/// _some(users, 'active', false);
+/// _some($users, 'active', false);
 /// // => true
 /// /// // using the `_property` callback shorthand
-/// _some(users, 'active');
+/// _some($users, 'active');
 /// // => true
 
 @function _some($args...) {

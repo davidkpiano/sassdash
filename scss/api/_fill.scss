@@ -1,22 +1,30 @@
 @function __base-fill($list, $value, $start: null, $end: null) {
     $length: length($list);
+
     $start: if($start == null,
         1,
-        if(__is-number($start), $start, if($start, 2, 1)));
-    $end: if(__is-undefined($end) or $end > $length,
+        if(__is-number($start) and $start != 0,
+            $start,
+            if(__is-truthy($start), 2, 1)));
+
+    @if $start < 0 {
+        $start: if(-$start >= $length, 1, $length + $start + 1);
+    }
+
+    $end: if(__is-undefined($end) or $end >= $length,
         $length,
         if(__is-number($end), $end, if($end, 2, 1)));
 
-    @if ($end < 1) {
+    @if ($end <= 0) {
         $end: $end + $length;
     }
 
     $length: if($start > $end, 0, $end);
 
-    @if $length > 0 {    
-        @for $start from $start through $length {
-            $list: set-nth($list, $start, $value);
-        }
+    @while $start <= $length {
+        $list: set-nth($list, $start, $value);
+
+        $start: $start + 1;
     }
 
     @return $list;
@@ -41,7 +49,7 @@
 }
 
 
-/// Fills elements of `$list` with `$value` from `start` up to, but not
+/// Fills elements of `$list` with `$value` from `$start` up to, but not
 /// including, `$end`. Returns new list.
 ///
 ///

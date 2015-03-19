@@ -142,8 +142,8 @@
 /// @param {List|Map|string} collection The collection to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
-/// @returns {*} Returns the matched element, else `undefined`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {*} Returns the matched element, else `null`.
 /// @example scss
 ///     $users: (
 ///       ( 'user': 'barney',  'age': 36', active': true ),
@@ -154,20 +154,21 @@
 ///     @function is-young($user, $args...) {
 ///         @return _get($user, 'age') < 40;
 ///     }
-/// $foo: _result(_find($users, 'is-young'), 'user');
-/// // => 'barney'
-/// 
-/// // using the `_matches` callback shorthand
-/// $foo: _result(_find($users, ( 'age': 1, 'active': true )), 'user');
-/// // => 'pebbles'
-/// 
-/// // using the `_matches-property` callback shorthand
-/// $foo: _result(_find($users, 'active', false), 'user');
-/// // => 'fred'
-/// 
-/// // using the `_property` callback shorthand
-/// $foo: _result(_find($users, 'active'), 'user');
-/// // => 'barney'
+///     
+///     $foo: _result(_find($users, is-young), 'user');
+///     // => 'barney'
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _result(_find($users, ( 'age': 1, 'active': true )), 'user');
+///     // => 'pebbles'
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _result(_find($users, 'active', false), 'user');
+///     // => 'fred'
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _result(_find($users, 'active'), 'user');
+///     // => 'barney'
 
 @function _find($args...) {
     @return call(__find, $args...);
@@ -199,31 +200,32 @@
 /// @param {List} $list The list to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
-/// $users: (
-///   ( 'user': 'barney',  'active': false ),
-///   ( 'user': 'fred',    'active': false ),
-///   ( 'user': 'pebbles', 'active': true )
-/// );
-/// 
+///     $users: (
+///       ( 'user': 'barney',  'active': false ),
+///       ( 'user': 'fred',    'active': false ),
+///       ( 'user': 'pebbles', 'active': true )
+///     );
+///     
 ///     @function is-barney($user, $args...) {
 ///         @return _get($user, 'user') == 'barney';
 ///     }
-/// $foo: _find-index($users, is-barney);
-/// // => 1
-/// 
-/// // using the `_matches` callback shorthand
-/// $foo: _find-index($users, ( 'user': 'fred', 'active': false ));
-/// // => 2
-/// // using the `_matches-property` callback shorthand
-/// $foo: _find-index($users, 'active', false);
-/// // => 1
-/// 
-/// // using the `_property` callback shorthand
-/// $foo: _find-index($users, 'active');
-/// // => 3
+///         
+///     $foo: _find-index($users, is-barney);
+///     // => 1
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-index($users, ( 'user': 'fred', 'active': false ));
+///     // => 2
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-index($users, 'active', false);
+///     // => 1
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-index($users, 'active');
+///     // => 3
 
 @function _find-index($args...) {
     @return call('__find-index', $args...);
@@ -250,33 +252,33 @@
 /// @param {Map} $map The map to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {string|null} Returns the key of the matched element, else `null`.
 /// @example scss
-/// $users: (
-///   'barney':  ( 'age': 36, 'active': true ),
-///   'fred':    ( 'age': 40, 'active': false ),
-///   'pebbles': ( 'age': 1,  'active': true )
-/// };
+///     $users: (
+///       'barney':  ( 'age': 36, 'active': true ),
+///       'fred':    ( 'age': 40, 'active': false ),
+///       'pebbles': ( 'age': 1,  'active': true )
+///     );
 /// 
 ///     @function under-40($chr, $args...) {
 ///         @return _get($chr, 'age') < 40;
 ///     }
 ///     
-/// $foo: _find-key($users, under-40)
-/// // => 'barney'
-/// 
-/// // using the `_matches` callback shorthand
-/// $foo: _find-key($users, ( 'age': 1, 'active': true ));
-/// // => 'pebbles'
-/// 
-/// // using the `_matches-property` callback shorthand
-/// $foo: _find-key($users, 'active', false);
-/// // => 'fred'
-/// 
-/// // using the `_property` callback shorthand
-/// $foo: _find-key($users, 'active');
-/// // => 'barney'
+///     $foo: _find-key($users, under-40)
+///     // => 'barney'
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-key($users, ( 'age': 1, 'active': true ));
+///     // => 'pebbles'
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-key($users, 'active', false);
+///     // => 'fred'
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-key($users, 'active');
+///     // => 'barney'
 
 @function _find-key($args...) {
     @return call('__find-key', $args...);
@@ -289,16 +291,18 @@
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to search.
+/// @param {List|Map|string} $collection The collection to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
-/// @returns {*} Returns the matched element, else `undefined`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {*} Returns the matched element, else `null`.
 /// @example scss
-/// $foo: _find-last((1, 2, 3, 4), function(n) {
-///   return n % 2 == 1;
-/// });
-/// // => 3
+///     @function is-odd($value, $args...) {
+///         @return $value % 2 == 1;
+///     }
+///     
+///     $foo: _find-last((1, 2, 3, 4), is-odd);
+///     // => 3
 
 @function _find-last($args...) {
     @return call('__find-last', $args...);
@@ -307,11 +311,14 @@
 
 /// This method is like `_find-index` except that it iterates over elements
 /// of `$collection` from right to left.
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// map, else `false`.
@@ -319,30 +326,36 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to search.
+/// @param {List} $list The list to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {number} Returns the index of the found element, else `-1`.
 /// @example scss
-/// $users: (
-///   ( 'user': 'barney',  'active': true ),
-///   ( 'user': 'fred',    'active': false ),
-///   ( 'user': 'pebbles', 'active': false )
-/// );
-/// $foo: _find-last-index($users, function(chr) {
-///   return chr.user == 'pebbles';
-/// });
-/// // => 2
-/// // using the `_matches` callback shorthand
-/// $foo: _find-last-index($users, ( 'user': 'barney', 'active': true ));
-/// // => 0
-/// // using the `_matches-property` callback shorthand
-/// $foo: _find-last-index($users, 'active', false);
-/// // => 1
-/// // using the `_property` callback shorthand
-/// $foo: _find-last-index($users, 'active');
-/// // => 0
+///     $users: (
+///       ( 'user': 'barney',  'active': true ),
+///       ( 'user': 'fred',    'active': false ),
+///       ( 'user': 'pebbles', 'active': false )
+///     );
+/// 
+///     @function is-pebbles($chr, $args...) {
+///         @return _get($chr, 'user') == 'pebbles';
+///     }
+/// 
+///     $foo: _find-last-index($users, is-pebbles);
+///     // => 3
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-last-index($users, ( 'user': 'barney', 'active': true ));
+///     // => 1
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-last-index($users, 'active', false);
+///     // => 2
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-last-index($users, 'active');
+///     // => 1
 
 @function _find-last-index($args...) {
     @return call('__find-last-index', $args...);
@@ -351,11 +364,14 @@
 
 /// This method is like `_find-key` except that it iterates over elements of
 /// a collection in the opposite order.
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// map, else `false`.
@@ -366,27 +382,33 @@
 /// @param {Map} map The map to search.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
-/// @returns {string|undefined} Returns the key of the matched element, else `undefined`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {string|null} Returns the key of the matched element, else `null`.
 /// @example scss
-/// $users: (
-///   'barney':  ( 'age': 36, 'active': true ),
-///   'fred':    ( 'age': 40, 'active': false ),
-///   'pebbles': ( 'age': 1,  'active': true )
-/// };
-/// $foo: _find-last-key($users, function(chr) {
-///   return chr.age < 40;
-/// });
-/// // => returns `pebbles` assuming `_find-key` returns `barney`
-/// // using the `_matches` callback shorthand
-/// $foo: _find-last-key($users, ( 'age': 36, 'active': true ));
-/// // => 'barney'
-/// // using the `_matches-property` callback shorthand
-/// $foo: _find-last-key($users, 'active', false);
-/// // => 'fred'
-/// // using the `_property` callback shorthand
-/// $foo: _find-last-key($users, 'active');
-/// // => 'pebbles'
+///     $users: (
+///       'barney':  ( 'age': 36, 'active': true ),
+///       'fred':    ( 'age': 40, 'active': false ),
+///       'pebbles': ( 'age': 1,  'active': true )
+///     );
+/// 
+///     @function is-young($chr, $args...) {
+///         @return _get($chr, 'age') < 40;
+///     }
+/// 
+///     $foo: _find-last-key($users, _is-young);
+///     // => returns `pebbles` assuming `_find-key` returns `barney`
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-last-key($users, ( 'age': 36, 'active': true ));
+///     // => 'barney'
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-last-key($users, 'active', false);
+///     // => 'fred'
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-last-key($users, 'active');
+///     // => 'pebbles'
 
 @function _find-last-key($args...) {
     @return call('__find-last-key', $args...);
@@ -396,24 +418,27 @@
 /// Performs a deep comparison between each element in `$collection` and the
 /// source map, returning the first element that has equivalent property
 /// values.
-/// **Note:** This method supports comparing lists, booleans, `Date` maps,
-/// numbers, `map` maps, regexes, and strings. maps are compared by
+/// 
+/// **Note:** This method supports comparing lists, booleans, 
+/// numbers, maps, and strings. Maps are compared by
 /// their own, not inherited, enumerable properties. For comparing a single
 /// own or inherited property value see `_matches-property`.
 ///
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to search.
-/// @param {Map} source The map of property values to match.
-/// @returns {*} Returns the matched element, else `undefined`.
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {Map} $source The map of property values to match.
+/// @returns {*} Returns the matched element, else `null`.
 /// @example scss
 /// $users: (
 ///   ( 'user': 'barney', 'age': 36, 'active': true ),
 ///   ( 'user': 'fred',   'age': 40, 'active': false )
 /// );
+/// 
 /// $foo: _result(_find-where($users, ( 'age': 36, 'active': true )), 'user');
 /// // => 'barney'
+/// 
 /// $foo: _result(_find-where($users, ( 'age': 40, 'active': false )), 'user');
 /// // => 'fred'
 

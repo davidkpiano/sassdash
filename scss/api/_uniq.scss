@@ -55,7 +55,7 @@
 /// @alias _unique
 /// @access public
 /// @group List
-/// @param {List} list The list to inspect.
+/// @param {List} $list The list to inspect.
 /// @param {boolean} (isSorted) Specify the list is sorted.
 /// @param {Function|Map|string} $iteratee - The function invoked per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.

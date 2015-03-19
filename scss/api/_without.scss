@@ -13,7 +13,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to filter.
+/// @param {List} $list The list to filter.
 /// @param {...*} (values) The values to exclude.
 /// @returns {List} Returns the new list of filtered values.
 /// @example scss

@@ -106,7 +106,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to search.
+/// @param {List} $list The list to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} $fromIndex [0] - The index to search from or `true`
 ///  to perform a binary search on a sorted list.
@@ -132,7 +132,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to search.
+/// @param {List} $list The list to search.
 /// @param {*} value The value to search for.
 /// @param {boolean|number} $fromIndex [list.length-1] - The index to search from
 ///  or `true` to perform a binary search on a sorted list.

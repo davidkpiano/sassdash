@@ -84,7 +84,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The sorted list to inspect.
+/// @param {List} $list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
@@ -118,7 +118,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The sorted list to inspect.
+/// @param {List} $list The sorted list to inspect.
 /// @param {*} value The value to evaluate.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.

@@ -10,7 +10,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @returns {*} Returns the last element of `$list`.
 /// @example scss
 /// _last((1, 2, 3));

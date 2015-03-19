@@ -77,7 +77,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
 /// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the slice of `$list`.
@@ -101,7 +101,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
 /// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the slice of `$list`.
@@ -135,7 +135,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$predicate`.
@@ -180,7 +180,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$predicate`.

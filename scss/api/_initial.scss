@@ -8,7 +8,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List} list The list to query.
+/// @param {List} $list The list to query.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// _initial((1, 2, 3));

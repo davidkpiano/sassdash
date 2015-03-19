@@ -36,30 +36,26 @@
 }
 
 
-/// Checks if `$value` is in `$collection` using `SameValueZero` for equality
-/// comparisons. If `fromIndex` is negative, it is used as the offset from
+/// Checks if `$value` is in `$collection`.
+/// If `$from-index` is negative, it is used as the offset from
 /// the end of `$collection`.
-/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
 ///
 ///
-/// @alias _contains, include
+/// @alias _contains, _includes, _include
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to search.
-/// @param {*} target The value to search for.
-/// @param {number} $fromIndex [0] - The index to search from.
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {*} $target [null] - The value to search for.
+/// @param {number} $from-index [0] - The index to search from.
 /// @returns {boolean} Returns `true` if a matching element is found, else `false`.
 /// @example scss
-/// _includes((1, 2, 3), 1);
+/// $foo: _includes((1, 2, 3), 1);
 /// // => true
-/// _includes((1, 2, 3), 1, 2);
+/// $foo: _includes((1, 2, 3), 1, 2);
 /// // => false
-/// _includes({ 'user': 'fred', 'age': 40 }, 'fred');
+/// $foo: _includes(( 'user': 'fred', 'age': 40 ), 'fred');
 /// // => true
-/// _includes('pebbles', 'eb');
+/// $foo: _includes('pebbles', 'eb');
 /// // => true
 
 @function _includes($args...) {

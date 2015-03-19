@@ -15,11 +15,14 @@
 /// of each key is the last element responsible for generating the key. The
 /// iteratee function is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
@@ -27,26 +30,13 @@
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns the composed aggregate object.
 /// @example scss
-/// $keyData: [
-///   { 'dir': 'left', 'code': 97 },
-///   { 'dir': 'right', 'code': 100 }
-/// ];
-/// _index-by(keyData, 'dir');
-/// // => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
-/// _index-by(keyData, function(object) {
-///   return String.fromCharCode(object.code);
-/// });
-/// // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
-/// _index-by(keyData, function(object) {
-///   return this.fromCharCode(object.code);
-/// }, String);
-/// // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
+/// // todo
 
 @function _index-by($args...) {
     @return call('__index-by', $args...);

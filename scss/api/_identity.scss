@@ -8,11 +8,11 @@
 ///
 /// @access public
 /// @group Utility
-/// @param {*} value Any value.
+/// @param {*} $value [null] Any value.
 /// @returns {*} Returns `$value`.
 /// @example scss
-/// $object: { 'user': 'fred' };
-/// _identity(object) === object;
+/// $map: ( 'user': 'fred' );
+/// $foo: _identity($map) == $map;
 /// // => true
 
 @function _identity($args...) {

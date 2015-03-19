@@ -94,31 +94,29 @@
 }
 
 
-/// Gets the index at which the first occurrence of `$value` is found in `$list`
-/// using `SameValueZero` for equality comparisons. If `fromIndex` is negative,
+/// Gets the index at which the first occurrence of `$value` is found in `$list`.
+/// If `$from-index` is negative,
 /// it is used as the offset from the end of `$list`. If `$list` is sorted
-/// providing `true` for `fromIndex` performs a faster binary search.
-/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
+/// providing `true` for `$from-index` performs a faster binary search.
 ///
 ///
 /// @access public
 /// @group List
 /// @param {List} $list The list to search.
-/// @param {*} value The value to search for.
-/// @param {boolean|number} $fromIndex [0] - The index to search from or `true`
+/// @param {*} $value The value to search for.
+/// @param {boolean|number} $from-index [1] - The index to search from or `true`
 ///  to perform a binary search on a sorted list.
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example scss
-/// _index-of((1, 2, 1, 2), 2);
+/// $foo: _index-of((1, 2, 1, 2), 2);
 /// // => 1
-/// // using `fromIndex`
-/// _index-of((1, 2, 1, 2), 2, 2);
+/// 
+/// // using `$from-index`
+/// $foo: _index-of((1, 2, 1, 2), 2, 2);
 /// // => 3
+/// 
 /// // performing a binary search
-/// _index-of((1, 1, 2, 2), 2, true);
+/// $foo: _index-of((1, 1, 2, 2), 2, true);
 /// // => 2
 
 @function _index-of($args...) {
@@ -133,18 +131,20 @@
 /// @access public
 /// @group List
 /// @param {List} $list The list to search.
-/// @param {*} value The value to search for.
-/// @param {boolean|number} $fromIndex [list.length-1] - The index to search from
+/// @param {*} $value The value to search for.
+/// @param {boolean|number} $from-index [length($list)] - The index to search from
 ///  or `true` to perform a binary search on a sorted list.
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example scss
-/// _last-index-of((1, 2, 1, 2), 2);
+/// $foo: _last-index-of((1, 2, 1, 2), 2);
 /// // => 3
-/// // using `fromIndex`
-/// _last-index-of((1, 2, 1, 2), 2, 2);
+/// 
+/// // using `$from-index`
+/// $foo: _last-index-of((1, 2, 1, 2), 2, 2);
 /// // => 1
+/// 
 /// // performing a binary search
-/// _last-index-of((1, 1, 2, 2), 2, true);
+/// $foo: _last-index-of((1, 1, 2, 2), 2, true);
 /// // => 3
 
 @function _last-index-of($args...) {

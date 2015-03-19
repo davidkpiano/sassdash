@@ -17,17 +17,19 @@
 
 
 /// Creates a list of function property names from all enumerable properties,
-/// own and inherited, of `object`.
+/// own and inherited, of `$map`.
 ///
 ///
 /// @alias _methods
 /// @access public
 /// @group Map
-/// @param {Map} object The object to inspect.
+/// @param {Map} $map The map to inspect.
 /// @returns {List} Returns the new list of property names.
 /// @example scss
-/// _functions(_);
-/// // => ('after', 'ary', 'assign', ...)
+/// $map: ('a': '_after', 'b': 'lighten', 'c': 'blah');
+/// 
+/// $foo: _functions($map);
+/// // => ('a', 'b')
 
 @function _functions($args...) {
     @return call('__functions', $args...);

@@ -11,18 +11,18 @@
 }
 
 
-/// Checks if `key` exists as a direct property of `object` instead of an
-/// inherited property.
+/// Checks if `$key` exists as a direct property of `$map` instead of an
+/// inherited property. Similar to Sass `map-has-key` function.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to inspect.
-/// @param {string} key The key to check.
-/// @returns {boolean} Returns `true` if `key` is a direct property, else `false`.
+/// @param {Map} $map The map to inspect.
+/// @param {string} $key The key to check.
+/// @returns {boolean} Returns `true` if `$key` is a direct property, else `false`.
 /// @example scss
-/// $object: { 'a': 1, 'b': 2, 'c': 3 };
-/// _has(object, 'b');
+/// $map: ( 'a': 1, 'b': 2, 'c': 3 );
+/// $foo: _has($map, 'b');
 /// // => true
 
 @function _has($args...) {

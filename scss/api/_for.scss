@@ -212,14 +212,7 @@
 /// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {List|Map|string} Returns `$collection`.
 /// @example scss
-/// _((1, 2)).forEach(function(n) {
-///   console.log(n);
-/// }).value();
-/// // => logs each value from left to right and returns the list
-/// _for-each({ 'a': 1, 'b': 2 }, function(n, key) {
-///   console.log(n, key);
-/// });
-/// // => logs each value-key pair and returns the object (iteration order is not guaranteed)
+/// // todo
 
 @function _for-each($args...) {
     @return call('__for-each', $args...);
@@ -234,7 +227,7 @@
 /// `$collection` from right to left.
 ///
 ///
-/// @alias _eachRight
+/// @alias _each-right
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
@@ -242,10 +235,7 @@
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
 /// @returns {List|Map|string} Returns `$collection`.
 /// @example scss
-/// _((1, 2)).forEachRight(function(n) {
-///   console.log(n);
-/// }).join(',');
-/// // => logs each value from right to left and returns the list
+/// // todo
 
 @function _for-each-right($args...) {
     @return call('__for-each-right', $args...);
@@ -259,26 +249,18 @@
 
 /// Iterates over own and inherited enumerable properties of a map invoking
 /// `$iteratee` for each property. The `$iteratee` is bound to `$this-arg` and invoked
-/// with three arguments; (value, key, object). Iterator functions may exit
+/// with three arguments; (value, key, map). Iterator functions may exit
 /// iteration early by explicitly returning `false`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to iterate over.
+/// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
-/// @returns {Map} Returns `object`.
+/// @returns {Map} Returns new map.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _for-in(new Foo, function(value, key) {
-///   console.log(key);
-/// });
-/// // => logs 'a', 'b', and 'c' (iteration order is not guaranteed)
+/// // todo
 
 @function _for-in($args...) {
     @return call('__for-in', $args...);
@@ -286,25 +268,17 @@
 
 
 /// This method is like `_for-in` except that it iterates over properties of
-/// `object` in the opposite order.
+/// `$map` in the opposite order.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to iterate over.
+/// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
-/// @returns {Map} Returns `object`.
+/// @returns {Map} Returns new map.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _for-in-right(new Foo, function(value, key) {
-///   console.log(key);
-/// });
-/// // => logs 'c', 'b', and 'a' assuming `_forIn ` logs 'a', 'b', and 'c'
+/// // todo
 
 @function _for-in-right($args...) {
     @return call('__for-in-right', $args...);
@@ -313,26 +287,18 @@
 
 /// Iterates over own enumerable properties of a map invoking `$iteratee`
 /// for each property. The `$iteratee` is bound to `$this-arg` and invoked with
-/// three arguments; (value, key, object). Iterator functions may exit iteration
+/// three arguments; (value, key, map). Iterator functions may exit iteration
 /// early by explicitly returning `false`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to iterate over.
+/// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
-/// @returns {Map} Returns `object`.
+/// @returns {Map} Returns new map.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _for-own(new Foo, function(value, key) {
-///   console.log(key);
-/// });
-/// // => logs 'a' and 'b' (iteration order is not guaranteed)
+/// // todo
 
 @function _for-own($args...) {
     @return call('__for-own', $args...);
@@ -340,25 +306,17 @@
 
 
 /// This method is like `_for-own` except that it iterates over properties of
-/// `object` in the opposite order.
+/// `$map` in the opposite order.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to iterate over.
+/// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
-/// @returns {Map} Returns `object`.
+/// @returns {Map} Returns `map`.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _for-own-right(new Foo, function(value, key) {
-///   console.log(key);
-/// });
-/// // => logs 'b' and 'a' assuming `_for-own` logs 'a' and 'b'
+/// // todo
 
 @function _for-own-right($args...) {
     @return call('__for-own-right', $args...);

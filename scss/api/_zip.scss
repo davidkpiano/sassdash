@@ -52,7 +52,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {...List} (lists) The lists to process.
+/// @param {List...} (lists) The lists to process.
 /// @returns {List} Returns the new list of grouped elements.
 /// @example scss
 /// _zip(('fred', 'barney'), (30, 40), (true, false));

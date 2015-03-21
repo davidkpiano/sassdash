@@ -28,7 +28,7 @@
 /// @group Function
 /// @param {Function} $func The function to bind.
 /// @param {*} $this-arg - The `_this` binding of `$func`.
-/// @param {...*} $args... The arguments to be partially applied.
+/// @param {*...} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new bound function.
 /// @example scss
 ///     @function greet($greeting, $punctuation) {

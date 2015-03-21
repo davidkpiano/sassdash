@@ -42,21 +42,17 @@
 }
 
 
-/// Creates a list of unique values in all provided lists using `SameValueZero`
+/// Creates a list of unique values in all provided lists
 /// for equality comparisons.
-/// ////// Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
 ///
 ///
 /// @access public
 /// @group List
-/// @param {...List} (lists) The lists to inspect.
+/// @param {List...} (lists) The lists to inspect.
 /// @returns {List} Returns the new list of shared values.
 /// @example scss
-/// _intersection((1, 2), (4, 2), (2, 1));
-/// // => (2)
+/// $foo: _intersection((1, 2), (4, 2), (2, 1));
+/// // => (2,)
 
 @function _intersection($args...) {
     @return call('__intersection', $args...);

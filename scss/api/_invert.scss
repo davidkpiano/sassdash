@@ -24,24 +24,24 @@
 }
 
 
-/// Creates a map composed of the inverted keys and values of `object`.
-/// If `object` contains duplicate values, subsequent values overwrite property
+/// Creates a map composed of the inverted keys and values of `$map`.
+/// If `$map` contains duplicate values, subsequent values overwrite property
 /// assignments of previous values unless `multiValue` is `true`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to invert.
-/// @param {boolean} (multiValue) Allow multiple values per key.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
-/// @returns {Map} Returns the new inverted object.
+/// @param {Map} $map The map to invert.
+/// @param {boolean} $multi-value [false] Allow multiple values per key.
+/// @returns {Map} Returns the new inverted map.
 /// @example scss
-/// $object: { 'a': 1, 'b': 2, 'c': 1 };
-/// _invert(object);
-/// // => { '1': 'c', '2': 'b' }
-/// // with `multiValue`
-/// _invert(object, true);
-/// // => { '1': ('a', 'c'), '2': ('b') }
+/// $map: ( 'a': 1, 'b': 2, 'c': 1 );
+/// $foo: _invert($map);
+/// // => ( '1': 'c', '2': 'b' )
+///
+/// // with `$multi-value`
+/// $foo: _invert($map, true);
+/// // => ( '1': ('a', 'c'), '2': ('b',) )
 
 @function _invert($args...) {
     @return call('__invert', $args...);

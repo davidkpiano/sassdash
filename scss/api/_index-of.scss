@@ -109,15 +109,15 @@
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example scss
 /// $foo: _index-of((1, 2, 1, 2), 2);
-/// // => 1
+/// // => 2
 /// 
 /// // using `$from-index`
-/// $foo: _index-of((1, 2, 1, 2), 2, 2);
-/// // => 3
+/// $foo: _index-of((1, 2, 1, 2), 2, 3);
+/// // => 4
 /// 
 /// // performing a binary search
-/// $foo: _index-of((1, 1, 2, 2), 2, true);
-/// // => 2
+/// $foo: _index-of((1, 1, 2, 2), 3, true);
+/// // => 3
 
 @function _index-of($args...) {
     @return call('__index-of', $args...);
@@ -137,15 +137,15 @@
 /// @returns {number} Returns the index of the matched value, else `-1`.
 /// @example scss
 /// $foo: _last-index-of((1, 2, 1, 2), 2);
-/// // => 3
+/// // => 4
 /// 
 /// // using `$from-index`
 /// $foo: _last-index-of((1, 2, 1, 2), 2, 2);
-/// // => 1
+/// // => 2
 /// 
 /// // performing a binary search
 /// $foo: _last-index-of((1, 1, 2, 2), 2, true);
-/// // => 3
+/// // => 4
 
 @function _last-index-of($args...) {
     @return call('__last-index-of', $args...);

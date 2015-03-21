@@ -143,37 +143,24 @@
 /// equivalent. If `$customizer` is provided it is invoked to compare values.
 /// If `$customizer` returns `undefined` comparisons are handled by the method
 /// instead. The `$customizer` is bound to `$this-arg` and invoked with three
-/// arguments; (value, other (, index|key)).
-/// **Note:** This method supports comparing lists, booleans, `Date` objects,
-/// numbers, `Object` objects, regexes, and strings. Objects are compared by
-/// their own, not inherited, enumerable properties. Functions and DOM nodes
-/// are/// not** supported. Provide a customizer function to extend support
-/// for comparing other values.
+/// arguments; (value, other, (index|key)).
 ///
 ///
 /// @access public
 /// @group Lang
-/// @param {*} value The value to compare.
-/// @param {*} other The other value to compare.
-/// @param {Function} (customizer) The function to customize comparing values.
+/// @param {*} $value The value to compare.
+/// @param {*} $other The other value to compare.
+/// @param {Function} $customizer [null] The function to customize comparing values.
 /// @param {*} $this-arg - The `_this` binding of `$customizer`.
 /// @returns {boolean} Returns `true` if the values are equivalent, else `false`.
 /// @example scss
-/// $object: { 'user': 'fred' };
-/// $other: { 'user': 'fred' };
-/// object == other;
-/// // => false
-/// _is-equal(object, other);
-/// // => true
-/// // using a customizer callback
-/// $list: ('hello', 'goodbye');
-/// $other: ('hi', 'goodbye');
-/// _is-equal(list, other, function(value, other) {
-///   if (_every((value, other), RegExp.prototype.test, /^h(?:i|ello)$/)) {
-///     return true;
-///   }
-/// });
-/// // => true
+///     $object: ( 'user': 'fred' );
+///     $other: ( 'user': 'fred' );
+///     $foo: _is-equal($object, $other);
+///     // => true
+///     
+///     // using a customizer callback
+///     // todo
 
 @function _is-equal($args...) {
     @return call('__is-equal', $args...);

@@ -19,26 +19,29 @@
 }
 
 
-/// Checks if a value is empty. A value is considered empty unless it is an
-/// `arguments` object, list, string, or jQuery-like collection with a length
-/// greater than `0` or a map with own enumerable properties.
+/// Checks if a value is empty.
 ///
 ///
 /// @access public
 /// @group Lang
-/// @param {List|Map|string} value The value to inspect.
+/// @param {List|Map|string} $value The value to inspect.
 /// @returns {boolean} Returns `true` if `$value` is empty, else `false`.
 /// @example scss
-/// _is-empty(null);
+/// $foo: _is-empty(null);
 /// // => true
-/// _is-empty(true);
+///
+/// $foo: _is-empty(true);
 /// // => true
-/// _is-empty(1);
+///
+/// $foo: _is-empty(1);
 /// // => true
-/// _is-empty((1, 2, 3));
+///
+/// $foo: _is-empty((1, 2, 3));
 /// // => false
-/// _is-empty({ 'a': 1 });
+///
+/// $foo: _is-empty(( 'a': 1 ));
 /// // => false
+///
 
 @function _is-empty($args...) {
     @return call('__is-empty', $args...);

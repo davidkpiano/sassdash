@@ -1,4 +1,6 @@
-@function __string-split($string, $delimiter: '') {
+@function __string-split($string, $delimiter: '', $args...) {
+    $string: __to-string($string);
+
     @if not $delimiter
     or length($delimiter) == 0
     or $delimiter == '' {
@@ -18,4 +20,8 @@
             $delimiter
         )
     );
+}
+
+@function _split($args...) {
+    @return call('__string-split', $args...);
 }

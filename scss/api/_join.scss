@@ -24,7 +24,19 @@
     @return __list-join($list, $separator);
 }
 
-
+/// Joins a single list into a string, 
+/// similar to the native JavaScript `Array.prototype.join()`.
+/// 
+/// **NOTE:** This is not the same as the native Sass `join()` function.
+/// 
+/// @access public
+/// @group List
+/// @param {List} $list The list containing elements to join.
+/// @param {String} $separator [''] The string separator.
+/// @returns {String} Returns the joined list as a string.
+/// @example scss
+/// $foo: _join('a' 'b' 'c', '--');
+/// // => 'a--b--c'
 @function _join($args...) {
     @return call('__join', $args...);
 }

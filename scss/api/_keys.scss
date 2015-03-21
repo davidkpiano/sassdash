@@ -1,8 +1,3 @@
-@function __keys($map: null) {
-    // currently the same as __keys-in
-    @return __keys-in($map);
-}
-
 
 @function __keys-in($map: null) {
     @if __is-falsey($map) {
@@ -10,54 +5,43 @@
     }
 
     $map: __to-map($map);
-    $skip-keys: ('_type', '_constructor', '_extends', '_prototype');
+    $skip-keys: __const('CONSTRUCTOR_KEYS');
 
     @return __without(map-keys($map), $skip-keys...);
 }
 
 
-/// Creates a list of the own enumerable property names of `object`.
-/// **Note:** Non-object values are coerced to objects. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.keys)
-/// for more details.
+@function __keys($map: null) {
+    // currently the same as __keys-in
+    @return __keys-in($map);
+}
+
+
+/// Creates a list of the own enumerable keys of `$map`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to inspect.
-/// @returns {List} Returns the list of property names.
+/// @param {Map} $map The map to inspect.
+/// @returns {List} Returns the list of keys.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _keys(new Foo);
-/// // => ('a', 'b') (iteration order is not guaranteed)
-/// _keys('hi');
-/// // => ('0', '1')
+/// // todo
 
 @function _keys($args...) {
     @return call('__keys', $args...);
 }
 
 
-/// Creates a list of the own and inherited enumerable property names of `object`.
-/// **Note:** Non-object values are coerced to objects.
+/// Creates a list of the own and inherited enumerable keys of `map`.
+/// **Note:** Non-map values are coerced to maps.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to inspect.
-/// @returns {List} Returns the list of property names.
+/// @param {Map} $map The map to inspect.
+/// @returns {List} Returns the list of keys.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _keys-in(new Foo);
-/// // => ('a', 'b', 'c') (iteration order is not guaranteed)
+/// // todo
 
 @function _keys-in($args...) {
     @return call('__keys-in', $args...);

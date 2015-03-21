@@ -114,46 +114,34 @@
 }
 
 
-/// Recursively merges own enumerable properties of the source object(s), that
-/// don't resolve to `undefined` into the destination object. Subsequent sources
+/// Recursively merges own enumerable properties of the source map(s), that
+/// don't resolve to `undefined` into the destination map. Subsequent sources
 /// overwrite property assignments of previous sources. If `$customizer` is
-/// provided it is invoked to produce the merged values of the destination and
+/// provided, it is invoked to produce the merged values of the destination and
 /// source properties. If `$customizer` returns `undefined` merging is handled
 /// by the method instead. The `$customizer` is bound to `$this-arg` and invoked
-/// with five arguments; (objectValue, $map-value, key, object, source).
+/// with five arguments; (source-value, other-value, key, map, source).
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The destination object.
-/// @param {...Map} (sources) The source objects.
+/// @param {Map} $map The destination map.
+/// @param {Map...} $source... The source maps.
 /// @param {Function} $customizer [null] The function to customize merging properties.
-/// @param {*} $this-arg - The `_this` binding of `$customizer`.
-/// @returns {Map} Returns `object`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$customizer`.
+/// @returns {Map} Returns `map`.
 /// @example scss
-/// $users: {
-///   'data': ({ 'user': 'barney' }, { 'user': 'fred' })
-/// };
-/// $ages: {
-///   'data': ({ 'age': 36 }, { 'age': 40 })
-/// };
-/// _merge($users, ages);
-/// // => { 'data': ({ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }) }
+/// $users: (
+///   'data': (( 'user': 'barney' ), ( 'user': 'fred' ))
+/// );
+/// $ages: (
+///   'data': (( 'age': 36 ), ( 'age': 40 ))
+/// );
+/// $foo: _merge($users, ages);
+/// // => ( 'data': (( 'user': 'barney', 'age': 36 ), ( 'user': 'fred', 'age': 40 )) )
+/// 
 /// // using a customizer callback
-/// $object: {
-///   'fruits': ('apple'),
-///   'vegetables': ('beet')
-/// };
-/// $other: {
-///   'fruits': ('banana'),
-///   'vegetables': ('carrot')
-/// };
-/// _merge(object, other, function(a, b) {
-///   if (_is-list(a)) {
-///     return a.concat(b);
-///   }
-/// });
-/// // => { 'fruits': ('apple', 'banana'), 'vegetables': ('beet', 'carrot') }
+/// // todo
 
 @function _merge($args...) {
     @return call('__merge', $args...);

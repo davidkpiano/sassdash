@@ -10,8 +10,8 @@
 /// @access public
 /// @group Utility
 /// @example scss
-/// $object: { 'user': 'fred' };
-/// _noop(object) === null;
+/// $map: ( 'user': 'fred' );
+/// $foo: _noop($map) == null;
 /// // => true
 
 @function _noop($args...) {

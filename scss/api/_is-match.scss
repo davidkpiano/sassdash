@@ -85,37 +85,31 @@
 }
 
 
-/// Performs a deep comparison between `object` and `source` to determine if
-/// `object` contains equivalent property values. If `$customizer` is provided
+/// Performs a deep comparison between `$map` and `source` to determine if
+/// `$map` contains equivalent property values. If `$customizer` is provided
 /// it is invoked to compare values. If `$customizer` returns `undefined`
 /// comparisons are handled by the method instead. The `$customizer` is bound
 /// to `$this-arg` and invoked with three arguments; (value, other, index|key).
-/// **Note:** This method supports comparing properties of lists, booleans,
-/// `Date` objects, numbers, `Object` objects, regexes, and strings. Functions
-/// and DOM nodes are/// not** supported. Provide a customizer function to extend
-/// support for comparing other values.
 ///
 ///
 /// @access public
 /// @group Lang
-/// @param {Map} object The object to inspect.
-/// @param {Map} source The object of property values to match.
-/// @param {Function} (customizer) The function to customize comparing values.
+/// @param {Map} $map The map to inspect.
+/// @param {Map} $source The map of property values to match.
+/// @param {Function} $customizer [null] The function to customize comparing values.
 /// @param {*} $this-arg - The `_this` binding of `$customizer`.
-/// @returns {boolean} Returns `true` if `object` is a match, else `false`.
+/// @returns {boolean} Returns `true` if `$map` is a match, else `false`.
 /// @example scss
-/// $object: { 'user': 'fred', 'age': 40 };
-/// _is-match(object, { 'age': 40 });
+/// $map: ( 'user': 'fred', 'age': 40 );
+/// 
+/// _is-match($map, ( 'age': 40 ));
 /// // => true
-/// _is-match(object, { 'age': 36 });
+/// 
+/// _is-match($map, ( 'age': 36 ));
 /// // => false
+/// 
 /// // using a customizer callback
-/// $object: { 'greeting': 'hello' };
-/// $source: { 'greeting': 'hi' };
-/// _is-match(object, source, function(value, other) {
-///   return _every((value, other), RegExp.prototype.test, /^h(?:i|ello)$/) || undefined;
-/// });
-/// // => true
+/// // todo
 
 @function _is-match($args...) {
     @return call('__is-match', $args...);

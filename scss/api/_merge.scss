@@ -127,7 +127,7 @@
 /// @group Map
 /// @param {Map} object The destination object.
 /// @param {...Map} (sources) The source objects.
-/// @param {Function} (customizer) The function to customize merging properties.
+/// @param {Function} $customizer [null] The function to customize merging properties.
 /// @param {*} $this-arg - The `_this` binding of `$customizer`.
 /// @returns {Map} Returns `object`.
 /// @example scss

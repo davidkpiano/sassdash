@@ -23,10 +23,12 @@
 /// @param {List} $list The list of grouped elements to process.
 /// @returns {List} Returns the new list of regrouped elements.
 /// @example scss
+/// 
 /// $zipped: _zip(('fred', 'barney'), (30, 40), (true, false));
-/// // => [('fred', 30, true), ('barney', 40, false)]
-/// _unzip(zipped);
-/// // => [('fred', 'barney'), (30, 40), (true, false)]
+/// // => (('fred', 30, true), ('barney', 40, false))
+/// 
+/// $unzipped: _unzip($zipped);
+/// // => (('fred', 'barney'), (30, 40), (true, false))
 
 @function _unzip($args...) {
     @return call('__unzip', $args...);

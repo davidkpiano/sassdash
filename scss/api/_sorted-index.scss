@@ -72,39 +72,40 @@
 /// function is provided it is invoked for `$value` and each element of `$list`
 /// to compute their sort ranking. The iteratee is bound to `$this-arg` and
 /// invoked with one argument; (value).
-/// /// If a property name is provided for `$predicate` the created `_property`
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// /// If a value is also provided for `$this-arg` the created `_matches-property`
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// /// If a map is provided for `$predicate` the created `_matches` style
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// ///
+///
 ///
 /// @access public
 /// @group List
 /// @param {List} $list The sorted list to inspect.
-/// @param {*} value The value to evaluate.
+/// @param {*} $value The value to evaluate.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [NULL] - The `_this` binding of `$iteratee`.
 /// @returns {number} Returns the index at which `$value` should be inserted
 ///  into `$list`.
 /// @example scss
-/// /// _sorted-index((30, 50), 40);
-/// // => 1
-/// /// _sorted-index((4, 4, 5, 5), 5);
+/// $foo: _sorted-index((30, 50), 40);
 /// // => 2
-/// /// $dict: { 'data': { 'thirty': 30, 'forty': 40, 'fifty': 50 } };
-/// /// // using an iteratee function
-/// _sorted-index(('thirty', 'fifty'), 'forty', function(word) {
-///   return this.data(word);
-/// }, dict);
-/// // => 1
-/// /// // using the `_property` callback shorthand
-/// _sorted-index(({ 'x': 30 }, { 'x': 50 }), { 'x': 40 }, 'x');
-/// // => 1
+/// 
+/// $foo: _sorted-index((4, 4, 5, 5), 5);
+/// // => 3
+/// 
+/// $dict: { 'data': { 'thirty': 30, 'forty': 40, 'fifty': 50 } };
+///
+/// // using the `_property` callback shorthand
+/// $foo: _sorted-index((( 'x': 30 ), ( 'x': 50 )), ( 'x': 40 ), 'x');
+/// // => 2
 
 @function _sorted-index($args...) {
     @return call('__sorted-index', $args...);
@@ -114,20 +115,20 @@
 /// This method is like `_sorted-index` except that it returns the highest
 /// index at which `$value` should be inserted into `$list` in order to
 /// maintain its sort order.
-/// ///
+///
 ///
 /// @access public
 /// @group List
 /// @param {List} $list The sorted list to inspect.
-/// @param {*} value The value to evaluate.
+/// @param {*} $value The value to evaluate.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
 /// @returns {number} Returns the index at which `$value` should be inserted
 ///  into `$list`.
 /// @example scss
-/// /// _sorted-last-index((4, 4, 5, 5), 5);
-/// // => 4
+/// $foo: _sorted-last-index((4, 4, 5, 5), 5);
+/// // => 5
 
 @function _sorted-last-index($args...) {
     @return call('__sorted-last-index', $args...);

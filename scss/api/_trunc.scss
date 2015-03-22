@@ -47,38 +47,35 @@
 }
 
 
-/// Truncates `string` if it is longer than the given maximum string length.
+/// Truncates `$string` if it is longer than the given maximum string length.
 /// The last characters of the truncated string are replaced with the omission
 /// string which defaults to "...".
-/// ///
+///
 ///
 /// @access public
 /// @group String
 /// @param {string} $string [''] - The string to truncate.
-/// @param {Map|number} (options) The options object or maximum string length.
-/// @param {number} $options.length [30] - The maximum string length.
-/// @param {string} $options.omission ['...'] - The string to indicate text is omitted.
-/// @param {RegExp|string} (options.separator) The separator pattern to truncate to.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
+/// @param {Map|number} $options [null] - The options object or maximum string length.
+/// @param {number} $length [30] - The maximum string length.
+/// @param {string} $omission ['...'] - The string to indicate text is omitted.
+/// @param {string} $separator [null] - The separator pattern to truncate to.
 /// @returns {string} Returns the truncated string.
 /// @example scss
-/// /// _trunc('hi-diddly-ho there, neighborino');
+/// $foo: _trunc('hi-diddly-ho there, neighborino');
 /// // => 'hi-diddly-ho there, neighbo...'
-/// /// _trunc('hi-diddly-ho there, neighborino', 24);
+/// 
+/// $foo: _trunc('hi-diddly-ho there, neighborino', 24);
 /// // => 'hi-diddly-ho there, n...'
-/// /// _trunc('hi-diddly-ho there, neighborino', {
-///   'length': 24,
-///   'separator': ' '
-/// });
+/// 
+/// $foo: _trunc('hi-diddly-ho there, neighborino',
+///   $length: 24,
+///   $separator: ' '
+/// );
 /// // => 'hi-diddly-ho there,...'
-/// /// _trunc('hi-diddly-ho there, neighborino', {
-///   'length': 24,
-///   'separator': /,? +/
-/// });
-/// //=> 'hi-diddly-ho there...'
-/// /// _trunc('hi-diddly-ho there, neighborino', {
-///   'omission': ' (...)'
-/// });
+///
+/// $foo: _trunc('hi-diddly-ho there, neighborino', 
+///   $omission: ' (...)'
+/// );
 /// // => 'hi-diddly-ho there, neig (...)'
 
 @function _trunc($args...) {

@@ -40,14 +40,10 @@
 /// @access public
 /// @group String
 /// @param {string} $string [''] - The string to inspect.
-/// @param {RegExp|string} (pattern) The pattern to match words.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the words of `$string`.
 /// @example scss
-/// /// _words('fred, barney, & pebbles');
+/// $foo: _words('fred, barney, & pebbles');
 /// // => ('fred', 'barney', 'pebbles')
-/// /// _words('fred, barney, & pebbles', /(^, )+/g);
-/// // => ('fred', 'barney', '&', 'pebbles')
 
 @function _words($args...) {
     @return call('__words', $args...);

@@ -3,22 +3,17 @@
 }
 
 
-/// Creates a list excluding all provided values using `SameValueZero` for
-/// equality comparisons.
-/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
+/// Creates a list excluding all provided values.
 ///
 ///
 /// @access public
 /// @group List
 /// @param {List} $list The list to filter.
-/// @param {*...} (values) The values to exclude.
+/// @param {*...} $values... The values to exclude.
 /// @returns {List} Returns the new list of filtered values.
 /// @example scss
-/// _without((1, 2, 1, 3), 1, 2);
-/// // => (3)
+/// $foo: _without((1, 2, 1, 3), 1, 2);
+/// // => (3,)
 
 @function _without($args...) {
     @return call('__without', $args...);

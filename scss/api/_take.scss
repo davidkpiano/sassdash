@@ -79,17 +79,16 @@
 /// @group List
 /// @param {List} $list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _take((1, 2, 3));
-/// // => (1)
-/// _take((1, 2, 3), 2);
+/// $foo: _take((1, 2, 3));
+/// // => (1,)
+/// $foo: _take((1, 2, 3), 2);
 /// // => (1, 2)
-/// _take((1, 2, 3), 5);
+/// $foo: _take((1, 2, 3), 5);
 /// // => (1, 2, 3)
-/// _take((1, 2, 3), 0);
-/// // => []
+/// $foo: _take((1, 2, 3), 0);
+/// // => ()
 
 @function _take($args...) {
     @return call('__take', $args...);
@@ -103,17 +102,16 @@
 /// @group List
 /// @param {List} $list The list to query.
 /// @param {number} $n [1] - The number of elements to take.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _take-right((1, 2, 3));
-/// // => (3)
-/// _take-right((1, 2, 3), 2);
+/// $foo: _take-right((1, 2, 3));
+/// // => (3,)
+/// $foo: _take-right((1, 2, 3), 2);
 /// // => (2, 3)
-/// _take-right((1, 2, 3), 5);
+/// $foo: _take-right((1, 2, 3), 5);
 /// // => (1, 2, 3)
-/// _take-right((1, 2, 3), 0);
-/// // => []
+/// $foo: _take-right((1, 2, 3), 0);
+/// // => ()
 
 @function _take-right($args...) {
     @return call('__take-right', $args...);
@@ -123,11 +121,14 @@
 /// Creates a slice of `$list` with elements taken from the end. Elements are
 /// taken until `$predicate` returns falsey. The predicate is bound to `$this-arg`
 /// and invoked with three arguments; (value, index, list).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
@@ -141,24 +142,23 @@
 /// @param {*} $this-arg - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _take-right-while((1, 2, 3), function(n) {
-///   return n > 1;
-/// });
-/// // => (2, 3)
-/// $users: [
-///   { 'user': 'barney',  'active': true },
-///   { 'user': 'fred',    'active': false },
-///   { 'user': 'pebbles', 'active': false }
-/// ];
+/// $users: (
+///   ( 'user': 'barney',  'active': true ),
+///   ( 'user': 'fred',    'active': false ),
+///   ( 'user': 'pebbles', 'active': false )
+/// );
+/// 
 /// // using the `_matches` callback shorthand
-/// _pluck(_take-right-while($users, { 'user': 'pebbles', 'active': false }), 'user');
-/// // => ('pebbles')
+/// $foo: _pluck(_take-right-while($users, ( 'user': 'pebbles', 'active': false )), 'user');
+/// // => ('pebbles',)
+/// 
 /// // using the `_matches-property` callback shorthand
-/// _pluck(_take-right-while($users, 'active', false), 'user');
+/// $foo: _pluck(_take-right-while($users, 'active', false), 'user');
 /// // => ('fred', 'pebbles')
+/// 
 /// // using the `_property` callback shorthand
-/// _pluck(_take-right-while($users, 'active'), 'user');
-/// // => []
+/// $foo: _pluck(_take-right-while($users, 'active'), 'user');
+/// // => ()
 
 @function _take-right-while($args...) {
     @return call('__take-right-while', $args...);
@@ -168,11 +168,14 @@
 /// Creates a slice of `$list` with elements taken from the beginning. Elements
 /// are taken until `$predicate` returns falsey. The predicate is bound to
 /// `$this-arg` and invoked with three arguments; (value, index, list).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
@@ -186,24 +189,22 @@
 /// @param {*} $this-arg - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _take-while((1, 2, 3), function(n) {
-///   return n < 3;
-/// });
-/// // => (1, 2)
-/// $users: [
-///   { 'user': 'barney',  'active': false },
-///   { 'user': 'fred',    'active': false},
-///   { 'user': 'pebbles', 'active': true }
-/// ];
+/// $users: (
+///   ( 'user': 'barney',  'active': false ),
+///   ( 'user': 'fred',    'active': false ),
+///   ( 'user': 'pebbles', 'active': true )
+/// );
 /// // using the `_matches` callback shorthand
-/// _pluck(_take-while($users, { 'user': 'barney', 'active': false }), 'user');
-/// // => ('barney')
+/// $foo: _pluck(_take-while($users, ( 'user': 'barney', 'active': false )), 'user');
+/// // => ('barney',)
+/// 
 /// // using the `_matches-property` callback shorthand
-/// _pluck(_take-while($users, 'active', false), 'user');
+/// $foo: _pluck(_take-while($users, 'active', false), 'user');
 /// // => ('barney', 'fred')
+/// 
 /// // using the `_property` callback shorthand
-/// _pluck(_take-while($users, 'active'), 'user');
-/// // => []
+/// $foo: _pluck(_take-while($users, 'active'), 'user');
+/// // => ()
 
 @function _take-while($args...) {
     @return call('__take-while', $args...);

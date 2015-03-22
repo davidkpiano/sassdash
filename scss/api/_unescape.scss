@@ -33,16 +33,14 @@
 /// The inverse of `_escape`; this method converts the HTML entities
 /// `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to their
 /// corresponding characters.
-/// /// **Note:** No other HTML entities are unescaped. To unescape additional HTML
-/// entities use a third-party library like [_he_](https://mths.be/he).
-/// ///
+/// **Note:** No other HTML entities are unescaped.
 ///
 /// @access public
 /// @group String
 /// @param {string} $string [''] - The string to unescape.
 /// @returns {string} Returns the unescaped string.
 /// @example scss
-/// /// _unescape('fred, barney, &amp; pebbles');
+/// $foo: _unescape('fred, barney, &amp; pebbles');
 /// // => 'fred, barney, & pebbles'
 
 @function _unescape($args...) {

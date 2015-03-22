@@ -4,28 +4,24 @@
 
 
 /// Performs a deep comparison between each element in `$collection` and the
-/// source object, returning a list of all elements that have equivalent
+/// source map, returning a list of all elements that have equivalent
 /// property values.
-/// **Note:** This method supports comparing lists, booleans, `Date` objects,
-/// numbers, `Object` objects, regexes, and strings. Objects are compared by
-/// their own, not inherited, enumerable properties. For comparing a single
-/// own or inherited property value see `_matches-property`.
 ///
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to search.
-/// @param {Map} source The object of property values to match.
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {Map} $source The map of property values to match.
 /// @returns {List} Returns the new filtered list.
 /// @example scss
-/// $users: [
-///   { 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy') },
-///   { 'user': 'fred',   'age': 40, 'active': true, 'pets': ('baby puss', 'dino') }
-/// ];
-/// _pluck(_where($users, { 'age': 36, 'active': false }), 'user');
-/// // => ('barney')
-/// _pluck(_where($users, { 'pets': ('dino') }), 'user');
-/// // => ('fred')
+/// $users: (
+///   ( 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy',) ),
+///   ( 'user': 'fred',   'age': 40, 'active': true, 'pets': ('baby puss', 'dino') )
+/// );
+/// $foo: _pluck(_where($users, ( 'age': 36, 'active': false )), 'user');
+/// // => ('barney',)
+/// $foo: _pluck(_where($users, ( 'pets': ('dino',) )), 'user');
+/// // => ('fred',)
 
 @function _where($args...) {
     @return call('__where', $args...);

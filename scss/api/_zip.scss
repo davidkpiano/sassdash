@@ -52,31 +52,31 @@
 ///
 /// @access public
 /// @group List
-/// @param {List...} (lists) The lists to process.
+/// @param {List...} $lists... The lists to process.
 /// @returns {List} Returns the new list of grouped elements.
 /// @example scss
-/// _zip(('fred', 'barney'), (30, 40), (true, false));
-/// // => [('fred', 30, true), ('barney', 40, false)]
+/// $foo: _zip(('fred', 'barney'), (30, 40), (true, false));
+/// // => (('fred', 30, true), ('barney', 40, false))
 
 @function _zip($args...) {
     @return call('__zip', $args...);
 }
 
-///
+
 /// Creates a map composed from lists of property names and values. Provide
-/// either a single two dimensional list, e.g. `[(key1, value1), (key2, value2)]`
+/// either a single two dimensional list, e.g. `(($key1, $value1), ($key2, $value2))`
 /// or two lists, one of property names and one of corresponding values.
 ///
 ///
 /// @alias _object
 /// @access public
 /// @group List
-/// @param {List} props The property names.
-/// @param {List} [values=[]] The property values.
-/// @returns {Map} Returns the new object.
+/// @param {List} $props The property names.
+/// @param {List} $values [()] The property values.
+/// @returns {Map} Returns the new map.
 /// @example scss
-/// _zip-object(('fred', 'barney'), (30, 40));
-/// // => { 'fred': 30, 'barney': 40 }
+/// $foo: _zip-map(('fred', 'barney'), (30, 40));
+/// // => ( 'fred': 30, 'barney': 40 )
 
 @function _zip-map($args...) {
     @return call('__zip-map', $args...);

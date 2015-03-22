@@ -20,6 +20,16 @@
 }
 
 
+/// Converts `$value` to a string.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to convert.
+/// @returns {String} Returns the converted string.
+/// @example scss
+/// $foo: _to-string(123);
+/// // => '123'
+
 @function _to-string($args...) {
     @return call('__to-string', $args...);
 }

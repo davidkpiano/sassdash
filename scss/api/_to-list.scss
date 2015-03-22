@@ -35,13 +35,13 @@
 ///
 /// @access public
 /// @group Lang
-/// @param {*} value The value to convert.
+/// @param {*} $value The value to convert.
 /// @returns {List} Returns the converted list.
 /// @example scss
-/// (function() {
-///   return _to-list(arguments).slice(1);
-/// }(1, 2, 3));
-/// // => (2, 3)
+/// $map: ('a': 1, 'b': 2, 'c': 3);
+/// 
+/// $foo: _to-list($map);
+/// // => 1, 2, 3
 
 @function _to-list($args...) {
     @return call('__to-list', $args...);

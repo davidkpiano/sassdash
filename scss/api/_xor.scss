@@ -24,10 +24,10 @@
 ///
 /// @access public
 /// @group List
-/// @param {List...} (lists) The lists to inspect.
+/// @param {List...} $lists The lists to inspect.
 /// @returns {List} Returns the new list of values.
 /// @example scss
-/// _xor((1, 2), (4, 2));
+/// $foo: _xor((1, 2), (4, 2));
 /// // => (1, 4)
 
 @function _xor($args...) {

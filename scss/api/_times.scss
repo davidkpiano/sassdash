@@ -1,4 +1,4 @@
-@function __times($n, $iteratee: '__identity', $this-arg: null) {
+@function __times($n: null, $iteratee: '__identity', $this-arg: null) {
     $n: if(__is-falsey($n), 0, $n);
     $index: 1;
     $result: ();
@@ -20,21 +20,13 @@
 ///
 /// @access public
 /// @group Utility
-/// @param {number} n The number of times to invoke `$iteratee`.
+/// @param {number} $n [0] - The number of times to invoke `$iteratee`.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {List} Returns the list of results.
 /// @example scss
-/// $diceRolls: _times(3, _partial(_random, 1, 6, false));
+/// $dice-rolls: _times(3, _partial(_random, 1, 6, false));
 /// // => (3, 6, 4)
-/// _times(3, function(n) {
-///   mage.castSpell(n);
-/// });
-/// // => invokes `mage.castSpell(n)` three times with `$n` of `0`, `1`, and `2` respectively
-/// _times(3, function(n) {
-///   this.cast(n);
-/// }, mage);
-/// // => also invokes `mage.castSpell(n)` three times
 
 @function _times($args...) {
     @return call('__times', $args...);

@@ -23,24 +23,15 @@
 }
 
 
-/// Creates a list of the own enumerable property values of `object`.
-/// **Note:** Non-object values are coerced to objects.
+/// Creates a list of the own enumerable property values of `$map`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to query.
+/// @param {Map} $map The map to query.
 /// @returns {List} Returns the list of property values.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _values(new Foo);
-/// // => (1, 2) (iteration order is not guaranteed)
-/// _values('hi');
-/// // => ('h', 'i')
+/// // todo
 
 @function _values($args...) {
     @return call('__values', $args...);
@@ -48,22 +39,15 @@
 
 
 /// Creates a list of the own and inherited enumerable property values
-/// of `object`.
-/// **Note:** Non-object values are coerced to objects.
+/// of `$map`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to query.
+/// @param {Map} $map The map to query.
 /// @returns {List} Returns the list of property values.
 /// @example scss
-/// function Foo() {
-///   this.a = 1;
-///   this.b = 2;
-/// }
-/// Foo.prototype.c = 3;
-/// _values-in(new Foo);
-/// // => (1, 2, 3) (iteration order is not guaranteed)
+/// // todo
 
 @function _values-in($args...) {
     @return call('__values-in', $args...);

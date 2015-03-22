@@ -32,48 +32,43 @@
 }
 
 
-/// Creates a duplicate-value-free version of a list using `SameValueZero`
-/// for equality comparisons. Providing `true` for `isSorted` performs a faster
-/// search algorithm for sorted lists. If an iteratee function is provided it
+/// Creates a duplicate-value-free version of a list.
+/// 
+/// If an iteratee function is provided it
 /// is invoked for each value in the list to generate the criterion by which
 /// uniqueness is computed. The `$iteratee` is bound to `$this-arg` and invoked
 /// with three arguments; (value, index, list).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
 ///
 ///
 /// @alias _unique
 /// @access public
 /// @group List
 /// @param {List} $list The list to inspect.
-/// @param {boolean} (isSorted) Specify the list is sorted.
-/// @param {Function|Map|string} $iteratee - The function invoked per iteration.
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$iteratee`.
 /// @returns {List} Returns the new duplicate-value-free list.
 /// @example scss
-/// _uniq((1, 2, 1));
+/// $foo: _uniq((1, 2, 1));
 /// // => (1, 2)
-/// // using `isSorted`
-/// _uniq((1, 1, 2), true);
-/// // => (1, 2)
+///
 /// // using an iteratee function
-/// _uniq((1, 2.5, 1.5, 2), function(n) {
-///   return this.floor(n);
-/// }, Math);
+/// $foo: _uniq((1, 2.5, 1.5, 2), floor);
 /// // => (1, 2.5)
+/// 
 /// // using the `_property` callback shorthand
-/// _uniq(({ 'x': 1 }, { 'x': 2 }, { 'x': 1 }), 'x');
-/// // => ({ 'x': 1 }, { 'x': 2 })
+/// $foo: _uniq((( 'x': 1 ), ( 'x': 2 ), ( 'x': 1 )), 'x');
+/// // => (( 'x': 1 ), ( 'x': 2 ))
 
 @function _uniq($args...) {
     @return call('__uniq', $args...);

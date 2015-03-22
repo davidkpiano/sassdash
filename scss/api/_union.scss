@@ -3,20 +3,15 @@
 }
 
 
-/// Creates a list of unique values, in order, of the provided lists using
-/// `SameValueZero` for equality comparisons.
-/// **Note:** `SameValueZero` comparisons are like strict equality comparisons,
-/// e.g. `===`, except that `NaN` matches `NaN`. See the
-/// [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)
-/// for more details.
+/// Creates a list of unique values, in order.
 ///
 ///
 /// @access public
 /// @group List
-/// @param {List...} (lists) The lists to inspect.
+/// @param {List...} $lists... The lists to inspect.
 /// @returns {List} Returns the new list of combined values.
 /// @example scss
-/// _union((1, 2), (4, 2), (2, 1));
+/// $foo: _union((1, 2), (4, 2), (2, 1));
 /// // => (1, 2, 4)
 
 @function _union($args...) {

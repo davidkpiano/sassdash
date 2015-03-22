@@ -41,6 +41,28 @@
     @return $multiplier * $result;
 }
 
+/// Parses a string argument and returns an integer of the specified radix
+/// (the base in mathematical numerical systems).
+/// 
+/// Similar to native JavaScript [parseInt() function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt).
+/// 
+/// @access public
+/// @group Number
+/// @param {String} $string The value to parse. If string is not a string,
+///  then it is converted to one. Leading whitespace in the string is ignored.
+/// @param {Number} $radix An integer between 2 and 36 that represents the radix
+///  (the base in mathematical numeral systems) of the above mentioned string. 
+/// @returns {Number} Returns the string converted to an integer, or `null`.
+/// @example scss
+/// 
+/// $foo: _parse-int('10');
+/// // => 10
+/// 
+/// $foo: _parse-int('#000020');
+/// // => 32
+/// 
+/// $foo: _parse-int('    123');
+/// // => 123
 
 @function _parse-int($args...) {
     @return call('__parse-int', $args...);

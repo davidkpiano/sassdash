@@ -69,7 +69,6 @@
 /// object, else `false`.
 /// 
 ///
-/// @alias _any
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection - The collection to iterate over.
@@ -103,6 +102,8 @@
     @return call('__some', $args...);
 }
 
+
+/// @alias _some
 
 @function _any($args...) {
     @return call('__some', $args...);

@@ -94,7 +94,6 @@
 /// Many lodash methods are guarded to work as interatees for methods like
 /// `_every`, `_filter`, `_map`, `_map-values`, `_reject`, and `_some`.
 ///
-/// @alias _collect
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
@@ -126,6 +125,8 @@
     @return call('__map', $args...);
 }
 
+
+/// @alias _map
 
 @function _collect($args...) {
     @return call('__map', $args...);

@@ -85,7 +85,6 @@
 /// value. The `$iteratee` is bound to `$this-arg`and invoked with four arguments;
 /// (accumulator, value, index|key, collection).
 ///
-/// @alias _foldl, _inject
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
@@ -101,10 +100,14 @@
 }
 
 
+/// @alias _reduce
+
 @function _foldl($args...) {
     @return call('__reduce', $args...);
 }
 
+
+/// @alias _reduce
 
 @function _inject($args...) {
     @return call('__reduce', $args...);
@@ -115,7 +118,6 @@
 /// `$collection` from right to left.
 ///
 ///
-/// @alias _foldr
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
@@ -130,6 +132,8 @@
     @return call('__reduce-right', $args...);
 }
 
+
+/// @alias _reduce-right
 
 @function _foldr($args...) {
     @return call('__reduce-right', $args...);

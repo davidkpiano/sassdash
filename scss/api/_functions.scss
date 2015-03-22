@@ -20,7 +20,6 @@
 /// own and inherited, of `$map`.
 ///
 ///
-/// @alias _methods
 /// @access public
 /// @group Map
 /// @param {Map} $map The map to inspect.
@@ -35,6 +34,8 @@
     @return call('__functions', $args...);
 }
 
+
+/// @alias _functions
 
 @function _methods($args...) {
     @return call('__functions', $args...);

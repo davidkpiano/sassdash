@@ -66,7 +66,6 @@
 /// object, else `false`.
 ///
 ///
-/// @alias _all
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
@@ -100,6 +99,7 @@
     @return call('__every', $args...);
 }
 
+/// @alias _every
 
 @function _all($args...) {
     @return call('__every', $args...);

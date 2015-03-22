@@ -41,7 +41,6 @@
 /// the end of `$collection`.
 ///
 ///
-/// @alias _contains, _includes, _include
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to search.
@@ -63,10 +62,14 @@
 }
 
 
+/// @alias _includes
+
 @function _include($args...) {
     @return call('__includes', $args...);
 }
 
+
+/// @alias _includes
 
 @function _contains($args...) {
     @return call('__includes', $args...);

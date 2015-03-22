@@ -136,7 +136,6 @@
 /// map, else `false`.
 ///
 ///
-/// @alias _detect
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} collection The collection to search.
@@ -174,6 +173,8 @@
     @return call(__find, $args...);
 }
 
+
+/// @alias _find
 
 @function _detect($args...) {
     @return call(__find, $args...);

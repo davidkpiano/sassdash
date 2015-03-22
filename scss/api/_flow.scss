@@ -109,7 +109,6 @@
 /// invokes the provided functions from right to left.
 ///
 ///
-/// @alias _backflow, _compose
 /// @access public
 /// @group Function
 /// @param {Function...} $funcs... Functions to invoke.
@@ -131,9 +130,15 @@
     @return call('__flow-right', $args...);
 }
 
+
+/// @alias _flow-right
+
 @function _backflow($args...) {
     @return call('__flow-right', $args...);
 }
+
+
+/// @alias _flow-right
 
 @function _compose($args...) {
     @return call('__flow-right', $args...);

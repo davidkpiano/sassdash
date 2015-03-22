@@ -68,7 +68,6 @@
 /// object, else `false`.
 ///
 ///
-/// @alias _select
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection - The collection to iterate over.
@@ -104,6 +103,9 @@
 @function _filter($args...) {
     @return call('__filter', $args...);
 }
+
+
+/// @alias _filter
 
 @function _select($args...) {
     @return call('__filter', $args...);

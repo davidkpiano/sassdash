@@ -84,7 +84,6 @@
 /// ($map-value, $map-value, $key, $map, $source).
 ///
 ///
-/// @alias _extend
 /// @access public
 /// @group Map
 /// @param {Map} $map - The destination map.
@@ -106,6 +105,8 @@
     @return call('__assign', $args...);
 }
 
+
+/// @alias _assign
 
 @function _extend($args...) {
     @return call('__assign', $args...);

@@ -6,7 +6,6 @@
 /// Gets all but the first element of `$list`.
 ///
 ///
-/// @alias _tail
 /// @access public
 /// @group List
 /// @param {List} $list The list to query.
@@ -19,6 +18,8 @@
     @return call('__rest', $args...);
 }
 
+
+/// @alias _rest
 
 @function _tail($args...) {
     @return call('__rest', $args...);

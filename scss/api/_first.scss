@@ -6,7 +6,6 @@
 /// Gets the first element of `$list`.
 ///
 ///
-/// @alias _head
 /// @access public
 /// @group List
 /// @param {List} $list The list to query.
@@ -21,6 +20,9 @@
 @function _first($args...) {
     @return call('__first', $args...);
 }
+
+
+/// @alias _first
 
 @function _head($args...) {
     @return call('__first', $args...);

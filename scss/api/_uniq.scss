@@ -51,7 +51,6 @@
 /// object, else `false`.
 ///
 ///
-/// @alias _unique
 /// @access public
 /// @group List
 /// @param {List} $list The list to inspect.
@@ -74,6 +73,8 @@
     @return call('__uniq', $args...);
 }
 
+
+/// @alias _uniq
 
 @function _unique($args...) {
     @return call('__uniq', $args...);

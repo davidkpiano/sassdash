@@ -10,13 +10,17 @@
 ///
 /// @access public
 /// @group Function
-/// @param {Function} func The function to restrict.
+/// @param {Function} $func The function to restrict.
 /// @returns {Function} Returns the new restricted function.
 /// @example scss
-/// $initialize: _once(createApplication);
-/// initialize();
-/// initialize();
-/// // `initialize` invokes `createApplication` once
+/// $lighten-once: _once(lighten);
+/// $color: _exec($lighten-once, green, 10%);
+/// 
+/// color: $color; // lightened green
+/// 
+/// $color: _exec($lighten-once, blue, 20%);
+/// 
+/// color: $color; // null
 
 @function _once($args...) {
     @return call('__once', $args...);

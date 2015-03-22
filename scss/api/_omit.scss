@@ -37,10 +37,10 @@
 /// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {Map} Returns the new map.
 /// @example scss
-/// $map: ( 'user': 'fred', 'age': 40 };
-/// _omit($map, 'age');
+/// $map: ( 'user': 'fred', 'age': 40 );
+/// $foo: _omit($map, 'age');
 /// // => ( 'user': 'fred' )
-/// _omit($map, _is-number);
+/// $foo: _omit($map, _is-number);
 /// // => ( 'user': 'fred' )
 
 @function _omit($args...) {

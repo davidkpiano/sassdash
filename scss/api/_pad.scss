@@ -49,8 +49,8 @@
 }
 
 
-/// Pads `string` on the left and right sides if it is shorter then the given
-/// padding length. The `chars` string may be truncated if the number of padding
+/// Pads `$string` on the left and right sides if it is shorter then the given
+/// padding length. The `$chars` string may be truncated if the number of padding
 /// characters can't be evenly divided by the padding length.
 ///
 ///
@@ -61,18 +61,20 @@
 /// @param {string} $chars [' '] - The string used as padding.
 /// @returns {string} Returns the padded string.
 /// @example scss
-/// _pad('abc', 8);
+/// $foo: _pad('abc', 8);
 /// // => '  abc   '
-/// _pad('abc', 8, '_-');
+/// $foo: _pad('abc', 8, '_-');
 /// // => '_-abc_-_'
-/// _pad('abc', 3);
+/// $foo: _pad('abc', 3);
 /// // => 'abc'
-///
-@function _pad($args...) { @return call(__pad, $args...); }
 
-///
-/// Pads `string` on the left side if it is shorter then the given padding
-/// length. The `chars` string may be truncated if the number of padding
+@function _pad($args...) {
+    @return call('__pad', $args...);
+}
+
+
+/// Pads `$string` on the left side if it is shorter then the given padding
+/// length. The `$chars` string may be truncated if the number of padding
 /// characters exceeds the padding length.
 ///
 ///
@@ -83,11 +85,11 @@
 /// @param {string} $chars [' '] - The string used as padding.
 /// @returns {string} Returns the padded string.
 /// @example scss
-/// _pad-left('abc', 6);
+/// $foo: _pad-left('abc', 6);
 /// // => '   abc'
-/// _pad-left('abc', 6, '_-');
+/// $foo: _pad-left('abc', 6, '_-');
 /// // => '_-_abc'
-/// _pad-left('abc', 3);
+/// $foo: _pad-left('abc', 3);
 /// // => 'abc'
 
 @function _pad-left($args...) {
@@ -95,8 +97,8 @@
 }
 
 
-/// Pads `string` on the right side if it is shorter then the given padding
-/// length. The `chars` string may be truncated if the number of padding
+/// Pads `$string` on the right side if it is shorter then the given padding
+/// length. The `$chars` string may be truncated if the number of padding
 /// characters exceeds the padding length.
 ///
 ///
@@ -107,11 +109,11 @@
 /// @param {string} $chars [' '] - The string used as padding.
 /// @returns {string} Returns the padded string.
 /// @example scss
-/// _pad-right('abc', 6);
+/// $foo: _pad-right('abc', 6);
 /// // => 'abc   '
-/// _pad-right('abc', 6, '_-');
+/// $foo: _pad-right('abc', 6, '_-');
 /// // => 'abc_-_'
-/// _pad-right('abc', 3);
+/// $foo: _pad-right('abc', 3);
 /// // => 'abc'
 
 @function _pad-right($args...) {

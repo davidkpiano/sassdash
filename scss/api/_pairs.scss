@@ -9,17 +9,17 @@
 }
 
 
-/// Creates a two dimensional list of the key-value pairs for `object`,
-/// e.g. `[(key1, value1), (key2, value2)]`.
+/// Creates a two dimensional list of the key-value pairs for `$map`,
+/// e.g. `(($key1, $value1), ($key2, $value2))`.
 ///
 ///
 /// @access public
 /// @group Map
-/// @param {Map} object The object to inspect.
+/// @param {Map} $map The map to inspect.
 /// @returns {List} Returns the new list of key-value pairs.
 /// @example scss
-/// _pairs({ 'barney': 36, 'fred': 40 });
-/// // => [('barney', 36), ('fred', 40)] (iteration order is not guaranteed)
+/// $foo: _pairs(( 'barney': 36, 'fred': 40 ));
+/// // => (('barney', 36), ('fred', 40))
 
 @function _pairs($args...) {
     @return call('__pairs', $args...);

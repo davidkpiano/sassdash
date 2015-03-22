@@ -56,40 +56,47 @@
 /// The function returns as soon as it finds a passing value and does not iterate
 /// over the entire collection. The predicate is bound to `$this-arg` and invoked
 /// with three arguments; (value, index|key, collection).
-/// /// If a property name is provided for `$predicate` the created `_property`
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
-/// /// If a value is also provided for `$this-arg` the created `_matches-property`
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
-/// /// If a map is provided for `$predicate` the created `_matches` style
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
-/// ///
+/// 
 ///
 /// @alias _any
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection - The collection to iterate over.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$predicate`.
 /// @returns {boolean} Returns `true` if any element passes the predicate check,
 ///  else `false`.
 /// @example scss
-/// /// _some((null, 0, 'yes', false), Boolean);
+/// $foo: _some((null, 0, 'yes', false), _is-boolean);
 /// // => true
-/// /// $users: [
-///   { 'user': 'barney', 'active': true },
-///   { 'user': 'fred',   'active': false }
-/// ];
-/// /// // using the `_matches` callback shorthand
-/// _some($users, { 'user': 'barney', 'active': false });
+/// 
+/// $users: (
+///   ( 'user': 'barney', 'active': true ),
+///   ( 'user': 'fred',   'active': false )
+/// );
+/// // using the `_matches` callback shorthand
+/// 
+/// $foo: _some($users, ( 'user': 'barney', 'active': false ));
 /// // => false
-/// /// // using the `_matches-property` callback shorthand
-/// _some($users, 'active', false);
+/// 
+/// // using the `_matches-property` callback shorthand
+/// $foo: _some($users, 'active', false);
 /// // => true
-/// /// // using the `_property` callback shorthand
-/// _some($users, 'active');
+/// 
+/// // using the `_property` callback shorthand
+/// $foo: _some($users, 'active');
 /// // => true
 
 @function _some($args...) {

@@ -68,10 +68,6 @@
 }
 
 
-/// Quick sort
-/// @author Sam Richards
-/// @param {List} $list - list to sort
-/// @return {List}
 @function __sort($list, $predicate: 'asc') {
     $predicate-map: (
         'asc': '__sort-predicate-asc',

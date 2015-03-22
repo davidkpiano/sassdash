@@ -14,20 +14,22 @@
 }
 
 
-/// Gets the size of `$collection` by returning `collection.length` for
-/// list-like values or the number of own enumerable properties for objects.
-/// ///
+/// Gets the size of `$collection` by returning `length($collection) for
+/// lists or maps, or `str-length($collection)` for strings.
+///
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to inspect.
+/// @param {List|Map|string} $collection The collection to inspect.
 /// @returns {number} Returns the size of `$collection`.
 /// @example scss
-/// /// _size((1, 2, 3));
+/// $foo: _size((1, 2, 3));
 /// // => 3
-/// /// _size({ 'a': 1, 'b': 2 });
+/// 
+/// $foo: _size(( 'a': 1, 'b': 2 ));
 /// // => 2
-/// /// _size('pebbles');
+/// 
+/// $foo: _size('pebbles');
 /// // => 7
 
 @function _size($args...) {

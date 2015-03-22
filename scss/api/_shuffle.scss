@@ -26,10 +26,10 @@
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to shuffle.
+/// @param {List|Map|string} $collection The collection to shuffle.
 /// @returns {List} Returns the new shuffled list.
 /// @example scss
-/// _shuffle((1, 2, 3, 4));
+/// $foo: _shuffle((1, 2, 3, 4));
 /// // => (4, 1, 3, 2)
 
 @function _shuffle($args...) {

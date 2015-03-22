@@ -43,17 +43,17 @@
 }
 
 
-/// Creates a slice of `$list` from `start` up to, but not including, `end`.
-/// **Note:** This function is used instead of `List#slice` to support node
-/// lists in IE < 9 and to ensure dense lists are returned.
+/// Creates a slice of `$list` from `$start` up to, but not including, `$end`.
 ///
 ///
 /// @access public
 /// @group List
-/// @param {List} $list The list to slice.
+/// @param {List} $list - The list to slice.
 /// @param {number} $start [0] - The start position.
-/// @param {number} $end [list.length] - The end position.
+/// @param {number} $end [length($list)] - The end position.
 /// @returns {List} Returns the slice of `$list`.
+/// @example scss
+/// // todo
 
 @function _slice($args...) {
     @return call('__slice', $args...);

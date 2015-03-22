@@ -18,14 +18,14 @@
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to sample.
-/// @param {number} (n) The number of elements to sample.
-/// @param {Map} $guard [null] - Enables use as a callback for functions like `_map`.
+/// @param {List|Map|string} $collection The collection to sample.
+/// @param {number} $n [1] The number of elements to sample.
 /// @returns {*} Returns the random sample(s).
 /// @example scss
-/// /// _sample((1, 2, 3, 4));
+/// $foo: _sample((1, 2, 3, 4));
 /// // => 2
-/// /// _sample((1, 2, 3, 4), 2);
+/// 
+/// $foo: _sample((1, 2, 3, 4), 2);
 /// // => (3, 1)
 
 @function _sample($args...) {

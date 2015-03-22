@@ -12,7 +12,7 @@
 /// @param {List} $list The list to query.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
-/// _rest((1, 2, 3));
+/// $foo: _rest((1, 2, 3));
 /// // => (2, 3)
 
 @function _rest($args...) {

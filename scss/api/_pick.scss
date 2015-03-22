@@ -40,28 +40,6 @@
 }
 
 
-/// Creates a map composed of the picked `object` properties. Property
-/// names may be specified as individual arguments or as lists of property
-/// names. If `$predicate` is provided it is invoked for each property of `object`
-/// picking the properties `$predicate` returns truthy for. The predicate is
-/// bound to `$this-arg` and invoked with three arguments; (value, key, object).
-///
-///
-/// @access public
-/// @group Map
-/// @param {Map} object The source object.
-/// @param {Function|...(string|string[])} (predicate) The function invoked per
-///  iteration or property names to pick, specified as individual property
-///  names or lists of property names.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
-/// @returns {Map} Returns the new object.
-/// @example scss
-/// $object: { 'user': 'fred', 'age': 40 };
-/// _pick(object, 'user');
-/// // => { 'user': 'fred' }
-/// _pick(object, _isString);
-/// // => { 'user': 'fred' }
-
 @function __pick($map, $predicate: '__identity', $this-arg: null) {
     @if $map == null {
         @return ();
@@ -74,6 +52,28 @@
         __pick-by-list($map, __base-flatten(($map, $predicate, $this-arg), false, false, 1)));
 }
 
+
+/// Creates a map composed of the picked `$map` properties. Property
+/// names may be specified as individual arguments or as lists of property
+/// names. If `$predicate` is provided it is invoked for each property of `$map`
+/// picking the properties `$predicate` returns truthy for. The predicate is
+/// bound to `$this-arg` and invoked with three arguments; (value, key, map).
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The source map.
+/// @param {Function|String|List(String)} $predicate [_identity] The function invoked per
+///  iteration or property names to pick, specified as individual property
+///  names or lists of property names.
+/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @returns {Map} Returns the new map.
+/// @example scss
+/// $map: ( 'user': 'fred', 'age': 40 );
+/// $foo: _pick($map, 'user');
+/// // => ( 'user': 'fred' )
+/// $foo: _pick($map, _is-string);
+/// // => ( 'user': 'fred' )
 
 @function _pick($args...) {
     @return call('__pick', $args...);

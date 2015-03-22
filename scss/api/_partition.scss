@@ -21,13 +21,17 @@
 
 /// Creates a list of elements split into two groups, the first of which
 /// contains elements `$predicate` returns truthy for, while the second of which
-/// contains elements `$predicate` returns falsey for. The predicate is bound
+/// contains elements `$predicate` returns falsey for.
+/// 
+/// The predicate is bound
 /// to `$this-arg` and invoked with three arguments; (value, index|key, collection).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
@@ -35,37 +39,14 @@
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
 /// @param {*} $this-arg - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the list of grouped elements.
 /// @example scss
-/// _partition((1, 2, 3), function(n) {
-///   return n % 2;
-/// });
-/// // => [(1, 3), (2)]
-/// _partition((1.2, 2.3, 3.4), function(n) {
-///   return this.floor(n) % 2;
-/// }, Math);
-/// // => [(1, 3), (2)]
-/// $users: [
-///   { 'user': 'barney',  'age': 36, 'active': false },
-///   { 'user': 'fred',    'age': 40, 'active': true },
-///   { 'user': 'pebbles', 'age': 1,  'active': false }
-/// ];
-/// $mapper: function(list) {
-///   return _pluck(list, 'user');
-/// };
-/// // using the `_matches` callback shorthand
-/// _map(_partition($users, { 'age': 1, 'active': false }), mapper);
-/// // => [('pebbles'), ('barney', 'fred')]
-/// // using the `_matches-property` callback shorthand
-/// _map(_partition($users, 'active', false), mapper);
-/// // => [('barney', 'pebbles'), ('fred')]
-/// // using the `_property` callback shorthand
-/// _map(_partition($users, 'active'), mapper);
-/// // => [('fred'), ('barney', 'pebbles')]
+/// $foo: _partition(1.3 1.4 2.1 2.2, floor);
+/// // => ((1.3 1.4), (2.1 2.2))
 
 @function _partition($args...) {
     @return call('__partition', $args...);

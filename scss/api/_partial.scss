@@ -44,59 +44,47 @@
 
 /// Creates a function that invokes `$function` with `partial` arguments prepended
 /// to those provided to the new function. This method is like `_bind` except
-/// it does/// not** alter the `_this` binding.
-/// The `_partial.placeholder` value, which defaults to `_` in monolithic
-/// builds, may be used as a placeholder for partially applied arguments.
-/// **Note:** This method does not set the `length` property of partially
-/// applied functions.
+/// it does **not** alter the `_this` binding.
 ///
 ///
 /// @access public
 /// @group Function
-/// @param {Function} func The function to partially apply arguments to.
-/// @param {*...} (args) The arguments to be partially applied.
+/// @param {Function} $func The function to partially apply arguments to.
+/// @param {*...} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new partially applied function.
 /// @example scss
-/// $greet: function(greeting, name) {
-///   return greeting + ' ' + name;
-/// };
-/// $sayHelloTo: _partial(greet, 'hello');
-/// sayHelloTo('fred');
-/// // => 'hello fred'
-/// // using placeholders
-/// $greetFred: _partial(greet, _, 'fred');
-/// greetFred('hi');
-/// // => 'hi fred'
+///     @function greet($greeting, $name) {
+///         @return $greeting + ' ' + $name;
+///     }
+///     
+///     $say-hello-to: _partial(greet, 'hello');
+///     
+///     $foo: _exec($say-hello-to, 'fred');
+///     // => 'hello fred'
 
 @function _partial($args...) {
     @return call('__partial', $args...);
 }
 
-///
+
 /// This method is like `_partial` except that partially applied arguments
 /// are appended to those provided to the new function.
-/// The `_partialRight.placeholder` value, which defaults to `_` in monolithic
-/// builds, may be used as a placeholder for partially applied arguments.
-/// **Note:** This method does not set the `length` property of partially
-/// applied functions.
 ///
 ///
 /// @access public
 /// @group Function
-/// @param {Function} func The function to partially apply arguments to.
-/// @param {*...} (args) The arguments to be partially applied.
+/// @param {Function} $func The function to partially apply arguments to.
+/// @param {*...} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new partially applied function.
 /// @example scss
-/// $greet: function(greeting, name) {
-///   return greeting + ' ' + name;
-/// };
-/// $greetFred: _partial-right(greet, 'fred');
-/// greetFred('hi');
-/// // => 'hi fred'
-/// // using placeholders
-/// $sayHelloTo: _partial-right(greet, 'hello', _);
-/// sayHelloTo('fred');
-/// // => 'hello fred'
+///     @function greet($greeting, $name) {
+///         @return $greeting + ' ' + $name;
+///     }
+///     
+///     $greet-with: _partial-right(greet, 'fred');
+///     
+///     $foo: _exec($greet-with, 'hi');
+///     // => 'hi fred'
 
 @function _partial-right($args...) {
     @return call('__partial-right', $args...);

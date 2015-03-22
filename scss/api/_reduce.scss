@@ -80,34 +80,21 @@
 
 /// Reduces `$collection` to a value which is the accumulated result of running
 /// each element in `$collection` through `$iteratee`, where each successive
-/// invocation is supplied the return value of the previous. If `accumulator`
+/// invocation is supplied the return value of the previous. If `$accumulator`
 /// is not provided the first element of `$collection` is used as the initial
 /// value. The `$iteratee` is bound to `$this-arg`and invoked with four arguments;
 /// (accumulator, value, index|key, collection).
-/// /// Many lodash methods are guarded to work as interatees for methods like
-/// `_reduce`, `_reduce-right`, and `_transform`.
-/// /// The guarded methods are:
-/// `assign`, `defaults`, `merge`, and `sortAllBy`
-/// ///
 ///
-/// @alias _foldl, inject
+/// @alias _foldl, _inject
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} (accumulator) The initial value.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $accumulator [null] The initial value.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example scss
-/// /// _reduce((1, 2), function(sum, n) {
-///   return sum + n;
-/// });
-/// // => 3
-/// /// _reduce({ 'a': 1, 'b': 2 }, function(result, n, key) {
-///   result(key) = n * 3;
-///   return result;
-/// }, {});
-/// // => { 'a': 3, 'b': 6 } (iteration order is not guaranteed)
+/// // todo
 
 @function _reduce($args...) {
     @return call('__reduce', $args...);
@@ -126,22 +113,18 @@
 
 /// This method is like `_reduce` except that it iterates over elements of
 /// `$collection` from right to left.
-/// ///
+///
 ///
 /// @alias _foldr
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} (accumulator) The initial value.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $accumulator [null] - The initial value.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {*} Returns the accumulated value.
 /// @example scss
-/// /// $list: [(0, 1), (2, 3), (4, 5)];
-/// /// _reduce-right(list, function(flattened, other) {
-///   return flattened.concat(other);
-/// }, []);
-/// // => (4, 5, 2, 3, 0, 1)
+/// // todo
 
 @function _reduce-right($args...) {
     @return call('__reduce-right', $args...);

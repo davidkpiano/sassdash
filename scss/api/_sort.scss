@@ -198,6 +198,21 @@
 }
 
 
+/// Sorts elements of a list by `$predicate` 
+/// and returns a new list with the sorted elements.
+/// 
+/// @access public
+/// @group List
+/// @param {List} $list The list to sort.
+/// @param {Function|String} $predicate ['asc'] The predicate used for comparison.
+/// @returns {List} Returns sorted list.
+/// @example scss
+/// $foo: _sort(3 1 4 2 6 5 8 7 9);
+/// // => 1 2 3 4 5 6 7 8 9
+/// 
+/// $foo: _sort(3 1 4 2 6 5 8 7 9, 'desc');
+/// // => 9 8 7 6 5 4 3 2 1
+
 @function _sort($args...) {
     @return call('__sort', $args...);
 }
@@ -206,13 +221,17 @@
 /// Creates a list of elements, sorted in ascending order by the results of
 /// running each element in a collection through `$iteratee`. This method performs
 /// a stable sort, that is, it preserves the original sort order of equal elements.
+/// 
 /// The `$iteratee` is bound to `$this-arg` and invoked with three arguments;
 /// (value, index|key, collection).
+/// 
 /// If a property name is provided for `$predicate` the created `_property`
 /// style callback returns the property value of the given element.
+/// 
 /// If a value is also provided for `$this-arg` the created `_matches-property`
 /// style callback returns `true` for elements that have a matching property
 /// value, else `false`.
+/// 
 /// If a map is provided for `$predicate` the created `_matches` style
 /// callback returns `true` for elements that have the properties of the given
 /// object, else `false`.
@@ -220,54 +239,46 @@
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
+/// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {List|Function|Map|string} $iteratee [_identity] - The function
 ///  invoked per iteration. If a property name or a map is provided it is
 ///  used to create a `_property` or `_matches` style callback respectively.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {List} Returns the new sorted list.
 /// @example scss
-/// _sort-by((1, 2, 3), function(n) {
-///   return Math.sin(n);
-/// });
-/// // => (3, 1, 2)
-/// _sort-by((1, 2, 3), function(n) {
-///   return this.sin(n);
-/// }, Math);
-/// // => (3, 1, 2)
-/// $users: [
-///   { 'user': 'fred' },
-///   { 'user': 'pebbles' },
-///   { 'user': 'barney' }
-/// ];
+/// $users: (
+///   ( 'user': 'fred' ),
+///   ( 'user': 'pebbles' ),
+///   ( 'user': 'barney' )
+/// );
 /// // using the `_property` callback shorthand
-/// _pluck(_sort-by($users, 'user'), 'user');
+/// $foo: _pluck(_sort-by($users, 'user'), 'user');
 /// // => ('barney', 'fred', 'pebbles')
 
 @function _sort-by($args...) {
     @return call('__sort-by', $args...);
 }
 
-///
+
 /// This method is like `_sort-by` except that it sorts by property names
 /// instead of an iteratee function.
 ///
 ///
 /// @access public
 /// @group Collection
-/// @param {List|Map|string} collection The collection to iterate over.
-/// @param {...(string|string[])} props The property names to sort by,
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {String...|List(String)} $props The property names to sort by,
 ///  specified as individual property names or lists of property names.
 /// @returns {List} Returns the new sorted list.
 /// @example scss
-/// $users: [
-///   { 'user': 'barney', 'age': 36 },
-///   { 'user': 'fred',   'age': 40 },
-///   { 'user': 'barney', 'age': 26 },
-///   { 'user': 'fred',   'age': 30 }
-/// ];
-/// _map(_sort-by-all($users, ('user', 'age')), _values);
-/// // => [('barney', 26), ('barney', 36), ('fred', 30), ('fred', 40)]
+/// $users: (
+///   ( 'user': 'barney', 'age': 36 ),
+///   ( 'user': 'fred',   'age': 40 ),
+///   ( 'user': 'barney', 'age': 26 ),
+///   ( 'user': 'fred',   'age': 30 )
+/// );
+/// $foo: _map(_sort-by-all($users, ('user', 'age')), _values);
+/// // => (('barney', 26), ('barney', 36), ('fred', 30), ('fred', 40))
 
 @function _sort-by-all($args...) {
     @return call('__sort-by-all', $args...);

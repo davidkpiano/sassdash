@@ -2,7 +2,20 @@
     @return join($list, $items, $separator: auto);
 }
 
-
+/// Adds one or more elements to the end of a `$list` and
+/// returns a new list with appended items.
+/// 
+/// Similar to native Sass `join()`, with the exception that no
+/// `$separator` is specified and arguments after the first one are
+/// treated as elements to be appended to `$list`.
+/// 
+/// @access public
+/// @group List
+/// @param {List} $list The target list.
+/// @param {*...} $items... The items to append to `$list`.
+/// @returns {List} Returns list with appended items.
+/// @example scss
+/// // todo
 @function _push($args...) {
     @return call('__push', $args...);
 }

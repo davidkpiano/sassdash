@@ -39,6 +39,7 @@
 /// 
 /// $margin: _splice($margin, 2, 2, 15px);
 /// // => 10px 15px 20px
+
 @function _splice($args...) {
     @return call('__splice', $args...);
 }

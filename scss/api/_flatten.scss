@@ -1,0 +1,88 @@
+@function __base-flatten($list, $is-deep: false, $is-strict: false, $from-index: 1) {
+    $index: $from-index;
+    $length: length($list);
+    $result-index: 1;
+    $result: ();
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+
+        @if __is-map-like($value)
+        and __is-length(length($value))
+        and __is-list-like($value) {
+            @if ($is-deep) {
+                $value: __base-flatten($value, $is-deep, $is-strict);
+            }
+
+            $value-index: 1;
+            $value-length: length($value);
+
+            @while ($value-index <= $value-length) {
+                $result: append($result, nth($value, $value-index));
+                $value-index: $value-index + 1;
+            }
+        } @else if not ($is-strict) {
+            $result: append($result, $value);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+@function __flatten-deep($list, $args...) {
+    $length: if(__is-list-like($list), length($list), 0);
+
+    @return if($length > 0, __base-flatten($list, true), ());
+}
+
+
+@function __flatten($list, $is-deep: false, $guard: null) {
+    $length: if(__is-list-like($list), length($list), 0);
+
+    @if $guard and __is-iteratee-call($list, $is-deep, $guard) {
+        $is-deep: false;
+    }
+
+    @return if($length > 0, __base-flatten($list, $is-deep), ());
+}
+
+
+/// Flattens a nested list. If `$is-deep` is `true` the list is recursively
+/// flattened, otherwise it is only flattened a single level.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to flatten.
+/// @param {boolean} $is-deep [false] - Specify a deep flatten.
+/// @returns {List} Returns the new flattened list.
+/// @example scss
+/// $foo: _flatten((1, (2, 3, (4,))));
+/// // => (1, 2, 3, (4,));
+/// 
+/// // using `$is-deep`
+/// $foo: _flatten((1, (2, 3, (4,))), true);
+/// // => (1, 2, 3, 4);
+
+@function _flatten($args...) {
+    @return call('__flatten', $args...);
+}
+
+
+/// Recursively flattens a nested list.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to recursively flatten.
+/// @returns {List} Returns the new flattened list.
+/// @example scss
+/// $foo: _flatten-deep((1, (2, 3, (4,))));
+/// // => (1, 2, 3, 4);
+
+@function _flatten-deep($args...) {
+    @return call('__flatten-deep', $args...);
+}

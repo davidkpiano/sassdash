@@ -1,0 +1,50 @@
+@function __base-difference($list, $values) {
+    $result: ();
+
+    @each $item in $list {
+        @if not index($values, $item) {
+            $result: append($result, $item);
+        }
+    }
+
+    @return $result;
+}
+
+
+@function __difference($arguments...) {
+    $index: 1;
+    $length: length($arguments);
+    $value: null;
+
+    $break: false;
+    @while ($index <= $length and not $break) {
+        $value: nth($arguments, $index);
+
+        @if __is-list-like($value) {
+            $break: true;
+        } @else {
+            $index: $index + 1;
+        }
+    }
+
+    $values: __base-flatten($arguments, false, true, $index + 1);
+
+    @return __base-difference($value, $values);
+}
+
+
+/// Creates a list excluding all values of the provided lists.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to inspect.
+/// @param {List...} $values... The lists of values to exclude.
+/// @returns {List} Returns the new list of filtered values.
+/// @example scss
+/// $foo: _difference((1, 2, 3), (4, 2));
+/// // => (1, 3)
+
+@function _difference($args...) {
+    @return call('__difference', $args...);
+}

@@ -1,0 +1,43 @@
+@function __pull($arguments...) {
+    $list: nth($arguments, 1);
+
+    @if not ($list and length($list)) {
+        @return $list;
+    }
+
+    $index: 1;
+    $length: length($arguments);
+
+    @while ($index <= $length) {
+        $from-index: 1;
+        $value: nth($arguments, $index);
+
+        @while (__index-of($list, $value, $from-index) > -1) {
+            $from-index: __index-of($list, $value, $from-index);
+            $list: __splice($list, $from-index, 1);
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $list;
+}
+
+
+/// Removes all provided values from `$list`, and returns a new list
+/// without the provided values. Does not mutate original list.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The source list.
+/// @param {*...} $values... The values to remove.
+/// @returns {List} Returns new `$list` with removed values.
+/// @example scss
+/// $list: (1, 2, 3, 1, 2, 3);
+/// $foo: _pull(list, 2, 3);
+/// // => (1, 1)
+
+@function _pull($args...) {
+    @return call('__pull', $args...);
+}

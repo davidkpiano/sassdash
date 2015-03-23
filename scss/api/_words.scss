@@ -1,0 +1,50 @@
+@function __words($string, $args...) {
+    $string: __base-to-string($string);
+    $result: ();
+    $temp: '';
+    $lowercase-letters: 'abcdefghijklmnopqrstuvwxyz';
+    $uppercase-letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ';
+
+    @for $index from 1 through str-length($string) {
+        $letter: __char-at($string, $index);
+        $letter-prev: __char-at($string, $index - 1);
+        $letter-next: __char-at($string, $index + 1);
+
+        @if not (str-index($lowercase-letters, $letter))
+        and not (str-index($uppercase-letters, $letter-prev)
+            and str-index($uppercase-letters, $letter-next)) {
+            @if (str-length($temp) > 0) {
+                $result: append($result, $temp);
+                $temp: '';
+            }
+
+            @if (str-index($uppercase-letters, $letter) and $letter != ' ') {
+                $temp: $temp + $letter;
+            }
+        } @else {
+            $temp: $temp + $letter;
+        }
+    }
+
+    @if (str-length($temp) > 0) {
+        $result: append($result, $temp);
+    }
+
+    @return $result;
+}
+
+
+/// Splits `$string` into a list of its words.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to inspect.
+/// @returns {List} Returns the words of `$string`.
+/// @example scss
+/// $foo: _words('fred, barney, & pebbles');
+/// // => ('fred', 'barney', 'pebbles')
+
+@function _words($args...) {
+    @return call('__words', $args...);
+}

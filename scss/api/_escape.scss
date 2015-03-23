@@ -1,0 +1,39 @@
+@function __escape-string-char($char) {
+    @return '\\#{__const('string-escapes' $char)}';
+}
+
+
+@function __escape-html-char($char) {
+    $escaped-char: __const('html-escapes' $char);
+
+    @return if($escaped-char, $escaped-char, $char);
+}
+
+
+@function __escape($string) {
+    $string: __base-to-string($string);
+
+    @each $unescaped, $escaped in __const('html-escapes') {
+        $string: __string-replace($string, $unescaped, $escaped);
+    }
+
+    @return $string;
+}
+
+
+/// Converts the characters "&", "<", ">", '"', "'", and '`', in `$string` to
+/// their corresponding HTML entities.
+/// **Note:** No other characters are escaped.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to escape.
+/// @returns {string} Returns the escaped string.
+/// @example scss
+/// $foo: _escape('fred, barney, & pebbles');
+/// // => 'fred, barney, &amp; pebbles'
+
+@function _escape($args...) {
+    @return call('__escape', $args...);
+}

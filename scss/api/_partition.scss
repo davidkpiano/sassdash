@@ -1,0 +1,53 @@
+@function __partition-initializer() {
+    @return ((), ());
+}
+
+
+@function __partition-aggregator($result, $value, $key, $args...) {
+    $result-index: if(__is-truthy($key), 1, 2);
+    $result-value: nth($result, $result-index);
+    $result-value: if($result-value, $result-value, ());
+
+    @return set-nth($result, $result-index, append($result-value, $value));
+}
+
+
+@function __partition($arguments...) {
+    $function: __create-aggregator('__partition-aggregator', '__partition-initializer');
+
+    @return __exec($function, $arguments...);
+}
+
+
+/// Creates a list of elements split into two groups, the first of which
+/// contains elements `$predicate` returns truthy for, while the second of which
+/// contains elements `$predicate` returns falsey for.
+/// 
+/// The predicate is bound
+/// to `$this-arg` and invoked with three arguments; (value, index|key, collection).
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// object, else `false`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @returns {List} Returns the list of grouped elements.
+/// @example scss
+/// $foo: _partition(1.3 1.4 2.1 2.2, floor);
+/// // => ((1.3 1.4), (2.1 2.2))
+
+@function _partition($args...) {
+    @return call('__partition', $args...);
+}

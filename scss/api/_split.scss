@@ -1,0 +1,43 @@
+@function __string-split($string, $delimiter: '', $guard: null, $args...) {
+    @if $guard and __is-iteratee-call($string, $delimiter, $guard) {
+        $delimiter: '';
+    }
+
+    $string: __to-string($string);
+
+    @if not $delimiter
+    or str-length($delimiter) == 0
+    or $delimiter == '' {
+        @return __to-list($string);
+    }
+
+    $delimiter-index: str-index($string, $delimiter);
+
+    @if not $delimiter-index {
+        @return append((), $string);
+    }
+
+    @return join(
+        str-slice($string, 1, $delimiter-index - 1),
+        __string-split(
+            str-slice($string, $delimiter-index + str-length($delimiter)),
+            $delimiter
+        )
+    );
+}
+
+
+/// Splits a string from indexes of `$delimiter` to a list.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $string - String to split.
+/// @param {String} $delimiter [null] - Characters to use for separating the `$string`.
+/// @returns {List} Returns list of substrings from split `$string`.
+/// @example scss
+/// $foo: _split('a--b--c--d--e', '--');
+/// // => 'a' 'b' 'c' 'd' 'e'
+
+@function _split($args...) {
+    @return call('__string-split', $args...);
+}

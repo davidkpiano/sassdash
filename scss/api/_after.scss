@@ -1,0 +1,66 @@
+@function __after-callback($arguments...) {
+    $n: __this('n');
+    $function: __this('function');
+
+    @if ($n < 1) {
+        @return __call($function, __this(), $arguments...);
+    }
+
+    $_: __this('n', $n - 1);
+
+    @return null;
+}
+
+
+@function __after($n, $function) {
+    @if not (__function-exists($function)) {
+        @if (__function-exists($n)) {
+            $temp: $n;
+            $n: $function;
+            $function: $temp;
+        } @else {
+            @error '#{$function} is not a function for __after.';
+        }
+    }
+
+    $_: __scope((
+        'function': $function,
+        'n': $n
+    ));
+
+    $after-callback: __bind('__after-callback');
+
+    $_: __scope(false);
+
+    @return $after-callback;
+}
+
+
+/// The opposite of `_before`; this method creates a function that invokes
+/// `$function` once it is called `$n` or more times.
+///
+///
+/// @access public
+/// @group Function
+/// @param {number} n The number of calls before `$function` is invoked.
+/// @param {Function} func The function to restrict.
+/// @returns {Function} Returns the new restricted function.
+/// @example scss
+///     @function warn-overuse() {
+///         @warn 'You are using this mixin too many times.';
+///     }
+///
+///     $warn-overuse: _after(3, warn-overuse);
+///
+///     @mixin my-mixin() {
+///         // ...
+///         $overuse: _exec($warn-overuse);
+///     }
+///
+///     @each $selector in '.one', '.two', '.three', '.four' {
+///         @include my-mixin();
+///     }
+
+@function _after($args...) {
+    @return call('__after', $args...);
+}

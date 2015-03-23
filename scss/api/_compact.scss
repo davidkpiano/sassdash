@@ -1,0 +1,32 @@
+@function __compact($list) {
+    $result: ();
+
+    @if __is-falsey(length($list)) {
+        @return $result;
+    }
+
+    @each $value in $list {
+        @if not (__is-falsey($value)) {
+            $result: append($result, $value);
+        }
+    }
+
+    @return $result;
+}
+
+
+/// Creates a list with all falsey values removed. The values `false`, `null`,
+/// `0`, and `""` are considered falsey.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to compact.
+/// @returns {List} Returns the new list of filtered values.
+/// @example scss
+/// $foo: _compact((0, 1, false, 2, '', 3));
+/// // => (1, 2, 3)
+
+@function _compact($args...) {
+    @return call('__compact', $args...);
+}

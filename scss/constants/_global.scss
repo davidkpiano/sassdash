@@ -1,0 +1,11 @@
+$__const__: () !global;
+
+@function __const($keys) {
+    @return __get($__const__, $keys);
+}
+
+@mixin __const($key, $value) {
+    @if not map-has-key($__const__, $key) {
+        $__const__: __set($__const__, $key, $value) !global;
+    }
+}

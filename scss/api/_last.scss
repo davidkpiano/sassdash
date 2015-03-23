@@ -1,0 +1,21 @@
+@function __last($list, $args...) {
+    $length: if($list, length($list), 0);
+
+    @return if(not __is-falsey($length), nth($list, $length), null);
+}
+
+
+/// Gets the last element of `$list`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to query.
+/// @returns {*} Returns the last element of `$list`.
+/// @example scss
+/// $foo: _last((1, 2, 3));
+/// // => 3
+
+@function _last($args...) {
+    @return call('__last', $args...);
+}

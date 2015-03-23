@@ -1,0 +1,33 @@
+@function __sample($collection, $n: null, $guard: null) {
+    @if (if($guard, __is-iteratee-call($collection, $n, $guard), ($n == null))) {
+        $length: length($collection);
+
+        @return if($length > 0, nth($collection, __base-rand(1, $length)), null);
+    }
+
+    $n: if(type-of($n) == 'number', $n, if(__is-truthy($n), 1, 0));
+    $result: __shuffle($collection);
+    $result: __take($result, min(if($n < 0, 0, $n), length($result)));
+
+    @return $result;
+}
+
+
+/// Gets a random element or `$n` random elements from a collection.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to sample.
+/// @param {number} $n [1] The number of elements to sample.
+/// @returns {*} Returns the random sample(s).
+/// @example scss
+/// $foo: _sample((1, 2, 3, 4));
+/// // => 2
+/// 
+/// $foo: _sample((1, 2, 3, 4), 2);
+/// // => (3, 1)
+
+@function _sample($args...) {
+    @return call('__sample', $args...);
+}

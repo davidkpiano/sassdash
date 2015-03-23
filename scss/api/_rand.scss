@@ -1,0 +1,79 @@
+@function __base-rand($min, $max) {
+    @return $min + floor(random() * ($max - $min + 1));
+}
+
+
+@function __rand($min: null, $max: null, $floating: null) {
+    $min: __parse-float($min);
+    $max: __parse-float($max);
+
+    @if ($floating and __is-iteratee-call($min, $max, $floating)) {
+        $max: null;
+        $floating: null;
+    }
+
+    $no-min: ($min == null);
+    $no-max: ($max == null);
+
+    @if ($floating == null) {
+        @if $no-max and __is-boolean($min) {
+            $floating: $min;
+            $min: 1;
+        } @else if __is-boolean($max) {
+            $floating: $max;
+            $no-max: true;
+        }
+    }
+
+    @if $no-min and $no-max {
+        $max: 1;
+        $no-max: false;
+    }
+
+    $min: if($min == true, 1, if(__is-falsey($min), 0, $min));
+
+    @if ($no-max) {
+        $max: $min;
+        $min: 0;
+    } @else {
+        $max: if($max == true, 1, if($max == false, 0, $max));
+    }
+
+    @if ($floating or ($min % 1 > 0) or ($max % 1 > 0)) {
+        $rand: random();
+
+        @return min($min + ($rand * ($max - $min + 1 / (10 * (str-length('#{$rand}') - 1)))), $max);
+    }
+
+    @return __base-rand($min, $max);
+}
+
+
+/// Produces a random number between `$min` and `$max` (inclusive). If only one
+/// argument is provided a number between `0` and the given number is returned.
+/// 
+/// If `floating` is `true`, or either `$min` or `$max` are floats, a floating-point
+/// number is returned instead of an integer.
+/// 
+/// NOTE: This is not equivalent to the native Sass `random()` function.
+///
+///
+/// @access public
+/// @group Number
+/// @param {number} $min [0] - The minimum possible value.
+/// @param {number} $max [1] - The maximum possible value.
+/// @param {boolean} $floating [false] - Specify returning a floating-point number.
+/// @returns {number} Returns the random number.
+/// @example scss
+/// $foo: _random(0, 5);
+/// // => an integer between 0 and 5
+/// $foo: _random(5);
+/// // => also an integer between 0 and 5
+/// $foo: _random(5, true);
+/// // => a floating-point number between 0 and 5
+/// $foo: _random(1.2, 5.2);
+/// // => a floating-point number between 1.2 and 5.2
+
+@function _rand($args...) {
+    @return call('__rand', $args...);
+}

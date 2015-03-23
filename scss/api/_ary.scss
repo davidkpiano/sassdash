@@ -1,0 +1,43 @@
+@function __ary-function($args...) {
+    $function: __this('function');
+    $n: __this('n');
+    $args: __take($args, $n);
+
+    @return __exec($function, $args...);
+}
+
+
+@function __ary($function, $n: 1, $guard: null) {
+    @if not __is-function($function) {
+        @return '__noop';
+    }
+
+    $n: if($n >= 0, $n, 0);
+    $_: __scope((
+        'function': $function,
+        'n': $n
+    ));
+    $ary-function: __bind('__ary-function');
+    $_: __scope(false);
+
+    @return $ary-function;
+}
+
+
+/// Creates a function that accepts up to `$n` arguments ignoring any
+/// additional arguments.
+///
+///
+/// @access public
+/// @group Function
+/// @param {Function} $func The function to cap arguments for.
+/// @param {number} $n [1] - The arity cap.
+/// @returns {Function} Returns the new function.
+/// @example scss
+///
+/// $foo: _map(('6', '8', '10'), _ary(_parse-int, 1));
+/// // => (6, 8, 10)
+
+@function _ary($args...) {
+    @return call('__ary', $args...);
+}

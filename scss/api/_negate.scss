@@ -1,0 +1,42 @@
+@function __negate-function($arguments...) {
+    $predicate: __this('predicate');
+
+    @return not __call($predicate, __this(), $arguments...);
+}
+
+
+@function __negate($predicate) {
+    @if not (__function-exists($predicate)) {
+        @error 'FUNC_ERROR_TEXT';
+    }
+
+    $_: __scope((
+        'predicate': $predicate
+    ));
+    $negate-function: __bind('__negate-function');
+    $_: __scope(false);
+
+    @return $negate-function;
+}
+
+
+/// Creates a function that negates the result of the predicate `$function`. The
+/// `$function` predicate is invoked with the `_this` binding and arguments of the
+/// created function.
+///
+///
+/// @access public
+/// @group Function
+/// @param {Function} $predicate The predicate to negate.
+/// @returns {Function} Returns the new function.
+/// @example scss
+///     @function is-even($n, $args...) {
+///         @return $n % 2 == 0;
+///     }
+///     
+///     $foo: _filter((1, 2, 3, 4, 5, 6), _negate(is-even));
+///     // => (1, 3, 5)
+
+@function _negate($args...) {
+    @return call('__negate', $args...);
+}

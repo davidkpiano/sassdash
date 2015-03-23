@@ -1,0 +1,145 @@
+@function __flow-function($arguments...) {
+    $functions: __this('functions');
+    $length: __this('length');
+
+    $index: 1;
+    $result: __exec(nth($functions, $index), $arguments...);
+    $index: $index + 1;
+
+    @while ($index <= $length) {
+        $result: __exec(nth($functions, $index), $result);
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+@function __flow($arguments...) {
+    $functions: $arguments;
+    $length: length($functions);
+
+    @if __is-falsey($length) {
+        @return '__noop';
+    }
+
+    @if not __list-every($functions, '__function-exists') {
+        @error 'FUNC_ERROR_TEXT';
+    }
+
+    $_: __scope((
+        'functions': $functions,
+        'length': $length
+    ));
+    $flow-function: __bind('__flow-function');
+    $_: __scope(false);
+
+    @return $flow-function;
+}
+
+
+@function __flow-right-function($arguments...) {
+    $functions: __this('functions');
+    $index: __this('from-index');
+
+    $result: __exec(nth($functions, $index), $arguments...);
+    $index: $index - 1;
+
+    @while ($index > 0) {
+        $result: __exec(nth($functions, $index), $result);
+        $index: $index - 1;
+    }
+
+    @return $result;
+}
+
+
+@function __flow-right($arguments...) {
+    $functions: $arguments;
+    $from-index: length($functions);
+
+    @if ($from-index < 1) {
+        @return '__noop';
+    }
+
+    @if not __list-every($functions, '__function-exists') {
+        @error 'FUNC_ERROR_TEXT';
+    }
+
+    $_: __scope((
+        'functions': $functions,
+        'from-index': $from-index
+    ));
+    $flow-right-function: __bind('__flow-right-function');
+    $_: __scope(false);
+
+    @return $flow-right-function;
+}
+
+
+/// Creates a function that returns the result of invoking the provided
+/// functions with the `_this` binding of the created function, where each
+/// successive invocation is supplied the return value of the previous.
+///
+///
+/// @access public
+/// @group Function
+/// @param {Function...} $funcs Functions to invoke.
+/// @returns {Function} Returns the new function.
+/// @example scss
+///     @function add($x, $y) {
+///       @return $x + $y;
+///     }
+///     
+///     @function square($n) {
+///       @return $n * $n;
+///     }
+///     
+///     $addSquare: _flow(add, square);
+///
+///     $foo: _exec($addSquare, 1, 2);
+///     // => 9
+
+@function _flow($args...) {
+    @return call('__flow', $args...);
+}
+
+
+/// This method is like `_flow` except that it creates a function that
+/// invokes the provided functions from right to left.
+///
+///
+/// @access public
+/// @group Function
+/// @param {Function...} $funcs... Functions to invoke.
+/// @returns {Function} Returns the new function.
+/// @example scss
+///     @function add($x, $y) {
+///       @return $x + $y;
+///     }
+///     
+///     @function square($n) {
+///       @return $n * $n;
+///     }
+///     
+///     $addSquare: _flow-right(square, add);
+///     $foo: _exec($addSquare, 1, 2);
+///     // => 9
+
+@function _flow-right($args...) {
+    @return call('__flow-right', $args...);
+}
+
+
+/// @alias _flow-right
+
+@function _backflow($args...) {
+    @return call('__flow-right', $args...);
+}
+
+
+/// @alias _flow-right
+
+@function _compose($args...) {
+    @return call('__flow-right', $args...);
+}

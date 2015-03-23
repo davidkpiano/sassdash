@@ -1,0 +1,19 @@
+@function __initial($list, $args...) {
+    @return __drop-right($list, 1);
+}
+
+
+/// Gets all but the last element of `$list`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to query.
+/// @returns {List} Returns the slice of `$list`.
+/// @example scss
+/// _initial((1, 2, 3));
+/// // => (1, 2)
+
+@function _initial($args...) {
+    @return call('__initial', $args...);
+}

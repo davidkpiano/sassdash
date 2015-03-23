@@ -1,0 +1,29 @@
+@function __first($list, $args...) {
+    @return if($list and length($list) > 0, nth($list, 1), null);
+}
+
+
+/// Gets the first element of `$list`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to query.
+/// @returns {*} Returns the first element of `$list`.
+/// @example scss
+/// $foo: _first((1, 2, 3));
+/// // => 1
+/// 
+/// $foo: _first(());
+/// // => null
+
+@function _first($args...) {
+    @return call('__first', $args...);
+}
+
+
+/// @alias _first
+
+@function _head($args...) {
+    @return call('__first', $args...);
+}

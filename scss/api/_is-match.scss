@@ -1,0 +1,116 @@
+@function __base-is-match($map, $props, $values, $strict-compare-flags: (), $customizer: false) {
+    $length: length($props);
+    $result: null;
+
+    @if ($map == null) {
+        @return if($length == 0 or $length == null, false, true);
+    }
+
+    $index: 1;
+    $no-customizer: if($customizer, false, true);
+
+    @while ($index <= $length) {
+        @if if(($no-customizer and length($strict-compare-flags) > 0 and nth($strict-compare-flags, $index)),
+            (nth($values, $index) != __get($map, nth($props, $index))),
+            (not map-has-key($map, nth($props, $index)))) {
+            @return false;
+        }
+
+        $index: $index + 1;
+    }
+
+    $index: 1;
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+
+        @if $no-customizer and nth($strict-compare-flags, $index) {
+            $result: map-has-key($map, $key);
+        } @else {
+            $map-value: __get($map, $key);
+            $src-value: nth($values, $index);
+            $result: if($customizer,
+                __exec($customizer, $map-value, $src-value, $key),
+                null);
+
+            @if ($result == null) {
+                $result: __call(__base-is-equal, null, $src-value, $map-value, $customizer, true);
+            }
+        }
+
+        @if (not $result) {
+            @return false;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return true;
+}
+
+
+@function __is-match($map, $source, $customizer: null, $this-arg: null) {
+    $props: __keys($source);
+    $length: length($props);
+
+    @if __is-falsey($map) {
+        @return __is-empty($source);
+    }
+
+    $customizer: if(__is-function($customizer), __bind-callback($customizer, $this-arg, 3), false);
+
+    @if (not $customizer and $length == 1) {
+        $key: nth($props, 1);
+        $value: __get($source, $key);
+
+        @if (__is-strict-comparable($value)) {
+            @return if($map != null and $value == __get($map, $key), map-has-key($map, $key), false);
+        }
+    }
+
+    $values: ();
+    $strict-compare-flags: ();
+
+    @while ($length > 0) {
+        $value: __get($source, nth($props, $length));
+        $values: __set($values, $length, $value);
+        $strict-compare-flags: __set($strict-compare-flags, $length, __is-strict-comparable($value));
+        $length: $length - 1;
+    }
+
+    $values: __to-list($values);
+    $strict-compare-flags: __to-list($strict-compare-flags);
+
+    @return __base-is-match($map, $props, $values, $strict-compare-flags, $customizer);
+}
+
+
+/// Performs a deep comparison between `$map` and `source` to determine if
+/// `$map` contains equivalent property values. If `$customizer` is provided
+/// it is invoked to compare values. If `$customizer` returns `undefined`
+/// comparisons are handled by the method instead. The `$customizer` is bound
+/// to `$this-arg` and invoked with three arguments; (value, other, index|key).
+///
+///
+/// @access public
+/// @group Lang
+/// @param {Map} $map The map to inspect.
+/// @param {Map} $source The map of property values to match.
+/// @param {Function} $customizer [null] The function to customize comparing values.
+/// @param {*} $this-arg - The `_this` binding of `$customizer`.
+/// @returns {boolean} Returns `true` if `$map` is a match, else `false`.
+/// @example scss
+/// $map: ( 'user': 'fred', 'age': 40 );
+/// 
+/// _is-match($map, ( 'age': 40 ));
+/// // => true
+/// 
+/// _is-match($map, ( 'age': 36 ));
+/// // => false
+/// 
+/// // using a customizer callback
+/// // todo
+
+@function _is-match($args...) {
+    @return call('__is-match', $args...);
+}

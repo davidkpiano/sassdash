@@ -1,0 +1,27 @@
+@function __unique-id($prefix: '') {
+    $id: unique-id();
+
+    @return __base-to-string($prefix) + $id;
+}
+
+
+/// Generates a unique ID. If `$prefix` is provided, the ID is appended to it.
+/// 
+/// This is similar to the native Sass `unique-id()` function, with the added
+/// prefix ability.
+///
+///
+/// @access public
+/// @group Utility
+/// @param {string} $prefix [''] - The value to prefix the ID with.
+/// @returns {string} Returns the unique ID.
+/// @example scss
+/// $foo: _unique-id('color_');
+/// // => 'color_xxx' where xxx is a unique-id()
+/// 
+/// $foo: _unique-id();
+/// // => 'xxx' where xxx is a unique-id()
+
+@function _unique-id($args...) {
+    @return call('__unique-id', $args...);
+}

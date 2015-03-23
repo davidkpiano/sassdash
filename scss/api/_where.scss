@@ -1,0 +1,28 @@
+@function __where($collection, $source) {
+    @return __filter($collection, __matches($source));
+}
+
+
+/// Performs a deep comparison between each element in `$collection` and the
+/// source map, returning a list of all elements that have equivalent
+/// property values.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {Map} $source The map of property values to match.
+/// @returns {List} Returns the new filtered list.
+/// @example scss
+/// $users: (
+///   ( 'user': 'barney', 'age': 36, 'active': false, 'pets': ('hoppy',) ),
+///   ( 'user': 'fred',   'age': 40, 'active': true, 'pets': ('baby puss', 'dino') )
+/// );
+/// $foo: _pluck(_where($users, ( 'age': 36, 'active': false )), 'user');
+/// // => ('barney',)
+/// $foo: _pluck(_where($users, ( 'pets': ('dino',) )), 'user');
+/// // => ('fred',)
+
+@function _where($args...) {
+    @return call('__where', $args...);
+}

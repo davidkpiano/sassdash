@@ -1,0 +1,19 @@
+@function __noop($args...) {
+    @return null;
+}
+
+
+/// A no-operation function which returns `null` regardless of the
+/// arguments it receives.
+///
+///
+/// @access public
+/// @group Utility
+/// @example scss
+/// $map: ( 'user': 'fred' );
+/// $foo: _noop($map) == null;
+/// // => true
+
+@function _noop($args...) {
+    @return call('__noop', $args...);
+}

@@ -1,0 +1,163 @@
+@function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
+    @return if($arg-count, __call('__base-callback', null, $function, $this-arg, $arg-count), '__base-callback');
+}
+
+
+@function __bind-callback-1($value) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $value);
+}
+
+
+@function __bind-callback-3($value, $index, $collection) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $value, $index, $collection);
+}
+
+
+@function __bind-callback-4($accumulator, $value, $index, $collection) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $accumulator, $value, $index, $collection);
+}
+
+
+@function __bind-callback-5($value, $other, $key, $map, $source) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $value, $other, $key, $map, $source);
+}
+
+
+@function __bind-callback-any($arguments...) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+
+    @return __call($function, $this-arg, $arguments...);
+}
+
+
+@function __bind-callback($function, $this-arg: null, $arg-count: null) {
+    @if (not __function-exists($function)) {
+        @return '__identity';
+    }
+
+    @if ($this-arg == null) {
+        @return $function;
+    }
+
+    $_: __scope((
+        'function': $function,
+        'this-arg': $this-arg
+    ));
+
+    $arg-count-case: (
+        1: '__bind-callback-1',
+        3: '__bind-callback-3',
+        4: '__bind-callback-4',
+        5: '__bind-callback-5'
+    );
+
+    @if ($arg-count > 5) {
+        @return '__bind-callback-any';
+    }
+
+    $result: __bind(__get($arg-count-case, $arg-count), $this-arg);
+    $_: __scope(false);
+
+    @return $result;
+}
+
+
+@function __base-callback-shifted($value, $args...) {
+    $function: __this('function');
+    $this-arg: __this('this-arg');
+    $arguments: __this('arguments');
+
+    @return __call($function, $this-arg, $value, $arguments...);
+}
+
+
+@function __base-callback($function: __identity, $this-arg: $__undefined__, $arg-count: null) {
+    $type: if(__function-exists($function), 'function', type-of($function));
+
+    @if ($function == null) {
+        @return '__identity';
+    }
+
+    @if $type == 'list' {
+        $arguments: _drop($function, 1);
+        $function: nth($function, 1);
+        $_: __scope((
+            'function': $function,
+            'this-arg': $this-arg,
+            'arguments': $arguments
+        ));
+        $base-callback-shifted: __bind('__base-callback-shifted');
+        $_: __scope(false);
+
+        @return $base-callback-shifted;
+    }
+
+    @if __is-native($function) {
+        @return __ary($function, 1);
+    }
+
+    @if $type == 'function' {
+        @return if(not __is-undefined($this-arg) and __is-function($function),
+            __bind-callback($function, $this-arg, $arg-count),
+            $function);
+    }
+
+    @return if($type == 'map',
+        __base-matches($function, __is-falsey($arg-count)),
+        __base-property($function));
+}
+
+
+@function __callback($function: __identity, $this-arg: null, $guard: null) {
+    @if ($guard and __is-iteratee-call($function, $this-arg, $guard)) {
+        $this-arg: null;
+    }
+
+    @return __base-callback($function, $this-arg);
+}
+
+
+/// Creates a function that invokes `$function` with the `_this` binding of `$this-arg`
+/// and arguments of the created function.
+/// 
+/// If `$function` is a property name the
+/// created callback returns the property value for a given element.
+/// 
+/// If `$function`
+/// is a map the created callback returns `true` for elements that contain
+/// the equivalent map properties, otherwise it returns `false`.
+/// 
+/// If `$function` is a list the created callback returns the result of
+/// the function (first item of the list) right-partially applied with the
+/// rest of the list items, called with the value as the first argument (see example).
+///
+/// @access public
+/// @group Utility
+/// @param {*} $func [_identity] - The value to convert to a callback.
+/// @param {*} $this-arg [null] - The `_this` binding of `$function`.
+/// @returns {Function} Returns the callback.
+/// @example scss
+///     $fully-lighten: _callback(lighten 100%);
+///     $lightened-color: _exec($fully-lighten, black);
+///     // => white
+
+@function _callback($args...) {
+    @return call('__callback', $args...);
+}
+
+@function _iteratee($args...) {
+    @return call('__callback', $args...);
+}

@@ -1,0 +1,30 @@
+@function __has($map, $key) {
+    $skip-keys: __const('CONSTRUCTOR_KEYS');
+
+    @if __is-map($map) {
+        $map: __omit($map, $skip-keys);
+
+        @return if(__is-map($map), map-has-key($map, $key), false);
+    }
+
+    @return false;
+}
+
+
+/// Checks if `$key` exists as a direct property of `$map` instead of an
+/// inherited property. Similar to Sass `map-has-key` function.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to inspect.
+/// @param {string} $key The key to check.
+/// @returns {boolean} Returns `true` if `$key` is a direct property, else `false`.
+/// @example scss
+/// $map: ( 'a': 1, 'b': 2, 'c': 3 );
+/// $foo: _has($map, 'b');
+/// // => true
+
+@function _has($args...) {
+    @return call('__has', $args...);
+}

@@ -1,0 +1,47 @@
+@function __create-aggregator-function-iteratee($value, $key, $collection) {
+    $result: __this('result');
+    $setter: __this('setter');
+    $iteratee: __this('iteratee');
+    $result: __exec($setter, $result, $value, __exec($iteratee, $value, $key, $collection), $collection);
+    $_: __this('result', $result);
+
+    @return true;
+}
+
+
+@function __create-aggregator-function($collection, $iteratee: '__identity', $this-arg: null) {
+    $setter: __this('setter');
+    $initializer: __this('initializer');
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+    $_: __this('iteratee', $iteratee);
+    $result: if($initializer, __call($initializer), ());
+
+    @if (__is-list($collection)) {
+        $index: 1;
+        $length: length($collection);
+
+        @while ($index <= $length) {
+            $value: nth($collection, $index);
+            $result: __exec($setter, $result, $value, __exec($iteratee, $value, $index, $collection), $collection);
+            $index: $index + 1;
+        }
+    } @else {
+        $_: __this('result', $result);
+        $_: __base-each($collection, '__create-aggregator-function-iteratee');
+        $result: __this('result');
+    }
+
+    @return $result;
+}
+
+
+@function __create-aggregator($setter, $initializer: null) {
+    $_: __scope((
+        'setter': $setter,
+        'initializer': $initializer
+    ));
+    $function: __bind('__create-aggregator-function');
+    $_: __scope(false);
+
+    @return $function;
+}

@@ -1,0 +1,38 @@
+
+
+/// Allows pseudo "chaining" of `$value` by sequentially invoking function calls
+/// as arguments on `$value`.
+/// 
+/// Each argument after `$value` is a `$function-call` which can be:
+/// - A single function name
+/// - A list, containing the function name followed by the arguments to apply
+/// to the function after the `$value` has been applied as the first argument.
+/// 
+/// 
+/// @access public
+/// @group Utility
+/// @param {*} $value The initial value.
+/// @param {Function...|List...} $function-calls... The function calls to apply to value.
+/// @returns {*} Returns new value with "chained" function calls applied.
+/// @example scss
+/// $list: ('a' 'b' 'c', 'd' 'e' 'f', 'g' 'h' 'i');
+/// 
+/// $foo: _($list
+///     _map _join,             // _map($list, _join);
+///     _reduce _str-concat,    // _reduce($list, _str-concat);
+///     _concat 'jkl',          // _concat($list, 'jkl');
+///     _join ' -- ');          // _join($list, ' -- ');
+/// // => 'abcdefghi -- jkl';
+
+@function _($value, $function-calls...) {
+    $result: $value;
+
+    @each $function-call in $function-calls {
+        $function: __first($function-call);
+        $args: __drop($function-call);
+        $function: if(__starts-with($function, '_'), $function, '_' + $function);
+        $result: __exec($function, $result, $args...);
+    }
+
+    @return $result;
+}

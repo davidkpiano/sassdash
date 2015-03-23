@@ -1,0 +1,69 @@
+@function __parse-int($string, $radix: null, $guard: null) {
+    @if ($guard and __is-iteratee-call($string, $radix, $guard)) {
+        $radix: 10;
+    }
+
+    @if __is-falsey($string) {
+        @return 0;
+    }
+
+    $string: to-upper-case(__trim($string));
+
+    @if __is-falsey($radix) {
+        $radix: if(__starts-with($string, ('0X', '#')), 16, 10);
+    }
+
+    $result: 0;
+    $multiplier: if(__starts-with($string, '-'), -1, 1);
+    $prefix: if(__starts-with($string, ('-', '+', '#')), 1, if(__starts-with($string, ('0X')), 2, 0));
+    $char-min: __get-char-code(0);
+    $char-max: $char-min + 9;
+    $char-alpha-min: __get-char-code('A'); // 10
+    $char-alpha-max: __get-char-code('Z');
+    $char-codes: __map($string, '__get-char-code');
+    $index: $prefix + 1;
+    $break: false;
+
+    @while $index <= length($char-codes) and not $break {
+        $char-code: nth($char-codes, $index);
+
+        @if $char-code >= $char-min and $char-code <= $char-max {
+            $result: ($radix * $result) + ($char-code - $char-min);
+        } @else if $char-code >= $char-alpha-min and $char-code < $char-alpha-max {
+            $result: ($radix * $result) + ($char-code - $char-alpha-min + 10);
+        } @else {
+            $break: true;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return $multiplier * $result;
+}
+
+/// Parses a string argument and returns an integer of the specified radix
+/// (the base in mathematical numerical systems).
+/// 
+/// Similar to native JavaScript [parseInt() function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt).
+/// 
+/// @access public
+/// @group Number
+/// @param {String} $string The value to parse. If string is not a string,
+///  then it is converted to one. Leading whitespace in the string is ignored.
+/// @param {Number} $radix An integer between 2 and 36 that represents the radix
+///  (the base in mathematical numeral systems) of the above mentioned string. 
+/// @returns {Number} Returns the string converted to an integer, or `null`.
+/// @example scss
+/// 
+/// $foo: _parse-int('10');
+/// // => 10
+/// 
+/// $foo: _parse-int('#000020');
+/// // => 32
+/// 
+/// $foo: _parse-int('    123');
+/// // => 123
+
+@function _parse-int($args...) {
+    @return call('__parse-int', $args...);
+}

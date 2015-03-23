@@ -1,0 +1,48 @@
+@function __is-empty($value: null) {
+    @if ($value == null) {
+        @return true;
+    }
+
+    @if (__is-string($value)) {
+        @return str-length($value) == 0;
+    }
+
+    @if (__is-map-like($value)) {
+        @return length($value) == 0;
+    }
+
+    @if (__is-boolean($value)) {
+        @return true;
+    }
+
+    @return not __length(__keys($value));
+}
+
+
+/// Checks if a value is empty.
+///
+///
+/// @access public
+/// @group Lang
+/// @param {List|Map|string} $value The value to inspect.
+/// @returns {boolean} Returns `true` if `$value` is empty, else `false`.
+/// @example scss
+/// $foo: _is-empty(null);
+/// // => true
+///
+/// $foo: _is-empty(true);
+/// // => true
+///
+/// $foo: _is-empty(1);
+/// // => true
+///
+/// $foo: _is-empty((1, 2, 3));
+/// // => false
+///
+/// $foo: _is-empty(( 'a': 1 ));
+/// // => false
+///
+
+@function _is-empty($args...) {
+    @return call('__is-empty', $args...);
+}

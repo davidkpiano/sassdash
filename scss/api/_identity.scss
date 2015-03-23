@@ -1,0 +1,20 @@
+@function __identity($value: null, $args...) {
+    @return $value;
+}
+
+
+/// This method returns the first argument provided to it.
+///
+///
+/// @access public
+/// @group Utility
+/// @param {*} $value [null] Any value.
+/// @returns {*} Returns `$value`.
+/// @example scss
+/// $map: ( 'user': 'fred' );
+/// $foo: _identity($map) == $map;
+/// // => true
+
+@function _identity($args...) {
+    @return call('__identity', $args...);
+}

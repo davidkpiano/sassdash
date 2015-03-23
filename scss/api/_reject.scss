@@ -1,0 +1,65 @@
+@function __reject-iteratee($value, $index, $collection) {
+    $predicate: __this('predicate');
+
+    @return __is-falsey(__exec($predicate, $value, $index, $collection));
+}
+
+
+@function __reject($collection, $predicate: '__identity', $this-arg: null) {
+    $function: if(__is-list($collection), '__list-filter', '__base-filter');
+    $predicate: __get-callback($predicate, $this-arg, 3);
+    $_: __scope((
+        'predicate': $predicate
+    ));
+    $result: __exec($function, $collection, '__reject-iteratee');
+    $_: __scope(false);
+
+    @return $result;
+}
+
+///
+/// The opposite of `_filter`; this method returns the elements of `$collection`
+/// that `$predicate` does **not** return truthy for.
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// object, else `false`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {List} Returns the new filtered list.
+/// @example scss
+/// $foo: _reject((1, 2, 3, 4), is-even);
+/// // => (1, 3)
+/// 
+/// $users: (
+///   ( 'user': 'barney', 'age': 36, 'active': false ),
+///   ( 'user': 'fred',   'age': 40, 'active': true )
+/// );
+/// // using the `_matches` callback shorthand
+/// $foo: _pluck(_reject($users, ( 'age': 40, 'active': true )), 'user');
+/// // => ('barney')
+/// 
+/// // using the `_matches-property` callback shorthand
+/// $foo: _pluck(_reject($users, 'active', false), 'user');
+/// // => ('fred')
+/// 
+/// // using the `_property` callback shorthand
+/// $foo: _pluck(_reject($users, 'active'), 'user');
+/// // => ('barney')
+
+@function _reject($args...) {
+    @return call('__reject', $args...);
+}

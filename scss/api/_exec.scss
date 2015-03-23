@@ -1,0 +1,27 @@
+@function __exec($function, $args...) {
+    @return __call($function, null, $args...);
+}
+
+/// Dynamically calls a standard Sass function, similar to 
+/// `call($function, $args...)`, with the ability to call scoped 
+/// functions, such as those returned from Sassdash functions like
+/// `_bind()`, `_callback()`, etc., that otherwise can't be called via `call()`.
+/// 
+/// @access public
+/// @group Function
+/// @param {Function} $function - The function/Sassdash callback to call.
+/// @param {*...} $args... - The arguments to apply to the function.
+/// @returns {*} Returns the result of calling `$function` with the given `$args...`.
+/// @example scss
+/// $is-primary: _callback(('color': $color-primary));
+/// 
+/// $theme: (
+///     'name': 'sassdash-theme',
+///     'color': $color-primary
+/// );
+/// 
+/// $foo: _exec($is-primary, $theme);
+/// // => true
+@function _exec($args...) {
+    @return call('__exec', $args...);
+}

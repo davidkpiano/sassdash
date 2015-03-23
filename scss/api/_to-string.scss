@@ -1,0 +1,35 @@
+@function __base-to-string($value) {
+    @if __is-string($value) {
+        @return $value;
+    }
+
+    @return if($value == null, '', $value + '');
+}
+
+
+@function __to-string($value, $args...) {
+    @if __is-string($value) {
+        @return $value;
+    }
+
+    @if $value == null {
+        @return '';
+    }
+
+    @return inspect($value);
+}
+
+
+/// Converts `$value` to a string.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to convert.
+/// @returns {String} Returns the converted string.
+/// @example scss
+/// $foo: _to-string(123);
+/// // => '123'
+
+@function _to-string($args...) {
+    @return call('__to-string', $args...);
+}

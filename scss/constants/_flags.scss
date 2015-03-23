@@ -1,0 +1,9 @@
+@include __const('BIND_FLAG', 1);
+@include __const('BIND_KEY_FLAG', 2);
+@include __const('CURRY_BOUND_FLAG', 4);
+@include __const('CURRY_FLAG', 8);
+@include __const('CURRY_RIGHT_FLAG', 16);
+@include __const('PARTIAL_FLAG', 32);
+@include __const('PARTIAL_RIGHT_FLAG', 64);
+@include __const('REARG_FLAG', 128);
+@include __const('ARY_FLAG', 256);

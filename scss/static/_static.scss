@@ -1,0 +1,30 @@
+@function static-get($properties) {
+    @return __get($__static__, $properties);
+}
+
+
+@function static-set($properties, $value) {
+    $__static__: __set($__static__, $properties, $value) !global;
+
+    @return __get($__static__, $properties);
+}
+
+
+@function static-push($properties, $value) {
+    $__static__: __push($__static__, $properties, $value) !global;
+
+    @return $__static__;
+}
+
+
+@function static($properties: $__undefined__, $value: $__undefined__) {
+    @if __is-undefined($properties) and __is-undefined($value) {
+        @return $__static__;
+    }
+
+    @if __is-undefined($value) {
+        @return static-get($properties);
+    }
+
+    @return static-set($properties, $value);
+}

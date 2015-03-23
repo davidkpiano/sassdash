@@ -1,0 +1,26 @@
+@function __rest($list, $args...) {
+    @return __drop($list, 1);
+}
+
+
+/// Gets all but the first element of `$list`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to query.
+/// @returns {List} Returns the slice of `$list`.
+/// @example scss
+/// $foo: _rest((1, 2, 3));
+/// // => (2, 3)
+
+@function _rest($args...) {
+    @return call('__rest', $args...);
+}
+
+
+/// @alias _rest
+
+@function _tail($args...) {
+    @return call('__rest', $args...);
+}

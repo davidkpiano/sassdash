@@ -1,0 +1,78 @@
+@function __starts-with($string, $target, $position: 1) {
+    @if __is-list-like($target) {
+        $result: false;
+
+        @each $target-string in $target {
+            $result: __either($result, __starts-with($string, $target-string, $position));
+        }
+
+        @return $result;
+    }
+
+    $string: __base-to-string($string);
+    $target: __base-to-string($target);
+    $position: if(__is-falsey($position), 0, $position);
+    $position: min(if($position <= 0, 1, $position), str-length($string));
+
+    @return if($target == '',
+        true,
+        __string-last-index-of($string, $target, $position) == $position);
+}
+
+@function __starts-with-any($string, $targets: (), $position: 1) {
+    $result: false;
+    $index: 1;
+
+    @while $index <= length($targets) and not $result {
+        $target-string: nth($targets, $index);
+        $result: __starts-with($string, $target-string, $position);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+/// Checks if `$string` starts with the given target string.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to search.
+/// @param {string} $target - The string to search for.
+/// @param {number} $position [1] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` starts with `$target`, else `false`.
+/// @example scss
+/// $foo: _starts-with('abc', 'a');
+/// // => true
+/// 
+/// $foo: _starts-with('abc', 'b');
+/// // => false
+/// 
+/// $foo: _starts-with('abc', 'b', 1);
+/// // => true
+
+@function _starts-with($args...) {
+    @return call('__starts-with', $args...);
+}
+
+/// Checks if `$string` starts with any of the strings in `$targets` list.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to search.
+/// @param {string} $targets [()] - The list of strings to search for.
+/// @param {number} $position [1] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` starts with any of the strings in `$targets`, else `false`.
+/// @example scss
+/// $foo: _starts-with-any('abc', 'a' 'b');
+/// // => true
+/// $foo: _starts-with-any('abc', 'b' 'c');
+/// // => false
+/// $foo: _starts-with-any('abc', 'b' 'c', 1);
+/// // => true
+
+@function _starts-with-any($args...) {
+    @return call('__starts-with-any', $args...);
+}

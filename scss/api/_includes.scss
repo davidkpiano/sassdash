@@ -1,0 +1,76 @@
+@function __includes($collection, $target: null, $from-index: 1) {
+    @if __is-string($collection) {
+        @if not __is-number($from-index)
+        or -$from-index >= str-length($collection) {
+            $from-index: 0;
+        } @else if $from-index < 0 {
+            $from-index: str-length($collection) + $from-index;
+        }
+
+        $collection: str-slice($collection, $from-index);
+
+        @return if(str-index($collection, __to-string($target)), true, false);
+    }
+
+    $collection: __to-list($collection);
+    $length: if($collection, length($collection), 0);
+
+    @if not __is-length($length) {
+        $collection: __values($collection);
+        $length: length($collection);
+    }
+
+    @if __is-falsey($length) {
+        @return false;
+    }
+
+    @if __is-number($from-index) {
+        $from-index: if($from-index <= 0,
+            max($length + $from-index, 1),
+            $from-index);
+    } @else {
+        $from-index: 1;
+    }
+
+    @return __index-of($collection, $target, $from-index) > -1;
+}
+
+
+/// Checks if `$value` is in `$collection`.
+/// If `$from-index` is negative, it is used as the offset from
+/// the end of `$collection`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {*} $target [null] - The value to search for.
+/// @param {number} $from-index [0] - The index to search from.
+/// @returns {boolean} Returns `true` if a matching element is found, else `false`.
+/// @example scss
+/// $foo: _includes((1, 2, 3), 1);
+/// // => true
+/// $foo: _includes((1, 2, 3), 1, 2);
+/// // => false
+/// $foo: _includes(( 'user': 'fred', 'age': 40 ), 'fred');
+/// // => true
+/// $foo: _includes('pebbles', 'eb');
+/// // => true
+
+@function _includes($args...) {
+    @return call('__includes', $args...);
+}
+
+
+/// @alias _includes
+
+@function _include($args...) {
+    @return call('__includes', $args...);
+}
+
+
+/// @alias _includes
+
+@function _contains($args...) {
+    @return call('__includes', $args...);
+}

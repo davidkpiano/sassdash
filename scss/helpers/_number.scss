@@ -1,0 +1,104 @@
+@function pow($number, $exp) {
+    $value: 1;
+
+    @if $exp > 0 {
+        @for $i from 1 through $exp {
+            $value: $value * $number;
+        }
+    } @else if $exp < 0 {
+        @for $i from 1 through -$exp {
+            $value: $value / $number;
+        }
+    }
+
+    @return $value;
+}
+
+
+@function __number-to-fixed($value, $digits: null) {
+    @if $digits == null {
+        @return round($value);
+    }
+
+    @return round($value * pow(10, $digits)) / pow(10, $digits);
+}
+
+
+@function __unit($value) {
+    $units: (
+        'vmax': 1vmax,
+        'vmin': 1vmin,
+        'rem': 1rem,
+        'vh': 1vh,
+        'vw': 1vw,
+        'ex': 1ex,
+        'pc': 1pc,
+        'pt': 1pt,
+        'em': 1em,
+        'in': 1in,
+        'ch': 1ch,
+        'mm': 1mm,
+        'cm': 1cm,
+        'px': 1px,
+        '%': 1%
+    );
+
+    @if __is-number($value) {
+        @return unit($value);
+    } @else if __is-string($value) {
+        @each $string-unit, $number-unit in $units {
+            @if __ends-with($value, $string-unit) {
+                @return $number-unit;
+            }
+        }
+    }
+
+    @return 1;
+}
+
+
+@function __parse-float($string, $radix: 10) {
+    @if not __is-string($string) {
+        @return $string;
+    }
+
+    @if __is-falsey($string) {
+        @return 0;
+    }
+
+    $string: __trim($string);
+    $result: 0;
+    $exponent: 0;
+    $decimal: false;
+    $multiplier: if(__starts-with($string, '-'), -1, 1);
+
+    $char-min: __get-char-code(0);
+    $char-max: $char-min + 9;
+    $char-decimal: __get-char-code('.');
+
+    @each $char-code in __map($string, __get-char-code) {
+        @if $char-code >= $char-min and $char-code <= $char-max {
+            $result: ($radix * $result) + ($char-code - $char-min);
+
+            @if $decimal {
+                $exponent: $exponent + 1;
+            }
+        } @else if $char-code == $char-decimal {
+            $decimal: true;
+        }
+    }
+
+    $unit: __unit($string);
+
+    @return $multiplier * $result / pow($radix, $exponent) * $unit;
+}
+
+
+@function _parse-float($args...) {
+    @return call('__parse-float', $args...);
+}
+
+
+@function _to-number($args...) {
+    @return call('__parse-float', $args...);
+}

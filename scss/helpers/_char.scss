@@ -1,0 +1,111 @@
+@function __is-space($char-code) {
+    @return $char-code == ' ';
+}
+
+
+@function __chars-index($string, $chars, $direction) {
+    $index: 1;
+    $length: str-length($string);
+    $direction-map: ('right': -1, 'left': 1);
+    $increment: map-get($direction-map, $direction);
+
+    @while str-index($chars, __char-at($string, $index))
+    and $index <= $length {
+        $index: $index + $increment;
+    }
+
+    @return $index;
+}
+
+
+@function __chars-left-index($string, $chars) {
+    @return __chars-index($string, $chars, $direction: left);
+}
+
+
+@function __chars-right-index($string, $chars) {
+    @return __chars-index($string, $chars, $direction: right);
+}
+
+
+@function __get-char-code($char, $args...) {
+    $chars: join(__const('ASCII_PRINTABLE'), __const('ASCII_EXTENDED'));
+    $char: __to-string($char);
+
+    @each $char-code, $char-value in $chars {
+        @if $char == $char-value {
+            @return $char-code;
+        }
+    }
+
+    @return false;
+}
+
+
+@function __char-at-callback($string, $args...) {
+    @return __get-char-code(str-slice($string, 1, 1));
+}
+
+
+@function __char-at($string, $index: 1) {
+    @return str-slice($string, $index, $index);
+}
+
+
+@function __char-code-at($string, $index: 1) {
+    @return __get-char-code(__char-at($string, $index));
+}
+
+
+/// Gets the character at `$index` of a string.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $string - Source string.
+/// @param {Number} $index [1] - Character index in string.
+/// @returns {number} Returns character at string index, or `null` if index is not in string.
+/// @example scss
+/// $foo: _char-at('coffee', 4);
+/// // => 'f'
+
+@function _char-at($args...) {
+    @return call('__char-at', $args...);
+}
+
+
+/// Gets the ASCII char code of a character at `$index` of a string.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $string - Source string.
+/// @param {number} $index [1] - Character index in string.
+/// @returns {number} Returns char code of character at given string index.
+/// @example scss
+/// $foo: _char-code-at('beach', 3);
+/// // => 97
+
+@function _char-code-at($args...) {
+    @return call('__char-code-at', $args...);
+}
+
+
+/// Gets the ASCII char code of a given character.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $char - Source character.
+/// @returns {number} Returns char code of given character.
+/// @example scss
+/// $foo: _get-char-code('a');
+/// // => 97
+
+@function _get-char-code($args...) {
+    @return call('__get-char-code', $args...);
+}
+
+
+/// @alias _get-char-code
+
+@function _char-code($args...) {
+    @return call('__get-char-code', $args...);
+}

@@ -1,0 +1,74 @@
+@function __base-invoke-iteratee($value, $index, $collection) {
+    $function: __this('function');
+    $args: __this('args');
+    $index: __this('index');
+    $result: null;
+
+    @if __is-native($function) {
+        $result: __exec($function, $value, $args...);
+    } @else {
+        $result: __exec($function, $value, $index, $collection, $args...);
+    }
+
+    $_: __this('result', append(__this('result'), $result));
+    $_: __this('index', __this('index') + 1);
+
+    @return true;
+}
+
+
+@function __base-invoke($collection, $method-name, $args...) {
+    $index: 1;
+    $is-func: __function-exists($method-name);
+    $length: if(__is-map-like($collection), length($collection), 0);
+    $result: ();
+    $function: if($is-func,
+        $method-name,
+        if($value != null, __get($value, $method-name), false));
+
+    @if $length == 0 {
+        @return $result;
+    }
+
+    $_: __scope((
+        'result': $result,
+        'function': $function,
+        'args': $args,
+        'index': $index
+    ));
+    $iteratee: __bind('__base-invoke-iteratee');
+    $_: __base-each($collection, $iteratee);
+    $result: __this('result');
+    $_: __scope(false);
+
+    @return $result;
+}
+
+
+@function __invoke($collection, $method-name: _identity, $args...) {
+    @return __base-invoke($collection, $method-name, $args...);
+}
+
+
+/// Invokes the method named by `$method-name` on each element in `$collection`,
+/// returning a list of the results of each invoked method. Any additional
+/// arguments are provided to each invoked method. If `$method-name` is a function
+/// it is invoked for, and `$this` bound to, each element in `$collection`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function|string} $method-name The name of the method to invoke or
+///  the function invoked per iteration.
+/// @param {*...} (args) The arguments to invoke the method with.
+/// @returns {List} Returns the list of results.
+/// @example scss
+/// $foo: _invoke(((5, 1, 7), (3, 2, 1)), '_sort');
+/// // => ((1, 5, 7), (1, 2, 3))
+/// $foo: _invoke((123, 456), '_split', '');
+/// // => (('1', '2', '3'), ('4', '5', '6'))
+
+@function _invoke($args...) {
+    @return call('__invoke', $args...);
+}

@@ -1,0 +1,448 @@
+@function __base-find-iteratee($value, $key, $collection) {
+    $predicate: __this('predicate');
+    $return-key: __this('return-key');
+
+    $iteration: __exec($predicate, $value, $key, $collection);
+
+    @if __is-truthy($iteration) {
+        $_: __this('result', if($return-key, $key, $value));
+
+        @return false;
+    }
+
+    @return true;
+}
+
+
+@function __base-find($collection, $predicate, $each-function: '__base-each', $return-key: false) {
+    $result: null;
+    $_: __scope((
+        'result': null,
+        'predicate': $predicate,
+        'return-key': $return-key
+    ));
+    $iteratee: __bind(__base-find-iteratee);
+    $_: __exec($each-function, $collection, $iteratee);
+    $result: __this('result');
+    $_: __scope(false);
+
+    @return $result;
+}
+
+
+@function __find($collection, $predicate: '__identity', $this-arg: null) {
+    @if __is-string($collection) {
+        $collection: __to-list($collection);
+    }
+
+    @if __is-list($collection) {
+        $index: __find-index($collection, $predicate, $this-arg);
+
+        @return if($index > -1, nth($collection, $index), $__undefined__);
+    }
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($collection, $predicate, '__base-each');
+}
+
+
+@function __find-last($collection, $predicate: '__identity', $this-arg: null) {
+    @if __is-string($collection) {
+        $collection: __to-list($collection);
+    }
+
+    @if __is-list($collection) {
+        $index: __find-last-index($collection, $predicate, $this-arg);
+
+        @return if($index > -1, nth($collection, $index), $__undefined__);
+    }
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($collection, $predicate, '__base-each-right');
+}
+
+
+@function __find-where($collection, $source) {
+    @return __find($collection, __matches($source));
+}
+
+
+@function __find-index($list, $predicate: '__identity', $this-arg: null) {
+    $index: 1;
+    $length: if($list, length($list), 0);
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @while ($index <= $length) {
+        $iteration: __call($predicate, $this-arg, nth($list, $index), $index, $list);
+
+        @if __is-truthy($iteration) {
+            @return $index;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return -1;
+}
+
+
+@function __find-last-index($list, $predicate: '__identity', $this-arg: null) {
+    $length: if($list, length($list), 0);
+
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @while ($length > 0) {
+        @if __call($predicate, $this-arg, nth($list, $length), $length, $list) {
+            @return $length;
+        }
+
+        $length: $length - 1;
+    }
+
+    @return -1;
+}
+
+
+@function __find-key($map, $predicate: '__identity', $this-arg: null) {
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($map, $predicate, '__base-for-own', true);
+}
+
+
+@function __find-last-key($map, $predicate: '__identity', $this-arg: null) {
+    $predicate: __get-callback($predicate, $this-arg, 3);
+
+    @return __base-find($map, $predicate, '__base-for-own-right', true);
+}
+
+
+/// Iterates over elements of `$collection`, returning the first element
+/// `$predicate` returns truthy for. The predicate is bound to `$this-arg` and
+/// invoked with three arguments; (value, index|key, collection).
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// map, else `false`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} collection The collection to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {*} Returns the matched element, else `null`.
+/// @example scss
+///     $users: (
+///       ( 'user': 'barney',  'age': 36', active': true ),
+///       ( 'user': 'fred',    'age': 40', active': false ),
+///       ( 'user': 'pebbles', 'age': 1',  active': false )
+///     );
+///     
+///     @function is-young($user, $args...) {
+///         @return _get($user, 'age') < 40;
+///     }
+///     
+///     $foo: _result(_find($users, is-young), 'user');
+///     // => 'barney'
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _result(_find($users, ( 'age': 1, 'active': true )), 'user');
+///     // => 'pebbles'
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _result(_find($users, 'active', false), 'user');
+///     // => 'fred'
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _result(_find($users, 'active'), 'user');
+///     // => 'barney'
+
+@function _find($args...) {
+    @return call(__find, $args...);
+}
+
+
+/// @alias _find
+
+@function _detect($args...) {
+    @return call(__find, $args...);
+}
+
+
+/// This method is like `_find` except that it returns the index of the first
+/// element `$predicate` returns truthy for, instead of the element itself.
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// map, else `false`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {number} Returns the index of the found element, else `-1`.
+/// @example scss
+///     $users: (
+///       ( 'user': 'barney',  'active': false ),
+///       ( 'user': 'fred',    'active': false ),
+///       ( 'user': 'pebbles', 'active': true )
+///     );
+///     
+///     @function is-barney($user, $args...) {
+///         @return _get($user, 'user') == 'barney';
+///     }
+///         
+///     $foo: _find-index($users, is-barney);
+///     // => 1
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-index($users, ( 'user': 'fred', 'active': false ));
+///     // => 2
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-index($users, 'active', false);
+///     // => 1
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-index($users, 'active');
+///     // => 3
+
+@function _find-index($args...) {
+    @return call('__find-index', $args...);
+}
+
+
+/// This method is like `_find-index` except that it returns the key of the
+/// first element `$predicate` returns truthy for, instead of the element itself.
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// map, else `false`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {string|null} Returns the key of the matched element, else `null`.
+/// @example scss
+///     $users: (
+///       'barney':  ( 'age': 36, 'active': true ),
+///       'fred':    ( 'age': 40, 'active': false ),
+///       'pebbles': ( 'age': 1,  'active': true )
+///     );
+/// 
+///     @function under-40($chr, $args...) {
+///         @return _get($chr, 'age') < 40;
+///     }
+///     
+///     $foo: _find-key($users, under-40)
+///     // => 'barney'
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-key($users, ( 'age': 1, 'active': true ));
+///     // => 'pebbles'
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-key($users, 'active', false);
+///     // => 'fred'
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-key($users, 'active');
+///     // => 'barney'
+
+@function _find-key($args...) {
+    @return call('__find-key', $args...);
+}
+
+
+/// This method is like `_find` except that it iterates over elements of
+/// `$collection` from right to left.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {*} Returns the matched element, else `null`.
+/// @example scss
+///     @function is-odd($value, $args...) {
+///         @return $value % 2 == 1;
+///     }
+///     
+///     $foo: _find-last((1, 2, 3, 4), is-odd);
+///     // => 3
+
+@function _find-last($args...) {
+    @return call('__find-last', $args...);
+}
+
+
+/// This method is like `_find-index` except that it iterates over elements
+/// of `$collection` from right to left.
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// map, else `false`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {number} Returns the index of the found element, else `-1`.
+/// @example scss
+///     $users: (
+///       ( 'user': 'barney',  'active': true ),
+///       ( 'user': 'fred',    'active': false ),
+///       ( 'user': 'pebbles', 'active': false )
+///     );
+/// 
+///     @function is-pebbles($chr, $args...) {
+///         @return _get($chr, 'user') == 'pebbles';
+///     }
+/// 
+///     $foo: _find-last-index($users, is-pebbles);
+///     // => 3
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-last-index($users, ( 'user': 'barney', 'active': true ));
+///     // => 1
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-last-index($users, 'active', false);
+///     // => 2
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-last-index($users, 'active');
+///     // => 1
+
+@function _find-last-index($args...) {
+    @return call('__find-last-index', $args...);
+}
+
+
+/// This method is like `_find-key` except that it iterates over elements of
+/// a collection in the opposite order.
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// map, else `false`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} map The map to search.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
+/// @returns {string|null} Returns the key of the matched element, else `null`.
+/// @example scss
+///     $users: (
+///       'barney':  ( 'age': 36, 'active': true ),
+///       'fred':    ( 'age': 40, 'active': false ),
+///       'pebbles': ( 'age': 1,  'active': true )
+///     );
+/// 
+///     @function is-young($chr, $args...) {
+///         @return _get($chr, 'age') < 40;
+///     }
+/// 
+///     $foo: _find-last-key($users, _is-young);
+///     // => returns `pebbles` assuming `_find-key` returns `barney`
+///     
+///     // using the `_matches` callback shorthand
+///     $foo: _find-last-key($users, ( 'age': 36, 'active': true ));
+///     // => 'barney'
+///     
+///     // using the `_matches-property` callback shorthand
+///     $foo: _find-last-key($users, 'active', false);
+///     // => 'fred'
+///     
+///     // using the `_property` callback shorthand
+///     $foo: _find-last-key($users, 'active');
+///     // => 'pebbles'
+
+@function _find-last-key($args...) {
+    @return call('__find-last-key', $args...);
+}
+
+
+/// Performs a deep comparison between each element in `$collection` and the
+/// source map, returning the first element that has equivalent property
+/// values.
+/// 
+/// **Note:** This method supports comparing lists, booleans, 
+/// numbers, maps, and strings. Maps are compared by
+/// their own, not inherited, enumerable properties. For comparing a single
+/// own or inherited property value see `_matches-property`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to search.
+/// @param {Map} $source The map of property values to match.
+/// @returns {*} Returns the matched element, else `null`.
+/// @example scss
+/// $users: (
+///   ( 'user': 'barney', 'age': 36, 'active': true ),
+///   ( 'user': 'fred',   'age': 40, 'active': false )
+/// );
+/// 
+/// $foo: _result(_find-where($users, ( 'age': 36, 'active': true )), 'user');
+/// // => 'barney'
+/// 
+/// $foo: _result(_find-where($users, ( 'age': 40, 'active': false )), 'user');
+/// // => 'fred'
+
+@function _find-where($args...) {
+    @return call('__find-where', $args...);
+}

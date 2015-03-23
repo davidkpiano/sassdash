@@ -1,0 +1,48 @@
+@function __to-list($value) {
+    @if __is-map($value) {
+        @if __list-some(map-keys($value), __is-string) {
+            @return map-values($value);
+        }
+
+        $result: ();
+
+        @for $index from 1 through max(map-keys($value)...) {
+            $map-value: __get($value, $index);
+            $result: append($result, $map-value);
+        }
+
+        @return $result;
+    }
+
+    @if __is-string($value) {
+        $result: ();
+
+        @if str-length($value) >= 1 {
+            @for $index from 1 through str-length($value) {
+                $result: append($result, str-slice($value, $index, $index));
+            }
+        }
+
+        @return $result;
+    }
+
+    @return if(__is-list-like($value), join((), $value), ());
+}
+
+
+/// Converts `$value` to a list.
+///
+///
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to convert.
+/// @returns {List} Returns the converted list.
+/// @example scss
+/// $map: ('a': 1, 'b': 2, 'c': 3);
+/// 
+/// $foo: _to-list($map);
+/// // => 1, 2, 3
+
+@function _to-list($args...) {
+    @return call('__to-list', $args...);
+}

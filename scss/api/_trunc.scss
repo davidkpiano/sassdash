@@ -1,0 +1,83 @@
+@function __trunc($string, $options: null, $guard: null, $omission: null, $length: null, $separator: null) {
+    @if ($guard and __is-iteratee-call($string, $options, $guard)) {
+        $options: null;
+    }
+
+    $length: __either($length, __const('DEFAULT_TRUNC_LENGTH'));
+    $omission: __either($omission, __const('DEFAULT_TRUNC_OMISSION'));
+    $separator: __either($separator, null);
+
+    @if ($options != null) {
+        @if (__is-map($options)) {
+            $separator: if(map-has-key($options, 'separator'), __get($options, 'separator'), $separator);
+            $length: if(map-has-key($options, 'length'), __get($options, 'length'), $length);
+            $omission: if(map-has-key($options, 'omission'), __base-to-string(__get($options, 'omission')), $omission);
+        } @else {
+            $length: __parse-int($options);
+        }
+    }
+
+    $string: __base-to-string($string);
+
+    @if ($length >= str-length($string)) {
+        @return $string;
+    }
+
+    $end: $length - str-length($omission);
+
+    @if ($end < 1) {
+        @return $omission;
+    }
+
+    $result: str-slice($string, 0, $end);
+
+    @if ($separator == null) {
+        @return $result + $omission;
+    }
+
+    @if (__string-index-of($string, $separator, $end) != $end) {
+        $index: __string-last-index-of($result, $separator);
+
+        @if ($index > -1) {
+            $result: str-slice($result, 0, $index - 1);
+        }
+    }
+
+    @return $result + $omission;
+}
+
+
+/// Truncates `$string` if it is longer than the given maximum string length.
+/// The last characters of the truncated string are replaced with the omission
+/// string which defaults to "...".
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to truncate.
+/// @param {Map|number} $options [null] - The options object or maximum string length.
+/// @param {number} $length [30] - The maximum string length.
+/// @param {string} $omission ['...'] - The string to indicate text is omitted.
+/// @param {string} $separator [null] - The separator pattern to truncate to.
+/// @returns {string} Returns the truncated string.
+/// @example scss
+/// $foo: _trunc('hi-diddly-ho there, neighborino');
+/// // => 'hi-diddly-ho there, neighbo...'
+/// 
+/// $foo: _trunc('hi-diddly-ho there, neighborino', 24);
+/// // => 'hi-diddly-ho there, n...'
+/// 
+/// $foo: _trunc('hi-diddly-ho there, neighborino',
+///   $length: 24,
+///   $separator: ' '
+/// );
+/// // => 'hi-diddly-ho there,...'
+///
+/// $foo: _trunc('hi-diddly-ho there, neighborino', 
+///   $omission: ' (...)'
+/// );
+/// // => 'hi-diddly-ho there, neig (...)'
+
+@function _trunc($args...) {
+    @return call('__trunc', $args...);
+}

@@ -1,0 +1,33 @@
+@function __times($n: null, $iteratee: '__identity', $this-arg: null) {
+    $n: if(__is-falsey($n), 0, $n);
+    $index: 1;
+    $result: ();
+    $iteratee: __bind-callback($iteratee, $this-arg, 1);
+
+    @while $index <= $n {
+        $result: append($result, __exec($iteratee, $index));
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+/// Invokes the iteratee function `$n` times, returning a list of the results
+/// of each invocation. The `$iteratee` is bound to `$this-arg` and invoked with
+/// one argument; (index).
+///
+///
+/// @access public
+/// @group Utility
+/// @param {number} $n [0] - The number of times to invoke `$iteratee`.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
+/// @returns {List} Returns the list of results.
+/// @example scss
+/// $dice-rolls: _times(3, _partial(_random, 1, 6, false));
+/// // => (3, 6, 4)
+
+@function _times($args...) {
+    @return call('__times', $args...);
+}

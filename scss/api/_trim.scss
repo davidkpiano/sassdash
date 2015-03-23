@@ -1,0 +1,138 @@
+@function __trimmed-left-index($string) {
+    $index: 1;
+    $length: str-length($string);
+
+    @while ($index <= $length) and (__is-space(__char-at($string, $index))) {
+        $index: $index + 1;
+    }
+
+    @return $index;
+}
+
+
+@function __trimmed-right-index($string) {
+    $index: str-length($string);
+
+    @while ($index > 0) and (__is-space(__char-at($string, $index))) {
+        $index: $index - 1;
+    }
+
+    @return $index;
+}
+
+
+@function __trim($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') or ($chars == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, __trimmed-left-index($string), __trimmed-right-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string,
+        __chars-left-index($string, $chars),
+        __chars-right-index($string, $chars));
+}
+
+
+@function __trim-left($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') or ($chars == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, __trimmed-left-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string,
+        __chars-left-index($string, $chars));
+}
+
+
+@function __trim-right($string, $chars: null, $guard: null) {
+    $value: $string;
+    $string: __base-to-string($string);
+
+    @if not ($string) or ($string == '') or ($chars == '') {
+        @return $string;
+    }
+
+    @if (if($guard, __is-iteratee-call($value, $chars, $guard), ($chars == null))) {
+        @return str-slice($string, 0, __trimmed-right-index($string));
+    }
+
+    $chars: __base-to-string($chars);
+
+    @return str-slice($string, 0,
+        __chars-right-index($string, $chars));
+}
+
+
+/// Removes leading and trailing whitespace or specified characters from `$string`.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to trim.
+/// @param {string} $chars [' '] - The characters to trim.
+/// @returns {string} Returns the trimmed string.
+/// @example scss
+/// $foo: _trim('  abc  ');
+/// // => 'abc'
+/// $foo: _trim('-_-abc-_-', '_-');
+/// // => 'abc'
+/// $foo: _map(('  foo  ', '  bar  '), _trim);
+/// // => ('foo', 'bar')
+
+@function _trim($args...) {
+    @return call('__trim', $args...);
+}
+
+
+/// Removes leading whitespace or specified characters from `$string`.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to trim.
+/// @param {string} $chars [whitespace] - The characters to trim.
+/// @returns {string} Returns the trimmed string.
+/// @example scss
+/// /// _trim-left('  abc  ');
+/// // => 'abc  '
+/// /// _trim-left('-_-abc-_-', '_-');
+/// // => 'abc-_-'
+
+@function _trim-left($args...) {
+    @return call('__trim-left', $args...);
+}
+
+
+/// Removes trailing whitespace or specified characters from `$string`.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to trim.
+/// @param {string} $chars [' '] - The characters to trim.
+/// @returns {string} Returns the trimmed string.
+/// @example scss
+/// $foo: _trim-right('  abc  ');
+/// // => '  abc'
+/// $foo: _trim-right('-_-abc-_-', '_-');
+/// // => '-_-abc'
+
+@function _trim-right($args...) {
+    @return call('__trim-right', $args...);
+}

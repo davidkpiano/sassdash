@@ -1,0 +1,48 @@
+@function __invert($map, $multi-value: false, $guard: false) {
+    @if $guard and __is-iteratee-call($map, $multi-value, $guard) {
+        $multi-value: null;
+    }
+
+    $props: __keys($map);
+    $result: ();
+
+    @each $key in $props {
+        $value: __get($map, $key);
+
+        @if ($multi-value) {
+            @if (map-has-key($result, $value)) {
+                $result: __set($result, $value, append(__get($result, $value), $key));
+            } @else {
+                $result: __set($result, $value, ($key,));
+            }
+        } @else {
+            $result: __set($result, $value, $key);
+        }
+    }
+
+    @return $result;
+}
+
+
+/// Creates a map composed of the inverted keys and values of `$map`.
+/// If `$map` contains duplicate values, subsequent values overwrite property
+/// assignments of previous values unless `multiValue` is `true`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to invert.
+/// @param {boolean} $multi-value [false] Allow multiple values per key.
+/// @returns {Map} Returns the new inverted map.
+/// @example scss
+/// $map: ( 'a': 1, 'b': 2, 'c': 1 );
+/// $foo: _invert($map);
+/// // => ( '1': 'c', '2': 'b' )
+///
+/// // with `$multi-value`
+/// $foo: _invert($map, true);
+/// // => ( '1': ('a', 'c'), '2': ('b',) )
+
+@function _invert($args...) {
+    @return call('__invert', $args...);
+}

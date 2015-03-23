@@ -1,0 +1,40 @@
+@function __string-replace($string, $target, $replacement: '') {
+    $string: __to-string($string);
+    $target: __to-string($target);
+    $found-index: str-index($string, $target);
+    $result: '';
+
+    @if not $found-index {
+        @return $string;
+    }
+
+    @if __function-exists($replacement) {
+        $replacement: __call($replacement, null, $target);
+    }
+
+    @return $result
+        + str-slice($string, 1, $found-index - 1)
+        + $replacement
+        + __string-replace(
+            str-slice($string, str-length($target) + $found-index),
+            $target,
+            $replacement
+        );
+}
+
+
+/// Replaces all instances of a `$target` substring in a `$string` with
+/// a `$replacement` string.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $string - The source string.
+/// @param {String} $target - The substring to replace.
+/// @param {String} $replacement [''] - The replacement string.
+/// @returns {String} Returns new string with replacements.
+/// @example scss
+/// $foo: _replace('abcde', 'bcd', '---');
+/// // => 'a---e'
+@function _replace($args...) {
+    @return call('__string-replace', $args...);
+}

@@ -1,0 +1,54 @@
+@function __base-values($map, $props) {
+    $index: 1;
+    $length: length($props);
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, __get($map, nth($props, $index)));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+@function __values($map) {
+    @return __base-values($map, __keys($map));
+}
+
+
+@function __values-in($map) {
+    @return __base-values($map, __keys-in($map));
+}
+
+
+/// Creates a list of the own enumerable property values of `$map`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to query.
+/// @returns {List} Returns the list of property values.
+/// @example scss
+/// // todo
+
+@function _values($args...) {
+    @return call('__values', $args...);
+}
+
+
+/// Creates a list of the own and inherited enumerable property values
+/// of `$map`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to query.
+/// @returns {List} Returns the list of property values.
+/// @example scss
+/// // todo
+
+@function _values-in($args...) {
+    @return call('__values-in', $args...);
+}

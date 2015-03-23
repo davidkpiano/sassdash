@@ -1,0 +1,44 @@
+@function __chunk($list, $size: null, $guard: null) {
+    @if (if($guard, __is-iteratee-call($list, $size, $guard), ($size == null))) {
+        $size: 1;
+    } @else {
+        $size: max(if(__is-falsey($size), 1, $size), 1);
+    }
+
+    $index: 1;
+    $length: if($list, length($list), 0);
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, __base-slice($list, $index - 1, $index + $size - 1));
+        $index: $index + $size;
+    }
+
+    @if (length($result) == 1) {
+        $result: ($result,);
+    }
+
+    @return $result;
+}
+
+
+/// Creates a list of elements split into groups the length of `$size`.
+/// If `$collection` can't be split evenly, the final chunk will be the remaining
+/// elements.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to process.
+/// @param {number} $size [1] - The length of each chunk.
+/// @returns {List} Returns the new list containing chunks.
+/// @example scss
+/// $foo: _chunk(('a', 'b', 'c', 'd'), 2);
+/// // => (('a', 'b'), ('c', 'd'))
+/// 
+/// $foo: _chunk(('a', 'b', 'c', 'd'), 3);
+/// // => (('a', 'b', 'c'), ('d',))
+
+@function _chunk($args...) {
+    @return call('__chunk', $args...);
+}

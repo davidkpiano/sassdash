@@ -1,0 +1,48 @@
+@function __unescape-html-char($char) {
+    @return __const('html-unescapes' $char);
+}
+
+@function __unescape($string) {
+    $string: __base-to-string($string);
+    $escapes: ();
+
+    @each $escaped, $unescaped in __const('html-unescapes') {
+        $escaped-index: str-index($string, $escaped);
+
+        @if $escaped-index {
+            $escapes: append($escapes, (
+                'escaped': $escaped,
+                'unescaped': $unescaped,
+                'index': $escaped-index
+            ));
+        }
+    }
+
+    $escapes: __sort-by($escapes, __property('index'));
+
+    @each $escaped-map in $escapes {
+        $escaped: __get($escaped-map, 'escaped');
+        $unescaped: __get($escaped-map, 'unescaped');
+        $string: __string-replace($string, $escaped, $unescaped);
+    }
+
+    @return $string;
+}
+
+
+/// The inverse of `_escape`; this method converts the HTML entities
+/// `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to their
+/// corresponding characters.
+/// **Note:** No other HTML entities are unescaped.
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to unescape.
+/// @returns {string} Returns the unescaped string.
+/// @example scss
+/// $foo: _unescape('fred, barney, &amp; pebbles');
+/// // => 'fred, barney, & pebbles'
+
+@function _unescape($args...) {
+    @return call('__unescape', $args...);
+}

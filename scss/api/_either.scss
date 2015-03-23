@@ -1,0 +1,42 @@
+@function __either($this, $that: null, $predicate: '__is-truthy') {
+    $this-bool: __exec(__base-callback($predicate), $this);
+
+    @return if($this-bool, $this, $that);
+}
+
+/// Returns initial `$this` value unless the `$predicate` applied to 
+/// `$this` is falsey; in which case, `$that` is returned.
+/// 
+/// The `$predicate` argument can be any type of supported Sassdash
+/// callback.
+/// 
+/// @access public
+/// @group Utility
+/// @param {*} $this - The target preferred value
+/// @param {*} $that [null] - The fallback value, in case `$this` is falsey.
+/// @param {Function} $predicate ['is-truthy'] - The predicate to 
+/// check `$this` against 
+/// @returns {*} `$this` or `$that`
+/// @example scss
+/// $button-bg-color: false;
+/// 
+/// $foo: _either($button-bg-color, #C0FFEE);
+/// // => #C0FFEE
+/// 
+/// $foo: _either($button-bg-color, #C0FFEE, _is-color);
+/// // => #C0FFEE
+/// 
+/// $button-bg-color: green;
+/// 
+/// $foo: _either($button-bg-color, #C0FFEE);
+/// // => green
+/// 
+/// // Usage with "shifted argument" callback
+/// $foo: _either('abcde', 'xyz', str-index 'abc');
+/// // => 'abcde'
+/// 
+/// $foo: _either('hijkl', 'xyz', str-index 'abc');
+/// // => 'xyz'
+@function _either($args...) {
+    @return call('__either', $args...);
+}

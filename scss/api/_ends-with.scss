@@ -1,0 +1,76 @@
+@function __ends-with($string, $target: $__undefined__, $position: str-length($string)) {
+    @if __is-undefined($target) {
+        @return false;
+    }
+
+    $string: __base-to-string($string);
+    $target: __base-to-string($target);
+    $length: str-length($string);
+    $position: if(__is-falsey($position), 0, $position);
+    $position: min(if($position < 0, 0, $position), $length) + 1 - str-length($target);
+
+    @return if($position >= 1,
+        __string-index-of($string, $target, $position) == $position,
+        false);
+}
+
+@function __ends-with-any($string, $targets: (), $position: str-length($string)) {
+    $result: false;
+    $index: 1;
+
+    @while $index <= length($targets) and not $result {
+        $target-string: nth($targets, $index);
+        $result: __ends-with($string, $target-string, $position);
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+/// Checks if `$string` ends with the given target string.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to search.
+/// @param {string} $target - The string to search for.
+/// @param {number} $position [str-length($string)] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` ends with `$target`, else `false`.
+/// @example scss
+/// $foo: _ends-with('abc', 'c');
+/// // => true
+/// 
+/// $foo: _ends-with('abc', 'b');
+/// // => false
+/// 
+/// $foo: _ends-with('abc', 'b', 2);
+/// // => true
+
+@function _ends-with($args...) {
+    @return call('__ends-with', $args...);
+}
+
+/// Checks if `$string` ends with any of the strings in `$targets` list.
+///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to search.
+/// @param {string} $targets [()] - The list of strings to search for.
+/// @param {number} $position [str-length($string)] - The position to search from.
+/// @returns {boolean} Returns `true` if `$string` ends with any of the strings in `$targets`, else `false`.
+/// @example scss
+/// $foo: _ends-with-any('abc', 'a' 'c');
+/// // => true
+/// 
+/// $foo: _ends-with-any('abc', 'a' 'b');
+/// // => false
+/// 
+/// $foo: _ends-with-any('abc', 'a' 'b', 2);
+/// // => true
+
+@function _ends-with-any($args...) {
+    @return call('__ends-with-any', $args...);
+}

@@ -1,0 +1,27 @@
+@function __once($function) {
+    @return __before($function, 2);
+}
+
+
+/// Creates a function that is restricted to invoking `$function` once. Repeat calls
+/// to the function return the value of the first call. The `$function` is invoked
+/// with the `_this` binding of the created function.
+///
+///
+/// @access public
+/// @group Function
+/// @param {Function} $func The function to restrict.
+/// @returns {Function} Returns the new restricted function.
+/// @example scss
+/// $lighten-once: _once(lighten);
+/// $color: _exec($lighten-once, green, 10%);
+/// 
+/// color: $color; // lightened green
+/// 
+/// $color: _exec($lighten-once, blue, 20%);
+/// 
+/// color: $color; // null
+
+@function _once($args...) {
+    @return call('__once', $args...);
+}

@@ -1,0 +1,59 @@
+@function __intersection($arguments...) {
+    $args: ();
+
+    @each $arg-value in $arguments {
+        @if __is-list-like($arg-value) {
+            $args: append($args, $arg-value);
+        }
+    }
+
+    $args-length: length($args);
+    $list: nth($args, 1);
+    $result: ();
+    $seen: false;
+    $continue-outer: false;
+
+    @each $value in $list {
+        $continue-outer: false;
+
+        @if (if($seen,
+        __cache-index-of($seen, $value),
+        __index-of($result, $value)) < 0) {
+            $args-index: $args-length;
+
+            @while ($args-index > 0 and not $continue-outer) {
+                @if __index-of(nth($args, $args-index), $value) < 0 {
+                    $continue-outer: true;
+                }
+
+                @if not ($continue-outer) {
+                    @if $seen {
+                        $seen: append($seen, $value);
+                    }
+
+                    $result: append($result, $value);
+                    $args-index: $args-index - 1;
+                }
+            }
+        }
+    }
+
+    @return __base-uniq($result);
+}
+
+
+/// Creates a list of unique values in all provided lists
+/// for equality comparisons.
+///
+///
+/// @access public
+/// @group List
+/// @param {List...} (lists) The lists to inspect.
+/// @returns {List} Returns the new list of shared values.
+/// @example scss
+/// $foo: _intersection((1, 2), (4, 2), (2, 1));
+/// // => (2,)
+
+@function _intersection($args...) {
+    @return call('__intersection', $args...);
+}

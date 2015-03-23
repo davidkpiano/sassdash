@@ -1,0 +1,140 @@
+@function __reduce($collection, $iteratee: '__identity', $accumulator: null, $this-arg: null) {
+    $function: if(__is-list($collection), '__list-reduce', '__base-reduce');
+
+    @return __exec($function,
+        $collection,
+        __get-callback($iteratee, $this-arg, 4),
+        $accumulator,
+        ($accumulator == null and $this-arg == null),
+        __base-each);
+}
+
+
+@function __reduce-right($collection, $iteratee: '__identity', $accumulator: null, $this-arg: null) {
+    $function: if(__is-list($collection), '__list-reduce-right', '__base-reduce');
+
+    @return __exec($function, $collection, __get-callback($iteratee, $this-arg, 4), $accumulator, ($accumulator == null and $this-arg == null), '__base-each-right');
+}
+
+
+@function __list-reduce($list, $iteratee, $accumulator: null, $init-from-list: true, $args...) {
+    $index: 1;
+    $length: length($list);
+
+    @if ($init-from-list and ($length > 0)) {
+        $accumulator: nth($list, $index);
+        $index: $index + 1;
+    }
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+        $accumulator: call($iteratee, $accumulator, $value, $index, $list);
+
+        $index: $index + 1;
+    }
+
+    @return $accumulator;
+}
+
+
+@function __list-reduce-right($list, $iteratee, $accumulator: null, $init-from-list: true, $args...) {
+    $list: __list-reverse($list);
+
+    @return __list-reduce($list, $iteratee, $accumulator, $init-from-list);
+}
+
+
+@function __base-reduce-iteratee($value, $index, $collection: null) {
+    $iteratee: __this('iteratee');
+    $accumulator: __this('accumulator');
+    $init-from-collection: __this('init-from-collection');
+
+    @if ($init-from-collection) {
+        $_: __this('init-from-collection', false);
+        $accumulator: $value;
+    } @else {
+        $accumulator: __exec($iteratee, $accumulator, $value, $index, $collection);
+    }
+
+    $_: __this('accumulator', $accumulator);
+
+    @return true;
+}
+
+
+@function __base-reduce($collection, $iteratee, $accumulator, $init-from-collection: false, $each-function: null) {
+
+    $_: __scope((
+        'iteratee': $iteratee,
+        'accumulator': $accumulator,
+        'init-from-collection': $init-from-collection
+    ));
+    $iteratee: __bind('__base-reduce-iteratee');
+    $_: __exec($each-function, $collection, $iteratee);
+    $accumulator: __this('accumulator');
+    $_: __scope(false);
+
+    @return $accumulator;
+}
+
+
+/// Reduces `$collection` to a value which is the accumulated result of running
+/// each element in `$collection` through `$iteratee`, where each successive
+/// invocation is supplied the return value of the previous. If `$accumulator`
+/// is not provided the first element of `$collection` is used as the initial
+/// value. The `$iteratee` is bound to `$this-arg`and invoked with four arguments;
+/// (accumulator, value, index|key, collection).
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} $accumulator [null] The initial value.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
+/// @returns {*} Returns the accumulated value.
+/// @example scss
+/// // todo
+
+@function _reduce($args...) {
+    @return call('__reduce', $args...);
+}
+
+
+/// @alias _reduce
+
+@function _foldl($args...) {
+    @return call('__reduce', $args...);
+}
+
+
+/// @alias _reduce
+
+@function _inject($args...) {
+    @return call('__reduce', $args...);
+}
+
+
+/// This method is like `_reduce` except that it iterates over elements of
+/// `$collection` from right to left.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function} $iteratee [_identity] - The function invoked per iteration.
+/// @param {*} $accumulator [null] - The initial value.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
+/// @returns {*} Returns the accumulated value.
+/// @example scss
+/// // todo
+
+@function _reduce-right($args...) {
+    @return call('__reduce-right', $args...);
+}
+
+
+/// @alias _reduce-right
+
+@function _foldr($args...) {
+    @return call('__reduce-right', $args...);
+}

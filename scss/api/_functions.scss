@@ -1,0 +1,42 @@
+@function __base-functions($map, $props) {
+    $result: ();
+
+    @each $key in $props {
+        @if __function-exists(__get($map, $key)) {
+            $result: append($result, $key);
+        }
+    }
+
+    @return $result;
+}
+
+
+@function __functions($map) {
+    @return __base-functions($map, __keys-in($map));
+}
+
+
+/// Creates a list of function property names from all enumerable properties,
+/// own and inherited, of `$map`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to inspect.
+/// @returns {List} Returns the new list of property names.
+/// @example scss
+/// $map: ('a': '_after', 'b': 'lighten', 'c': 'blah');
+/// 
+/// $foo: _functions($map);
+/// // => ('a', 'b')
+
+@function _functions($args...) {
+    @return call('__functions', $args...);
+}
+
+
+/// @alias _functions
+
+@function _methods($args...) {
+    @return call('__functions', $args...);
+}

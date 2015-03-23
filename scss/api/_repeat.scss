@@ -1,0 +1,33 @@
+@function __repeat($string, $value: 0) {
+    $value: __parse-int($value);
+    $result: '';
+
+    @if $value >= 1 {
+        @for $iteration from 1 through $value {
+            $result: $result + $string;
+        }
+    }
+
+    @return $result;
+}
+
+
+/// Repeats the given string `$n` times.
+/// ///
+///
+/// @access public
+/// @group String
+/// @param {string} $string [''] - The string to repeat.
+/// @param {number} $n [0] - The number of times to repeat the string.
+/// @returns {string} Returns the repeated string.
+/// @example scss
+/// /// _repeat('*', 3);
+/// // => '***'
+/// /// _repeat('abc', 2);
+/// // => 'abcabc'
+/// /// _repeat('abc', 0);
+/// // => ''
+
+@function _repeat($args...) {
+    @return call('__repeat', $args...);
+}

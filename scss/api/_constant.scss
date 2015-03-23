@@ -1,0 +1,32 @@
+@function __constant-function($args...) {
+    @return __this('value');
+}
+
+
+@function __constant($value: null) {
+    $_: __scope((
+      'value': $value
+    ));
+    $constant-function: __bind('__constant-function');
+    $_: __scope(false);
+
+    @return $constant-function;
+}
+
+
+/// Creates a function that returns `$value`.
+///
+///
+/// @access public
+/// @group Utility
+/// @param {*} value The value to return from the new function.
+/// @returns {Function} Returns the new function.
+/// @example scss
+/// $map: ( 'user': 'fred' );
+/// $getter: _constant($map);
+/// 
+/// $foo: _exec($getter) === $map;
+/// // => true
+@function _constant($args...) {
+  @return call('__constant', $args...);
+}

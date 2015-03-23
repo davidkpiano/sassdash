@@ -1,0 +1,135 @@
+@function __sorted-index($list, $value, $iteratee: '__identity', $this-arg: null) {
+    $function: __get-callback($iteratee);
+
+    @return if($function == __base-callback and $iteratee == null,
+        __binary-index($list, $value),
+        __binary-index-by($list, $value, __exec($function, $iteratee, $this-arg, 1)));
+}
+
+
+@function __sorted-last-index($list, $value, $iteratee: '__identity', $this-arg: null) {
+    $function: __get-callback($iteratee);
+
+    @return if($function == __base-callback and $iteratee == null,
+        __binary-index($list, $value),
+        __binary-index-by($list, $value, __exec($function, $iteratee, $this-arg, 1), true));
+}
+
+
+@function __binary-index($list, $value, $ret-highest: false, $args...) {
+    $low: 0;
+    $high: if($list, length($list), $low);
+
+    @if __is-number($value) {
+        @while ($low < $high) {
+            $mid: floor(($low + $high) / 2);
+            $computed: nth($list, $mid);
+
+            @if (if($ret-highest, ($computed <= $value), ($computed < $value))) {
+                $low: $mid + 1;
+            } @else {
+                $high: $mid;
+            }
+        }
+
+        @return $high;
+    }
+
+    @return __binary-index-by($list, $value, '__identity', $ret-highest);
+}
+
+
+@function __binary-index-by($list, $value, $iteratee, $ret-highest: false) {
+    $value: __exec($iteratee, $value);
+
+    $low: 0;
+    $high: if($list, length($list), 0);
+    $val-is-undefined: ($value == null);
+
+    @while ($low < $high) {
+        $mid: floor(($low + $high) / 2);
+        $computed: __exec($iteratee, nth($list, $mid));
+
+        @if ($val-is-undefined) {
+            $set-low: ($ret-highest > 0 or not ($computed == null));
+        } @else {
+            $set-low: if($ret-highest > 0, ($computed <= $value), ($computed < $value));
+        }
+
+        @if ($set-low) {
+            $low: $mid + 1;
+        } @else {
+            $high: $mid;
+        }
+    }
+
+    @return min($high, __const('MAX_LIST_INDEX'));
+}
+
+
+/// Uses a binary search to determine the lowest index at which `$value` should
+/// be inserted into `$list` in order to maintain its sort order. If an iteratee
+/// function is provided it is invoked for `$value` and each element of `$list`
+/// to compute their sort ranking. The iteratee is bound to `$this-arg` and
+/// invoked with one argument; (value).
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// object, else `false`.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The sorted list to inspect.
+/// @param {*} $value The value to evaluate.
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [NULL] - The `_this` binding of `$iteratee`.
+/// @returns {number} Returns the index at which `$value` should be inserted
+///  into `$list`.
+/// @example scss
+/// $foo: _sorted-index((30, 50), 40);
+/// // => 2
+/// 
+/// $foo: _sorted-index((4, 4, 5, 5), 5);
+/// // => 3
+/// 
+/// $dict: { 'data': { 'thirty': 30, 'forty': 40, 'fifty': 50 } };
+///
+/// // using the `_property` callback shorthand
+/// $foo: _sorted-index((( 'x': 30 ), ( 'x': 50 )), ( 'x': 40 ), 'x');
+/// // => 2
+
+@function _sorted-index($args...) {
+    @return call('__sorted-index', $args...);
+}
+
+
+/// This method is like `_sorted-index` except that it returns the highest
+/// index at which `$value` should be inserted into `$list` in order to
+/// maintain its sort order.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The sorted list to inspect.
+/// @param {*} $value The value to evaluate.
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @returns {number} Returns the index at which `$value` should be inserted
+///  into `$list`.
+/// @example scss
+/// $foo: _sorted-last-index((4, 4, 5, 5), 5);
+/// // => 5
+
+@function _sorted-last-index($args...) {
+    @return call('__sorted-last-index', $args...);
+}

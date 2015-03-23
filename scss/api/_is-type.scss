@@ -1,0 +1,448 @@
+@function __is-length($value) {
+    @return type-of($value) == 'number'
+    and $value > -1
+    and $value % 1 == 0
+    and $value < (pow(2, 53) - 1);
+}
+
+
+@function __is-strict-comparable($value) {
+    @return not __is-map-like($value);
+}
+
+
+@function __is-iteratee-call($value: null, $index: null, $map: null, $args...) {
+    @if not __is-map-like($map)
+    or length($args) > 0 {
+        @return false;
+    }
+
+    $type: type-of($index);
+    $prereq: false;
+
+    @if ($type == 'number') {
+        $length: length($map);
+        $prereq: (__is-length($length) and __is-index($index, $length));
+    } @else {
+        $prereq: ($type == 'string');
+    }
+
+    @return if($prereq, __get($map, $index) == $value, false);
+}
+
+
+@function __is-arglist($value, $args...) {
+    @return type-of($value) == 'arglist';
+}
+
+
+@function __is-list($value, $args...) {
+    @return type-of($value) == 'list';
+}
+
+
+@function __is-boolean($value, $args...) {
+    @return type-of($value) == 'bool';
+}
+
+
+@function __is-falsey($value) {
+    @if $value == null
+    or $value == ''
+    or $value == ""
+    or $value == $__undefined__
+    or $value == 0
+    or not $value {
+        @return true;
+    }
+
+    @return false;
+}
+
+
+@function __is-truthy($value) {
+    @return $value and not __is-falsey($value);
+}
+
+
+@function __is-finite($value, $args...) {
+    @return __is-number($value);
+}
+
+
+@function __is-function($value, $args...) {
+    @return __function-exists($value);
+}
+
+
+@function __is-map($value, $args...) {
+    @return type-of($value) == 'map';
+}
+
+
+@function __is-null($value, $args...) {
+    @return type-of($value) == 'null';
+}
+
+
+@function __is-number($value, $args...) {
+    @return type-of($value) == 'number';
+}
+
+
+@function __is-integer($value, $args...) {
+    @return __is-number($value) and round($value) == $value;
+}
+
+
+@function __is-plain-map($value, $args...) {
+    @return (type-of($value) == 'map')
+    and not (map-has-key($value, '_constructor'));
+}
+
+
+@function __is-string($value, $args...) {
+    @return type-of($value) == 'string';
+}
+
+
+@function __is-undefined($value, $args...) {
+    @return if(global-variable-exists('__undefined__'), $value == $__undefined__, false);
+}
+
+
+@function __is-index($value, $length: null) {
+    $value: __parse-float($value);
+
+    @return $value > 0
+    and $value % 1 == 0
+    and ($length == null or $value <= $length);
+}
+
+
+@function __is-iterable($value, $args...) {
+    @return __is-map-like($value) or __is-string($value);
+}
+
+@function __is-map-like($value, $args...) {
+    @return $value and (index('map' 'list' 'arglist', type-of($value)));
+}
+
+
+@function __is-list-like($value, $args...) {
+    @return __is-list($value) or __is-arglist($value);
+}
+
+
+@function __is-native($value, $args...) {
+    @return __is-function($value) and index(__const('NATIVE_FUNCTIONS'), $value);
+}
+
+
+@function __is-color($value, $args...) {
+    @return type-of($value) == 'color';
+}
+
+/// Checks if `$value` is an `Arglist`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is an `Arglist`, else `false`.
+/// @example scss
+///     @function get-args($args...) {
+///         @return $args;
+///     }
+///     
+///     $foo: _is-arglist(get-args(1, 2, 3));
+///     // => true
+///     
+///     $foo: _is-arglist((1, 2, 3));
+///     // => false
+
+@function _is-arglist($args...) {
+    @return call('__is-arglist', $args...);
+}
+
+/// Checks if `$value` is a `List`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `List`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-list(1 2 3);
+/// // => true
+/// 
+/// $foo: _is-list((1, 2, 3));
+/// // => true
+
+@function _is-list($args...) {
+    @return call('__is-list', $args...);
+}
+
+/// Checks if `$value` is a `Boolean`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `Boolean`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-boolean(false);
+/// // => true
+/// 
+/// $foo: _is-boolean(1 + 1 == 2);
+/// // => true
+/// 
+/// $foo: _is-boolean(null);
+/// // => false
+
+@function _is-boolean($args...) {
+    @return call('__is-boolean', $args...);
+}
+
+/// Checks if `$value` is a standard Sass `Function` or a Sassdash
+/// callback `Function`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `Function`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-function('lighten');
+/// // => true
+/// 
+/// $foo: _is-function(_partial('lighten', #C0FF33));
+/// // => true
+/// 
+/// $foo: _is-function('not-a-function');
+/// // => false
+
+@function _is-function($args...) {
+    @return call('__is-function', $args...);
+}
+
+/// Checks if `$value` is `null`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is `null`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-null(null);
+/// // => true
+/// 
+/// $foo: _is-null(map-get(('a': 1), 'b'));
+/// // => true
+/// 
+/// $foo: _is-null(false);
+/// // => false
+/// 
+/// 
+@function _is-null($args...) {
+    @return call('__is-null', $args...);
+}
+
+/// Checks if `$value` is a `Number`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `Number`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-number(30);
+/// // => true
+/// 
+/// $foo: _is-number('30');
+/// // => false
+
+@function _is-number($args...) {
+    @return call('__is-number', $args...);
+}
+
+
+/// Checks if `$value` is an integer number.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is an integer number, else `false`.
+/// @example scss
+///     
+/// $foo: _is-integer(31);
+/// // => true
+/// 
+/// $foo: _is-integer('31');
+/// // => false
+/// 
+/// $foo: _is-integer(31.25);
+/// // => false
+
+@function _is-integer($args...) {
+    @return call('__is-integer', $args...);
+}
+
+
+/// Checks if `$value` is a `Map`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `Map`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-map(('a': 1));
+/// // => true
+/// 
+/// $foo: _is-map(('a', 1));
+/// // => false
+
+@function _is-map($args...) {
+    @return call('__is-map', $args...);
+}
+
+
+/// Checks if `$value` is a plain `Map`, not from a constructor.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a plain `Map`, else `false`.
+/// @example scss
+/// // todo
+
+@function _is-plain-map($args...) {
+    @return call('__is-plain-map', $args...);
+}
+
+
+/// Checks if `$value` is a `String`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `String`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-string('hello');
+/// // => true
+/// 
+/// $foo: _is-string(hello);
+/// // => true
+/// 
+/// $foo: _is-string(31);
+/// // => false
+
+@function _is-string($args...) {
+    @return call('__is-string', $args...);
+}
+
+
+/// Checks if `$value` is the Sassdash `undefined` value.
+/// Using `undefined` (`$__undefined__`) can be useful in distinguishing
+/// between `null` and undefined values.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is `undefined`, else `false`.
+/// @example scss
+/// // todo
+
+@function _is-undefined($args...) {
+    @return call('__is-undefined', $args...);
+}
+
+
+/// Checks if `$value` is iterable. A value in Sassdash is considered iterable
+/// if it contains a distinct set of elements and acts as a container for these
+/// elements - i.e. a `Map`, `List`, `Arglist`, or `String`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is iterable, else `false`.
+/// @example scss
+///     
+/// $foo: _is-iterable('hello');
+/// // => true
+/// 
+/// $foo: _is-iterable(1 2 3 4);
+/// // => true
+/// 
+/// $foo: _is-iterable(('a': 1, 'b': 2));
+/// // => true
+/// 
+/// $foo: _is-iterable(1234);
+/// // => false
+
+@function _is-iterable($args...) {
+    @return call('__is-iterable', $args...);
+}
+
+
+/// Checks if `$value` is similar to a `Map`, in that it has
+/// (implicit or explicit) keys bijectively paired with values.
+/// In Sassdash, a `Map`, `List`, or `Arglist` can be considered map-like.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is similar to a `Map`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-map-like(1 2 3 4);
+/// // => true
+/// 
+/// $foo: _is-map-like(('a': 1, 'b': 2));
+/// // => true
+/// 
+/// $foo: _is-map-like('1234');
+/// // => false
+
+@function _is-map-like($args...) {
+    @return call('__is-map-like', $args...);
+}
+
+
+/// Checks if `$value` is a `List` or `Arglist`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `List` or `Arglist`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-list-like((1, 2));
+/// // => true
+
+@function _is-list-like($args...) {
+    @return call('__is-list-like', $args...);
+}
+
+
+/// Checks if `$value` is a `Color`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if `$value` is a `Color`, else `false`.
+/// @example scss
+///     
+/// $foo: _is-color($C0FF33);
+/// // => true
+/// 
+/// $foo: _is-color(green);
+/// // => true
+/// 
+/// $foo: _is-color('green');
+/// // => false
+
+@function _is-color($args...) {
+    @return call('__is-color', $args...);
+}

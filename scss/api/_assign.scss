@@ -1,0 +1,113 @@
+@function __base-assign($map, $source, $customizer: false) {
+    @if not __is-map-like($map) {
+        @return $map;
+    }
+
+    $props: __keys($source);
+
+    @if not $customizer {
+        @return __base-copy($source, $map, $props);
+    }
+
+    @each $key in $props {
+        $value: if(map-has-key($map, $key), __get($map, $key), $__undefined__);
+        $result: __exec($customizer, $value, __get($source, $key), $key, $map, $source);
+
+        @if ($result != $value)
+        or ($value == null and not map-has-key($map, $key)) {
+            $map: __set($map, $key, $result);
+        }
+    }
+
+    @return $map;
+}
+
+
+@function __create-assigner-function($arguments...) {
+    $assigner: __this('assigner');
+    $length: length($arguments);
+    $map: if($length >= 1, nth($arguments, 1), null);
+    $customizer: null;
+
+    @if ($length < 2 or $map == null) {
+        @return $map;
+    }
+
+    @if ($length > 3 and __is-iteratee-call(nth($arguments, 2), nth($arguments, 3), nth($arguments, 4))) {
+        $length: 2;
+    }
+
+    @if $length > 3 and __function-exists(nth($arguments, $length - 1)) {
+        $length: $length - 1;
+        $customizer: __bind-callback(nth($arguments, $length), nth($arguments, $length - 1), 5);
+    } @else if $length > 2 and __function-exists(nth($arguments, $length)) {
+        $length: $length - 1;
+        $customizer: nth($arguments, $length + 1);
+    }
+
+    @for $index from 1 through $length {
+        $source: nth($arguments, $index);
+
+        @if ($source) {
+            $map: __exec($assigner, $map, $source, $customizer);
+        }
+    }
+
+    @return $map;
+}
+
+
+@function __create-assigner($assigner) {
+    $_: __scope((
+        'assigner': $assigner
+    ));
+
+    $scoped-function: __bind('__create-assigner-function');
+
+    $_: __scope(false);
+
+    @return $scoped-function;
+}
+
+
+@function __assign($arguments...) {
+    $assigner: __create-assigner('__base-assign');
+
+    @return __exec($assigner, $arguments...);
+}
+
+
+/// Assigns own enumerable properties of source map(s) to the destination
+/// map. Subsequent sources overwrite property assignments of previous sources.
+/// If `$customizer` is provided it is invoked to produce the assigned values.
+/// The `$customizer` is bound to `$this-arg` and invoked with five arguments;
+/// ($map-value, $map-value, $key, $map, $source).
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map - The destination map.
+/// @param {Map...} $sources... - The source maps.
+/// @param {Function} $customizer [false] - The function to customize assigning values.
+/// @param {*} $this-arg - The `_this` binding of `$customizer`.
+/// @returns {Map} Returns `map`.
+///
+/// @example scss
+/// _assign(( 'user': 'barney' ), ( 'age': 40 ), ( 'user': 'fred' ));
+/// // => ( 'user': 'fred', 'age': 40 )
+///
+/// // using a customizer callback
+/// $defaults: _partial-right(_assign, _either);
+/// _exec($defaults, (( 'user': 'barney' ), ( 'age': 36 ), ( 'user': 'fred' )));
+/// // => ( 'user': 'barney', 'age': 36 )
+
+@function _assign($args...) {
+    @return call('__assign', $args...);
+}
+
+
+/// @alias _assign
+
+@function _extend($args...) {
+    @return call('__assign', $args...);
+}

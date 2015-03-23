@@ -1,0 +1,48 @@
+@function __result($map, $key, $default-value: null) {
+    $value: if($map == null, $__undefined__, __get($map, $key));
+    $result: null;
+
+    @if __is-undefined($value) or __is-null($value) {
+        $value: $default-value;
+    }
+
+    @if __function-exists($value) {
+        $_: __scope($map);
+        $scoped-function: __bind($value);
+        $result: __call($scoped-function, $__current-scope__);
+        $_: __scope(false);
+    } @else {
+        $result: $value;
+    }
+
+    @return $result;
+}
+
+
+/// Resolves the value of property `$key` on `$map`. If the value of `key` is
+/// a function it is invoked with the `_this` binding of `$map` and its result
+/// is returned, else the property value is returned. If the property value is
+/// `undefined` or `null` the `$default-value` is used in its place.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The $map to query.
+/// @param {string} $key The key of the property to resolve.
+/// @param {*} $default-value The value returned if the property value
+///  resolves to `undefined` or `null`.
+/// @returns {*} Returns the resolved value.
+/// @example scss
+/// $map: ( 'user': 'fred', 'age': _constant(40) );
+/// $foo: _result($map, 'user');
+/// // => 'fred'
+/// $foo: _result($map, 'age');
+/// // => 40
+/// $foo: _result($map, 'status', 'busy');
+/// // => 'busy'
+/// $foo: _result($map, 'status', _constant('busy'));
+/// // => 'busy'
+
+@function _result($args...) {
+    @return call('__result', $args...);
+}

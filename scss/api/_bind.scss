@@ -1,0 +1,46 @@
+@function __bind($function, $this-arg: $__current-scope__, $arguments...) {
+    @if __is-falsey($this-arg) {
+        $this-arg: '';
+    }
+
+    @if __is-map($this-arg) {
+        $scope: __scope($this-arg);
+        $_: __scope(false);
+
+        $this-arg: __get($scope, '_id');
+    }
+
+    $function: '#{$function}#{$this-arg}';
+
+    @if length($arguments) > 0 {
+        @return __partial($function, $arguments...);
+    }
+
+    @return $function;
+}
+
+///
+/// Creates a function that invokes `$func` with the `_this` binding of `$this-arg`
+/// and prepends any additional `_bind` arguments to those provided to the
+/// bound function.
+///
+/// @access public
+/// @group Function
+/// @param {Function} $func The function to bind.
+/// @param {*} $this-arg - The `_this` binding of `$func`.
+/// @param {*...} $args... The arguments to be partially applied.
+/// @returns {Function} Returns the new bound function.
+/// @example scss
+///     @function greet($greeting, $punctuation) {
+///         @return $greeting + ' ' + _this('user') + $punctuation;
+///     }
+///    
+///     $map: ('user': 'fred');
+///    
+///     $bound: _bind('greet', $map, 'hi');
+///    
+///     $result: _exec($bound, '!');
+///     // => 'hi fred!'
+@function _bind($args...) {
+    @return call('__bind', $args...);
+}

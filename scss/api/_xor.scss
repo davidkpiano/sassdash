@@ -1,0 +1,35 @@
+@function __xor($arguments...) {
+    $index: 1;
+    $length: length($arguments);
+    $result: ();
+
+    @each $list in $arguments {
+        @if __is-list-like($list) {
+            $result: if($result,
+                join(
+                    __base-difference($result, $list),
+                    __base-difference($list, $result)),
+                $list);
+        }
+    }
+
+    @return if(__is-truthy($result), __base-uniq($result), ());
+}
+
+
+/// Creates a list that is the symmetric difference of the provided lists.
+/// See [Wikipedia](https://en.wikipedia.org/wiki/Symmetric_difference) for
+/// more details.
+///
+///
+/// @access public
+/// @group List
+/// @param {List...} $lists The lists to inspect.
+/// @returns {List} Returns the new list of values.
+/// @example scss
+/// $foo: _xor((1, 2), (4, 2));
+/// // => (1, 4)
+
+@function _xor($args...) {
+    @return call('__xor', $args...);
+}

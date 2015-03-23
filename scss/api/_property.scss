@@ -1,0 +1,86 @@
+@function __base-property-function($map: null, $args...) {
+    $key: __this('key');
+    $map: __to-map($map);
+
+    @return if($map == null, null, __get($map, $key));
+}
+
+
+@function __base-property($key) {
+    $_: __scope((
+        'key': $key
+    ));
+    $base-property-function: __bind('__base-property-function');
+    $_: __scope(false);
+
+    @return $base-property-function;
+}
+
+
+@function __property($key, $args...) {
+    @return __base-property($key);
+}
+
+
+@function __property-of-function($key, $args...) {
+    $map: __this('map');
+
+    @return if($map == null, null, __get($map, $key));
+}
+
+
+@function __property-of($map, $args...) {
+    $_: __scope((
+        'map', $map
+    ));
+    $property-of-function: __bind('__property-of-function');
+    $_: __scope(false);
+
+    @return $property-of-function;
+}
+
+
+/// Creates a function which returns the property value of `$key` on a given map.
+///
+///
+/// @access public
+/// @group Utility
+/// @param {string} $key The key of the property to get.
+/// @returns {Function} Returns the new function.
+/// @example scss
+/// $users: (
+///   ( 'user': 'fred' ),
+///   ( 'user': 'barney' )
+/// );
+/// 
+/// $get-name: _property('user');
+///
+/// $foo: _map($users, $get-name);
+/// // => ('fred', barney')
+///
+/// $foo: _pluck(_sort-by($users, $get-name), 'user');
+/// // => ('barney', 'fred')
+
+@function _property($args...) {
+    @return call('__property', $args...);
+}
+
+
+/// The inverse of `_property`; this method creates a function which returns
+/// the property value of a given key on `$map`.
+///
+///
+/// @access public
+/// @group Utility
+/// @param {Map} $map The map to inspect.
+/// @returns {Function} Returns the new function.
+/// @example scss
+/// $map: ( 'a': 3, 'b': 1, 'c': 2 );
+/// $foo: _map(('a', 'c'), _property-of($map));
+/// // => (3, 2)
+/// $foo: _sort-by(('a', 'b', 'c'), _property-of($map));
+/// // => ('b', 'c', 'a')
+
+@function _property-of($args...) {
+    @return call('__property-of', $args...);
+}

@@ -1,0 +1,64 @@
+@function __list-reverse($list, $args...) {
+    $length: length($list);
+    $result-list: ();
+    $index: $length;
+
+    @while $index > 0 {
+        $result-list: append($result-list, nth($list, $index));
+        $index: $index - 1;
+    }
+
+    @return $result-list;
+}
+
+
+@function __str-reverse($string, $args...) {
+    $string-list: __to-list($string);
+    $result: __list-reverse($string-list);
+
+    @return __join($result, '');
+}
+
+
+@function __reverse($value, $args...) {
+    @if __is-string($value) {
+        @return __str-reverse($value);
+    }
+
+    @return __list-reverse($value);
+}
+
+
+/// Reverses a `$list` or `$string`. The first element/character of the list/string
+/// becomes the last, and vice versa.
+/// 
+/// @access public
+/// @group List
+/// @param {List|String} $value - The value to reverse.
+/// @returns {List|String} Returns reversed `$value`.
+/// @example scss
+/// $foo: _reverse(1 2 3);
+/// // => 3 2 1
+/// 
+/// $foo: _reverse('abc');
+/// // => 'cba'
+
+@function _reverse($args...) {
+    @return call('__reverse', $args...);
+}
+
+
+/// Reverses a `$string`. The first character of the string
+/// becomes the last, and vice versa.
+/// 
+/// @access public
+/// @group List
+/// @param {String} $string - The string to reverse.
+/// @returns {String} Returns reversed `$string`.
+/// @example scss
+/// $foo: _str-reverse('abc');
+/// // => 'cba'
+
+@function _str-reverse($args...) {
+    @return call('__str-reverse', $args...);
+}

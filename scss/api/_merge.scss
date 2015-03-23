@@ -1,0 +1,148 @@
+@function __base-merge-deep($map, $source, $key, $merge-function, $customizer, $stack-a: (), $stack-b: ()) {
+    $length: length($stack-a);
+    $src-value: __get($source, $key);
+
+    @while $length > 0 {
+        @if __is-equal(nth($stack-a, $length), $src-value) {
+            $map: __set($map, $key, nth($stack-b, $length));
+
+            @return $map;
+        }
+
+        $length: $length - 1;
+    }
+
+    $value: __get($map, $key);
+    $result: if($customizer,
+        __exec($customizer, $value, $src-value, $key, $map, $source),
+        $__undefined__);
+    $is-common: __is-undefined($result);
+
+    @if $is-common {
+        $result: $src-value;
+
+        @if __is-list($src-value) {
+            $result: if(__is-list($value),
+                $value,
+                __either($value, ()));
+        } @else if __is-plain-map($src-value) or __is-arglist($src-value) {
+            $result: if(__is-arglist($value),
+                __to-map($value),
+                if(__is-plain-map($value), $value, ()));
+        } @else {
+            $is-common: false;
+        }
+    }
+
+    $stack-a: append($stack-a, $src-value);
+    $stack-b: append($stack-b, $result);
+
+    @if $is-common {
+        $_: __this('map', __set($map, $key, __exec($merge-function, $result, $src-value, $customizer, $stack-a, $stack-b)));
+    } @else if not __is-equal($result, $value) {
+        $_: __this('map', __set($map, $key, $result));
+    }
+
+    @return __this('map');
+}
+
+
+@function __base-merge-function($src-value, $key, $source) {
+    $map: __this('map');
+    $customizer: __this('customizer');
+    $stack-a: __this('stack-a');
+    $stack-b: __this('stack-b');
+    $is-source-list: __this('is-source-list');
+
+    @if __is-map-like($src-value) {
+        $base-merge-deep: __bind('__base-merge-deep');
+
+        @return __exec($base-merge-deep, $map, $source, $key, __base-merge, $customizer, $stack-a, $stack-b);
+    }
+
+    $value: __get($map, $key);
+    $result: if($customizer,
+        __exec($customizer, $value, $src-value, $key, $map, $source),
+        $__undefined__);
+    $is-common: __is-undefined($result);
+
+    @if $is-common {
+        $result: $src-value;
+    }
+
+    @if ($is-source-list or not __is-undefined($result))
+    and ($is-common or not __is-equal($result, $value)) {
+        $map: __this('map', __set($map, $key, $result));
+    }
+
+    @return true;
+}
+
+
+@function __base-merge($map, $source, $customizer: null, $stack-a: (), $stack-b: ()) {
+    @if not __is-map-like($map) {
+        @return $map;
+    }
+
+    $is-source-list: __is-list($source);
+    $func: if($is-source-list, '__list-each', '__base-for-own');
+    $_: __scope((
+        'map': $map,
+        'customizer': $customizer,
+        'stack-a': $stack-a,
+        'stack-b': $stack-b,
+        'is-source-list': $is-source-list
+    ));
+    $base-merge-function: __bind('__base-merge-function');
+    $_: __exec($func, $source, $base-merge-function);
+    $map: __this('map');
+    $_: __scope(false);
+
+    @return $map;
+}
+
+
+@function __list-merge($list, $source, $customizer: null) {
+    // todo
+}
+
+
+@function __merge($arguments...) {
+    $assigner: __create-assigner('__base-merge');
+
+    @return __exec($assigner, $arguments...);
+}
+
+
+/// Recursively merges own enumerable properties of the source map(s), that
+/// don't resolve to `undefined` into the destination map. Subsequent sources
+/// overwrite property assignments of previous sources. If `$customizer` is
+/// provided, it is invoked to produce the merged values of the destination and
+/// source properties. If `$customizer` returns `undefined` merging is handled
+/// by the method instead. The `$customizer` is bound to `$this-arg` and invoked
+/// with five arguments; (source-value, other-value, key, map, source).
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The destination map.
+/// @param {Map...} $source... The source maps.
+/// @param {Function} $customizer [null] The function to customize merging properties.
+/// @param {*} $this-arg [null] - The `_this` binding of `$customizer`.
+/// @returns {Map} Returns `map`.
+/// @example scss
+/// $users: (
+///   'data': (( 'user': 'barney' ), ( 'user': 'fred' ))
+/// );
+/// $ages: (
+///   'data': (( 'age': 36 ), ( 'age': 40 ))
+/// );
+/// $foo: _merge($users, ages);
+/// // => ( 'data': (( 'user': 'barney', 'age': 36 ), ( 'user': 'fred', 'age': 40 )) )
+/// 
+/// // using a customizer callback
+/// // todo
+
+@function _merge($args...) {
+    @return call('__merge', $args...);
+}

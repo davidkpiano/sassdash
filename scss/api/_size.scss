@@ -1,0 +1,37 @@
+@function __get-length($list, $args...) {
+    @return length($list);
+}
+
+
+@function __size($collection: null, $args...) {
+    @if __is-string($collection) {
+        $collection: __to-list($collection);
+    }
+
+    $length: if(__is-map-like($collection), length($collection), 0);
+
+    @return if(__is-length($length), $length, length(__keys($collection)));
+}
+
+
+/// Gets the size of `$collection` by returning `length($collection) for
+/// lists or maps, or `str-length($collection)` for strings.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to inspect.
+/// @returns {number} Returns the size of `$collection`.
+/// @example scss
+/// $foo: _size((1, 2, 3));
+/// // => 3
+/// 
+/// $foo: _size(( 'a': 1, 'b': 2 ));
+/// // => 2
+/// 
+/// $foo: _size('pebbles');
+/// // => 7
+
+@function _size($args...) {
+    @return call('__size', $args...);
+}

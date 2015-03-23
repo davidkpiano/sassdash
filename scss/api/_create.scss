@@ -1,0 +1,78 @@
+@function __list-copy($list, $other: ()) {
+    $index: 1;
+    $length: length($list);
+    $other-length: length($other);
+    $result: ();
+
+    @while ($index <= $length) {
+        $result: append($result, nth($list, $index));
+
+        $index: $index + 1;
+    }
+
+    @while ($other-length >= $index) {
+        $result: append($result, nth($other, $index));
+
+        $index: $index + 1;
+    }
+
+    @return $result;
+}
+
+
+@function __base-copy($source, $map, $props: null) {
+    @if not ($props) {
+        $props: $map;
+        $map: ();
+    }
+
+    $index: 1;
+    $length: length($props);
+
+    @while ($index <= $length) {
+        $key: nth($props, $index);
+        $map: __set($map, $key, __get($source, $key));
+
+        $index: $index + 1;
+    }
+
+    @return $map;
+}
+
+
+@function __base-create($constructor, $args...) {
+    @if not (__function-exists($constructor)) {
+        @return ();
+    }
+
+    @return __new($constructor, $args...);
+}
+
+
+@function __create($prototype, $properties: null, $guard: null) {
+    $result: __base-create($prototype);
+
+    @if $guard and __is-iteratee-call($prototype, $properties, $guard) {
+        $properties: null;
+    }
+
+    @return if($properties, __base-copy($properties, $result, __keys($properties)), $result);
+}
+
+
+/// Creates a map that inherits from the given `$prototype` map. If a
+/// `$properties` map is provided its own enumerable properties are assigned
+/// to the created map.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $prototype - The map to inherit from.
+/// @param {Map} $properties [null] - The properties to assign to the map.
+/// @returns {Map} Returns the new map.
+/// @example scss
+/// // todo
+
+@function _create($args...) {
+    @return call('__create', $args...);
+}

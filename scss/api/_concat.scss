@@ -1,0 +1,62 @@
+@function __str-concat($source: '', $args...) {
+    @if __is-iteratee-call($args...) {
+        $args: nth($args, 1);
+    }
+
+    $source: __to-string($source);
+
+    @each $string in $args {
+        $source: $source + $string;
+    }
+
+    @return $source;
+}
+
+
+@function __concat($source, $args...) {
+    $separator: list-separator($source);
+
+    $source: __either($source, ($source,), '__is-list-like');
+
+    @each $list in $args {
+        $source: join($source, $list, $separator);
+    }
+
+    @return $source;
+}
+
+/// Returns a new list comprised of the `$source` list
+/// joined with the list(s) and/or value(s) 
+/// provided as arguments.
+/// 
+/// The separator of the returned list will be the same as the
+/// separator of the `$source` list.
+///
+/// @access public
+/// @group List
+/// @param {List} $source The initial list
+/// @param {List...|*...} $args... Lists and/or values to concatenate into the source list. 
+/// @returns {List} Returns a new list of concatenated lists/values.
+/// @example scss
+/// $foo: _concat(1 2, 3 4);
+/// // => (1 2 3 4)
+/// 
+/// $foo: _concat(1 2, 3, 4);
+/// // => (1 2 3 4)
+@function _concat($args...) {
+    @return call('__concat', $args...);
+}
+
+/// Combines the text of two or more strings and returns a new string.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $source [''] - Source string
+/// @param {String...|*...} $args... - Other strings to concatenate
+/// @returns {String} Returns a new string of concatenated strings
+/// @example scss
+/// $foo: _concat('Hello', ' ', 'World');
+/// // => 'Hello World'
+@function _str-concat($args...) {
+    @return call('__str-concat', $args...);
+}

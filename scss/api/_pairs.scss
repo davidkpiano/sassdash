@@ -1,0 +1,26 @@
+@function __pairs($map) {
+    $result: ();
+
+    @each $key, $value in $map {
+        $result: append($result, ($key, $value));
+    }
+
+    @return $result;
+}
+
+
+/// Creates a two dimensional list of the key-value pairs for `$map`,
+/// e.g. `(($key1, $value1), ($key2, $value2))`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to inspect.
+/// @returns {List} Returns the new list of key-value pairs.
+/// @example scss
+/// $foo: _pairs(( 'barney': 36, 'fred': 40 ));
+/// // => (('barney', 36), ('fred', 40))
+
+@function _pairs($args...) {
+    @return call('__pairs', $args...);
+}

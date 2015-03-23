@@ -1,0 +1,19 @@
+@function __union($arguments...) {
+    @return __base-uniq(__base-flatten($arguments, false, true));
+}
+
+
+/// Creates a list of unique values, in order.
+///
+///
+/// @access public
+/// @group List
+/// @param {List...} $lists... The lists to inspect.
+/// @returns {List} Returns the new list of combined values.
+/// @example scss
+/// $foo: _union((1, 2), (4, 2), (2, 1));
+/// // => (1, 2, 4)
+
+@function _union($args...) {
+    @return call('__union', $args...);
+}

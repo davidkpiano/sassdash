@@ -1,0 +1,110 @@
+@function __list-some($list, $predicate) {
+    $index: 1;
+    $length: length($list);
+
+    @while ($index <= $length) {
+        $value: nth($list, $index);
+        $iteration: __exec($predicate, $value, $index, $list);
+
+        @if (__is-truthy($iteration)) {
+            @return true;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return false;
+}
+
+
+@function __base-some-iteratee($value, $index, $collection) {
+    $predicate: __this('predicate');
+    $result: __this('result');
+    $result: __exec($predicate, $value, $index, $collection);
+    $_: __this('result', $result);
+
+    @return if($result, false, true);
+}
+
+
+@function __base-some($collection, $predicate) {
+    $result: false;
+    $_: __scope((
+        'predicate': $predicate,
+        'result': $result
+    ));
+    $_: __base-each($collection, '__base-some-iteratee');
+    $result: __this('result');
+    $_: __scope(false);
+
+    @return if($result, true, false);
+}
+
+
+@function __some($collection, $predicate: '__identity', $this-arg: $__undefined__) {
+    $function: if(__is-list($collection), '__list-some', '__base-some');
+
+    @if (not __function-exists($predicate)) or (not __is-undefined($this-arg)) {
+        $predicate: __get-callback($predicate, $this-arg, 3);
+    }
+
+    @return __exec($function, $collection, $predicate);
+}
+
+
+/// Checks if `$predicate` returns truthy for **any** element of `$collection`.
+/// The function returns as soon as it finds a passing value and does not iterate
+/// over the entire collection. The predicate is bound to `$this-arg` and invoked
+/// with three arguments; (value, index|key, collection).
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// object, else `false`.
+/// 
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection - The collection to iterate over.
+/// @param {Function|Map|string} $predicate [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @returns {boolean} Returns `true` if any element passes the predicate check,
+///  else `false`.
+/// @example scss
+/// $foo: _some((null, 0, 'yes', false), _is-boolean);
+/// // => true
+/// 
+/// $users: (
+///   ( 'user': 'barney', 'active': true ),
+///   ( 'user': 'fred',   'active': false )
+/// );
+/// // using the `_matches` callback shorthand
+/// 
+/// $foo: _some($users, ( 'user': 'barney', 'active': false ));
+/// // => false
+/// 
+/// // using the `_matches-property` callback shorthand
+/// $foo: _some($users, 'active', false);
+/// // => true
+/// 
+/// // using the `_property` callback shorthand
+/// $foo: _some($users, 'active');
+/// // => true
+
+@function _some($args...) {
+    @return call('__some', $args...);
+}
+
+
+/// @alias _some
+
+@function _any($args...) {
+    @return call('__some', $args...);
+}

@@ -1,0 +1,50 @@
+@function __group-by-aggregator($result, $value, $key, $args...) {
+    @if map-has-key($result, $key) {
+        $result: __set($result, $key, append(__get($result, $key), $value));
+    } @else {
+        $result: __set($result, $key, ($value,));
+    }
+
+    @return $result;
+}
+
+
+@function __group-by($arguments...) {
+    $function: __create-aggregator('__group-by-aggregator');
+
+    @return __exec($function, $arguments...);
+}
+
+
+/// Creates a map composed of keys generated from the results of running
+/// each element of `$collection` through `$iteratee`. The corresponding value
+/// of each key is a list of the elements responsible for generating the key.
+/// The `$iteratee` is bound to `$this-arg` and invoked with three arguments;
+/// (value, index|key, collection).
+/// 
+/// If a property name is provided for `$predicate` the created `_property`
+/// style callback returns the property value of the given element.
+/// 
+/// If a value is also provided for `$this-arg` the created `_matches-property`
+/// style callback returns `true` for elements that have a matching property
+/// value, else `false`.
+/// 
+/// If a map is provided for `$predicate` the created `_matches` style
+/// callback returns `true` for elements that have the properties of the given
+/// object, else `false`.
+///
+///
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @param {Function|Map|string} $iteratee [_identity] - The function invoked
+///  per iteration.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
+/// @returns {Map} Returns the composed aggregate object.
+/// @example scss
+/// $foo: _group-by((4.2, 6.1, 6.4), floor);
+/// // => { '4': (4.2,), '6': (6.1, 6.4) }
+
+@function _group-by($args...) {
+    @return call('__group-by', $args...);
+}

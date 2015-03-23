@@ -1,0 +1,48 @@
+
+@function __keys-in($map: null) {
+    @if __is-falsey($map) {
+        @return ();
+    }
+
+    $map: __to-map($map);
+    $skip-keys: __const('CONSTRUCTOR_KEYS');
+
+    @return __without(map-keys($map), $skip-keys...);
+}
+
+
+@function __keys($map: null) {
+    // currently the same as __keys-in
+    @return __keys-in($map);
+}
+
+
+/// Creates a list of the own enumerable keys of `$map`.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to inspect.
+/// @returns {List} Returns the list of keys.
+/// @example scss
+/// // todo
+
+@function _keys($args...) {
+    @return call('__keys', $args...);
+}
+
+
+/// Creates a list of the own and inherited enumerable keys of `map`.
+/// **Note:** Non-map values are coerced to maps.
+///
+///
+/// @access public
+/// @group Map
+/// @param {Map} $map The map to inspect.
+/// @returns {List} Returns the list of keys.
+/// @example scss
+/// // todo
+
+@function _keys-in($args...) {
+    @return call('__keys-in', $args...);
+}

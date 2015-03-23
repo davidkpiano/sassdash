@@ -1,0 +1,154 @@
+@function __string-index-of($string, $target, $position: 0) {
+    $string: str-slice($string, $position);
+    $string-index: str-index($string, $target);
+
+    @if not $string-index {
+        @return -1;
+    }
+
+    @return $string-index + $position - 1;
+}
+
+
+@function __string-last-index-of($string, $target, $position: 0) {
+    $current-index: __string-index-of($string, $target, $position);
+    $last-index: -1;
+
+    @while $current-index != -1 {
+        $last-index: $current-index;
+        $current-index: __string-index-of($string, $target, $last-index + 1);
+    }
+
+    @return $last-index;
+}
+
+
+@function __base-index-of($list, $value, $from-index: 1) {
+    $length: length($list);
+    $index: $from-index;
+
+    @if __is-falsey($index) {
+        $index: 1;
+    }
+
+    @while $index <= $length {
+        @if (nth($list, $index) == $value) {
+            @return $index;
+        }
+
+        $index: $index + 1;
+    }
+
+    @return -1;
+}
+
+
+@function __index-of($list, $value: $__undefined__, $from-index: 1) {
+    $length: if($list, length($list), 0);
+
+    @if ($length == 0) {
+        @return -1;
+    }
+
+    @if __is-number($from-index) {
+        $from-index: if($from-index < 0, max($length + $from-index, 0), $from-index);
+    } @else if not (__is-falsey($from-index)) {
+        $index: __binary-index($list, $value);
+        $other: nth($list, $index);
+
+        @return if($value == $other, $index, -1);
+    }
+
+    @return __base-index-of($list, $value, $from-index);
+}
+
+
+@function __last-index-of($list, $value: null, $from-index: length($list)) {
+    $length: if($list, length($list), 0);
+
+    @if (__is-falsey($length)) {
+        @return -1;
+    }
+
+    $index: $length;
+
+    @if __is-number($from-index) {
+        $index: if($from-index < 0, max($length + $from-index, 0), min($from-index - 1, $length - 1)) + 1;
+    } @else if not (__is-falsey($from-index)) {
+        $index: __binary-index($list, $value, true) - 1;
+
+        $other: nth($list, $index);
+
+        @return if($value == other, $index, -1);
+    }
+
+    @while ($index > 0) {
+        @if (nth($list, $index) == $value) {
+            @return $index;
+        }
+
+        $index: $index - 1;
+    }
+
+    @return -1;
+}
+
+
+/// Gets the index at which the first occurrence of `$value` is found in `$list`.
+/// If `$from-index` is negative,
+/// it is used as the offset from the end of `$list`. If `$list` is sorted
+/// providing `true` for `$from-index` performs a faster binary search.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to search.
+/// @param {*} $value The value to search for.
+/// @param {boolean|number} $from-index [1] - The index to search from or `true`
+///  to perform a binary search on a sorted list.
+/// @returns {number} Returns the index of the matched value, else `-1`.
+/// @example scss
+/// $foo: _index-of((1, 2, 1, 2), 2);
+/// // => 2
+/// 
+/// // using `$from-index`
+/// $foo: _index-of((1, 2, 1, 2), 2, 3);
+/// // => 4
+/// 
+/// // performing a binary search
+/// $foo: _index-of((1, 1, 2, 2), 3, true);
+/// // => 3
+
+@function _index-of($args...) {
+    @return call('__index-of', $args...);
+}
+
+
+/// This method is like `_index-of` except that it iterates over elements of
+/// `$list` from right to left.
+///
+///
+/// @access public
+/// @group List
+/// @param {List} $list The list to search.
+/// @param {*} $value The value to search for.
+/// @param {boolean|number} $from-index [length($list)] - The index to search from
+///  or `true` to perform a binary search on a sorted list.
+/// @returns {number} Returns the index of the matched value, else `-1`.
+/// @example scss
+/// $foo: _last-index-of((1, 2, 1, 2), 2);
+/// // => 4
+/// 
+/// // using `$from-index`
+/// $foo: _last-index-of((1, 2, 1, 2), 2, 2);
+/// // => 2
+/// 
+/// // performing a binary search
+/// $foo: _last-index-of((1, 1, 2, 2), 2, true);
+/// // => 4
+
+@function _last-index-of($args...) {
+    @return call('__last-index-of', $args...);
+}
+
+

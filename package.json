@@ -1,0 +1,30 @@
+{
+  "name": "sassdash",
+  "version": "0.1.0",
+  "description": "The Sass implementation of lodash.",
+  "main": "scss/_sassdash.scss",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "true-cli tests/true-tests.scss"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkpiano/sassdash.git"
+  },
+  "keywords": [
+    "sassdash",
+    "sass",
+    "scss",
+    "lodash"
+  ],
+  "author": "David Khourshid <davidkpiano@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidkpiano/sassdash/issues"
+  },
+  "homepage": "https://github.com/davidkpiano/sassdash"
+}

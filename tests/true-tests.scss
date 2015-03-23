@@ -1285,7 +1285,6 @@ $test-before-count: 0 !global;
     @include test('should treat falsey start values as 1') {
         @each $value in $test-falsey {
             $list: 1 2 3;
-            @debug $value;
             @include assert-equal(_fill($list, 'a', $value), 'a' 'a' 'a');
         }
     }
@@ -2185,9 +2184,9 @@ $test-before-count: 0 !global;
         @include assert-equal(_invoke($list, to-upper-case), 'A' 'B' 'C');
     }
 
-    // @include test('should support invoking with arguments') {
-    //     @include assert-equal(_invoke((123, 456), _split, ''), (('1', '2', '3'), ('4', '5', '6')));
-    // }
+    @include test('should support invoking with arguments') {
+        @include assert-true(test-lists-equal(_invoke((123, 456), _split, ''), (('1' '2' '3'), ('4' '5' '6'))));
+    }
 }
 
 @include test-module('_is-arglist') {
@@ -4149,11 +4148,86 @@ $test-before-count: 0 !global;
   }
 }
 
-// @include test-module('Sassdash') {
-//   @include test('_sorted-index') {
-//      // todo
+// @include test-module('_sorted-index methods') {
+//   @each $method-name in 'sorted-index', 'sorted-last-index' {
+//     $list: 30 50;
+//     $func: unquote('_#{$method-name}');
+//     $is-sorted-index: $method-name == 'sorted-index';
+//     $maps: (('x': 30), ('x': 50));
+
+//     @include test('#{$func} should return the correct insert index') {
+//         $values: 30 40 50;
+//         $expected: if($is-sorted-index, 1 2 2, 2 2 3);
+//         $result: ();
+
+//         @each $value in $values {
+//             $result: append($result, _exec($func, $list, $value));
+//         }
+
+//         @include assert-true(test-lists-equal($result, $expected));
+//     }
+
+//     @include test('#{$func} should work with a list of strings') {
+//         $list: 'a' 'c';
+//         $values: 'a' 'b' 'c';
+//         $expected: if($is-sorted-index, 1 2 2, 2 2 3);
+//         $result: ();
+
+//         @each $value in $values {
+//             $result: append($result, _exec($func, $list, $value));
+//         }
+
+//         @include assert-true(test-lists-equal($result, $expected));
+//     }
 //   }
 // }
+
+@include test-module('_split') {
+    @include test('should split a string at instances of delimiter') {
+        @include assert-equal(_split('a-b-c-d-e', '-'), 'a' 'b' 'c' 'd' 'e');
+
+        @include assert-equal(_split('a-_b-_c-_d-_e', '-_'), 'a' 'b' 'c' 'd' 'e');
+
+        @include assert-equal(_split('the big brown fox jumped', ' '), 'the' 'big' 'brown' 'fox' 'jumped');
+    }
+
+    @include test('should split a string into individual characters in absence of delimiter') {
+        @include assert-equal(_split('abcde'), 'a' 'b' 'c' 'd' 'e');
+        @include assert-equal(_split('abcde', ''), 'a' 'b' 'c' 'd' 'e');
+    }
+
+    @include test('should return single-item list with string if delimiter not found') {
+        @include assert-true(test-lists-equal(_split('abcde', 'x'), ('abcde',)));
+    }
+}
+
+@include test-module('_splice') {
+    $list: 1 2 3 4;
+
+    @include test('should remove specified number of items from list') {
+        @include assert-equal(_splice($list, 3, 1), 1 2 4);
+
+        @include assert-equal(_splice($list, 3, 2), 1 2);
+
+        @include assert-equal(_splice($list, 1, 1), 2 3 4);
+    }
+
+    @include test('should default to deleting one item from list') {
+        @include assert-equal(_splice($list, 2), 1 3 4);
+    }
+
+    @include test('should add any number of items to spliced list region') {
+        @include assert-equal(_splice($list, 2, 1, 'x'), 1 'x' 3 4);
+
+        @include assert-equal(_splice($list, 2, 1, 'x', 'y', 'z'), 1 'x' 'y' 'z' 3 4);
+    }
+
+    @include test('should work with delete-count > length of remaining items') {
+        @include assert-equal(_splice($list, 3, 99), 1 2);
+
+        // @include assert-equal(_splice($list, 3, 99, 10, 20, 30), 1 2 10 20 30);
+    }
+}
 
 @include test-module('_starts-with') {
   $string: 'abc';
@@ -4782,6 +4856,85 @@ $test-before-count: 0 !global;
 @include test-module('native functions') {
     @include test('should only pass a single argument to native functions used as iteratees') {
         @include assert-equal(_map(1.23 4.56 7.89, floor), 1 4 7);
+    }
+}
+
+@include test-module('_get') {
+    $map: ('foo': ('bar': ('baz': 'quo')));
+    $list: 'foo' 'bar' 'baz' 'quo';
+    $string: 'abcde';
+
+    @include test('should work similar to map-get()') {
+        @include assert-equal(_get(('foo': 1, 'bar': 2), 'foo'), 1);
+        @include assert-equal(_get(('foo': 1, 'bar': 2), 'bar'), 2);
+        @include assert-equal(_get(('foo': 1, 'bar': 2), 'baz'), null);
+    }
+
+    @include test('should deeply retrieve values from map if given a list for keys') {
+        @include assert-equal(_get($map, 'foo' 'bar' 'baz'), 'quo');
+    }
+
+    @include test('should return null if any deep key does not exist on source map') {
+        @include assert-equal(_get($map, 'foo' 'zilch' 'baz'), null);
+    }
+
+    @include test('should work with lists with key as index') {
+        @include assert-equal(_get($list, 3), 'baz');
+        @include assert-equal(_get($list, 5), null);
+    }
+
+    @include test('should work with strings with key as index') {
+        @include assert-equal(_get($string, 3), 'c');
+        @include assert-equal(_get($string, 9), null);
+    }
+
+    @include test('should deeply retrieve values from a list containing lists and/or maps') {
+        $mixed: $map $list $string;
+
+        @include assert-equal(_get($mixed, 1 'foo' 'bar' 'baz'), 'quo');
+        @include assert-equal(_get($mixed, 2 3), 'baz');
+        @include assert-equal(_get($mixed, 3 5), 'e');
+    }
+
+    @include test('should return null for non-iterable values') {
+        @each $value in null, true, 42, green {
+            @include assert-equal(_get($value, 1), null);
+        }
+    }
+}
+
+@include test-module('_set') {
+    $map: ('a': 1, 'b': ('c': 2, 'd': 3));
+
+    @include test('should set value in map based on key') {
+        @include assert-equal(_set($map, 'a', 3), ('a': 3, 'b': ('c': 2, 'd': 3)));
+
+        @include assert-equal(_set($map, 'new', 42), ('a': 1, 'b': ('c': 2, 'd': 3), 'new': 42));
+    }
+
+    @include test('should deep set value in map if given a list for keys') {
+        @include assert-equal(_set($map, 'b' 'c', 99), ('a': 1, 'b': ('c': 99, 'd': 3)));
+    }
+
+    @include test('should create deep maps if keys do not exist') {
+        @include assert-equal(_set($map, 'b' 'e' 'f', 99), ('a': 1, 'b': ('c': 2, 'd': 3, 'e': ('f': 99))));
+    }
+
+    @include test('should deeply set map from an initial list') {
+        $list: 1 $map 3 4;
+
+        @include assert-equal(_set($list, 2 'a', 42), 1 ('a': 42, 'b': ('c': 2, 'd': 3)) 3 4);
+
+        @include assert-equal(_set($list, 2 'b' 'c', 99), 1 ('a': 1, 'b': ('c': 99, 'd': 3)) 3 4);
+    }
+
+    @include test('should set value in list based on key as index') {
+        $list: 1 2 3 4;
+
+        @include assert-equal(_set($list, 2, 'foo'), 1 'foo' 3 4);
+        @include assert-equal(_set($list, 5, 'new'), 1 2 3 4 'new');
+        @include assert-equal(_set($list, 6, 'bar'), 1 2 3 4 null 'bar');
+
     }
 }
 

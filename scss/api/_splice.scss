@@ -1,15 +1,22 @@
 @function __splice($list, $start, $delete-count: 1, $items...) {
+    $length: length($list);
     $result: ();
     $index: 1;
+
+    // @return false;
 
     @while $index < $start {
         $result: append($result, nth($list, $index));
         $index: $index + 1;
     }
 
+    @each $item in $items {
+        $result: append($result, $item);
+    }
+
     $index: $start + $delete-count;
 
-    @while $index <= length($list) {
+    @while $index <= $length {
         $result: append($result, nth($list, $index));
         $index: $index + 1;
     }

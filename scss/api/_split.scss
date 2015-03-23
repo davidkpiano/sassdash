@@ -1,8 +1,12 @@
-@function __string-split($string, $delimiter: '', $args...) {
+@function __string-split($string, $delimiter: '', $guard: null, $args...) {
+    @if $guard and __is-iteratee-call($string, $delimiter, $guard) {
+        $delimiter: '';
+    }
+
     $string: __to-string($string);
 
     @if not $delimiter
-    or length($delimiter) == 0
+    or str-length($delimiter) == 0
     or $delimiter == '' {
         @return __to-list($string);
     }
@@ -10,13 +14,13 @@
     $delimiter-index: str-index($string, $delimiter);
 
     @if not $delimiter-index {
-        @return $string;
+        @return append((), $string);
     }
 
     @return join(
         str-slice($string, 1, $delimiter-index - 1),
         __string-split(
-            str-slice($string, $delimiter-index + length($delimiter-index)),
+            str-slice($string, $delimiter-index + str-length($delimiter)),
             $delimiter
         )
     );

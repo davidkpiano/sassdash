@@ -3,7 +3,7 @@
 
     @return if($function == __base-callback and $iteratee == null,
         __binary-index($list, $value),
-        __binary-index($list, $value, call($function, $iteratee, $this-arg, 1)));
+        __binary-index-by($list, $value, __exec($function, $iteratee, $this-arg, 1)));
 }
 
 
@@ -12,15 +12,15 @@
 
     @return if($function == __base-callback and $iteratee == null,
         __binary-index($list, $value),
-        __binary-index($list, $value, call($function, $iteratee, $this-arg, 1), true));
+        __binary-index-by($list, $value, __exec($function, $iteratee, $this-arg, 1), true));
 }
 
 
-@function __binary-index($list, $value, $ret-highest: false) {
+@function __binary-index($list, $value, $ret-highest: false, $args...) {
     $low: 0;
     $high: if($list, length($list), $low);
 
-    @if (type-of($value) == number and $high <= __const('HALF_MAX_LIST_LENGTH')) {
+    @if __is-number($value) {
         @while ($low < $high) {
             $mid: floor(($low + $high) / 2);
             $computed: nth($list, $mid);
@@ -39,8 +39,8 @@
 }
 
 
-@function __binary-index-by($list, $value, $iteratee, $ret-highest) {
-    $value: call($iteratee, $value);
+@function __binary-index-by($list, $value, $iteratee, $ret-highest: false) {
+    $value: __exec($iteratee, $value);
 
     $low: 0;
     $high: if($list, length($list), 0);
@@ -48,7 +48,7 @@
 
     @while ($low < $high) {
         $mid: floor(($low + $high) / 2);
-        $computed: call($iteratee, nth($list, $mid));
+        $computed: __exec($iteratee, nth($list, $mid));
 
         @if ($val-is-undefined) {
             $set-low: ($ret-highest > 0 or not ($computed == null));
@@ -63,7 +63,7 @@
         }
     }
 
-    @return call('native-min', $high, __const('MAX_LIST_INDEX'));
+    @return min($high, __const('MAX_LIST_INDEX'));
 }
 
 

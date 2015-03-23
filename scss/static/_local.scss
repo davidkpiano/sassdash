@@ -12,41 +12,88 @@
 }
 
 
-@function __get($map, $properties) {
-    @if type-of($map) == 'string' {
-        $string: $map;
-        $map: ();
-
-        @for $index from 1 through str-length($string) {
-            $map: append($map, str-slice($string, $index, $index));
-        }
-    } @else if (type-of($map) != 'list' and type-of($map) != 'map') {
-        $map: ($map,);
-    }
-
-    @if type-of($map) == 'list' {
-        $index: nth($properties, 1);
-
-        @if $index > length($map) {
-            @return null;
-        }
-
-        $map: nth($map, $index);
-    } @else {
-        $map: map-get($map, nth($properties, 1));
-    }
-
-    $properties: __pop($properties);
-
-    @if not $map and length($properties) > 0 {
+@function __list-get($list, $index) {
+    @if not type-of($index) == 'number' {
+        @error '[__list-get] $index #{$index} for $list #{inspect($list)} is not a number.';
         @return null;
     }
 
-    @if length($properties) == 0 {
+    @if $index > length($list) {
+        @return null;
+    }
+
+    @return nth($list, $index);
+}
+
+
+@function __string-get($string, $index) {
+    @if type-of($index) != 'number' {
+        @error '[__string-get] $index #{$index} for $string #{$string} is not a number.';
+        @return null;
+    }
+
+    @if $index > str-length($string) {
+        @return null;
+    }
+
+    @return str-slice($string, $index, $index);
+}
+
+
+@function __get($map, $keys) {
+    $value-type: type-of($map);
+
+    @if $value-type == 'string' {
+        @return __string-get($map, nth($keys, 1));
+    }
+
+    @if $value-type != 'list' and $value-type != 'map' {
+        @return null;
+    }
+
+    @if $value-type == 'list' {
+        $index: nth($keys, 1);
+
+        $map: __list-get($map, $index);
+    } @else {
+        $map: map-get($map, nth($keys, 1));
+    }
+
+    $keys: __pop($keys);
+
+    @if not $map and length($keys) > 0 {
+        @return null;
+    }
+
+    @if length($keys) == 0 {
         @return $map;
     }
 
-    @return __get($map, $properties);
+    @return __get($map, $keys);
+}
+
+
+@function __set-list($list, $index, $value) {
+    $length: length($list);
+
+    @if type-of($index) != 'number' {
+        @error '[__set-list] $index #{$index} for list #{inspect($list)} is not a number.';
+        @return null;
+    }
+
+    @if $index <= $length {
+        @return set-nth($list, $index, $value);
+    }
+
+    @while $index > $length + 1 {
+        $list: append($list, null);
+
+        $index: $index - 1;
+    }
+
+    $list: append($list, $value);
+
+    @return $list;
 }
 
 
@@ -56,14 +103,20 @@
     $child-map: null;
 
     @if type-of($map) == 'list' and length($map) > 0 {
-        $child-map: nth($map, $property);
-    } @else {
+        @if $property > length($map) {
+            $child-map: ();
+        } @else {
+            $child-map: nth($map, $property);
+        }
+    } @else if map-has-key($map, $property) {
         $child-map: map-get($map, $property);
+    } @else {
+        $child-map: ();
     }
 
     @if length($properties) == 0 {
         @if type-of($map) == 'list' and length($map) > 0 {
-            @return set-nth($map, $property, $value);
+            @return __set-list($map, $property, $value);
         }
 
         @return map-merge($map, (
@@ -72,7 +125,7 @@
     }
 
     @if type-of($map) == 'list' and length($map) > 0 {
-        @return set-nth($map, $property, __set($child-map, $properties, $value));
+        @return __set-list($map, $property, __set($child-map, $properties, $value));
     }
 
     @return map-merge($map, (
@@ -116,10 +169,37 @@
     @return __get($value, '_constructor') == $constructor;
 }
 
+
+/// Gets the value of a source `$value` from the specified key, or list
+/// of keys for deep map retrieval.
+/// 
+/// If `$value` is list-like, indexes are used as keys.
+/// 
+/// 
+/// @access public
+/// @group Utility
+/// @param {Map|List|String|Arglist} $value - Source value.
+/// @param {*|List} $keys - Single key or list of keys for value retrieval
+/// @returns {*} Returns the retrieved value.
+/// @example scss
+
 @function _get($args...) {
     @return call('__get', $args...);
 }
 
+
+/// Sets the value of a source `$value` at the specified key, or list
+/// of keys for deep map setting.
+/// 
+/// If `$value` is list-like, indexes are used as keys.
+/// 
+/// 
+/// @access public
+/// @group Utility
+/// @param {Map|List|String|Arglist} $value - Source value.
+/// @param {*|List} $keys - Single key or list of keys for value setting
+/// @returns {*} Returns a new `$value` with the set value.
+/// @example scss
 
 @function _set($args...) {
     @return call('__set', $args...);

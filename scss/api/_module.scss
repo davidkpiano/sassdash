@@ -11,7 +11,7 @@
 @import 'concat';
 @import 'constant';
 @import 'count-by';
-@import 'create'; // not unit tested
+@import 'create';
 @import 'defaults';
 @import 'difference';
 @import 'drop';
@@ -28,7 +28,7 @@
 @import 'flatten';
 @import 'flow';
 @import 'for';
-@import 'functions'; // not unit tested
+@import 'functions';
 @import 'group-by';
 @import 'has';
 @import 'identity';
@@ -44,7 +44,7 @@
 @import 'is-match';
 @import 'is-type';
 @import 'join';
-@import 'keys'; // not unit tested
+@import 'keys';
 @import 'last';
 @import 'map';
 @import 'matches';
@@ -62,13 +62,13 @@
 @import 'pluck';
 @import 'property';
 @import 'pull';
-@import 'push'; // not unit tested
+@import 'push';
 @import 'rand';
 @import 'range';
 @import 'reject';
 @import 'reduce';
 @import 'repeat';
-@import 'replace'; // not unit tested
+@import 'replace';
 @import 'result';
 @import 'rest';
 @import 'reverse';
@@ -77,7 +77,7 @@
 @import 'size';
 @import 'slice';
 @import 'some';
-@import 'sort'; // _sort not unit tested
+@import 'sort';
 @import 'sorted-index'; // not unit tested
 @import 'splice'; // not unit tested
 @import 'split'; // not unit tested

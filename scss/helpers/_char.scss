@@ -52,8 +52,18 @@
 }
 
 
+@function __char-code-at($string, $index) {
+    @return __get-char-code(__char-at($string, $index));
+}
+
+
 @function _char-at($args...) {
     @return call('__char-at', $args...);
+}
+
+
+@function _char-code-at($args...) {
+    @return call('__char-code-at', $args...);
 }
 
 
@@ -61,6 +71,7 @@
     @return call('__get-char-code', $args...);
 }
 
+/// @alias _get-char-code
 
 @function _char-code($args...) {
     @return call('__get-char-code', $args...);

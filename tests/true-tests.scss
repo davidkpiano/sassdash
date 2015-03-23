@@ -437,6 +437,26 @@ $test-before-count: 0 !global;
     }
 }
 
+@function TestShape($x: 0, $y: 0) {
+    @return ('x': $x, 'y': $y);
+}
+@include test-module('_create') {
+    @include test('should create a map that inherits from the given prototype map') {
+        $shape: _create(TestShape);
+
+        @include assert-equal(_instance-of($shape, 'TestShape'), true);
+    }
+
+    @include test('should assign properties to the created map') {
+        $expected: ('radius': 0);
+
+        $shape: _create(TestShape, $expected);
+
+        @include assert-equal(_instance-of($shape, 'TestShape'), true);
+        @include assert-equal(map-get($shape, 'radius'), 0);
+    }
+}
+
 @include test-module('flow methods') {
     @each $method-name in ('flow', 'flow-right') {
         $func: unquote('_#{$method-name}');
@@ -1822,6 +1842,24 @@ $test-before-count: 0 !global;
   }
 }
 
+@include test-module('_functions') {
+    $map: (
+        'a': 'a',
+        'b': _identity,
+        'c': hsla,
+        'd': 'floor',
+        'e': 123
+    );
+
+    @include test('should return the function names of a map') {
+        @include assert-equal(_functions($map), 'b' 'c' 'd');
+    }
+
+    @include test('should be aliased') {
+        @include assert-equal(_methods($map), _functions($map));
+    }
+}
+
 @function test-group-by-1($num, $args...) {
   @return floor($num);
 }
@@ -2577,7 +2615,7 @@ $test-before-count: 0 !global;
 @function TestKeysMap() {
     @return ('foo': 'bar');
 }
-@include test-module('keys methods') {
+@include test-module('_keys methods') {
     @each $method-name in 'keys', 'keys-in' {
         $args: test-args(1, 2, 3);
         $func: unquote('_#{$method-name}');
@@ -3413,13 +3451,31 @@ $test-before-count: 0 !global;
   }
 }
 
-@include test-module('Sassdash') {
-  @include test('_pull') {
+@include test-module('_pull') {
+  @include test('should return the modified list') {
     $list: 1 200 3;
 
-    @include assert-true(test-lists-equal(_pull($list, 1, 3), (200,)),
-      'should return the modified list');
+    @include assert-true(test-lists-equal(_pull($list, 1, 3), (200,)));
   }
+}
+
+@include test-module('_push') {
+    @include test('should append items to list') {
+        @include assert-equal(_push(1 2 3, 4), 1 2 3 4);
+    }
+
+    @include test('should append items to an empty list') {
+        @include assert-true(test-lists-equal(_push((), 123), (123,)));
+    }
+
+    @include test('should accept multiple arguments as items to push') {
+        @include assert-equal(_push(1 2, 3, 4, 5, 6), 1 2 3 4 5 6)
+    }
+
+    @include test('should maintain the source list separator') {
+        @include assert-equal(list-separator(_push(('a', 'b'), 'c', 'd')), comma);
+        @include assert-equal(list-separator(_push(('a' 'b'), 'c', 'd')), space);
+    }
 }
 
 @include test-module('Sassdash') {
@@ -3676,6 +3732,26 @@ $test-before-count: 0 !global;
     @include assert-equal(_repeat(123, '2'), '123123',
       'should coerce string to a string');
   }
+}
+
+@include test-module('_replace') {
+    @include test('should globally replace instances of target in string') {
+        @include assert-equal(_replace('abracadabra', 'a', 'e'), 'ebrecedebre');
+        @include assert-equal(_replace('abracadabra', 'a'), 'brcdbr');
+        @include assert-equal(_replace('abracadabra', 'a', 'aaa'), 'aaabraaacaaadaaabraaa');
+    }
+
+    @include test('should keep string with no instances of target intact') {
+        @include assert-equal(_replace('abc', 'x'), 'abc');
+    }
+
+    @include test('should work with an empty string') {
+        @include assert-equal(_replace('', 'a'), '');
+    }
+
+    @include test('should work with a function as replacement') {
+        @include assert-equal(_replace('abcabc', 'ab', to-upper-case), 'ABcABc');
+    }
 }
 
 @function test-result-1() {
@@ -3965,6 +4041,25 @@ $test-before-count: 0 !global;
     @include assert-equal(_any(0 1), _some(0 1),
       'should be aliased');
   }
+}
+
+@include test-module('_sort') {
+    $list: 4 2 5 3 1;
+
+    @include test('should sort a list ascending by default') {
+        @include assert-equal(_sort($list), 1 2 3 4 5);
+    }
+
+    @include test('should accept keywords for ascending and descending sort') {
+        @include assert-equal(_sort($list, 'asc'), 1 2 3 4 5);
+        @include assert-equal(_sort($list, 'desc'), 5 4 3 2 1);
+    }
+
+    @include test('should work with strings') {
+        @include assert-equal(_sort('the' 'big' 'brown' 'fox'), 'big' 'brown' 'fox' 'the');
+
+        @include assert-equal(_sort('the' 'big' 'brown' 'fox', 'desc'), 'the' 'fox' 'brown' 'big');
+    }
 }
 
 @function test-sort-by-1($a, $b, $c) {
@@ -4602,7 +4697,7 @@ $test-before-count: 0 !global;
     }
 }
 
-@include test-module('Sassdash') {
+@include test-module('_join') {
   $list: 'a' 'b' 'c' 'd' 'e';
   $list-list: ('a' 'b' 'c', 'd' 'e' 'f', 'g' 'h' 'i');
 

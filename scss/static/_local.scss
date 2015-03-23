@@ -110,7 +110,7 @@
 
 @function __instance-of($value, $constructor) {
     @if not type-of($value) == 'map' {
-        @return false;
+        @return type-of($value) == $constructor;
     }
 
     @return __get($value, '_constructor') == $constructor;

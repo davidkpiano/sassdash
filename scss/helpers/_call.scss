@@ -3,6 +3,10 @@
         @return false;
     }
 
+    @if index(('e', 'pi'), $function) {
+        @return false;
+    }
+
     @return if(function-exists($function),
         true,
         function-exists(__function-name($function))

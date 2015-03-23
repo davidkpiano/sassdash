@@ -54,12 +54,49 @@
 
 
 @function __sort-predicate-asc($first, $second) {
-  @return if($first > $second, 1, if($first < $second, -1, 0));
+    @if __is-string($first) or __is-string($second) {
+        @return __sort-predicate-string($first, $second, 'asc');
+    }
+
+    @return if($first > $second, 1, if($first < $second, -1, 0));
 }
 
 
 @function __sort-predicate-desc($first, $second) {
-  @return if($first < $second, 1, if($first > $second, -1, 0));
+    @if __is-string($first) or __is-string($second) {
+        @return __sort-predicate-string($first, $second, 'desc');
+    }
+
+    @return if($first < $second, 1, if($first > $second, -1, 0));
+}
+
+@function __sort-predicate-string($first, $second, $direction: 'asc') {
+    $index: 1;
+    $result: 0;
+
+    $first-length: str-length($first);
+    $second-length: str-length($second);
+
+    @while $result == 0
+    and $index <= $first-length
+    and $index <= $second-length {
+        $first-char-code: __char-code-at($first, 1);
+        $second-char-code: __char-code-at($second, 1);
+
+        $result: if($first-char-code > $second-char-code, 1, if($first-char-code < $second-char-code, -1, 0));
+
+        $index: $index + 1;
+    }
+
+    @if $result == 0 and $first-length != $second-length {
+        $result: if($first-length > $second-length, 1, if($first-length < $second-length, -1, 0))
+    }
+
+    @if $direction == 'desc' {
+        $result: $result * -1;
+    }
+
+    @return $result;
 }
 
 

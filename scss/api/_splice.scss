@@ -28,12 +28,17 @@
 /// Removes items from a `$list` and adds new items in their place.
 /// Similar to the native JavaScript [splice() function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice).
 /// 
+/// @access public
+/// @group List
 /// @param {List} $list - List to splice.
 /// @param {Number} $start - Index to start changing the list.
 /// @param {Number} $delete-count [1] - Number of list items to remove.
 /// @param {*...} $items... - Items to add to the lsit.
 /// @example scss
-/// // todo
+/// $margin: 10px 3px 5px 20px;
+/// 
+/// $margin: _splice($margin, 2, 2, 15px);
+/// // => 10px 15px 20px
 @function _splice($args...) {
     @return call('__splice', $args...);
 }

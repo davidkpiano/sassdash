@@ -171,7 +171,8 @@
 
 
 /// Gets the value of a source `$value` from the specified key, or list
-/// of keys for deep map retrieval.
+/// of keys for deep map retrieval, or `null` if any of the keys are
+/// undefined.
 /// 
 /// If `$value` is list-like, indexes are used as keys.
 /// 
@@ -182,6 +183,15 @@
 /// @param {*|List} $keys - Single key or list of keys for value retrieval
 /// @returns {*} Returns the retrieved value.
 /// @example scss
+/// $palette: (
+///     'primary': (
+///         'default': red,
+///         'dark': darken(red, 10%)
+///     )
+/// );
+/// 
+/// $color-primary: _get($palette, 'primary' 'default');
+/// // => red
 
 @function _get($args...) {
     @return call('__get', $args...);
@@ -200,6 +210,20 @@
 /// @param {*|List} $keys - Single key or list of keys for value setting
 /// @returns {*} Returns a new `$value` with the set value.
 /// @example scss
+/// $palette: (
+///     'primary': (
+///         'default': red,
+///         'dark': darken(red, 10%)
+///     )
+/// );
+/// 
+/// $palette: _set($palette, 'primary' 'default', blue);
+/// // => (
+/// //     'primary': (
+/// //         'default': blue,
+/// //         'dark': darken(red, 10%)
+/// //     )
+/// // );
 
 @function _set($args...) {
     @return call('__set', $args...);

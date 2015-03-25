@@ -1,10 +1,10 @@
 @function __bind($function, $this-arg: $__current-scope__, $arguments...) {
-    @if __is-falsey$this-arg [null] {
+    @if __is-falsey($this-arg) {
         $this-arg: '';
     }
 
-    @if __is-map$this-arg [null] {
-        $scope: __scope$this-arg [null];
+    @if __is-map($this-arg) {
+        $scope: __scope($this-arg);
         $_: __scope(false);
 
         $this-arg: __get($scope, '_id');

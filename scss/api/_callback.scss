@@ -110,7 +110,7 @@
     }
 
     @if $type == 'function' {
-        @return if(not __is-undefined$this-arg [null] and __is-function($function),
+        @return if(not __is-undefined($this-arg) and __is-function($function),
             __bind-callback($function, $this-arg, $arg-count),
             $function);
     }

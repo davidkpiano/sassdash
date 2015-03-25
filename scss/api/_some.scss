@@ -44,7 +44,7 @@
 @function __some($collection, $predicate: '__identity', $this-arg: $__undefined__) {
     $function: if(__is-list($collection), '__list-some', '__base-some');
 
-    @if (not __function-exists($predicate)) or (not __is-undefined$this-arg [null]) {
+    @if (not __function-exists($predicate)) or (not __is-undefined($this-arg)) {
         $predicate: __get-callback($predicate, $this-arg, 3);
     }
 

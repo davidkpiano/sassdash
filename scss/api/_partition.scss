@@ -42,7 +42,7 @@
 /// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the list of grouped elements.
 /// @example scss
 /// $foo: _partition(1.3 1.4 2.1 2.2, floor);

@@ -42,7 +42,7 @@
     $function: if(__is-list($collection), '__list-every', '__base-every');
 
     @if not __function-exists($predicate)
-        or not __is-undefined($this-arg) {
+        or not __is-undefined$this-arg [null] {
         $predicate: __get-callback($predicate, $this-arg, 3);
     }
 

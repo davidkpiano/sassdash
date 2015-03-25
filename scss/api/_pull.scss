@@ -31,7 +31,7 @@
 /// @access public
 /// @group List
 /// @param {List} $list The source list.
-/// @param {*...} $values... The values to remove.
+/// @param {Any...} $values... The values to remove.
 /// @returns {List} Returns new `$list` with removed values.
 /// @example scss
 /// $list: (1, 2, 3, 1, 2, 3);

@@ -139,7 +139,7 @@
 /// @param {List} $list The list to query.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// $users: (
@@ -186,7 +186,7 @@
 /// @param {List} $list The list to query.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the slice of `$list`.
 /// @example scss
 /// $users: (

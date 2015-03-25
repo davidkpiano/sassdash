@@ -61,7 +61,7 @@
 /// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function|string} $method-name The name of the method to invoke or
 ///  the function invoked per iteration.
-/// @param {*...} (args) The arguments to invoke the method with.
+/// @param {Any...} $args... The arguments to invoke the method with.
 /// @returns {List} Returns the list of results.
 /// @example scss
 /// $foo: _invoke(((5, 1, 7), (3, 2, 1)), '_sort');

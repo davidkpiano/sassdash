@@ -89,7 +89,7 @@
 /// @param {Map} $map - The destination map.
 /// @param {Map...} $sources... - The source maps.
 /// @param {Function} $customizer [false] - The function to customize assigning values.
-/// @param {*} $this-arg - The `_this` binding of `$customizer`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$customizer`.
 /// @returns {Map} Returns `map`.
 ///
 /// @example scss

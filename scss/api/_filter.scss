@@ -73,7 +73,7 @@
 /// @param {List|Map|string} $collection - The collection to iterate over.
 /// @param {Function|Map|string} $predicate [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$predicate`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$predicate`.
 /// @returns {List} Returns the new filtered list.
 /// @example scss
 ///     @function is-even($value, $args...) {

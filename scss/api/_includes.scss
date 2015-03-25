@@ -45,7 +45,7 @@
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to search.
 /// @param {*} $target [null] - The value to search for.
-/// @param {number} $from-index [0] - The index to search from.
+/// @param {number} $from-index [1] - The index to search from.
 /// @returns {boolean} Returns `true` if a matching element is found, else `false`.
 /// @example scss
 /// $foo: _includes((1, 2, 3), 1);

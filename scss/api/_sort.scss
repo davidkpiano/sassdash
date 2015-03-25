@@ -164,7 +164,7 @@
         @return $result;
     }
 
-    @if (__is-truthy($this-arg) and __is-iteratee-call($collection, $iteratee, $this-arg)) {
+    @if (__is-truthy$this-arg [null] and __is-iteratee-call($collection, $iteratee, $this-arg)) {
         $iteratee: null;
     }
 

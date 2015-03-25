@@ -151,14 +151,14 @@
 
 
 @function __for-each($collection, $iteratee: '__identity', $this-arg: $__undefined__) {
-    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
+    @return if(__function-exists($iteratee) and __is-undefined$this-arg [null] and __is-list($collection),
         __list-each($collection, $iteratee),
         __base-each($collection, __bind-callback($iteratee, $this-arg, 3)));
 }
 
 
 @function __for-each-right($collection, $iteratee: '__identity', $this-arg: $__undefined__) {
-    @return if(__function-exists($iteratee) and __is-undefined($this-arg) and __is-list($collection),
+    @return if(__function-exists($iteratee) and __is-undefined$this-arg [null] and __is-list($collection),
         __list-each-right($collection, $iteratee),
         __base-each-right($collection, __bind-callback($iteratee, $this-arg, 3)));
 }
@@ -166,7 +166,7 @@
 
 @function __for-in($map, $iteratee: '__identity', $this-arg: $__undefined__) {
     @if not __function-exists($iteratee)
-    or not __is-undefined($this-arg) {
+    or not __is-undefined$this-arg [null] {
         $iteratee: __bind-callback($iteratee, $this-arg, 3);
     }
 
@@ -183,7 +183,7 @@
 
 @function __for-own($map, $iteratee: '__identity', $this-arg: $__undefined__) {
     @if not __function-exists($iteratee)
-    or not __is-undefined($this-arg) {
+    or not __is-undefined$this-arg [null] {
         $iteratee: __bind-callback($iteratee, $this-arg, 3);
     }
 
@@ -232,7 +232,7 @@
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {List|Map|string} Returns `$collection`.
 /// @example scss
 /// // todo
@@ -259,7 +259,7 @@
 /// @group Map
 /// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns new map.
 /// @example scss
 /// // todo
@@ -277,7 +277,7 @@
 /// @group Map
 /// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns new map.
 /// @example scss
 /// // todo
@@ -297,7 +297,7 @@
 /// @group Map
 /// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns new map.
 /// @example scss
 /// // todo
@@ -315,7 +315,7 @@
 /// @group Map
 /// @param {Map} $map The map to iterate over.
 /// @param {Function} $iteratee [_identity] - The function invoked per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {Map} Returns `map`.
 /// @example scss
 /// // todo

@@ -33,7 +33,7 @@
 /// @param {List} $list - List to splice.
 /// @param {Number} $start - Index to start changing the list.
 /// @param {Number} $delete-count [1] - Number of list items to remove.
-/// @param {*...} $items... - Items to add to the lsit.
+/// @param {Any...} $items... - Items to add to the lsit.
 /// @example scss
 /// $margin: 10px 3px 5px 20px;
 /// 

@@ -97,7 +97,7 @@
 /// @param {Map} $map The map to inspect.
 /// @param {Map} $source The map of property values to match.
 /// @param {Function} $customizer [null] The function to customize comparing values.
-/// @param {*} $this-arg - The `_this` binding of `$customizer`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$customizer`.
 /// @returns {boolean} Returns `true` if `$map` is a match, else `false`.
 /// @example scss
 /// $map: ( 'user': 'fred', 'age': 40 );

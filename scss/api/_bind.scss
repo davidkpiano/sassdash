@@ -1,10 +1,10 @@
 @function __bind($function, $this-arg: $__current-scope__, $arguments...) {
-    @if __is-falsey($this-arg) {
+    @if __is-falsey$this-arg [null] {
         $this-arg: '';
     }
 
-    @if __is-map($this-arg) {
-        $scope: __scope($this-arg);
+    @if __is-map$this-arg [null] {
+        $scope: __scope$this-arg [null];
         $_: __scope(false);
 
         $this-arg: __get($scope, '_id');
@@ -27,8 +27,8 @@
 /// @access public
 /// @group Function
 /// @param {Function} $func The function to bind.
-/// @param {*} $this-arg - The `_this` binding of `$func`.
-/// @param {*...} $args... The arguments to be partially applied.
+/// @param {*} $this-arg [null] - The `_this` binding of `$func`.
+/// @param {Any...} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new bound function.
 /// @example scss
 ///     @function greet($greeting, $punctuation) {

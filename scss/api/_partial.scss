@@ -50,7 +50,7 @@
 /// @access public
 /// @group Function
 /// @param {Function} $func The function to partially apply arguments to.
-/// @param {*...} $args... The arguments to be partially applied.
+/// @param {Any...} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new partially applied function.
 /// @example scss
 ///     @function greet($greeting, $name) {
@@ -74,7 +74,7 @@
 /// @access public
 /// @group Function
 /// @param {Function} $func The function to partially apply arguments to.
-/// @param {*...} $args... The arguments to be partially applied.
+/// @param {Any...} $args... The arguments to be partially applied.
 /// @returns {Function} Returns the new partially applied function.
 /// @example scss
 ///     @function greet($greeting, $name) {

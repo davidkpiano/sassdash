@@ -12,7 +12,7 @@
 /// @access public
 /// @group List
 /// @param {List} $list The target list.
-/// @param {*...} $items... The items to append to `$list`.
+/// @param {Any...} $items... The items to append to `$list`.
 /// @returns {List} Returns list with appended items.
 /// @example scss
 /// // todo

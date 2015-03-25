@@ -10,7 +10,7 @@
 /// @access public
 /// @group Function
 /// @param {Function} $function - The function/Sassdash callback to call.
-/// @param {*...} $args... - The arguments to apply to the function.
+/// @param {Any...} $args... - The arguments to apply to the function.
 /// @returns {*} Returns the result of calling `$function` with the given `$args...`.
 /// @example scss
 /// $is-primary: _callback(('color': $color-primary));

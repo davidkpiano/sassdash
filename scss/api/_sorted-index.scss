@@ -123,7 +123,7 @@
 /// @param {*} $value The value to evaluate.
 /// @param {Function|Map|string} $iteratee [_identity] - The function invoked
 ///  per iteration.
-/// @param {*} $this-arg - The `_this` binding of `$iteratee`.
+/// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {number} Returns the index at which `$value` should be inserted
 ///  into `$list`.
 /// @example scss

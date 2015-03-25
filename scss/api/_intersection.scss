@@ -48,7 +48,7 @@
 ///
 /// @access public
 /// @group List
-/// @param {List...} (lists) The lists to inspect.
+/// @param {List...} $lists... The lists to inspect.
 /// @returns {List} Returns the new list of shared values.
 /// @example scss
 /// $foo: _intersection((1, 2), (4, 2), (2, 1));

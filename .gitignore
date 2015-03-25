@@ -1,6 +1,7 @@
-.sass-cache
-node_modules
-css
-bower_components
-tests/tests.scss
-sassdoc
+/.sass-cache
+/node_modules
+/css
+/bower_components
+/tests/tests.scss
+/sassdoc
+index.html

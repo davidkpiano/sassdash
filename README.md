@@ -8,6 +8,8 @@ It's [lodash](http://www.lodash.com) for Sass. Sassdash.
 
 **Why?** Developed with Sass toolkit developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](http://www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
 
+Sassdash is a **collection of utility functions**, just like lodash. Sassdash never outputs any CSS declarations as it provides no mixins to do so.
+
 ## Getting Started
 This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
 

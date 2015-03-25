@@ -1,0 +1,24 @@
+
+@function __add($augend, $addend, $args...) {
+    $augend: __parse-float($augend);
+    $addend: __parse-float($addend);
+
+    @return $augend + $addend;
+}
+
+
+///
+/// Adds two numbers.
+///
+/// @access public
+/// @group Math
+/// @param {number} $augend The first number to add.
+/// @param {number} $addend The second number to add.
+/// @returns {number} Returns the sum.
+/// @example scss
+/// $foo: _add(6, 4);
+/// // => 10
+
+@function _add($args...) {
+    @return call('__add', $args...);
+}

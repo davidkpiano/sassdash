@@ -1,0 +1,42 @@
+
+@function __sum($collection, $iteratee: '__identity', $this-arg: null, $args...) {
+    @if $this-arg and __is-iteratee-call($collection, $iteratee, $this-arg) {
+        $iteratee: '__identity';
+        $this-arg: null;
+    }
+
+    $collection: __to-list($collection);
+
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+    $length: length($collection);
+    $result: 0;
+
+    @while $length > 0 {
+        $value: __parse-int(__exec($iteratee, nth($collection, $length)));
+
+        $result: $result + $value;
+
+        $length: $length - 1;
+    }
+
+    @return $result;
+}
+
+
+///
+/// Gets the sum of the values in `$collection`.
+///
+/// @access public
+/// @group Math
+/// @param {Array|Object|string} $collection The collection to iterate over.
+/// @returns {number} Returns the sum.
+/// @example scss
+/// $foo: _sum(4 6 2);
+/// // => 12
+/// 
+/// $foo: _sum(('a': 4, 'b': 6, 'c': 2));
+/// // => 12
+
+@function _sum($args...) {
+    @return call('__sum', $args...);
+}

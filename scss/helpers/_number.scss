@@ -58,7 +58,7 @@
 
 
 @function __parse-float($string, $radix: 10) {
-    @if not __is-string($string) {
+    @if type-of($string) != 'string' {
         @return $string;
     }
 
@@ -75,8 +75,8 @@
     $char-min: __get-char-code(0);
     $char-max: $char-min + 9;
     $char-decimal: __get-char-code('.');
-
-    @each $char-code in __map($string, __get-char-code) {
+    
+    @each $char-code in __map($string, '__get-char-code') {
         @if $char-code >= $char-min and $char-code <= $char-max {
             $result: ($radix * $result) + ($char-code - $char-min);
 

@@ -37,7 +37,7 @@
 }
 
 
-@function __map($collection, $iteratee: __identity, $this-arg: null) {
+@function __map($collection, $iteratee: '__identity', $this-arg: null) {
     @if not __is-iterable($collection) {
         $collection: ();
     }

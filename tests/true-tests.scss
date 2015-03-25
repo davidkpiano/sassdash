@@ -58,6 +58,19 @@ $test-empty-list: ();
 
 @mixin xit($args...) { @if false { @content; } }
 
+@include test-module('_add') {
+    @include test('should add two numbers together') {
+        @include assert-equal(_add(6, 4), 10);
+    }
+
+    @include test('should coerce numerical strings to numbers') {
+        @include assert-equal(_add(6, '14'), 20);
+    }
+
+    @include test('should be chainable') {
+        @include assert-equal(_(1, add 2), 3);
+    }
+}
 
 @include test-module('sassdash _after') {
     @include test('should create a function that invokes func after n calls') {
@@ -4272,6 +4285,49 @@ $test-before-count: 0 !global;
   } 
 }
 
+@function test-sum-1($map, $args...) {
+    @return map-get($map, 'a');
+}
+@include test-module('_sum') {
+    $list: 6 4 2;
+    $map: ('a': 2, 'b': 3, 'c': 1);
+    $maps: (('a': 2), ('a': 3), ('a': 1));
+
+    @include test('should return the sum of a list of numbers') {
+        @include assert-equal(_sum($list), 12);
+    }
+
+    @include test('should return 0 when passing empty list value') {
+        @include assert-equal(_sum(()), 0);
+    }
+
+    @include test('should coerce values to numbers and non-numbers to 0') {
+        @include assert-equal(_sum('1' null '2'), 3);
+    }
+
+    @include test('should iterate a map') {
+        @include assert-equal(_sum($map), 6);
+    }
+
+    @include test('should iterate a string') {
+        @include assert-equal(_sum('123'), 6);
+    }
+
+    @include test('should work with an iteratee argument') {
+        @include assert-equal(_sum($maps, test-sum-1), 6);
+    }
+
+    @include test('should work with a _property style iteratee') {
+        @include assert-equal(_sum($maps, 'a'), 6);
+    }
+
+    @include test('should perform a basic sum when used as an iteratee for methods like _map') {
+        $actual: _map($list $map, _sum);
+
+        @include assert-equal($actual, 12 6);
+    }
+}
+
 @include test-module('Sassdash') {
   @include test('_trunc') {
     $string: 'hi-diddly-ho there, neighborino';
@@ -4899,6 +4955,12 @@ $test-before-count: 0 !global;
     @include test('should return null for non-iterable values') {
         @each $value in null, true, 42, green {
             @include assert-equal(_get($value, 1), null);
+        }
+    }
+
+    @include test('should return null for non-numerical keys for list') {
+        @each $value in true, false, null, green, 'string' {
+            @include assert-equal(_get($list, $value), null);
         }
     }
 }

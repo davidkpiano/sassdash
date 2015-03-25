@@ -13,8 +13,8 @@
 
 
 @function __list-get($list, $index) {
-    @if not type-of($index) == 'number' {
-        @error '[__list-get] $index #{$index} for $list #{inspect($list)} is not a number.';
+    @if type-of($index) != 'number' {
+        @error '[__list-get] $index #{inspect($index)} for $list #{inspect($list)} is not a number.';
         @return null;
     }
 
@@ -28,7 +28,7 @@
 
 @function __string-get($string, $index) {
     @if type-of($index) != 'number' {
-        @error '[__string-get] $index #{$index} for $string #{$string} is not a number.';
+        @error '[__string-get] $index #{inspect($index)} for $string #{inspect($string)} is not a number.';
         @return null;
     }
 
@@ -53,6 +53,10 @@
 
     @if $value-type == 'list' {
         $index: nth($keys, 1);
+
+        @if type-of($index) != 'number' {
+            @return null;
+        }
 
         $map: __list-get($map, $index);
     } @else {

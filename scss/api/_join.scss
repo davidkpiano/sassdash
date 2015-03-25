@@ -13,7 +13,7 @@
 
 
 @function __join($list, $separator: '', $guard: null) {
-    @if __is-iteratee-call($list, $separator, $guard) {
+    @if $guard and __is-iteratee-call($list, $separator, $guard) {
         $separator: '';
     }
 

@@ -4,16 +4,18 @@
 
 It's [lodash](http://www.lodash.com) for Sass. Sassdash.
 
-**Why?** Developed with the framework developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](http://www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
+**Why?** Developed with Sass toolkit developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](http://www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
 
 ## Getting Started
 This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
 
-1. [`git clone https://github.com/davidkpiano/sassdash.git sassdash`](https://github.com/davidkpiano/sassdash.git) inside your project (preferably in a `vendors/` directory)
+1. `npm install sassdash`
 2. `@import 'path/to/sassdash'` in your project
 3. Use your new powers wisely.
 
-FYI: Neither Compass nor Eyeglass are required! Sassdash *should* work in both Sass and Libsass (latest versions).
+FYI: Neither Compass nor Eyeglass are required! Sassdash *should* work in both Sass and Libsass* (latest versions).
+
+* Testing still needs to be done in Libsass.
 
 ## Using Sassdash
 If you are familiar with lodash, Sassdash will feel very natural to you.
@@ -47,8 +49,10 @@ Also, just as in lodash, iteratee functions (such as those used with `_map`) are
 * Discard the rest of the arguments in the function definition: `@function is-even($value, $args...) { ... }`
 * Wrap the function with `_ary`: `_map($list, _ary(is-even));`
 
+However, **native Sass functions as iteratees are automatically guarded**!
+
 ## Running Tests
-**WARNING:** There are *over 400* unit tests, and more to come. Running them all takes between 30 seconds and 2 minutes.
+**WARNING:** There are *over 500* unit tests, and more to come. Running them all takes between 1 and 2 minutes.
 
 1. `cd path/to/sassdash`
 2. [`bower install true`](https://github.com/ericam/true)
@@ -59,7 +63,7 @@ Also, just as in lodash, iteratee functions (such as those used with `_map`) are
 * :x: - Not implemented
 * :clock130: - Coming soon
 
-#### Array
+#### List (Array)
 Sassdash | lodash
 ---------|-------
 _chunk | _.chunk
@@ -87,8 +91,8 @@ _pull | _.pull
 :x: | _.remove
 _rest | _.rest
 _slice | _.slice
-_sorted-index | _.sortedIndex
-_sorted-last-index | _.sortedLastIndex
+:clock130: | _.sortedIndex
+:clock130: | _.sortedLastIndex
 _tail | _.tail → rest
 _take | _.take
 _take-right | _.takeRight
@@ -190,8 +194,8 @@ _partial-right | _.partialRight
 #### Lang
 Sassdash | lodash
 ---------|-------
-_clone | _.clone
-_clone-deep | _.cloneDeep
+:x: | _.clone
+:x: | _.cloneDeep
 _is-arglist | _.isArguments
 _is-list | _.isArray
 _is-boolean | _.isBoolean
@@ -204,7 +208,7 @@ _is-finite | _.isFinite
 _is-function | _.isFunction
 _is-match | _.isMatch
 :x: | _.isNaN
-:x: | _.isNative
+_is-native | _.isNative
 _is-null | _.isNull
 _is-number | _.isNumber
 _is-map | _.isObject
@@ -219,10 +223,10 @@ _to-map | _.toPlainObject
 #### Math
 Sassdash | lodash
 ---------|-------
-:clock130: | _.add
+_add | _.add
 _max | _.max
 _min | _.min
-:clock130: | _.sum
+_sum | _.sum
 
 #### Number
 Sassdash | lodash

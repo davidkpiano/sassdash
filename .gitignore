@@ -1,5 +1,6 @@
 .sass-cache
 node_modules
-/css/*
+css
 bower_components
 tests/tests.scss
+sassdoc

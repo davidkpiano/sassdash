@@ -62,7 +62,31 @@ However, **native Sass functions as iteratees are automatically guarded**!
 2. [`bower install true`](https://github.com/ericam/true)
 3. `true-cli tests/true-tests.scss`
 
-## Available Functions
+## New Functions
+Sassdash includes a number of helper functions not available in lodash, which include utility functions and implementations of native Javascript functions:
+
+* **`char` functions** - `_char-at`, `_char-code`, `_char-code-at`
+* **`number` functions** - `_parse-float` (alias `_to-number`) - similar to Javascript `parseFloat`
+* **`value` functions** - `_get` and `_set`\*
+* **`list` functions** - `_reverse`, `_concat`, and `_splice`
+* **`string` functions** - `_str-concat` and `_join` (list to string)
+
+\* **Example:**
+```scss
+$map: ('foo': ('bar': ('baz': 'quo')));
+$list: (1, ('a': 2), 3);
+
+$baz: _get($map, 'foo' 'bar' 'baz'); // => 'quo'
+$something: _get($list, 2 'a'); // => 2
+
+$map: _set($map, 'foo' 'bar' 'test', 42);
+// => ('foo': ('bar': ('baz': 'quo', 'test': 42)))
+
+$list: _set($list, 2 'a', 42);
+// => (1, ('a': 42), 3)
+```
+
+## Available lodash Functions
 
 * :x: - Not implemented
 * :clock130: - Coming soon

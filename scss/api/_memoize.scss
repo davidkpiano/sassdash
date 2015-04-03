@@ -1,20 +1,105 @@
-
+$__memoized__: () !global;
 
 @function __memoize-memoized($arguments...) {
-    $args: $arguments;
-    $func: __this('__memoized__');
-    $cached: __this(($args,));
+    $func: __this('func');
+    $resolver: __this('resolver');
+    $key: __exec($resolver, $arguments...);
+    $cached-value: __get($__memoized__, $func $key);
 
-    @if $cached == null {
-        @return __this(($args,), __exec($func, $args...));
+    @if $cached-value == null {
+        $cached-value: __exec($func, $arguments...);
+        $__memoized__: __set($__memoized__, $func $key, $cached-value) !global;
     }
 
-    @return $cached;
+    @return $cached-value;
 }
-@function __memoize($func, $resolver: null) {
-    $_: __scope(('__memoized__': $func));
+
+@function __memoize($func, $resolver: __identity) {
+    $_: __scope(('func': $func, 'resolver': $resolver));
     $memoized: __bind('__memoize-memoized');
     $_: __scope(false);
 
     @return $memoized;
+}
+
+@function __memo($context, $key: $__undefined__, $value: $__undefined__) {
+    // Get the memos from context
+    @if __is-undefined($key) and __is-undefined($value) {
+        @return __get($__memoized__, $context);
+    }
+
+    // Get the memo
+    @if __is-undefined($value) {
+        @return __get($__memoized__, $context $key);
+    }
+
+    // Set the memo
+    $__memoized__: __set($__memoized__, $context $key, $value) !global;
+
+    @return true;
+}
+
+///
+/// Creates a function that memoizes the result of `$func`. If `$resolver` is
+/// provided, it determines the cache key for storing the result based on the
+/// arguments provided to the memoized function. By default, the first argument
+/// provided to the memoized function is coerced to a string and used as the
+/// cache key. The `$func` is invoked with the `_this` binding of the memoized
+/// function.
+///
+///
+/// @access public
+/// @group Function
+/// @param {Function} $func The function to have its output memoized.
+/// @param {Function} $resolver [_identity] The function to resolve the cache key.
+/// @returns {Function} Returns the new memoizing function.
+/// @example scss
+///
+/// $uppercase: _memoize(to-upper-case);
+///
+/// $foo: _exec($uppercase, 'fred');
+/// // => 'FRED'
+///
+/// // modifying the result cache
+/// $mod: _memo(to-upper-case, 'fred', 'BARNEY');
+/// $foo: _exec($uppercase, 'fred');
+/// // => 'BARNEY'
+///
+/// // using a `$resolver`
+///   @function greet($name) {
+///     @return 'Hello, ' + $name;
+///   }
+///   
+///   $greet-memoized: _memoize(greet, to-upper-case);
+///   
+///   $foo: _exec($greet-memoized, 'Fred');
+///   // => 'Hello, Fred'
+///   
+///   $foo: _exec($greet-memoized, 'FRED');
+///   // => 'Hello, Fred' (since 'Fred' and 'FRED' resolve to 'FRED');
+
+@function _memoize($args...) {
+    @return call('__memoize', $args...);
+}
+
+
+///
+/// Gets or sets a memo in the Sassdash memo cache, based on the `$context` where
+/// the memo is being queried from (usually a function).
+/// 
+/// 
+/// @access public
+/// @group Function
+/// @param {String|Function} $context - The memo context.
+/// @param {*} $key [undefined] - The memo key to get or set.
+/// @param {*} $value [undefined] - The value to set the key in the memo
+/// context to, if provided.
+/// @returns {*} Returns memo map if only context is provided, memo value
+/// if context and key are provided, and sets the memo and returns true
+/// if context, key, and value are provided.
+/// @example scss
+/// // todo
+
+@function _memo($args...) {
+    @return call('__memo', $args...);
 }

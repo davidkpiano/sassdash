@@ -1,0 +1,20 @@
+
+
+@function __memoize-memoized($arguments...) {
+    $args: $arguments;
+    $func: __this('__memoized__');
+    $cached: __this(($args,));
+
+    @if $cached == null {
+        @return __this(($args,), __exec($func, $args...));
+    }
+
+    @return $cached;
+}
+@function __memoize($func, $resolver: null) {
+    $_: __scope(('__memoized__': $func));
+    $memoized: __bind('__memoize-memoized');
+    $_: __scope(false);
+
+    @return $memoized;
+}

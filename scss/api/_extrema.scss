@@ -155,7 +155,7 @@
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection The collection to iterate over.
-/// @param {Function|Map|string} $iteratee - The function invoked per iteration.
+/// @param {Function|Map|string} $iteratee [null] - The function invoked per iteration.
 /// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {*} Returns the maximum value.
 /// @example scss
@@ -200,7 +200,7 @@
 /// @access public
 /// @group Collection
 /// @param {List|Map|string} $collection - The collection to iterate over.
-/// @param {Function|Map|string} $iteratee - The function invoked per iteration.
+/// @param {Function|Map|string} $iteratee [null] - The function invoked per iteration.
 /// @param {*} $this-arg [null] - The `_this` binding of `$iteratee`.
 /// @returns {*} Returns the minimum value.
 /// @example scss

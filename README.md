@@ -69,7 +69,7 @@ Sassdash includes a number of helper functions not available in lodash, which in
 
 * **`char` functions** - `_char-at`, `_char-code`, `_char-code-at`
 * **`number` functions** - `_parse-float` (alias `_to-number`) - similar to Javascript `parseFloat`
-* **`value` functions** - `_get` and `_set`\*
+* **`value` functions** - `_get`, `_set` and `_memo` for easy cache manipulation
 * **`list` functions** - `_reverse`, `_concat`, and `_splice`
 * **`string` functions** - `_str-concat` and `_join` (list to string)
 
@@ -211,7 +211,7 @@ _compose | _.compose → flowRight
 :x: | _.delay
 _flow | _.flow
 _flow-right | _.flowRight
-:clock130: | _.memoize
+_memoize | _.memoize
 _negate | _.negate
 _once | _.once
 _partial | _.partial

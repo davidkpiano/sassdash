@@ -1,0 +1,55 @@
+
+
+@mixin __rules($rules: ()) {
+    @if not __is-map($rules)
+    or not __every($rules, '__is-map') {
+        @error 'Rules for _rules mixin must be key-value pairs, where value is a declaration map.';
+    } @else {
+        @each $selector, $declarations in $rules {
+            #{$selector} {
+                @include __declare($declarations);
+            }
+        }
+    }
+
+    @content;
+}
+
+
+///
+/// Includes a ruleset for each selector-declarations pair in the map.
+/// 
+/// 
+/// @access public
+/// @group Map
+/// @param {Map} $rules [()] The rules map.
+/// @output The rulesets for each selector key.
+/// @example scss
+/// $test-rules: (
+///     '.foo': (
+///         'height': 50px,
+///         'padding': 1rem 5rem
+///     ),
+///     '.bar .baz': (
+///         'width': 50px,
+///         'margin': 2rem 6rem
+///     )
+/// );
+/// 
+/// @include _rules($test-rules);
+/// 
+/// // Output CSS:
+/// .foo {
+///     height: 50px;
+///     padding: 1rem 5rem;
+/// }
+/// 
+/// .bar .baz {
+///     width: 50px;
+///     margin: 2rem 6rem;
+/// }
+
+@mixin _rules($args...) {
+    @include __rules($args...);
+}
+

@@ -23,9 +23,9 @@
 /// @output The declarations as CSS property-value pairs.
 /// @example scss
 /// .foo {
-///     $rules: ('height': 50px, 'padding': 1rem 5rem);
+///     $foo-declarations: ('height': 50px, 'padding': 1rem 5rem);
 ///     
-///     @include _declare($rules);
+///     @include _declare($foo-declarations);
 /// }
 /// 
 /// // Output CSS:

@@ -25,29 +25,29 @@
 /// @param {Map} $rules [()] The rules map.
 /// @output The rulesets for each selector key.
 /// @example scss
-/// $test-rules: (
-///     '.foo': (
-///         'height': 50px,
-///         'padding': 1rem 5rem
-///     ),
-///     '.bar .baz': (
-///         'width': 50px,
-///         'margin': 2rem 6rem
-///     )
-/// );
-/// 
-/// @include _rules($test-rules);
-/// 
-/// // Output CSS:
-/// .foo {
-///     height: 50px;
-///     padding: 1rem 5rem;
-/// }
-/// 
-/// .bar .baz {
-///     width: 50px;
-///     margin: 2rem 6rem;
-/// }
+///     $test-rules: (
+///         '.foo': (
+///             'height': 50px,
+///             'padding': 1rem 5rem
+///         ),
+///         '.bar .baz': (
+///             'width': 50px,
+///             'margin': 2rem 6rem
+///         )
+///     );
+///     
+///     @include _rules($test-rules);
+///     
+///     // Output CSS:
+///     .foo {
+///         height: 50px;
+///         padding: 1rem 5rem;
+///     }
+///     
+///     .bar .baz {
+///         width: 50px;
+///         margin: 2rem 6rem;
+///     }
 
 @mixin _rules($args...) {
     @include __rules($args...);

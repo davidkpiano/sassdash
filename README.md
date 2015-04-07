@@ -1,5 +1,5 @@
 # Sassdash
-
+**[Read the complete documentation here: davidkpiano.github.io/sassdash](http://davidkpiano.github.io/sassdash)**
 
 ![Sassdash logo](https://raw.githubusercontent.com/davidkpiano/sassdash/master/sassdash.png)
 

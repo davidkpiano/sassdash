@@ -1,12 +1,11 @@
 # Sassdash
 
+
 ![Sassdash logo](https://raw.githubusercontent.com/davidkpiano/sassdash/master/sassdash.png)
 
 [![Join the chat at https://gitter.im/davidkpiano/sassdash](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/davidkpiano/sassdash?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 It's [lodash](http://www.lodash.com) for Sass. Sassdash.
-
-**[Read the documentation!](http://davidkpiano.github.io/sassdash)**
 
 **Why?** Developed with Sass toolkit developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](http://www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
 

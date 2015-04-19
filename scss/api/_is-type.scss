@@ -124,8 +124,9 @@
     @return __is-map-like($value) or __is-string($value);
 }
 
+
 @function __is-map-like($value, $args...) {
-    @return $value and (index('map' 'list' 'arglist', type-of($value)));
+    @return $value and index('map' 'list' 'arglist', type-of($value)) != null;
 }
 
 
@@ -135,12 +136,17 @@
 
 
 @function __is-native($value, $args...) {
-    @return __is-function($value) and index(__const('NATIVE_FUNCTIONS'), $value);
+    @return __is-function($value) and index(__const('NATIVE_FUNCTIONS'), $value) != null;
 }
 
 
 @function __is-color($value, $args...) {
     @return type-of($value) == 'color';
+}
+
+
+@function __is-time($value, $args...) {
+    @return type-of($value) == 'number' and index(__const('TIME_UNITS'), unit($value)) != null;
 }
 
 /// Checks if `$value` is an `Arglist`.
@@ -445,4 +451,26 @@
 
 @function _is-color($args...) {
     @return call('__is-color', $args...);
+}
+
+
+/// Checks if `$value` is a Time value (i.e. seconds or milliseconds).
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to check.
+/// @returns {boolean} Returns `true` if unit of numerical `$value` is 's' or 'ms', else `false`.
+/// @example scss
+/// 
+/// $foo: _is-time(13s);
+/// // => true
+/// 
+/// $foo: _is-time(0.3ms);
+/// // => true
+/// 
+/// $foo: _is-time('13s');
+/// // => false
+
+@function _is-time($args...) {
+    @return call('__is-time', $args...);
 }

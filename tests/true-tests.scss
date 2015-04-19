@@ -2624,6 +2624,24 @@ $test-before-count: 0 !global;
     }
 }
 
+@include test-module('_is-time') {
+    @include test('should return true for any time units') {
+        @each $value in 13s, 13ms, 13.5s, 13.5ms {
+            @include assert-equal(_is-time($value), true);
+        }
+    }
+
+    @include test('should return false for strings') {
+        @include assert-equal(_is-time('13s'), false);
+    }
+
+    @include test('should return false for non-time numbers') {
+        @each $value in 13px, 13mm, 13em {
+            @include assert-equal(_is-time($value), false);
+        }
+    }
+}
+
 @function TestKeysMap() {
     @return ('foo': 'bar');
 }

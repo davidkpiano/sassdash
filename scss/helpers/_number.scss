@@ -25,23 +25,7 @@
 
 
 @function __unit($value) {
-    $units: (
-        'vmax': 1vmax,
-        'vmin': 1vmin,
-        'rem': 1rem,
-        'vh': 1vh,
-        'vw': 1vw,
-        'ex': 1ex,
-        'pc': 1pc,
-        'pt': 1pt,
-        'em': 1em,
-        'in': 1in,
-        'ch': 1ch,
-        'mm': 1mm,
-        'cm': 1cm,
-        'px': 1px,
-        '%': 1%
-    );
+    $units: __const('UNITS');
 
     @if __is-number($value) {
         @return unit($value);
@@ -89,6 +73,8 @@
     }
 
     $unit: __unit($string);
+
+    @debug $multiplier, $result, $unit;
 
     @return $multiplier * $result / pow($radix, $exponent) * $unit;
 }

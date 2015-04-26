@@ -3,3 +3,24 @@
 @include __const('MAX_SAFE_INTEGER', (pow(2, 53) - 1));
 @include __const('HALF_MAX_LIST_LENGTH', 999999);
 @include __const('MAX_LIST_LENGTH', 999999);
+@include __const('UNITS', (
+    'vmax': 1vmax,
+    'vmin': 1vmin,
+    'rem': 1rem,
+    'deg': 1deg,
+    'rad': 1rad,
+    'vh': 1vh,
+    'vw': 1vw,
+    'ex': 1ex,
+    'pc': 1pc,
+    'pt': 1pt,
+    'em': 1em,
+    'in': 1in,
+    'ch': 1ch,
+    'mm': 1mm,
+    'cm': 1cm,
+    'px': 1px,
+    'ms': 1ms,
+    's': 1s,
+    '%': 1%
+));

@@ -4408,6 +4408,12 @@ $test-memoize-2: 0 !global;
 
         @include assert-equal($actual, 12 6);
     }
+
+    @include test('should work with units') {
+        $actual: _sum(1s 2s 100ms);
+
+        @include assert-equal($actual, 3100ms);
+    }
 }
 
 @include test-module('Sassdash') {

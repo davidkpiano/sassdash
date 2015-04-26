@@ -12,7 +12,9 @@
     $result: 0;
 
     @while $length > 0 {
-        $value: __parse-int(__exec($iteratee, nth($collection, $length)));
+        $value: __parse-float(__exec($iteratee, nth($collection, $length)));
+
+        $value: __either($value, 0);
 
         $result: $result + $value;
 

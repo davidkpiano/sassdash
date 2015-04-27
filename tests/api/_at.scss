@@ -1,0 +1,44 @@
+@include test-module('_at') {
+    $list: ('a', 'b', 'c');
+    $map-list: __to-map($list);
+    $empty-list: ();
+
+    $map-list: __set($map-list, 1.1, 1);
+
+    @include test('should return the elements corresponding to the specified keys') {
+        $actual: _at($list, (1 3));
+        @include assert-equal($actual, ('a' 'c'));
+    }
+
+    @include test('should return null for nonexistent keys') {
+        $actual: _at($list, (3 5 1));
+        @include assert-true(test-lists-equal($actual, ('c', null, 'a')));
+    }
+
+    @include test('should return an empty list when no keys are provided') {
+        @include assert-equal(_at($list), $empty-list);
+        @include assert-equal(_at($list, (), ()), $empty-list);
+    }
+
+    @include test('should accept multiple key arguments') {
+        $actual: _at(('a' 'b' 'c' 'd'), 4, 1, 3);
+
+        @include assert-equal($actual, 'd' 'a' 'c');
+    }
+
+    @include xit('should work with a falsey collection argument when keys are provided') {}
+
+    @include xit('should work with an arguments object for collection') {}
+
+    @include test('should work with an object for collection') {
+        $actual: _at(('a': 1, 'b': 2, 'c': 3), ('c' 'a'));
+        
+        @include assert-equal($actual, 3 1);
+    }
+
+    @include xit('should pluck inherited property values') {}
+
+    @include test('should work with a string literal for collection') {
+        @include assert-equal(_at('abc', 3 1), 'c' 'a');
+    }
+}

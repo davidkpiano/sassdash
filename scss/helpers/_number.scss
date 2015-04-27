@@ -74,8 +74,6 @@
 
     $unit: __unit($string);
 
-    @debug $multiplier, $result, $unit;
-
     @return $multiplier * $result / pow($radix, $exponent) * $unit;
 }
 

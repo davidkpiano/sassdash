@@ -1,0 +1,13 @@
+@include test-module('_add') {
+    @include test('should add two numbers together') {
+        @include assert-equal(_add(6, 4), 10);
+    }
+
+    @include test('should coerce numerical strings to numbers') {
+        @include assert-equal(_add(6, '14'), 20);
+    }
+
+    @include test('should be chainable') {
+        @include assert-equal(_(1, add 2), 3);
+    }
+}

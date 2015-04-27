@@ -1,0 +1,33 @@
+@include test-module('_chunk') {
+    $list: (0 1 2 3 4 5);
+
+    @include test('should return chunked arrays') {
+        $actual: _chunk($list, 3);
+        $expected: ((0 1 2) (3 4 5));
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return the last chunk as remaining elements') {
+        $actual: _chunk($list, 4);
+        $expected: ((0 1 2 3) (4 5));
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should ensure the minimum chunkSize is one') {
+        @each $value in append($test-falsey, -1) {        
+            $actual: _chunk($list, $value);
+            $expected: (0,) (1,) (2,) (3,) (4,) (5,);
+
+            @include assert-true(test-lists-equal($actual, $expected));
+        }
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $actual: _map(((1 2) (3 4)), _chunk);
+        $expected: (((1,) (2,)) ((3,) (4,)));
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+}

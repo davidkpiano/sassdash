@@ -1,0 +1,33 @@
+@function test-assign-1($a, $b) {
+    @return if($a == null, $b, $a);
+}
+@include test-module('_assign') {
+    @include test('should assign properties of a source object to the destination object') {
+        @include assert-equal(_assign(('a': 1), ('b': 2)), ('a': 1, 'b': 2));
+    }
+
+    @include test('should accept multiple source objects') {
+        $expected: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal(_assign(('a': 1), ('b': 2), ('c': 3)), $expected);
+        @include assert-equal(_assign(('a': 1), ('b': 2, 'c': 2), ('c': 3)), $expected);
+    }
+
+    @include test('should overwrite destination properties') {
+        $expected: ('a': 3, 'b': 2, 'c': 1);
+
+        @include assert-equal(_assign(('a': 1, 'b': 2), $expected), $expected);
+    }
+
+    @include xit('should work with a customizer callback') {
+        $actual: _assign(('a': 1, 'b': 2), ('a': 3, 'c': 3), test-assign-1);
+        $expected: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include xit('should work with a customizer that returns undefined') {
+        $expected: ('a': $__undefined__);
+        @include assert-equal(_assign((), $expected, _identity), $expected);
+    }
+}

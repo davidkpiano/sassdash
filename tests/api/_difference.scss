@@ -1,0 +1,29 @@
+@function test-difference-1($args...) {
+    @return $args;
+}
+@include test-module('_difference') {
+    @include test('should return the difference of the given arrays') {
+        $actual: _difference(1 2 3 4 5, 5 2 10);
+
+        @include assert-equal($actual, 1 3 4);
+
+        $actual: _difference(1 2 3 4 5, 5 2 10, 8 4);
+
+        @include assert-equal($actual, 1 3);
+    }
+
+    @include test('should ignore values that are not arrays or arguments objects') {
+        $list: (0 1 null 3);
+        $args: test-difference-1(1, 2, 3);
+
+        @include assert-equal(
+            _difference($list, 3, null, ('0': 1)),
+            $list);
+        @include assert-equal(
+            _difference(null, $list, null, 2 1),
+            0 null 3);
+        @include assert-equal(
+            _difference(null, $list, null, $args),
+            0 null);
+    }
+}

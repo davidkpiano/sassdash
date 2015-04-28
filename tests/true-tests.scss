@@ -1362,6 +1362,17 @@
   }
 }
 
+@include test-module('_group-by-keys') {
+    $list: (('a': 1, 'b': 2), ('a': 3, 'b': 4, 'c': 5));
+
+    @include test-module('should group a list of maps by keys') {
+        $actual: _group-by-keys($list);
+        $expected: ('a': (1, 3), 'b': (2, 4), 'c': (5,));
+
+        @include assert-equal($actual, $expected);
+    }
+}
+
 @function TestHas($a) {
   @return ('a': $a);
 }
@@ -2531,6 +2542,16 @@ $test-memoize-2: 0 !global;
 
     @include assert-equal(__get($actual, 'a'), null);
   }
+
+  // @include test('should work with a customizer') {
+  //   $map1: ('a': 1, 'b': 2);
+  //   $map2: ('a': 3, 'b': 4);
+
+  //   $actual: _merge($map1, $map2, _ary(_concat, 2));
+  //   $expected: ('a': (1, 3), 'b': (2, 4));
+
+  //   @include assert-equal($actual, $expected);
+  // }
 }
 
 @include test-module('Sassdash') {
@@ -4486,5 +4507,3 @@ $test-memoize-2: 0 !global;
 
     }
 }
-
-@include report;

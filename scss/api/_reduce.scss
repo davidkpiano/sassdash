@@ -28,7 +28,7 @@
 
     @while ($index <= $length) {
         $value: nth($list, $index);
-        $accumulator: call($iteratee, $accumulator, $value, $index, $list);
+        $accumulator: __exec($iteratee, $accumulator, $value, $index, $list);
 
         $index: $index + 1;
     }

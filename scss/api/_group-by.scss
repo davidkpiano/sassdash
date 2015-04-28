@@ -16,6 +16,25 @@
 }
 
 
+@function __group-by-keys($list, $args...) {
+    $result: ();
+
+    @each $item in $list {
+        $item: __to-map($item);
+
+        @each $key, $value in $item {
+            @if map-has-key($result, $key) {
+                $result: __set($result, $key, append(__get($result, $key), $value));
+            } @else {
+                $result: __set($result, $key, ($value,));
+            }
+        }
+    }
+
+    @return $result;
+}
+
+
 /// Creates a map composed of keys generated from the results of running
 /// each element of `$collection` through `$iteratee`. The corresponding value
 /// of each key is a list of the elements responsible for generating the key.
@@ -47,4 +66,23 @@
 
 @function _group-by($args...) {
     @return call('__group-by', $args...);
+}
+
+
+/// Creates a map composed of keys generated from the results of aggregating
+/// the values for each key in `$collection` into a `list`.
+/// 
+/// 
+/// @access public
+/// @group Collection
+/// @param {List|Map|string} $collection The collection to iterate over.
+/// @returns {Map} Returns the aggregate values from the keys of the items.
+/// @example scss
+/// $foo: (a: 1, b: 2);
+/// $bar: (a: 3, b: 4, c: 5);
+/// 
+/// $result: _group-by-keys($foo $bar);
+/// // => (a: (1, 3), b: (2, 4), c: (5,));
+@function _group-by-keys($args...) {
+    @return call('__group-by-keys', $args...);
 }

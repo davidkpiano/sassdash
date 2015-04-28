@@ -61,7 +61,7 @@ However, **native Sass functions as iteratees are automatically guarded**!
 
 1. `cd path/to/sassdash`
 2. [`bower install true`](https://github.com/ericam/true)
-3. `true-cli tests/true-tests.scss`
+3. `true-cli tests/tests.scss`
 
 ## New Functions
 Sassdash includes a number of helper functions not available in lodash, which include utility functions and implementations of native Javascript functions:

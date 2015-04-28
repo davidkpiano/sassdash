@@ -884,6 +884,15 @@
 
         @include assert-equal($actual, $expected);
     }
+
+    @include test-module('should work with falsey values') {
+        @each $value in $test-falsey {
+            $list: (('a': 1), $value, ('a': 2));
+            $expected: ('a': (1, 2));
+
+            @include assert-equal(_group-by-keys($list), $expected);
+        }
+    }
 }
 
 @function TestHas($a) {

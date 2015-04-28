@@ -7,42 +7,38 @@
 @include test-module('_count-by') {
     $list: (4.2, 6.1, 6.4);
 
-    // @include test('should work with an iteratee') {
-    //     $actual: _count-by($list, test-count-by-1);
-    //     $expected: (4: 1, 6: 2);
+    @include test('should work with an iteratee') {
+        $actual: _count-by($list, test-count-by-1);
+        $expected: (4: 1, 6: 2);
 
-    //     @include assert-equal($actual, $expected);
-    // }
+        @include assert-equal($actual, $expected);
+    }
 
-    // @include test('should use _identity when iteratee is null') {
-    //     $list: (4, 6, 6);
-    //     $actual: _count-by($list, null);
-    //     $expected: (4: 1, 6: 2);
+    @include test('should use _identity when iteratee is null') {
+        $list: (4, 6, 6);
+        $actual: _count-by($list, null);
+        $expected: (4: 1, 6: 2);
 
-    //     @include assert-equal($actual, $expected);
+        @include assert-equal($actual, $expected);
 
-    //     $actual: _count-by($list);
+        $actual: _count-by($list);
 
-    //     @include assert-equal($actual, $expected);
-    // }
-
-    // @include xit('should provide the correct iteratee arguments') {}
+        @include assert-equal($actual, $expected);
+    }
 
     // @include xit('should support the this-arg argument') {}
 
-    // @include xit('should only add values to own, not inherited, properties') {}
+    @include test('should work with a _pluck style iteratee') {
+        $map: (
+            (a: 'one', len: 3),
+            (a: 'two', len: 3),
+            (a: 'three', len: 5),
+        );
+        $actual: _count-by($map, 'len');
+        $expected: (3: 2, 5: 1);
 
-    // @include test('should work with a _pluck style iteratee') {
-    //     $map: (
-    //         (a: 'one', len: 3),
-    //         (a: 'two', len: 3),
-    //         (a: 'three', len: 5),
-    //     );
-    //     $actual: _count-by($map, 'len');
-    //     $expected: (3: 2, 5: 1);
-
-    //     @include assert-equal($actual, $expected);
-    // }
+        @include assert-equal($actual, $expected);
+    }
 
     @include test('should work with a number for iteratee') {
         $list: (1 'a', 2 'a', 2 'b');

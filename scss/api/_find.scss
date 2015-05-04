@@ -38,7 +38,7 @@
     @if __is-list($collection) {
         $index: __find-index($collection, $predicate, $this-arg);
 
-        @return if($index > -1, nth($collection, $index), $__undefined__);
+        @return if($index > -1, nth($collection, $index), null);
     }
 
     $predicate: __get-callback($predicate, $this-arg, 3);
@@ -55,7 +55,7 @@
     @if __is-list($collection) {
         $index: __find-last-index($collection, $predicate, $this-arg);
 
-        @return if($index > -1, nth($collection, $index), $__undefined__);
+        @return if($index > -1, nth($collection, $index), null);
     }
 
     $predicate: __get-callback($predicate, $this-arg, 3);

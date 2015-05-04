@@ -1,4 +1,4 @@
-@function __pairs($map) {
+@function __pairs($map, $args...) {
     $result: ();
 
     @each $key, $value in $map {

@@ -1,0 +1,32 @@
+@include test-module('_rules') {
+    @include test('should produce the rulesets for each selector key') {
+        $test-rules: (
+            '.foo': (
+                'height': 50px,
+                'padding': 1rem 5rem
+            ),
+            '.bar .baz': (
+                'width': 50px,
+                'margin': 2rem 6rem
+            )
+        );
+
+        @include assert() {
+            @include input() {
+                @include _rules($test-rules);
+            }
+
+            @include expect() {
+                .foo {
+                    height: 50px;
+                    padding: 1rem 5rem;
+                }
+                
+                .bar .baz {
+                    width: 50px;
+                    margin: 2rem 6rem;
+                }
+            }
+        }
+    }
+}

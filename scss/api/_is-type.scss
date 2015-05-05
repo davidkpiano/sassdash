@@ -97,7 +97,7 @@
 
 @function __is-plain-map($value, $args...) {
     @return (type-of($value) == 'map')
-    and not (map-has-key($value, '_constructor'));
+    and not (map-has-key($value, '_type'));
 }
 
 

@@ -94,7 +94,7 @@
             @return false;
         }
 
-        $has-ctor: if($has-ctor, true, ($key == '_constructor'));
+        $has-ctor: if($has-ctor, true, ($key == '_type'));
         $index: $index + 1;
     }
 

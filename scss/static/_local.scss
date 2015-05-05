@@ -148,9 +148,7 @@
 @function __new($type, $params: (), $extends: false, $prototype: ()) {
     $instance-meta: (
         '_type': $type,
-        '_constructor': $type,
-        '_extends': $extends,
-        '_prototype': $prototype,
+        '_extends': $extends
     );
 
     $instance: ();
@@ -170,7 +168,7 @@
         @return type-of($value) == $constructor;
     }
 
-    @return __get($value, '_constructor') == $constructor;
+    @return __get($value, '_type') == $constructor;
 }
 
 

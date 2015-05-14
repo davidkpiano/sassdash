@@ -1,0 +1,15 @@
+
+@include test-module('Sassdash') {
+  @include test('_once') {
+    $once: _once(test-square);
+    $actual: _call($once, null, 2);
+
+    @include assert-equal($actual, 4,
+      'should invoke func once');
+
+    $actual: _call($once, null, 2);
+
+    @include assert-equal($actual, null,
+      'should invoke func once');
+  }
+}

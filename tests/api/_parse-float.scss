@@ -1,0 +1,48 @@
+@include test-module('_parse-float') {
+    @include test('should parse an integer') {
+        @include assert-equal(_parse-float('4'), 4);
+        @include assert-equal(_parse-float('0'), 0);
+        @include assert-equal(_parse-float('123456'), 123456);
+    }
+
+    @include test('should parse a number with a radix') {
+        @include assert-equal(_parse-float('123.4567'), 123.4567);
+    }
+
+    @include test('should parse a number with a radix < 1') {
+        @include assert-equal(_parse-float('0.123'), 0.123);
+
+        @include assert-equal(_parse-float('.123'), 0.123);
+    }
+
+    @include test('should parse negative numbers') {
+        @include assert-equal(_parse-float('-42'), -42);
+        @include assert-equal(_parse-float('-12.345'), -12.345);
+        @include assert-equal(_parse-float('-0.123'), -0.123);
+        @include assert-equal(_parse-float('-.123'), -0.123);
+    }
+
+    @include test('should trim string before parsing') {
+        @include assert-equal(_parse-float('   123.456'), 123.456);
+        @include assert-equal(_parse-float('123.456   '), 123.456);
+        @include assert-equal(_parse-float('   123.456   '), 123.456);
+    }
+
+    @include test('should provide the correct unit for a parsed number') {
+      @include assert-equal(_parse-float('123rem'), 123rem);
+      @include assert-equal(_parse-float('123%'), 123%);
+      @include assert-equal(_parse-float('   123em'), 123em);
+      @include assert-equal(_parse-float('123px   '), 123px);
+    }
+
+    @include test('should ignore non-valid units') {
+      @include assert-equal(_parse-float('123fake'), 123);
+    }
+
+    @include test('should not attempt to parse non-strings') {
+      @include assert-equal(_parse-float(123), 123);
+      @include assert-equal(_parse-float(123.456), 123.456);
+      @include assert-equal(_parse-float(#a3b2c1), #a3b2c1);
+      @include assert-equal(_parse-float(1 2 3), 1 2 3);
+    }
+}

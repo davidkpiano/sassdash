@@ -3,7 +3,7 @@
 }
 
 @function __defaults($map: null, $args...) {
-    @if ($map == null) {
+    @if $map == null {
         @return $map;
     }
 

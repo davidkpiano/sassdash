@@ -14,9 +14,10 @@
 
         @include assert-equal(length($actual), 0);
 
-        $actual: _($test-falsey, slice, push true 1, compact, push 'a', slice);
+        $actual: _($test-falsey, slice, push true 1, compact, push 'a');
         $expected: (true, 1, 'a');
 
-        @include assert-true(test-lists-equal($actual, $expected));
+        @include assert-equal($actual, $expected);
+        // @include assert-true(test-lists-equal($actual, $expected));
     }
 }

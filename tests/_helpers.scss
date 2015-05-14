@@ -38,7 +38,12 @@ $test-empty-list: ();
     $equal: length($one) == length($two);
     $index: 1;
 
-    @while ($index <= max(length($one), length($two)) and $equal) {
+    @if not $equal {
+      @return false;
+    }
+
+    @while $index <= length($one) and $equal == true {
+      @debug _map($one $two, nth $index);
       $equal: test-lists-equal(nth($one, $index), nth($two, $index));
       $index: $index + 1;
     }
@@ -47,6 +52,12 @@ $test-empty-list: ();
   } @else {
     @return $one == $two;
   }
+}
+
+@mixin assert-lists-equal($one, $two, $args...) {
+  $equal: test-lists-equal($one, $two);
+
+  @return assert-true($equal)
 }
 
 

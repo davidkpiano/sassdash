@@ -1,0 +1,25 @@
+
+@function TestHas($a) {
+  @return ('a': $a);
+}
+@include test-module('_has') {
+  @include test('should check for own properties') {
+    $map: ('a': 1);
+
+    @include assert-equal(_has($map, 'a'), true);
+    @include assert-equal(_has($map, 'b'), false);
+  }
+
+  @include test('should not check for inherited properties') {
+    $map: __new(TestHas, ('a': 1));
+
+    @include assert-equal(_has($map, '_type'), false);
+    @include assert-equal(_has($map, 'a'), true);
+  }
+
+  @include test('should return false for non-maps') {
+    @each $value in join($test-falsey, true 1 'a') {
+      @include assert-equal(_has($value, 'a'), false);
+    }
+  }
+}

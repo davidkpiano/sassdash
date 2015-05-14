@@ -1,0 +1,23 @@
+@function test-shuffle-1($args...) {
+  @return _shuffle(1 2);
+}
+@include test-module('Sassdash') {
+  @include test('_shuffle') {
+    $list: 1 2 3 4 5;
+    $map: ('a': 1, 'b': 2, 'c': 3);
+
+    @include assert-true(test-lists-equal(_shuffle($list) != $list, true),
+      'should return a new list');
+
+    @include assert-true(test-lists-equal(__sort(_shuffle($list)), $list),
+      'should contain the same elements after a collection is shuffled');
+
+    @include assert-true(test-lists-equal(length(_shuffle($map)), length($map)),
+      'should contain the same elements after a collection is shuffled');
+
+    $actual: _times(10, test-shuffle-1);
+
+    @include assert-true(test-lists-equal(_sort-by(_uniq($actual), 1), (1 2, 2 1)),
+      'should shuffle small collections');
+  }
+}

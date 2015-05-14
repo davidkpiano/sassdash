@@ -31,3 +31,27 @@
         @include assert-equal(_assign((), $expected, _identity), $expected);
     }
 }
+
+@include test-module('Sassdash') {
+  @include test('map assignments') {  
+    // TODO: add 'merge'
+    @each $method-name in 'assign', 'defaults' {
+      $func: unquote('_#{$method-name}');
+
+      @each $value in $test-falsey {
+        $actual: _call($func, null, $value);
+        $expected: $value;
+
+        @include assert-equal($actual, $expected,
+          '#{$func} should pass thru falsey map values');
+      }
+
+      $list: (('b': 2), ('c': 3));
+      $actual: _reduce($list, $func, ('a': 1));
+      $expected: ('a': 1, 'b': 2, 'c': 3);
+
+      @include assert-equal($actual, $expected,
+        '#{$func} should work as an iteratee for _reduce');
+    }
+  }
+}

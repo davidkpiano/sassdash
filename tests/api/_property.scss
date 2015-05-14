@@ -1,0 +1,24 @@
+@include test-module('Sassdash') {
+  @include test('_property') {
+    $map: ('a': 1, 'b': 2);
+    $prop: _property('a');
+
+    @include assert-equal(_call($prop, null, $map), 1,
+      'should create a function that plucks a property value of a given map');
+
+    $prop: _property('b');
+
+    @include assert-equal(_call($prop, null, $map), 2,
+      'should create a function that plucks a property value of a given map');
+
+    $prop: _property(2);
+
+    @include assert-equal(_call($prop, null, 10 20 30), 20,
+      'should work with non-string prop arguments');
+
+    $prop: _property('a');
+
+    @include assert-equal(_call($prop, null, null), null,
+      'should work when map is nullish');
+  }
+}

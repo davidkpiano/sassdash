@@ -1,0 +1,70 @@
+@include test-module('_every') {
+    @include test('should return true for empty collections') {
+        $actual: _every((), _identity);
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return true if predicate returns truthy for all elements in the collection') {
+        $actual: _every(true 1 'a', _identity);
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return false as soon as predicate returns falsey') {
+        $actual: _every(true null true, _identity);
+        $expected: false;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with a _pluck style predicate') {
+        $maps: (('a': 0, 'b': 1), ('a': 1, 'b': 2));
+        $actual: _every($maps, 'a');
+        $expected: false;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _every($maps, 'b');
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with a _where style predicate') {
+        $maps: (('a': 0, 'b': 0), ('a': 0, 'b': 1));
+        $actual: _every($maps, ('a': 0));
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _every($maps, ('b': 1));
+        $expected: false;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should use _identity when predicate is nullish') {
+        $list: (0,);
+
+        $actual: _every($list, null);
+        $expected: false;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _every($list);
+        $expected: false;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should be aliased') {
+        $list: 1 2 3;
+        $actual: _every($list);
+        $expected: _all($list);
+
+        @include assert-equal($actual, $expected);
+    }
+}

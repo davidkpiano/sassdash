@@ -3,4 +3,7 @@
 /css
 /bower_components
 /sassdoc
+/tests/*.css
+/tests/*.map
+index.js
 index.html

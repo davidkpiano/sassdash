@@ -1,0 +1,64 @@
+
+$test-memoize-1: 0 !global;
+$test-memoize-2: 0 !global;
+@function test-memoize-1($a, $b) {
+    $test-memoize-1: $test-memoize-1 + 1 !global;
+    @return $a + $b;
+}
+@function test-memoize-2($a) {
+    $test-memoize-2: $test-memoize-2 + 1 !global;
+    @return $a + 3;
+}
+@include test-module('_memoize and _memo') {
+    @include test('should memoize results based on first argument provided') {
+        $memoized: _memoize(test-add);
+
+        @include assert-equal(_exec($memoized, 1, 2), 3);
+        @include assert-equal(_exec($memoized, 1, 5), 3);
+        @include assert-equal(_exec($memoized, 2, 5), 7);
+    }
+
+    @include test('should properly memoize by only executing the idempotent function once given the same arguments') {
+        $memoized: _memoize(test-memoize-1);
+        
+        @include assert-equal(_exec($memoized, 1, 2), 3);
+        @include assert-equal($test-memoize-1, 1);
+
+        @include assert-equal(_exec($memoized, 1, 2), 3);
+        @include assert-equal($test-memoize-1, 1);
+    }
+
+    @include test('should support a resolver argument') {
+        $memoized: _memoize(test-add, test-square);
+
+        @include assert-equal(_exec($memoized, 3, 2), 5);
+        @include assert-equal(_exec($memoized, -3, 2), 5);
+    }
+
+    @include test('should allow $__memoize__ cache to be set via _memo') {
+        $memoized: _memoize(test-double);
+
+        @include assert-equal(_exec($memoized, 5), 10);
+
+        $_: _memo(test-double, 5, 55);
+
+        @include assert-equal(_exec($memoized, 5), 55);
+    }
+
+    @include test('should support retrieving a cached value via _memo') {
+        $test-memoize-1: 0 !global;
+
+        $memoized: _memoize(test-memoize-2);
+
+        $result: _exec($memoized, 7);
+
+        $actual: _memo(test-memoize-2, 7);
+
+        @include assert-equal($actual, $result);
+        @include assert-equal($test-memoize-2, 1);
+    }
+
+    @include test('_memo should return null for non-cached values') {
+        @include assert-equal(_memo(test-add, 99999), null);
+    }
+}

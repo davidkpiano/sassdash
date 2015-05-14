@@ -1,0 +1,7 @@
+@include test-module('_pull') {
+  @include test('should return the modified list') {
+    $list: 1 200 3;
+
+    @include assert-true(test-lists-equal(_pull($list, 1, 3), (200,)));
+  }
+}

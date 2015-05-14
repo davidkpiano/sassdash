@@ -1,0 +1,8 @@
+@include test-module('Sassdash') {
+  @include test('_values') {
+    $map: ('a': 1, 'b': 2);
+
+    @include assert-equal(_values($map), 1 2,
+      'should get the values of a map');
+  }
+}

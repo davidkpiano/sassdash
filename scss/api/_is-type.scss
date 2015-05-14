@@ -52,6 +52,7 @@
     or $value == ""
     or $value == $__undefined__
     or $value == 0
+    or $value == 0%
     or not $value {
         @return true;
     }

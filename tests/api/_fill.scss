@@ -1,0 +1,45 @@
+@include test-module('_fill') {
+    @include test('should use a default start of 0 and a default end of list length') {
+        $list: 1 2 3;
+        @include assert-equal(_fill($list, 'a'), 'a' 'a' 'a');
+    }
+
+    @include test('should use null for value if not provided') {
+        $list: 1 2 3;
+        @include assert-equal(_fill($list), null null null);
+    }
+
+    @include test('should work with a positive start') {
+        $list: 1 2 3;
+        @include assert-equal(_fill($list, 'a', 2), 1 'a' 'a');
+    }
+
+    @include test('should work with a start >= list length') {
+        $list: 1 2 3;
+
+        @each $value in 4, 5, 9999 {
+            @include assert-equal(_fill($list, 'a', $value), 1 2 3);
+        }
+    }
+
+    @include test('should treat falsey start values as 1') {
+        @each $value in $test-falsey {
+            $list: 1 2 3;
+            @include assert-equal(_fill($list, 'a', $value), 'a' 'a' 'a');
+        }
+    }
+
+    @include test('should work with a negative start') {
+        $list: 1 2 3;
+
+        @include assert-equal(_fill($list, 'a', -1), 1 2 'a');
+    }
+
+    @include test('should work with a negative start <= negative length($list)') {
+        @each $value in -3, -4, -9999 {
+            $list: 1 2 3;
+
+            @include assert-equal(_fill($list, 'a', $value), 'a' 'a' 'a', $value);
+        }
+    }
+}

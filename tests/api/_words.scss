@@ -1,0 +1,14 @@
+
+@include test-module('Sassdash') {
+  @include test('_words') {
+    @include assert-true(test-lists-equal(_map('a' 'b' 'c', _words), ('a',) ('b',) ('c',)),
+      'should work as an iteratee for map');
+
+    @include assert-true(test-lists-equal(_words('LETTERSAeiouAreVowels'), 'LETTERS' 'Aeiou' 'Are' 'Vowels'),
+      'should work with compound words');
+    @include assert-true(test-lists-equal(_words('aeiouAreVowels'), 'aeiou' 'Are' 'Vowels'),
+      'should work with compound words');
+    @include assert-true(test-lists-equal(_words('aeiou2Consonants'), 'aeiou' '2' 'Consonants'),
+      'should work with compound words');
+  }
+}

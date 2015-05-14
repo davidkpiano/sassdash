@@ -1,0 +1,18 @@
+@include test-module('_split') {
+    @include test('should split a string at instances of delimiter') {
+        @include assert-equal(_split('a-b-c-d-e', '-'), 'a' 'b' 'c' 'd' 'e');
+
+        @include assert-equal(_split('a-_b-_c-_d-_e', '-_'), 'a' 'b' 'c' 'd' 'e');
+
+        @include assert-equal(_split('the big brown fox jumped', ' '), 'the' 'big' 'brown' 'fox' 'jumped');
+    }
+
+    @include test('should split a string into individual characters in absence of delimiter') {
+        @include assert-equal(_split('abcde'), 'a' 'b' 'c' 'd' 'e');
+        @include assert-equal(_split('abcde', ''), 'a' 'b' 'c' 'd' 'e');
+    }
+
+    @include test('should return single-item list with string if delimiter not found') {
+        @include assert-true(test-lists-equal(_split('abcde', 'x'), ('abcde',)));
+    }
+}

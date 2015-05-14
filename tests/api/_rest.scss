@@ -1,0 +1,28 @@
+@include test-module('Sassdash') {
+  @include test('_rest') {
+    $list: 1 2 3;
+
+    @each $value in $test-falsey {
+      @include assert-equal(_rest($value), (),
+        'should accept a falsey list argument');
+    }
+
+    @include assert-equal(_rest($list), 2 3,
+      'should exclude the first element');
+
+    @include assert-equal(_rest(()), (),
+      'should return an empty list when querying empty lists');
+
+    $list-list: (1 2 3, 4 5 6, 7 8 9);
+    $actual: _map($list-list, _rest);
+
+    @include assert-true(test-lists-equal($actual, (2 3, 5 6, 8 9)),
+      'should work as an iteratee for _map');
+
+    @include assert-true(test-lists-equal(_($list, rest, filter test-is-even), (2,)),
+      'should work in a lazy chain sequence');
+
+    @include assert-equal(_tail($list), _rest($list),
+      'should be aliased');
+  }
+}

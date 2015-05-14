@@ -1,0 +1,34 @@
+@function TestKeysMap() {
+    @return ('foo': 'bar');
+}
+@include test-module('_keys methods') {
+    @each $method-name in 'keys', 'keys-in' {
+        $args: test-args(1, 2, 3);
+        $func: unquote('_#{$method-name}');
+        $is-keys: $method-name == 'keys';
+
+        @include test('#{$func} should return the keys of a map') {
+            @include assert-equal(_call($func, null, ('a': 1, 'b': 1)), 'a' 'b');
+        }
+
+        @include test('#{$func} should return an empty list for null values') {
+            @include assert-equal(_call($func, null, null), ());
+
+            @include assert-equal(_call($func, null), ());
+        }
+
+        @include test('#{$func} should work with strings') {
+            @include assert-equal(_call($func, null, 'abc'), 1 2 3);
+        }
+
+        @include test('#{$func} should work with lists') {
+            @include assert-equal(_call($func, null, (2,4,6)), 1 2 3);
+        }
+
+        @include test('#{$func} should skip meta properties of constructed maps') {
+            $test-map: __new(TestKeysMap);
+
+            @include assert-true(test-lists-equal(_call($func, null, $test-map), ('foo',)));
+        }
+    }
+}

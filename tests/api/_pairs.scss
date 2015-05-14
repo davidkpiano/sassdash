@@ -1,0 +1,8 @@
+@include test-module('Sassdash') {
+  @include test('_pairs') {
+    $map: ('a': 1, 'b': 2);
+
+    @include assert-true(test-lists-equal(_pairs($map), (('a', 1), ('b', 2))),
+      'should create a 2d list of key-value pairs');
+  }
+}

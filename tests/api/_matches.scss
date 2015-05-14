@@ -1,0 +1,90 @@
+
+@include test-module('_matches') {
+    @include test('should create a function that performs a deep comparison between a given map and source') {
+        $map: ('a': 1, 'b': 2, 'c': 3);
+        $matches: _matches(('a': 1));
+
+        @include assert-equal(_call($matches, null, $map), true);
+        @include assert-equal(_call($matches, null, ('b': 1)), false);
+        @include assert-equal(_call($matches, null, ('a': 1, 'c': 3)), true);
+        @include assert-equal(_call($matches, null, ('c': 3, 'd': 4)), false);
+
+        $map: ('a': ('b': ('c': 1, 'd': 2), 'e': 3), 'f': 4);
+        $matches: _matches(('a': ('b': ('c': 1))));
+
+        @include assert-equal(_call($matches, null, $map), true, 'deep');
+    }
+
+    @include test('should compare a variety of source values') {
+        $map1: ('a': false, 'b': true, 'c': '3', 'd': 4, 'e': (5,), 'f': ('g': 6));
+        $map2: ('a': 0, 'b': 1, 'c': 3, 'd': '4', 'e': ('5',), 'f': ('g': '6'));
+
+        $matches: _matches($map1);
+
+        @include assert-equal(_call($matches, null, $map1), true);
+        @include assert-equal(_call($matches, null, $map2), false);
+    }
+
+    @include test('should return true when comparing an empty source') {
+        $map: ('a': 1);
+
+        $matches: _matches(());
+
+        @include assert-equal(_call($matches, null, $map), true);
+    }
+
+    @include test('should return true when comparing a source of empty lists and maps') {
+        $maps: (('a': (1,), 'b': ('c': 1)), ('a': 2 3, 'b': ('d': 2)));
+        $matches: _matches(('a': (), 'b': ()));
+        $actual: _filter($maps, $matches);
+
+        @include assert-true(test-lists-equal($actual, $maps));
+    }
+
+    // @include test('should not error for falsey map values') {
+    //     $matches: _matches(('a': 1));
+
+    //     @each $value in $test-falsey {
+    //         @debug $value;
+    //         @include assert-equal(_call($matches, null, $value), false, inspect($value));
+    //     }
+    // }
+
+    // @include test('should return true when comparing an empty source to a falsey map') {
+    //     $matches: _matches(());
+
+    //     @each $value in $test-falsey {
+    //         @include assert-equal(_call($matches, null, $value), true);
+    //     }
+    // }
+
+    @include test('should search lists of source for values') {
+        $maps: ('a': ('b',)), ('a': ('c', 'd'));
+        $matches: _matches(('a': ('d',)));
+        $actual: _filter($maps, $matches);
+
+        @include assert-true(test-lists-equal($actual, (nth($maps, 2),)));
+
+        $matches: _matches(('a': ('b', 'd')));
+        $actual: _filter($maps, $matches);
+
+        @include assert-true(test-lists-equal($actual, ()));
+
+        $matches: _matches(('a': ('d', 'b')));
+        $actual: _filter($maps, $matches);
+
+        @include assert-true(test-lists-equal($actual, ()));
+    }
+
+    @include test('should perform a partial comparison of all maps within lists of source') {
+        $maps: (
+            ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 5, 'd': 6 ))),
+            ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 6, 'd': 7 )))
+        );
+
+        $matches: _matches(('a': (('b': 1), ('b': 4, 'c': 5))));
+        $actual: _filter($maps, $matches);
+
+        @include assert-true(test-lists-equal($actual, (nth($maps, 1),)));
+    }
+}

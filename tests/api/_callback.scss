@@ -1,5 +1,5 @@
 @function test-callback-1($args...) {
-    @return join((), $args);
+    @return $args;
 }
 @function test-callback-2($args...) {
     $result: __this('a');
@@ -13,14 +13,17 @@
 @function test-callback-4() {
     @return false;
 }
+@function _lighten($color, $amount) {
+    @return type-of($amount), $amount;
+}
 @include test-module('_callback') {
     @include test('should provide arguments to func') {
         $callback: _callback(test-callback-1);
 
         $actual: _call($callback, null, 'a', 'b', 'c', 'd', 'e', 'f');
-        $expected: ('a', 'b', 'c', 'd', 'e', 'f');
+        $expected: 'a' 'b' 'c' 'd' 'e' 'f';
 
-        @include assert-equal($actual, $expected);
+        @include assert-true(test-lists-equal($actual, $expected));
     }
 
     @include test('should return _identity when func is nullish') {

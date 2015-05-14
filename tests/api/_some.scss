@@ -1,0 +1,50 @@
+@include test-module('Sassdash') {
+  @include test('_some') {
+    @include assert-equal(_some((), _identity), false,
+      'should return false for empty collections');
+
+    @include assert-equal(_some(false 1 '', _identity), true,
+      'should return true if predicate returns truthy for any element in the collection');
+
+    @include assert-equal(_some(null 'x' 0, _identity), true,
+      'should return true if predicate returns truthy for any element in the collection');
+
+    @include assert-equal(_some(false false false, _identity), false,
+      'should return false if predicate returns falsey for all elements in the collection');
+
+    @include assert-equal(_some(null 0 '', _identity), false,
+      'should return false if predicate returns falsey for all elements in the collection');
+
+    @include assert-equal(_some(null true null, _identity), true,
+      'should return true as soon as predicate returns truthy');
+
+    $maps: (('a': 0, 'b': 0), ('a': 0, 'b': 1));
+
+    @include assert-equal(_some($maps, 'a'), false,
+      'should work with a _pluck style predicate');
+
+    @include assert-equal(_some($maps, 'b'), true,
+      'should work with a _pluck style predicate');
+
+    @include assert-equal(_some($maps, ('a': 0)), true,
+      'should work with a _where style predicate');
+
+    @include assert-equal(_some($maps, ('b': 2)), false,
+      'should work with a _where style predicate');
+
+    @include assert-equal(_some(0 0), false,
+      'should use _identity when predicate is nullish');
+
+    @include assert-equal(_some(0 0, null), false,
+      'should use _identity when predicate is nullish');
+
+    @include assert-equal(_some(0 1), true,
+      'should use _identity when predicate is nullish');
+
+    @include assert-equal(_some(0 1, null), true,
+      'should use _identity when predicate is nullish');
+
+    @include assert-equal(_any(0 1), _some(0 1),
+      'should be aliased');
+  }
+}

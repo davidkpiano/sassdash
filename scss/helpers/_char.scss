@@ -29,7 +29,7 @@
 
 
 @function __get-char-code($char, $args...) {
-    $chars: join(__const('ASCII_PRINTABLE'), __const('ASCII_EXTENDED'));
+    $chars: __const('ASCII_PRINTABLE');
     $char: __to-string($char);
 
     @each $char-code, $char-value in $chars {

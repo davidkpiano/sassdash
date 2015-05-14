@@ -1,0 +1,24 @@
+@include test-module('Sassdash') {
+  @include test('_repeat') {
+    @include assert-equal(_repeat('*', 3), '***',
+      'should repeat a string n times');
+
+    @include assert-equal(_repeat('abc', 3), 'abcabcabc',
+      'should repeat a string n times');
+
+    @include assert-equal(_repeat('abc', 0), '',
+      'should return an empty string for negative n or n of 0');
+
+    @include assert-equal(_repeat('abc', -2), '',
+      'should return an empty string for negative n or n of 0');
+
+    @include assert-equal(_repeat('abc'), '',
+      'should coerce n to a number');
+
+    @include assert-equal(_repeat('abc', '2'), 'abcabc',
+      'should coerce n to a number');
+
+    @include assert-equal(_repeat(123, '2'), '123123',
+      'should coerce string to a string');
+  }
+}

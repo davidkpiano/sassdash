@@ -1,0 +1,11 @@
+@include test-module('Sassdash') {
+  @include test('_for-each') {
+    @include assert-equal(_each(1 2 3, test-square), _for-each(1 2 3, test-square),
+      'should be aliased');
+  }
+
+  @include test('_for-each-right') {
+    @include assert-equal(_each-right(1 2 3, test-square), _for-each-right(1 2 3, test-square),
+      'should be aliased');
+  }
+}

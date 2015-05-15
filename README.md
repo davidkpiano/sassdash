@@ -14,7 +14,7 @@ Sassdash is a **collection of utility functions**, just like lodash. Sassdash ne
 ## Getting Started
 This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
 
-1. `npm install sassdash`
+1. `npm install sassdash` or `bower install sassdash`
 2. `@import 'path/to/sassdash'` in your project
 3. Use your new powers wisely.
 

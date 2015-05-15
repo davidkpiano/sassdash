@@ -1,0 +1,16 @@
+{
+  "name": "sassdash",
+  "main": "scss/_sassdash.scss",
+  "version": "0.4.2",
+  "homepage": "https://github.com/davidkpiano/sassdash",
+  "authors": [
+    "David Khourshid <davidkpiano@gmail.com>"
+  ],
+  "description": "Sass implementation of lodash. Utilities for Sass.",
+  "keywords": [
+    "sass",
+    "scss",
+    "lodash"
+  ],
+  "license": "MIT"
+}

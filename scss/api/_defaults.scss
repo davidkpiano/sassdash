@@ -1,5 +1,5 @@
 @function __assign-defaults($map-value, $source-value, $args...) {
-    @return if(__is-undefined($map-value), $source-value, $map-value);
+    @return if(__is-undefined($map-value) or __is-null($map-value), $source-value, $map-value);
 }
 
 @function __defaults($map: null, $args...) {

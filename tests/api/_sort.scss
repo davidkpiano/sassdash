@@ -11,9 +11,9 @@
     }
 
     @include test('should work with strings') {
-        @include assert-equal(_sort('the' 'big' 'brown' 'fox'), 'big' 'brown' 'fox' 'the');
+        @include assert-lists-equal(_sort('the' 'big' 'brown' 'fox'), 'big' 'brown' 'fox' 'the');
 
-        @include assert-equal(_sort('the' 'big' 'brown' 'fox', 'desc'), 'the' 'fox' 'brown' 'big');
+        @include assert-lists-equal(_sort('the' 'big' 'brown' 'fox', 'desc'), 'the' 'fox' 'brown' 'big');
     }
 }
 
@@ -53,12 +53,12 @@
   @include test('should sort in ascending order') {    
     $actual: _pluck(_sort-by($maps, test-sort-by-2), 'b');
 
-    @include assert-true(test-lists-equal($actual, 1 2 3 4));
+    @include assert-lists-equal($actual, 1 2 3 4);
   }
   @include test('should perform a stable sort') {
     $actual: _sort-by($stable-order, test-sort-by-3);
 
-    @include assert-true(test-lists-equal($actual, $stable-order));
+    @include assert-lists-equal($actual, $stable-order);
   }
   @include test('should use _identity when iteratee is nullish') {
     $list: 3 2 1;

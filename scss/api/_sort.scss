@@ -54,7 +54,8 @@
 
 
 @function __sort-predicate-asc($first, $second) {
-    @if __is-string($first) or __is-string($second) {
+    @if __is-string($first) or __is-string($second)
+        or __is-color($first) or __is-color($second) {
         @return __sort-predicate-string($first, $second, 'asc');
     }
 
@@ -63,7 +64,8 @@
 
 
 @function __sort-predicate-desc($first, $second) {
-    @if __is-string($first) or __is-string($second) {
+    @if __is-string($first) or __is-string($second)
+        or __is-color($first) or __is-color($second) {
         @return __sort-predicate-string($first, $second, 'desc');
     }
 

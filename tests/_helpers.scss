@@ -43,8 +43,8 @@ $test-empty-list: ();
     }
 
     @while $index <= length($one) and $equal == true {
-      @debug _map($one $two, nth $index);
       $equal: test-lists-equal(nth($one, $index), nth($two, $index));
+      
       $index: $index + 1;
     }
 
@@ -57,7 +57,7 @@ $test-empty-list: ();
 @mixin assert-lists-equal($one, $two, $args...) {
   $equal: test-lists-equal($one, $two);
 
-  @return assert-true($equal)
+  @include assert-true($equal);
 }
 
 

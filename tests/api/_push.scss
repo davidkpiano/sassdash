@@ -5,7 +5,7 @@
     }
 
     @include test('should append items to an empty list') {
-        @include assert-equal(_push((), 123), (123,));
+        @include assert-lists-equal(_push((), 123), (123,));
     }
 
     @include test('should accept multiple arguments as items to push') {

@@ -19,7 +19,7 @@
 
         @if str-length($value) >= 1 {
             @for $index from 1 through str-length($value) {
-                $result: append($result, str-slice($value, $index, $index));
+                $result: append($result, unquote(str-slice($value, $index, $index)));
             }
         }
 

@@ -1,7 +1,7 @@
 // @import 'add';
 // @import 'after';
 // @import 'ary';
-// // @import 'assign'; // failing
+// @import 'assign'; // failing
 // @import 'at';
 // @import 'before';
 // @import 'bind';
@@ -46,7 +46,7 @@
 // @import 'keys';
 // @import 'last';
 // @import 'map';
-@import 'map-values';
+// @import 'map-values';
 // @import 'matches';
 // @import 'extrema';
 // @import 'memoize';
@@ -65,10 +65,10 @@
 // @import 'pluck';
 // @import 'property';
 // @import 'pull';
-@import 'push';
+// @import 'push';
 // @import 'rand';
 // @import 'range';
-// @import 'reduce';
+@import 'reduce';
 // @import 'reject';
 // @import 'repeat';
 // @import 'replace';

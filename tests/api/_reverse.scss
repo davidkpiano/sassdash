@@ -13,7 +13,7 @@
       'should work as iteratee for _map');
 
     @include assert-equal(
-      _($list-list, map _join, map _to-string, reduce _str-concat, reverse),
+      _($list-list, _map _join, _map _to-string, _reduce _str-concat, _reverse),
       '654321',
       'should be chainable');
   }

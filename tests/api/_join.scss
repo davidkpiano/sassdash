@@ -33,10 +33,10 @@
 
   @include test('should be chainable') {
     @include assert-equal(_($list-list,
-        map _join,
-        reduce _str-concat,
-        concat 'jkl',
-        join ' -- '),
+        _map _join,
+        _reduce _str-concat,
+        _concat 'jkl',
+        _join ' -- '),
       'abcdefghi -- jkl');
   }
 }

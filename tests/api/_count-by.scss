@@ -57,8 +57,14 @@
 
     @include test('should work in a lazy chain sequence') {
         $list: (1 2 1 3);
-        $foo: _($list, count-by _identity, map test-double);
-        $actual: _($list, count-by _identity, map test-double, filter test-count-by-2, take);
+        $foo: _($list,
+            _count-by _identity,
+            _map test-double);
+        $actual: _($list,
+            _count-by _identity,
+            _map test-double,
+            _filter test-count-by-2,
+            _take);
         $expected: (4,);
 
         @include assert-true(test-lists-equal($actual, $expected));

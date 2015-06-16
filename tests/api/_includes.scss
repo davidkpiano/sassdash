@@ -40,7 +40,7 @@
       }
 
       @include test('should work with #{$key} and be chainable') {
-        @include assert-equal(_($collection, includes if($key == 'a string', '3', 3)), true);
+        @include assert-equal(_($collection, _includes if($key == 'a string', '3', 3)), true);
       }
     }
   }

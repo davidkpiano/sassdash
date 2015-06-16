@@ -39,6 +39,7 @@ $test-empty-list: ();
     $index: 1;
 
     @if not $equal {
+      @debug '#{inspect($one)} != #{inspect($two)} (lengths: #{length($one)}, #{length($two)})';
       @return false;
     }
 
@@ -54,10 +55,10 @@ $test-empty-list: ();
   }
 }
 
-@mixin assert-lists-equal($one, $two, $args...) {
+@mixin assert-lists-equal($one, $two, $msg: '') {
   $equal: test-lists-equal($one, $two);
 
-  @include assert-true($equal);
+  @include assert-true($equal, $msg);
 }
 
 

@@ -27,6 +27,6 @@
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3;
 
-        @include assert-true(test-lists-equal(_($list, filter test-initial-1, initial), (1,)));
+        @include assert-true(test-lists-equal(_($list, _filter test-initial-1, _initial), (1,)));
     }
 }

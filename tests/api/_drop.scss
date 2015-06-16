@@ -50,22 +50,36 @@
         $list: 1 2 3 4 5 6 7 8 9 10;
         $predicate: test-drop-1;
 
-        $actual: _($list, drop 2, drop);
+        $actual: _($list,
+            _drop 2,
+            _drop);
         $expected: 4 5 6 7 8 9 10;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, filter $predicate, drop 2, drop);
+        $actual: _($list, _filter $predicate,
+            _drop 2,
+            _drop);
         $expected: 6 7 8 9 10;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop 2, drop-right, drop, drop-right 2);
+        $actual: _($list,
+            _drop 2,
+            _drop-right,
+            _drop,
+            _drop-right 2);
         $expected: 4 5 6 7;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop, filter $predicate, drop 2, drop-right, drop, drop-right 2);
+        $actual: _($list,
+            _drop,
+            _filter $predicate,
+            _drop 2,
+            _drop-right,
+            _drop,
+            _drop-right 2);
         $expected: 6 7;
 
         @include assert-equal($actual, $expected);
@@ -124,22 +138,36 @@
         $list: 1 2 3 4 5 6 7 8 9 10;
         $predicate: test-drop-right-1;
 
-        $actual: _($list, drop-right 2, drop-right);
+        $actual: _($list,
+            _drop-right 2,
+            _drop-right);
         $expected: 1 2 3 4 5 6 7;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, filter $predicate, drop-right 2, drop-right);
+        $actual: _($list, _filter $predicate,
+            _drop-right 2,
+            _drop-right);
         $expected: 1 2 3 4 5;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop-right 2, drop, drop-right, drop 2);
+        $actual: _($list,
+            _drop-right 2,
+            _drop,
+            _drop-right,
+            _drop 2);
         $expected: 4 5 6 7;
 
         @include assert-equal($actual, $expected);
 
-        $actual: _($list, drop-right, filter $predicate, drop-right 2, drop, drop-right, drop 2);
+        $actual: _($list,
+            _drop-right,
+            _filter $predicate,
+            _drop-right 2,
+            _drop,
+            _drop-right,
+            _drop 2);
         $expected: 4 5;
 
         @include assert-equal($actual, $expected);

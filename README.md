@@ -43,10 +43,10 @@ Functions **are chainable** in Sassdash via `_(...)`, but there is **no lazy eva
 $foobar: ('a' 'b' 'c', 'd' 'e' 'f', 'g' 'h' 'i');
 
 _($foobar,
-  map _join,
-  reduce _str-concat,
-  concat 'jkl',
-  join ' -- '); // 'abcdefghi -- jkl'
+  _map _join,
+  _reduce _str-concat,
+  _concat 'jkl',
+  _join ' -- '); // 'abcdefghi -- jkl'
 ```
 
 Also, just as in lodash, iteratee functions (such as those used with `_map`) are called with three arguments: `$value, $index, $collection`. Keep this in mind when passing in your functions as iteratee functions. If your function only expects the `$value` argument, you can either:

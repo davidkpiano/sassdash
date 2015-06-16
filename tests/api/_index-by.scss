@@ -31,7 +31,7 @@
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 1 3;
 
-        $actual: _($list, index-by _identity, filter test-index-by-1, take);
+        $actual: _($list, _index-by _identity, _filter test-index-by-1, _take);
 
         @include assert-true(test-lists-equal($actual, (2,)));
     }

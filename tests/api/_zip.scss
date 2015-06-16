@@ -67,7 +67,7 @@
 
     $list: ('a' 1, 'b' 2);
     $predicate: test-zip-map-1;
-    $actual: _($list, zip-map, map _to-string, filter $predicate, take);
+    $actual: _($list, _zip-map, _map _to-string, _filter $predicate, _take);
 
     @include assert-true(test-lists-equal($actual, ('2',)),
       'should work in a lazy chain sequence');

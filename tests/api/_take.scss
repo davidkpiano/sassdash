@@ -53,22 +53,22 @@
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4 5 6 7 8 9 10;
 
-        $actual: _($list, take 2, take);
+        $actual: _($list, _take 2, _take);
         $expected: (1,);
 
         @include assert-true(test-lists-equal($actual, $expected));
 
-        $actual: _($list, filter test-take-1, take 2, take);
+        $actual: _($list, _filter test-take-1, _take 2, _take);
         $expected: (3,);
 
         @include assert-true(test-lists-equal($actual, $expected));
 
-        $actual: _($list, take 6, take-right 4, take 2, take-right);
+        $actual: _($list, _take 6, _take-right 4, _take 2, _take-right);
         $expected: (4,);
 
         @include assert-true(test-lists-equal($actual, $expected));
 
-        $actual: _($list, take (length($list) - 1), filter test-take-1, take 6, take-right 4, take 2, take-right);
+        $actual: _($list, _take (length($list) - 1), _filter test-take-1, _take 6, _take-right 4, _take 2, _take-right);
         $expected: (6,);
 
         @include assert-true(test-lists-equal($actual, $expected));
@@ -118,22 +118,22 @@
     @include test-group() {
       $list: 1 2 3 4 5 6 7 8 9 10;
       $predicate: test-take-right-1;
-      $actual: _($list, take-right 2, take-right);
+      $actual: _($list, _take-right 2, _take-right);
 
       @include assert-true(test-lists-equal($actual, (10,)),
         'should work in a lazy chain sequence');
 
-      $actual: _($list, filter $predicate, take-right 2, take-right);
+      $actual: _($list, _filter $predicate, _take-right 2, _take-right);
 
       @include assert-true(test-lists-equal($actual, (8,)),
         'should work in a lazy chain sequence');
 
-      $actual: _($list, take-right 6, take 4, take-right 2, take);
+      $actual: _($list, _take-right 6, _take 4, _take-right 2, _take);
 
       @include assert-true(test-lists-equal($actual, (7,)),
         'should work in a lazy chain sequence');
 
-      $actual: _($list, filter $predicate, take-right 6, take 4, take-right 2, take);
+      $actual: _($list, _filter $predicate, _take-right 6, _take 4, _take-right 2, _take);
 
       @include assert-true(test-lists-equal($actual, (5,)),
         'should work in a lazy chain sequence');
@@ -166,7 +166,7 @@
     @include assert-equal(_take-right-while($maps, ('b': 2)), _slice($maps, 2),
       'should work with a _where style predicate');
 
-    @include assert-equal(_($list, take-right-while test-take-right-while-1), 2 3,
+    @include assert-equal(_($list, _take-right-while test-take-right-while-1), 2 3,
       'should return expected value when chaining');
   }
 }
@@ -198,7 +198,7 @@
     @include assert-equal(_take-while($maps, ('b': 2)), _slice($maps, 0, 1),
       'should work with a _where style predicate');
 
-    @include assert-equal(_($list, take-while test-take-while-1), 1 2,
+    @include assert-equal(_($list, _take-while test-take-while-1), 1 2,
       'should return expected value when chaining');
   }
 }

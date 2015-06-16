@@ -1,5 +1,7 @@
 @function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
-    @return if($arg-count, __exec('__base-callback', $function, $this-arg, $arg-count), '__base-callback');
+    $result: if($arg-count, __exec('__base-callback', $function, $this-arg, $arg-count), '__base-callback');
+
+    @return $result;
 }
 
 

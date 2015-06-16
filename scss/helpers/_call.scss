@@ -57,7 +57,8 @@
         $function-name: __this($function-name);
     } @else if not ($function-name and __function-exists($function-name)) {
         $__current-scope__: $previous-scope !global;
-
+        
+        @error 'Function #{$function-name} does not exist.';
         @return null;
     }
 

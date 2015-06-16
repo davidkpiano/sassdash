@@ -39,7 +39,7 @@
       ('a': 1, 'b': 2)
     );
 
-    $actual: _($list, where ('a': 1));
+    $actual: _($list, _where ('a': 1));
 
     @include assert-equal($actual, nth($list, 1) nth($list, 3),
       'should work in a lazy chain sequence');

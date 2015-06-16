@@ -19,7 +19,7 @@
     @include assert-true(test-lists-equal($actual, (2 3, 5 6, 8 9)),
       'should work as an iteratee for _map');
 
-    @include assert-true(test-lists-equal(_($list, rest, filter test-is-even), (2,)),
+    @include assert-true(test-lists-equal(_($list, _rest, _filter test-is-even), (2,)),
       'should work in a lazy chain sequence');
 
     @include assert-equal(_tail($list), _rest($list),

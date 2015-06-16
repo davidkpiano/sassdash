@@ -30,7 +30,6 @@
     @each $function-call in $function-calls {
         $function: nth($function-call, 1);
         $args: set-nth($function-call, 1, $result);
-        $function: if(__starts-with($function, '_'), $function, '_' + $function);
         $result: __exec($function, $args...);
     }
 

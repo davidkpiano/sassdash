@@ -23,7 +23,7 @@
 // @import 'call';
 // @import 'every';
 // @import 'fill';
-// // @import 'filter'; // failing
+@import 'filter'; // failing
 // @import 'find';
 // @import 'first';
 // @import 'take';
@@ -65,7 +65,7 @@
 // @import 'pluck';
 // @import 'property';
 // @import 'pull';
-// @import 'push';
+@import 'push';
 // @import 'rand';
 // @import 'range';
 // @import 'reduce';
@@ -80,7 +80,7 @@
 // @import 'size';
 // @import 'slice';
 // @import 'some';
-@import 'sort';
+// @import 'sort';
 // @import 'split';
 // @import 'splice';
 // @import 'starts-with';

@@ -19,7 +19,7 @@
     }
 
     @include test('should be chainable') {
-        $actual: _($map, map-values test-square);
+        $actual: _($map, _map-values test-square);
 
         @include assert-equal($actual, ('a': 1, 'b': 4, 'c': 9));
     }

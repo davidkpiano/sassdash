@@ -24,7 +24,7 @@
     @include test('should be chainable') {
         $list: 1 2 3 4;
 
-        $actual: _($list, filter test-is-even, map test-square);
+        $actual: _($list, _filter test-is-even, _map test-square);
 
         @include assert-equal($actual, 4 16);
     }

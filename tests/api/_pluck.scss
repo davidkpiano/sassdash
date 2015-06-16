@@ -25,12 +25,12 @@
       'should work with nullish elements');
 
     $list: (('a': 1), null, ('a': 3), ('a': 4));
-    $actual: _($list, pluck 'a');
+    $actual: _($list, _pluck 'a');
 
     @include assert-true(test-lists-equal($actual, 1 null 3 4),
       'should work in a lazy chain sequence');
 
-    @include assert-true(test-lists-equal(_($list, filter _identity, pluck 'a'), 1 3 4),
+    @include assert-true(test-lists-equal(_($list, _filter _identity, _pluck 'a'), 1 3 4),
       'should work in a lazy chain sequence');
   }
 }

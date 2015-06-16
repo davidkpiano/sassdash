@@ -23,7 +23,7 @@
     @include test('should work in a lazy chain sequence') {
         $list: 1 2 3 4;
 
-        $actual: _($list, filter test-is-even, last);
+        $actual: _($list, _filter test-is-even, _last);
 
         @include assert-equal($actual, 4);
     }

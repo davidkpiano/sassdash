@@ -23,7 +23,7 @@
 
     @include test('should be chainable') {
         $map: ('a': 1, 'b': 2, 'c': 1);
-        $actual: _($map, map-values test-square, invert true);
+        $actual: _($map, _map-values test-square, _invert true);
 
         @include assert-equal($actual, (1: ('a', 'c'), 4: ('b',)));
     }

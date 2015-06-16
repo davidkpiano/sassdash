@@ -1,0 +1,20 @@
+
+
+@include test-module('_char-at') {
+  @include test('should return the specified character at index') {
+    $string: 'abcde';
+    $string-two: "abcde";
+
+    $actual: _char-at($string, 1);
+    @include assert-equal($actual, 'a');
+
+    $actual: _char-at($string-two, 1);
+    @include assert-equal($actual, 'a');
+
+    $actual: _char-at($string, 3);
+    @include assert-equal($actual, 'c');
+
+    $actual: _char-at($string-two, 3);
+    @include assert-equal($actual, 'c');
+  }
+}

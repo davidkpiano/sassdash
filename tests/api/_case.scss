@@ -33,7 +33,7 @@
         }
 
         @include test('#{$method-name} should return an unwrapped value when chaining') {
-            $actual: _('foo bar', $case-name + '-case');
+            $actual: _('foo bar', $method-name);
             $expected: __get($converted, $case-name);
 
             @include assert-equal($actual, $expected);
@@ -49,6 +49,6 @@
     }
 
     @include test('should return an unwrapped value when chaining') {
-        @include assert-equal(_('fred', capitalize), 'Fred');
+        @include assert-equal(_('fred', _capitalize), 'Fred');
     }
 }

@@ -23,7 +23,7 @@
 // @import 'call';
 // @import 'every';
 // @import 'fill';
-@import 'filter'; // failing
+// @import 'filter';
 // @import 'find';
 // @import 'first';
 // @import 'take';
@@ -33,7 +33,7 @@
 // @import 'group-by';
 // @import 'has';
 // @import 'identity';
-// // @import 'includes'; // failing
+// @import 'includes'; // failing
 // @import 'index-by';
 // @import 'index-of';
 // @import 'initial';
@@ -46,7 +46,7 @@
 // @import 'keys';
 // @import 'last';
 // @import 'map';
-// @import 'map-values';
+@import 'map-values';
 // @import 'matches';
 // @import 'extrema';
 // @import 'memoize';

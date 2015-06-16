@@ -33,6 +33,16 @@ $test-empty-list: ();
 @function test-lists-equal($one, $two) {
   @if type-of($one) == number and type-of($two) == number {
     @return $one == $two and unit($one) == unit($two);
+  } @else if type-of($one) == color and type-of($two) == color {
+    // Get around some really weird color issue in LibSass
+    // TODO: find out what's up with LibSass here.
+    $equal: $one == $two;
+
+    @if not $equal {
+      $equal: $one + '' == $two + '';
+    }
+
+    @return $equal;
   } @else if (type-of($one) == list or type-of($one) == arglist)
         and (type-of($two) == list or type-of($two) == arglist) {
     $equal: length($one) == length($two);
@@ -55,8 +65,38 @@ $test-empty-list: ();
   }
 }
 
+@function test-maps-equal($one, $two) {
+  @if type-of($one) != map or type-of($two) != map {
+    @return test-lists-equal($one, $two);
+  }
+
+  @if length($one) != length($two) {
+    @return false;
+  }
+
+  $equal: true;
+
+  @each $key, $value in $one {
+    $other-value: map-get($two, $key);
+    $equal: test-lists-equal($value, $other-value);
+
+    @if not $equal {
+      @debug $value, $other-value, _map($value $other-value, type-of);
+      @debug #4d4d4d == #4d4d4d;
+    }
+  }
+
+  @return $equal;
+}
+
 @mixin assert-lists-equal($one, $two, $msg: '') {
   $equal: test-lists-equal($one, $two);
+
+  @include assert-true($equal, $msg);
+}
+
+@mixin assert-maps-equal($one, $two, $msg: '') {
+  $equal: test-maps-equal($one, $two);
 
   @include assert-true($equal, $msg);
 }

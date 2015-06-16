@@ -27,7 +27,8 @@
     @include test('should work with shifted argument syntax for function') {
         $colors: ('a': #111, 'b': #222, 'c': #333);
         $actual: _map-values($colors, lighten 10%);
+        $expected: ('a': #2b2b2b, 'b': #3c3c3c, 'c': #4d4d4d);
 
-        @include assert-equal($actual, ('a': #2b2b2b, 'b': #3c3c3c, 'c': #4d4d4d));
+        @include assert-maps-equal($actual, $expected);
     }
 }

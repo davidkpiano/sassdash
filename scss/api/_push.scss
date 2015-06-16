@@ -3,8 +3,6 @@
       $list: append($list, $item);
     }
 
-    @debug $list, length($list);
-
     @return $list;
 
     // @return join($list, $items, $separator: auto);

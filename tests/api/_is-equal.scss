@@ -95,7 +95,7 @@
     }
 
     @include test('should be chainable') {
-        $actual: _('a', is-equal 'a');
+        $actual: _('a', _is-equal 'a');
 
         @include assert-equal($actual, true);
     }

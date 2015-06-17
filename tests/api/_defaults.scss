@@ -19,10 +19,11 @@
         @include assert-equal($actual, $expected);
     }
 
-    @include test('should not overwrite null values') {
+    // Differs from lodash -- must use 'null' to represent undefined values
+    @include test('should overwrite null values') {
         $actual: _defaults(('a': null), ('a': 1));
 
-        @include assert-equal(__get($actual, 'a'), null);
+        @include assert-equal(__get($actual, 'a'), 1);
     }
 
     @include test('should overwrite undefined values') {

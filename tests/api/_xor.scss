@@ -23,7 +23,7 @@
     @include assert-true(test-lists-equal(_xor(null, $list, null, test-args(1, 2, 3)), (3,)),
       'should ignore values that are not lists or arglists');
 
-    @include assert-true(test-lists-equal(_(1 2 3, xor (5 2 1 4)), 3 5 4),
+    @include assert-true(test-lists-equal(_(1 2 3, _xor (5 2 1 4)), 3 5 4),
       'should be chainable');
   }
 }

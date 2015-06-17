@@ -1,4 +1,10 @@
-@function __zip($arguments...) {
+@function __zip($args...) {
+    $arguments: ();
+
+    @each $arg in $args {
+        $arguments: append($arguments, $arg);
+    }
+
     $length: length($arguments);
     $list: ();
 

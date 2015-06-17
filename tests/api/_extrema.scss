@@ -67,7 +67,7 @@
       @include assert-equal(_map('abc', $func), 'a' 'b' 'c',
         '#{$func} should work as an iteratee for _map');
 
-      @include assert-equal(_((40,), $method-name), 40,
+      @include assert-equal(_((40,), $func), 40,
         'should work when chaining on a list with only one value');
     }
   }

@@ -8,7 +8,7 @@
     }
 
     @include test('should be chainable') {
-        @include assert-equal(_(1, add 2), 3);
+        @include assert-equal(_(1, _add 2), 3);
     }
 
     @include test('should work with units') {

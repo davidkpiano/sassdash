@@ -17,7 +17,7 @@
     @include assert-equal(_times(-1), (),
       'should return an empty list for falsey and negative n arguments');
 
-    @include assert-equal(_(3, times), 1 2 3,
+    @include assert-equal(_(3, _times), 1 2 3,
       'should be chainable');
   }
 }

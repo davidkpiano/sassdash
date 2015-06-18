@@ -32,7 +32,7 @@
     }
 
     @while $index <= $length {
-        @if (nth($list, $index) == $value) {
+        @if nth($list, $index) == $value {
             @return $index;
         }
 

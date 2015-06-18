@@ -1,4 +1,4 @@
-@include test-module('sassdash _after') {
+@include test-module('_after') {
     @include test('should create a function that invokes func after n calls') {
         $test-after: __after(5, length);
 

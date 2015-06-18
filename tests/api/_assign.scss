@@ -1,5 +1,5 @@
-@function test-assign-1($a, $b) {
-    @return if($a == null, $b, $a);
+@function test-assign-1($a, $b, $args...) {
+    @return if($a == null or $a == $__undefined__, $b, $a);
 }
 @include test-module('_assign') {
     @include test('should assign properties of a source object to the destination object') {
@@ -19,39 +19,34 @@
         @include assert-equal(_assign(('a': 1, 'b': 2), $expected), $expected);
     }
 
-    @include xit('should work with a customizer callback') {
+    @include test('should work with a customizer callback') {
         $actual: _assign(('a': 1, 'b': 2), ('a': 3, 'c': 3), test-assign-1);
         $expected: ('a': 1, 'b': 2, 'c': 3);
 
         @include assert-equal($actual, $expected);
     }
-
-    @include xit('should work with a customizer that returns undefined') {
-        $expected: ('a': $__undefined__);
-        @include assert-equal(_assign((), $expected, _identity), $expected);
-    }
 }
 
-@include test-module('Sassdash') {
-  @include test('map assignments') {  
-    // TODO: add 'merge'
-    @each $method-name in 'assign', 'defaults' {
-      $func: unquote('_#{$method-name}');
+@include test-module('map assignments') {  
+  // TODO: add 'merge'
+  @each $method-name in 'assign', 'defaults' {
+    $func: unquote('_#{$method-name}');
 
-      @each $value in $test-falsey {
-        $actual: _call($func, null, $value);
-        $expected: $value;
+    @each $value in $test-falsey {
+      $actual: _call($func, null, $value);
+      $expected: $value;
 
-        @include assert-equal($actual, $expected,
-          '#{$func} should pass thru falsey map values');
+      @indlue test('#{$func} should pass thru falsey map values') {
+        @include assert-equal($actual, $expected);
       }
+    }
 
-      $list: (('b': 2), ('c': 3));
-      $actual: _reduce($list, $func, ('a': 1));
-      $expected: ('a': 1, 'b': 2, 'c': 3);
+    $list: (('b': 2), ('c': 3));
+    $actual: _reduce($list, $func, ('a': 1));
+    $expected: ('a': 1, 'b': 2, 'c': 3);
 
-      @include assert-equal($actual, $expected,
-        '#{$func} should work as an iteratee for _reduce');
+    @include test('#{$func} should work as an iteratee for _reduce') {
+      @include assert-equal($actual, $expected);
     }
   }
 }

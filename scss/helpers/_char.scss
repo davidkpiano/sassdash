@@ -32,13 +32,17 @@
     $chars: __const('ASCII_PRINTABLE');
     $char: __to-string($char);
 
+    @if not $char or $char == '' {
+        @return null;
+    }
+
     @each $char-code, $char-value in $chars {
         @if $char == $char-value {
             @return $char-code;
         }
     }
 
-    @return false;
+    @return null;
 }
 
 

@@ -7,8 +7,6 @@
         @include assert-equal($actual, $expected);
     }
 
-    @include xit('should return a wrapped value when chaining') {}
-
     @include test('should work when in between lazy operators') {
         $actual: _($test-falsey, _slice, _compact, _slice);
 

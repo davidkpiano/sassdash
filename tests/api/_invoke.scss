@@ -18,7 +18,7 @@
     @include test('should invoke a function on each element of a collection') {
         $list: 'a' 'b' 'c';
 
-        // @include assert-equal(_invoke($list, to-upper-case), 'A' 'B' 'C');
+        @include assert-equal(_invoke($list, to-upper-case), 'A' 'B' 'C');
     }
 
     @include test('should support invoking with arguments') {

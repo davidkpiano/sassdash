@@ -5,7 +5,7 @@
     $result: null;
 
     @if __is-native($function) {
-        $result: __exec($function, $value, $args...);
+        $result: __exec($function, $value);
     } @else {
         $result: __exec($function, $value, $index, $collection, $args...);
     }
@@ -45,7 +45,7 @@
 }
 
 
-@function __invoke($collection, $method-name: _identity, $args...) {
+@function __invoke($collection, $method-name: '__identity', $args...) {
     @return __base-invoke($collection, $method-name, $args...);
 }
 

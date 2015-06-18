@@ -1,5 +1,9 @@
 @function __exec($function, $args...) {
-    @return __call($function, null, $args...);
+  @if function-exists($function) {
+    @return call($function, $args...);
+  }
+  
+  @return __call($function, null, $args...);
 }
 
 /// Dynamically calls a standard Sass function, similar to 

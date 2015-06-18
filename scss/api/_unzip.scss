@@ -1,15 +1,57 @@
+
+@function __unzip-iteratee($group, $args...) {
+  $length: __this('length');
+
+  @if __is-list-like($group) {
+    $_: __this('length', max(length($group), $length));
+
+    @return true;
+  }
+
+  @return false;
+}
+
 @function __unzip($list) {
-    $index: 1;
-    $length: if($list, if(length($list) > 0, __list-max(__list-map($list, '__get-length')), 0), 0);
-    $result: ();
+  @if __is-falsey($list) {
+    @return ();
+  }
+  
+  $list: __to-list($list);
 
-    @while ($index <= $length) {
-        $result: append($result, __list-map($list, __base-property($index)));
+  $index: 1;
+  $length: 0;
 
-        $index: $index + 1;
-    }
+  $_: __scope(('length': 0));
+  $scoped-iteratee: __bind('__unzip-iteratee');
+  $list: __list-filter($list, $scoped-iteratee);
+  $length: __this('length');
+  $_: __scope(false);
 
-    @return $result;
+  $result: ();
+
+  @while $index <= $length {
+    $result: append($result, __list-map($list, __base-property($index)));
+
+    $index: $index + 1;
+  }
+
+  @return $result;
+
+    // $index: 1;
+    // $length: if($list,
+    //   if(length($list) > 0,
+    //     __list-max(__list-map($list, '__get-length')),
+    //     0),
+    //   0);
+    // $result: ();
+
+    // @while $index <= $length {
+    //     $result: append($result, __list-map($list, __base-property($index)));
+
+    //     $index: $index + 1;
+    // }
+
+    // @return $result;
 }
 
 

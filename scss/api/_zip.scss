@@ -1,19 +1,5 @@
 @function __zip($args...) {
-    $arguments: ();
-
-    @each $arg in $args {
-        $arguments: append($arguments, $arg);
-    }
-
-    $length: length($arguments);
-    $list: ();
-
-    @while ($length > 0) {
-        $list: __set($list, $length, nth($arguments, $length));
-        $length: $length - 1;
-    }
-
-    @return __unzip(__to-list($list));
+    @return __unzip($args);
 }
 
 

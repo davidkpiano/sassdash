@@ -34,14 +34,14 @@
 // @import 'group-by';
 // @import 'has';
 // @import 'identity';
-@import 'includes';
+// @import 'includes';
 // @import 'index-by';
 // @import 'index-of';
 // @import 'initial';
 // @import 'intersection';
 // @import 'invert';
 // @import 'invoke';
-// // @import 'is-type'; // failing
+// @import 'is-type'; // failing
 // @import 'is-equal';
 // @import 'is-match';
 // @import 'keys';
@@ -77,7 +77,7 @@
 // @import 'rest';
 // @import 'rules';
 // @import 'sample';
-// @import 'shuffle'; // failing
+@import 'shuffle';
 // @import 'size';
 // @import 'slice';
 // @import 'some';
@@ -92,14 +92,14 @@
 // @import 'trim';
 // @import 'unescape';
 // @import 'union';
-// @import 'uniq';
+@import 'uniq';
 // @import 'unique-id';
 // @import 'values';
 // @import 'where';
 // @import 'without';
 // @import 'words';
 // @import 'xor';
-// @import 'zip'; // failing
+@import 'zip';
 // @import 'join';
 // @import 'reverse';
 // @import 'to-string';

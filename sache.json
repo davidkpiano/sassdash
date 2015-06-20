@@ -1,0 +1,7 @@
+{
+  "name": "Sassdash",
+  "description": "The Sass implementation of lodash. A large collection of thoroughly-tested utility functions.",
+  "tags": ["utility", "toolkit", "tools", "function", "functions", "maps", "lists"],
+  "website": "https://github.com/davidkpiano/sassdash",
+  "docs": "http://davidkpiano.github.io/sassdash/sassdoc"
+}

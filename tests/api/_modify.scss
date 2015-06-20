@@ -1,0 +1,43 @@
+
+
+@include test-module('_modify') {
+  $map: ('a': 1, 'b': 2);
+  $deep-map: ('foo': ('bar': 3, 'baz': ('qux': 4)));
+  $list: 1 2 3 4 5;
+
+  @include test('should modify property') {
+    $actual: _modify($map, 'a', test-double);
+    $expected: ('a': 2, 'b': 2);
+
+    @include assert-equal($actual, $expected);
+  }
+
+  @include test('should modify deep property') {
+    $actual: _modify($deep-map, 'foo' 'bar', test-double);
+    $expected: ('foo': ('bar': 6, 'baz': ('qux': 4)));
+
+    @include assert-equal($actual, $expected);
+  }
+
+  @include test('should be chainable') {
+    $actual: _($deep-map,
+      _modify ('foo' 'baz' 'qux') test-double);
+    $expected: ('foo': ('bar': 3, 'baz': ('qux': 8)));
+
+    @include assert-equal($actual, $expected);
+  }
+
+  @include test('should work with shifted arg syntax') {
+    $actual: _modify($map, 'b', _add 3);
+    $expected: ('a': 1, 'b': 5);
+
+    @include assert-equal($actual, $expected);
+  }
+
+  @include test('should work with lists') {
+    $actual: _modify($list, 3, test-double);
+    $expected: 1 2 6 4 5;
+
+    @include assert-equal($actual, $expected);
+  }
+}

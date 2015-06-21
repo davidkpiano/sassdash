@@ -13,8 +13,10 @@
 
 
 @function __list-get($list, $index) {
-    @if type-of($index) != 'number' {
-        @error '[__list-get] $index #{inspect($index)} for $list #{inspect($list)} is not a number.';
+    $index: __parse-float($index);
+
+    @if type-of($index) != 'number'
+        or $index < 1 {
         @return null;
     }
 
@@ -27,6 +29,8 @@
 
 
 @function __string-get($string, $index) {
+    $index: __parse-float($index);
+
     @if type-of($index) != 'number' {
         @error '[__string-get] $index #{inspect($index)} for $string #{inspect($string)} is not a number.';
         @return null;
@@ -40,8 +44,22 @@
 }
 
 
+
+@function __to-keys($keys, $map) {
+    @if type-of($keys) == 'string' {
+        @if not (type-of($map) == 'map' and map-has-key($map, $keys)) {
+            $keys: __string-split($keys, '.');
+        }
+    }
+
+    @return $keys;
+}
+
+
 @function __get($map, $keys) {
     $value-type: type-of($map);
+
+    $keys: __to-keys($keys, $map);
 
     @if $value-type == 'string' {
         @return __string-get($map, nth($keys, 1));
@@ -54,12 +72,8 @@
     @if $value-type == 'list' {
         $index: nth($keys, 1);
 
-        @if type-of($index) != 'number' {
-            @return null;
-        }
-
         $map: __list-get($map, $index);
-    } @else {
+    } @else if $value-type == 'map' {
         $map: map-get($map, nth($keys, 1));
     }
 
@@ -101,9 +115,9 @@
 }
 
 
-@function __set($map, $properties, $value) {
-    $property: nth($properties, 1);
-    $properties: __pop($properties);
+@function __set($map, $keys, $value) {
+    $property: nth($keys, 1);
+    $keys: __pop(__to-keys($keys, $map));
     $child-map: null;
 
     @if type-of($map) == 'list' and length($map) > 0 {
@@ -118,7 +132,7 @@
         $child-map: ();
     }
 
-    @if length($properties) == 0 {
+    @if length($keys) == 0 {
         @if type-of($map) == 'list' and length($map) > 0 {
             @return __set-list($map, $property, $value);
         }
@@ -129,11 +143,11 @@
     }
 
     @if type-of($map) == 'list' and length($map) > 0 {
-        @return __set-list($map, $property, __set($child-map, $properties, $value));
+        @return __set-list($map, $property, __set($child-map, $keys, $value));
     }
 
     @return map-merge($map, (
-        $property: __set($child-map, $properties, $value),
+        $property: __set($child-map, $keys, $value),
     ));
 }
 
@@ -194,6 +208,9 @@
 /// 
 /// $color-primary: _get($palette, 'primary' 'default');
 /// // => red
+/// 
+/// $color-dark: _get($palette, 'primary.dark');
+/// // => #CC0000
 
 @function _get($args...) {
     @return call('__get', $args...);

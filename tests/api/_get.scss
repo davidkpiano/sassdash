@@ -46,4 +46,20 @@
             @include assert-equal(_get($list, $value), null);
         }
     }
+
+    @include test('should work with dot-delimited $keys value') {
+        @include assert-equal(_get($map, 'foo.bar.baz'), 'quo');
+    }
+
+    @include test('should work with dot-delimited $keys value for lists and nested lists') {
+        $list-map: 1 ('a': 2) 3 4;
+        $map-list: ('a': 1, 'b': 2 3 4);
+
+        @include assert-equal(_get($list-map, '2.a'), 2);
+        @include assert-equal(_get($map-list, 'b.2'), 3);
+    }
+
+    @include test('should return null if any deep dot-delimited key does not exist on source map') {
+        @include assert-equal(_get($map, 'foo.bar.zilch'), null);
+    }
 }

@@ -1,5 +1,10 @@
 @function __base-property-function($map: null, $args...) {
     $key: __this('key');
+
+    @if __is-falsey($map) {
+        @return null;
+    }
+
     $map: __to-map($map);
 
     @return if($map == null, null, __get($map, $key));

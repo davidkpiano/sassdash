@@ -17,27 +17,27 @@
 
     @if type-of($index) != 'number'
         or $index < 1 {
-        @return null;
+        @return $__undefined__;
     }
 
     @if $index > length($list) {
-        @return null;
+        @return $__undefined__;
     }
 
     @return nth($list, $index);
 }
 
 
-@function __string-get($string, $index) {
+@function __string-get($string, $index, $default: null) {
     $index: __parse-float($index);
 
     @if type-of($index) != 'number' {
         @error '[__string-get] $index #{inspect($index)} for $string #{inspect($string)} is not a number.';
-        @return null;
+        @return $default;
     }
 
     @if $index > str-length($string) {
-        @return null;
+        @return $default;
     }
 
     @return str-slice($string, $index, $index);
@@ -56,17 +56,17 @@
 }
 
 
-@function __get($map, $keys) {
+@function __get($map, $keys, $default: null) {
     $value-type: type-of($map);
 
     $keys: __to-keys($keys, $map);
 
     @if $value-type == 'string' {
-        @return __string-get($map, nth($keys, 1));
+        @return __string-get($map, nth($keys, 1), $default);
     }
 
     @if $value-type != 'list' and $value-type != 'map' {
-        @return null;
+        @return $default;
     }
 
     @if $value-type == 'list' {
@@ -74,20 +74,26 @@
 
         $map: __list-get($map, $index);
     } @else if $value-type == 'map' {
-        $map: map-get($map, nth($keys, 1));
+        $key: nth($keys, 1);
+
+        @if map-has-key($map, $key) {
+            $map: map-get($map, nth($keys, 1));
+        } @else {
+            @return $default;
+        }
     }
 
     $keys: __pop($keys);
 
-    @if not $map and length($keys) > 0 {
-        @return null;
+    @if __is-falsey($map) and length($keys) > 0 {
+        @return $default;
     }
 
     @if length($keys) == 0 {
-        @return $map;
+        @return if(__is-undefined($map), $default, $map);
     }
 
-    @return __get($map, $keys);
+    @return __get($map, $keys, $default);
 }
 
 

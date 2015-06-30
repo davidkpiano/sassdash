@@ -1,0 +1,38 @@
+
+
+@include test-module('_context') {
+  $context-1: ('a': 1);
+  $context-2: ('b': 2);
+
+  @include test('should maintain context through nested contexts') {
+    @include _context($context-1) {
+      @include _context($context-2) {
+        @include assert-equal(_context-get(), $context-2);
+      }
+
+      @include assert-equal(_context-get(), $context-1);
+    }
+  }
+
+  @include test('should perform callback in nested contexts') {
+    @include _context($context-1) {
+      @include _context($context-2, map-merge);
+
+      @include assert-equal(_context-get(), ('a': 1, 'b': 2));
+    }
+  }
+
+  @include test('_context-set should set proper nested contexts') {
+    @include _context($context-1) {
+      @include _context($context-2) {
+        @include _context-set('c', 3);
+
+        @include assert-equal(_context-get(), ('b': 2, 'c': 3));
+      }
+
+      @include _context-set('c', 5);
+
+      @include assert-equal(_context-get(), ('a': 1, 'c': 5));
+    }
+  }
+}

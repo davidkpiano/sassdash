@@ -1,15 +1,15 @@
 $__context__: () !global;
 
 @mixin __context($context: (), $callback: '__identity') {
-  $previous-context: $__context__;
+  $parent-context: $__context__;
 
   $__context__: $context !global;
 
   @content;
 
-  $previous-context: __exec($callback, $previous-context, $__context__);
+  $parent-context: __exec($callback, $parent-context, $__context__);
 
-  $__context__: $previous-context !global;
+  $__context__: $parent-context !global;
 }
 
 

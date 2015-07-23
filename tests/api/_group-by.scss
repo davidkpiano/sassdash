@@ -8,8 +8,8 @@
     $list: 4 6 6;
     $expected: (4: (4,), 6: (6, 6));
 
-    @include assert-equal(_group-by($list), $expected);
-    @include assert-equal(_group-by($list, null), $expected);
+    @include assert-maps-equal(_group-by($list), $expected);
+    @include assert-maps-equal(_group-by($list, null), $expected);
 
   }
 
@@ -17,21 +17,21 @@
     $map: ('number': 'one', 'len': 3) ('number': 'two', 'len': 3) ('number': 'three', 'len': 5);
     $expected: (3: (("number": "one", "len": 3), ("number": "two", "len": 3)), 5: ((("number": "three", "len": 5),)));
 
-    @include assert-equal(_group-by($map, 'len'), $expected);
+    @include assert-maps-equal(_group-by($map, 'len'), $expected);
   }
 
   @include test('should work with a number for iteratee') {
     $list: (1 'a', 2 'a', 2 'b');
 
-    @include assert-equal(_group-by($list, 1), (1: (1 'a',), 2: (2 'a', 2 'b')));
-    @include assert-equal(_group-by($list, 2), ('a': (1 'a', 2 'a'), 'b': (2 'b',)));
+    @include assert-maps-equal(_group-by($list, 1), (1: (1 'a',), 2: (2 'a', 2 'b')));
+    @include assert-maps-equal(_group-by($list, 2), ('a': (1 'a', 2 'a'), 'b': (2 'b',)));
   }
 
   @include test('should work with a map for collection') {
     $actual: _group-by(('a': 4.2, 'b': 6.1, 'c': 6.4), test-group-by-1);
     $expected: (4: (4.2,), 6: (6.1, 6.4));
 
-    @include assert-equal($actual, $expected);
+    @include assert-maps-equal($actual, $expected);
   }
 }
 

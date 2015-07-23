@@ -165,13 +165,17 @@
 }
 
 
-@function __new($type, $params: (), $extends: false, $prototype: ()) {
+@function __new($type, $params: (), $extends: false, $defaults: ()) {
     $instance-meta: (
         '_type': $type,
         '_extends': $extends
     );
 
     $instance: ();
+
+    @if $defaults {
+        $instance: map-merge($instance, $defaults);
+    }
 
     @if $extends {
         $instance: map-merge($instance, __new($extends, $params));

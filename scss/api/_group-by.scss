@@ -2,7 +2,9 @@
     @if map-has-key($result, $key) {
         $result: __set($result, $key, append(__get($result, $key), $value));
     } @else {
-        $result: __set($result, $key, ($value,));
+        $aggregate: append((), $value);
+
+        $result: map-merge($result, ($key: $aggregate));
     }
 
     @return $result;

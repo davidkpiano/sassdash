@@ -7,9 +7,11 @@
     "test": "tests"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "sass-true": "^2.0.2"
+  },
   "scripts": {
-    "test": "true-cli tests/true-tests.scss"
+    "test": "true-cli tests/tests.scss"
   },
   "repository": {
     "type": "git",

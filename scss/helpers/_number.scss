@@ -24,7 +24,7 @@
 }
 
 
-@function __unit($value) {
+@function __unit($value, $args...) {
     $units: __const('UNITS');
 
     @if __is-number($value) {
@@ -38,6 +38,10 @@
     }
 
     @return 1;
+}
+
+@function __unit-group($value, $args...) {
+    @return __find-key(__const('UNIT_GROUPS'), __includes $value);
 }
 
 

@@ -8,6 +8,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "node-sass": "^3.2.0",
     "sass-true": "^2.0.2"
   },
   "scripts": {

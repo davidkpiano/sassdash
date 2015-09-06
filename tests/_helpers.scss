@@ -79,11 +79,6 @@ $test-empty-list: ();
   @each $key, $value in $one {
     $other-value: map-get($two, $key);
     $equal: test-lists-equal($value, $other-value);
-
-    @if not $equal {
-      @debug $value, $other-value, _map($value $other-value, type-of);
-      @debug #4d4d4d == #4d4d4d;
-    }
   }
 
   @return $equal;

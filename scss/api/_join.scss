@@ -1,5 +1,10 @@
 @function __list-join($list, $separator: '') {
     $length: length($list);
+
+    @if ($length == 0) {
+        @return '';
+    }
+
     $result: nth($list, 1);
 
     @if $length > 1 {

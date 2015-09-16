@@ -9,7 +9,6 @@
 
   @include test('should accept a custom separator') {
     @include assert-equal(_join($list, ','), 'a,b,c,d,e');
-
   }
 
   @include test('should accept a custom separator greater than 1 character') {
@@ -22,6 +21,12 @@
 
   @include test('should support single-item lists') {
     @include assert-equal(_join(('a',), ','), 'a');
+  }
+
+  @include test('should return empty string for empty lists') {
+    @include assert-equal(_join(()), '');
+
+    @include assert-equal(_join((), ','), '');
   }
 
   $actual: _map($list-list, _join);

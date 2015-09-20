@@ -1,0 +1,17 @@
+
+
+@include test-module('_encode') {
+  @include test('should encode specific characters for proper URI formatting') {
+    $string: '~!@#$%^&*(){}[]=:/,;?+';
+    $expected: '%7E%21%40%23%24%25%5E%26%2A%28%29%7B%7D%5B%5D%3D%3A%2F%2C%3B%3F%2B';
+
+    @include assert-equal(_encode($string), $expected);
+  }
+
+  @include test('should ignore alphanumeric characters') {
+    $string: 'abcde12345';
+    $expected: $string;
+
+    @include assert-equal(_encode($string), $expected);
+  }
+}

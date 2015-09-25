@@ -431,58 +431,58 @@ $foo: _lt(&#39;def&#39;, &#39;abc&#39;);
 $foo: _lt(&#39;def&#39;, &#39;def&#39;);
 // =&gt; false</code></pre></div></section><section class="main__item container item" id="function-_lte"><h3 class="item__heading"><a class="item__name" href="#function-_lte">_lte</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function _lte($value, $other) { 
   @return call(&#39;__lte&#39;, $args...);
- }" data-collapsed="@function _lte($value, $other) { ... }"><code>@function _lte($value, $other) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if <code>$value</code> is less than or equal to <code>$other</code>.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$other</code></th><td data-label="desc"><p>The other value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Bool</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is less than or equal to <code>$other</code>, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _lt(1, 3);
+ }" data-collapsed="@function _lte($value, $other) { ... }"><code>@function _lte($value, $other) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if <code>$value</code> is less than or equal to <code>$other</code>.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$other</code></th><td data-label="desc"><p>The other value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Bool</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is less than or equal to <code>$other</code>, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _lte(1, 3);
 // =&gt; true
 
-$foo: _lt(3, 1);
+$foo: _lte(3, 1);
 // =&gt; false
 
-$foo: _lt(3, 3);
+$foo: _lte(3, 3);
 // =&gt; true
 
-$foo: _lt(&#39;abc&#39;, &#39;def&#39;);
+$foo: _lte(&#39;abc&#39;, &#39;def&#39;);
 // =&gt; true
 
-$foo: _lt(&#39;def&#39;, &#39;abc&#39;);
+$foo: _lte(&#39;def&#39;, &#39;abc&#39;);
 // =&gt; false
 
-$foo: _lt(&#39;def&#39;, &#39;def&#39;);
+$foo: _lte(&#39;def&#39;, &#39;def&#39;);
 // =&gt; true</code></pre></div></section><section class="main__item container item" id="function-_gt"><h3 class="item__heading"><a class="item__name" href="#function-_gt">_gt</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function _gt($value, $other) { 
   @return call(&#39;__gt&#39;, $args...);
- }" data-collapsed="@function _gt($value, $other) { ... }"><code>@function _gt($value, $other) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if <code>$value</code> is greater than <code>$other</code>.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$other</code></th><td data-label="desc"><p>The other value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Bool</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is greater than <code>$other</code>, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _lt(1, 3);
+ }" data-collapsed="@function _gt($value, $other) { ... }"><code>@function _gt($value, $other) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if <code>$value</code> is greater than <code>$other</code>.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$other</code></th><td data-label="desc"><p>The other value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Bool</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is greater than <code>$other</code>, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _gt(1, 3);
 // =&gt; false
 
-$foo: _lt(3, 1);
+$foo: _gt(3, 1);
 // =&gt; true
 
-$foo: _lt(3, 3);
+$foo: _gt(3, 3);
 // =&gt; false
 
-$foo: _lt(&#39;abc&#39;, &#39;def&#39;);
+$foo: _gt(&#39;abc&#39;, &#39;def&#39;);
 // =&gt; false
 
-$foo: _lt(&#39;def&#39;, &#39;abc&#39;);
+$foo: _gt(&#39;def&#39;, &#39;abc&#39;);
 // =&gt; true
 
-$foo: _lt(&#39;def&#39;, &#39;def&#39;);
+$foo: _gt(&#39;def&#39;, &#39;def&#39;);
 // =&gt; false</code></pre></div></section><section class="main__item container item" id="function-_gte"><h3 class="item__heading"><a class="item__name" href="#function-_gte">_gte</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function _gte($value, $other) { 
   @return call(&#39;__gte&#39;, $args...);
- }" data-collapsed="@function _gte($value, $other) { ... }"><code>@function _gte($value, $other) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if <code>$value</code> is greater than or equal to <code>$other</code>.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$other</code></th><td data-label="desc"><p>The other value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Bool</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is greater than or equal to <code>$other</code>, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _lt(1, 3);
+ }" data-collapsed="@function _gte($value, $other) { ... }"><code>@function _gte($value, $other) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if <code>$value</code> is greater than or equal to <code>$other</code>.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$other</code></th><td data-label="desc"><p>The other value to compare.</p></td><td data-label="type"><code>Number</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Bool</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is greater than or equal to <code>$other</code>, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _gte(1, 3);
 // =&gt; false
 
-$foo: _lt(3, 1);
+$foo: _gte(3, 1);
 // =&gt; true
 
-$foo: _lt(3, 3);
+$foo: _gte(3, 3);
 // =&gt; true
 
-$foo: _lt(&#39;abc&#39;, &#39;def&#39;);
+$foo: _gte(&#39;abc&#39;, &#39;def&#39;);
 // =&gt; false
 
-$foo: _lt(&#39;def&#39;, &#39;abc&#39;);
+$foo: _gte(&#39;def&#39;, &#39;abc&#39;);
 // =&gt; true
 
-$foo: _lt(&#39;def&#39;, &#39;def&#39;);
+$foo: _gte(&#39;def&#39;, &#39;def&#39;);
 // =&gt; true</code></pre></div></section><section class="main__item container item" id="function-_is-empty"><h3 class="item__heading"><a class="item__name" href="#function-_is-empty">_is-empty</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function _is-empty($value) { 
     @return call(&#39;__is-empty&#39;, $args...);
  }" data-collapsed="@function _is-empty($value) { ... }"><code>@function _is-empty($value) { ... }</code></pre></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Checks if a value is empty.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$value</code></th><td data-label="desc"><p>The value to inspect.</p></td><td data-label="type"><code>List</code> or <code>Map</code> or <code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Boolean</code> &mdash;<p>Returns <code>true</code> if <code>$value</code> is empty, else <code>false</code>.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><pre class="example__code language-scss"><code>$foo: _is-empty(null);

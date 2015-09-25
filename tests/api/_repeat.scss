@@ -1,5 +1,5 @@
 
-@include test('_repeat') {
+@include test-module('_repeat') {
   @include test('should repeat a string n times') {
     @include assert-equal(_repeat('*', 3), '***');
   }

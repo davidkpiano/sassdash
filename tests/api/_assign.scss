@@ -36,7 +36,7 @@
       $actual: _call($func, null, $value);
       $expected: $value;
 
-      @indlue test('#{$func} should pass thru falsey map values') {
+      @include test('#{$func} should pass thru falsey map values') {
         @include assert-equal($actual, $expected);
       }
     }

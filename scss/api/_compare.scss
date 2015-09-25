@@ -10,6 +10,16 @@
 }
 
 
+@function __gt($value, $other, $args...) {
+  @return __base-compare-ascending($value, $other) > 0;
+}
+
+
+@function __gte($value, $other, $args...) {
+  @return __base-compare-ascending($value, $other) >= 0;
+}
+
+
 @function _lt($args...) {
   @return call('__lt', $args...);
 }
@@ -27,4 +37,24 @@
 
 @function ≤($args...) {
   @return call('__lte', $args...);
+}
+
+
+@function _gt($args...) {
+  @return call('__gt', $args...);
+}
+
+
+@function \>($args...) {
+  @return call('__gt', $args...);
+}
+
+
+@function _gte($args...) {
+  @return call('__gte', $args...);
+}
+
+
+@function ≥($args...) {
+  @return call('__gte', $args...);
 }

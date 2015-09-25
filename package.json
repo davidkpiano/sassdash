@@ -12,7 +12,7 @@
     "sass-true": "^2.0.2"
   },
   "scripts": {
-    "test": "true-cli tests/tests.scss"
+    "test": "mocha tests/index.js"
   },
   "repository": {
     "type": "git",

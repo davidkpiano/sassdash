@@ -1,0 +1,22 @@
+@include test-module('Sassdash') {
+  @include test('_union') {
+    $args: test-args(1, 2, 3);
+
+    @include assert-true(test-lists-equal(_union(1 3 2, 5 2 1 4, 2 1), 1 3 2 5 4),
+      'should return the union of the given lists');
+
+    @include assert-true(test-lists-equal(_union(1 3 2, 1 (5,), 2 (4,)), 1 3 2 (5,) (4,)),
+      'should not flatten nested lists');
+
+    $list: (0,);
+
+    @include assert-true(test-lists-equal(_union($list, 3, null, ('0': 1)), $list),
+      'should ignore values that are not lists or arguments objects');
+
+    @include assert-true(test-lists-equal(_union(null, $list, null, 2 1), 0 2 1),
+      'should ignore values that are not lists or arguments objects');
+
+    @include assert-true(test-lists-equal(_union(null, $list, null, $args), 0 1 2 3),
+      'should ignore values that are not lists or arguments objects');
+  }
+}

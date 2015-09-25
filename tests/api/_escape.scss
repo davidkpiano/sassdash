@@ -1,0 +1,35 @@
+@include test-module('_escape') {
+    $escaped: '&amp;&lt;&gt;&quot;&#39;&#96;\/';
+    $unescaped: '&<>"' + "'`/";
+
+    $escaped: $escaped + $escaped;
+    $unescaped: $unescaped + $unescaped;
+
+    @include test('should escape values') {
+        $actual: _escape($unescaped);
+        $expected: $escaped;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should not escape the forward slash character') {
+        $actual: _escape('/');
+        $expected: '/';
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should handle strings with nothing to escape') {
+        $actual: _escape('abc');
+        $expected: 'abc';
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should escape the same characters unescaped by _unescape') {
+        $actual: _escape(_unescape($escaped));
+        $expected: $escaped;
+
+        @include assert-equal($actual, $expected);
+    }
+}

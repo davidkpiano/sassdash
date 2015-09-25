@@ -53,5 +53,38 @@
         @return $value;
     }
 
-    @return null;
+    @return ();
+}
+
+
+/// Converts `$value` to a map.
+/// 
+/// If the value is a list, the map keys represent the list indexes and the 
+/// values represent the corresponding list values.
+/// 
+/// If the value is a string, the string is first coerced to a list, with 
+/// with each index representing the index of each character in the string.
+/// 
+/// If the value is not list-like, an empty map is returned.
+/// 
+/// @access public
+/// @group Lang
+/// @param {*} $value The value to convert.
+/// @returns {Map} Returns the converted map.
+/// @example scss
+/// $list: 100, 200, 300;
+/// $string: 'abc';
+/// $number: 3;
+/// 
+/// $foo: _to-map($list);
+/// // => (1: 100, 2: 200, 3: 300);
+/// 
+/// $foo: _to-map($string)
+/// // => (1: 'a', 2: 'b', 3: 'c')
+/// 
+/// $foo: _to-map($number)
+/// // => ()
+
+@function _to-map($args...) {
+    @return call('__to-map', $args...);
 }

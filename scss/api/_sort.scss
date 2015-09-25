@@ -13,6 +13,11 @@
 
 
 @function __base-compare-ascending($value, $other) {
+    @if __is-string($value) or __is-string($other)
+        or __is-color($value) or __is-color($other) {
+        @return __string-compare-ascending($value, $other);
+    }
+
     $value: if(__is-falsey($value), 0, $value);
     $other: if(__is-falsey($other), 0, $other);
 
@@ -25,6 +30,11 @@
     }
 
     @return 0;
+}
+
+
+@function __string-compare-ascending($value, $other) {
+    @return __sort-predicate-string($value, $other, 'asc');
 }
 
 
@@ -54,7 +64,8 @@
 
 
 @function __sort-predicate-asc($first, $second) {
-    @if __is-string($first) or __is-string($second) {
+    @if __is-string($first) or __is-string($second)
+        or __is-color($first) or __is-color($second) {
         @return __sort-predicate-string($first, $second, 'asc');
     }
 
@@ -63,12 +74,14 @@
 
 
 @function __sort-predicate-desc($first, $second) {
-    @if __is-string($first) or __is-string($second) {
+    @if __is-string($first) or __is-string($second)
+        or __is-color($first) or __is-color($second) {
         @return __sort-predicate-string($first, $second, 'desc');
     }
 
     @return if($first < $second, 1, if($first > $second, -1, 0));
 }
+
 
 @function __sort-predicate-string($first, $second, $direction: 'asc') {
     $index: 1;

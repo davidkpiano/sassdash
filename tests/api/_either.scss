@@ -1,0 +1,41 @@
+@include test-module('_either') {
+    @include test('should return the first value if it is truthy') {
+        @include assert-equal(_either('abc', true), 'abc');
+        @include assert-equal(_either('abc', 'def'), 'abc');
+        @include assert-equal(_either((false: false), true), (false: false));
+    }
+
+    @include test('should return the second value if the first one is truthy, regardless of if the second value is truthy') {
+        @each $value in $test-falsey {
+            @include assert-equal(_either($value, 'abc'), 'abc');
+            @include assert-equal(_either($value, false), false);
+            @include assert-equal(_either($value, null), null);
+        }
+    }
+
+    @include test('should work when only given one argument') {
+        @include assert-equal(_either('abc'), 'abc');
+    }
+
+    @include test('should return null if only argument is falsey') {
+        @each $value in $test-falsey {
+            @include assert-equal(_either($value), null);
+        }
+    }
+
+    @include test('should work with a predicate arg') {
+        @include assert-equal(_either('', 'abc', _identity), '');
+        @include assert-equal(_either(false, true, __is-falsey), false);
+        @include assert-equal(_either(null, true, __is-falsey), null);
+        @include assert-equal(_either('abc', 'def', _partial-right(_starts-with, 'q')), 'def');
+    }
+
+    @include test('should work with shifted argument syntax for predicate') {
+        $list-1: 1 2 3;
+        $list-2: 4 5 6;
+
+        @include assert-equal(_either($list-1, $list-2, index 2), $list-1);
+        @include assert-equal(_either($list-1, $list-2, index 5), $list-2);
+        @include assert-equal(_either($list-1, $list-2, index 7), $list-2);
+    }
+}

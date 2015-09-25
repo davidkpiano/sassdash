@@ -1,0 +1,30 @@
+
+
+@include test-module('_last') {
+    $list: 1 2 3;
+
+    @include test('should return the last element') {
+        @include assert-equal(_last($list), 3);
+    }
+
+    @include test('should return null when querying empty lists') {
+        $list: ();
+
+        @include assert-equal(_last($list), null);
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+        $actual: _map($list, _last);
+
+        @include assert-equal($actual, 3 6 9);
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3 4;
+
+        $actual: _($list, _filter test-is-even, _last);
+
+        @include assert-equal($actual, 4);
+    }
+}

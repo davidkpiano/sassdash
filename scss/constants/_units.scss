@@ -1,0 +1,10 @@
+
+@include __const('TIME_UNITS', 'ms' 's');
+
+@include __const('UNIT_GROUPS', (
+  'SIZE': 'px' 'pt' 'pc' 'mm' 'in' 'cm',
+  'ANGLE': 'deg' 'grad' 'rad' 'turn',
+  'TIME': 's' 'ms',
+  'FREQUENCY': 'Hz' 'kHz',
+  'RESOLUTION': 'dpi' 'dpcm' 'dppx'
+));

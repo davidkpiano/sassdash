@@ -1,0 +1,66 @@
+@include test-module('_trunc') {
+  $string: 'hi-diddly-ho there, neighborino';
+
+  @include test('should truncate to a length of 30 by default') {
+    @include assert-equal(_trunc($string), 'hi-diddly-ho there, neighbo...');
+  }
+
+  @include test('should not truncate if string is <= length') {
+    @include assert-equal(_trunc($string, str-length($string)), $string);
+  }
+
+  @include test('should not truncate if string is <= length') {
+    @include assert-equal(_trunc($string, str-length($string) + 2), $string);
+  }
+
+  @include test('should truncate string the given length') {
+    @include assert-equal(_trunc($string, 24), 'hi-diddly-ho there, n...');
+  }
+
+  @include test('should support an omission option') {
+    @include assert-equal(_trunc($string, ('omission': ' [...]')), 'hi-diddly-ho there, neig [...]');
+  }
+
+  @include test('should support a named param omission option') {
+    @include assert-equal(_trunc($string, $omission: ' [...]'), 'hi-diddly-ho there, neig [...]');
+  }
+
+  @include test('should support a length option') {
+    @include assert-equal(_trunc($string, ('length': 4)), 'h...');
+  }
+
+  @include test('should support a named param length option') {
+    @include assert-equal(_trunc($string, $length: 4), 'h...');
+  }
+
+  @include test('should support a separator option') {
+    @include assert-equal(_trunc($string, ('length': 24, 'separator': ' ')), 'hi-diddly-ho there,...');
+  }
+
+  @include test('should support a named param separator option') {
+    @include assert-equal(_trunc($string, $length: 24, $separator: ' '), 'hi-diddly-ho there,...');
+  }
+
+  @include test('should handle zero length correctly') {
+    @include assert-equal(_trunc($string, 0), '...');
+  }
+
+  @include test('should treat negative length as 0') {
+    @include assert-equal(_trunc($string, -3), '...');
+  }
+
+  @include test('should coerce length to an integer') {
+    @include assert-equal(_trunc($string, '4'), 'h...');
+  }
+
+  @include test('should coerce string to a string') {
+    @include assert-equal(_trunc(12345, '4'), '1...');
+  }
+
+
+  @include test('should work as an iteratee for _map') {
+    $truncated: 'hi-diddly-ho there, neighbo...';
+
+    @include assert-equal(_map($string $string $string, _trunc), $truncated $truncated $truncated);
+  }
+}

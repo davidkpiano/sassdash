@@ -1,0 +1,237 @@
+
+
+@include test-module('_is-arglist') {
+    @include test('should return true for arglists') {
+        @include assert-equal(_is-arglist(test-args(1, 2, 3)), true);
+    }
+
+    @include test('should return false for non arglists') {
+        @each $value in join($test-falsey, (1 2 3) ('a': 1) 'abc') {
+            @include assert-equal(_is-arglist($value), false);
+        }
+    }
+}
+
+@include test-module('_is-list') {
+    @include test('should return true for lists') {
+        @include assert-equal(_is-list(1 2 3), true);
+        @include assert-equal(_is-list((1, 2, 3)), true);
+    }
+
+    @include test('should return false for non lists') {
+        @each $value in join($test-falsey, test-args(1, 2, 3) ('a': 1) 'abc') {
+            @include assert-equal(_is-list($value), false);
+        }
+    }
+}
+
+@include test-module('_is-boolean') {
+    @include test('should return true for booleans') {
+        @include assert-equal(_is-boolean(true), true);
+        @include assert-equal(_is-boolean(false), true);
+        @include assert-equal(_is-boolean(1 == 2), true);
+        @include assert-equal(_is-boolean(1 + 1 == 2), true);
+    }
+
+    @include test('should return false for non booleans') {
+        @each $value in 3, 'true', 'false', (true, false), (true: false) {
+            @include assert-equal(_is-boolean($value), false);
+        }
+    }
+}
+
+@include test-module('_is-empty') {
+    @include test('should return true for empty lists') {
+        @include assert-equal(_is-empty(()), true);
+        @include assert-equal(_is-empty(test-args()), true);
+
+    }
+
+    @include test('should return false for non empty lists') {
+        @each $value in (0,), ('a': 0), 'a', test-args('a') {
+            @include assert-equal(_is-empty($value), false);
+        }
+    }
+}
+
+@include test-module('_is-function') {
+    @include test('should return true for functions') {
+        @include assert-equal(_is-function(_), true);
+        @include assert-equal(_is-function(to-upper-case), true);
+        @include assert-equal(_is-function(_partial), true);
+    }
+
+    @include test('should return false for non-functions') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-function($value), false);
+        }
+    }
+
+    @include test('should return true for scoped, non-native-callable functions') {
+        $scoped-function: _partial(min, 3);
+
+        @include assert-equal(_is-function($scoped-function), true);
+    }
+}
+
+
+@include test-module('_is-null') {
+    @include test('should return true for nulls') {
+        @include assert-equal(_is-null(null), true);
+    }
+
+    @include test('should return false for non nulls') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-null($value), if(inspect($value) == 'null', true, false));
+        }
+
+        @include assert-equal(_is-null(test-args()), false);
+        @include assert-equal(_is-null(1 2 3), false);
+        @include assert-equal(_is-null(true), false);
+        @include assert-equal(_is-null(_), false);
+        @include assert-equal(_is-null(1), false);
+    }
+}
+
+@include test-module('_is-number') {
+    @include test('should return true for numbers') {
+        @include assert-equal(_is-number(0), true);
+        @include assert-equal(_is-number(999999), true);
+        @include assert-equal(_is-number(-99999.5), true);
+    }
+
+    @include test('should return true for numbers with units') {
+        @each $value in 1px  1cm  1mm  1%  1ch  1pc  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax {
+            @include assert-equal(_is-number($value), true);
+        }
+    }
+
+
+    @include test('should return false for non-numbers') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-number($value), $value == 0);
+        }
+    }
+}
+
+@include test-module('_is-map') {
+    @include test('should return true for maps') {
+        $map: ('a': 1, 'b': 2);
+        $empty-map: map-remove(('a': 1), 'a');
+        $set-map: map-merge((), ('a': 3));
+
+        @include assert-equal(_is-map($map), true);
+        @include assert-equal(_is-map($empty-map), true);
+        @include assert-equal(_is-map($set-map), true);
+    }
+
+    @include test('should return false for non maps') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-map($value), false);
+        }
+    }
+}
+
+@function NonPlainMap($foo) {
+    @return ('foo': $foo);
+}
+@include test-module('_is-plain-map') {
+    @include test('should detect plain maps') {
+        $plain-map: ('a': 1, 'b': 2);
+        $empty-map: map-remove(('a': 1), 'a');
+        $set-map: map-merge((), ('a': 3));
+
+        @include assert-equal(_is-plain-map($plain-map), true);
+        @include assert-equal(_is-plain-map($empty-map), true);
+        @include assert-equal(_is-plain-map($set-map), true);
+    }
+
+    @include test('should return false for constructed maps') {
+        $constructed-map: __new(NonPlainMap, ('foo': 'bar'));
+
+        @include assert-equal(_is-plain-map($constructed-map), false);
+    }
+
+    @include test('should return false for non maps') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-plain-map($value), false);
+        }
+    }
+}
+
+@include test-module('_is-string') {
+    @include test('should return true for quoted strings') {
+        $string: 'I am a quoted string';
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: "I am a double quoted string";
+
+        @include assert-equal(_is-string($string), true);
+
+        // pending edge-case fix for #1281:
+        // ================================
+        
+        // $string: 'green';
+
+        // @include assert-equal(_is-string($string), true);
+
+        // $string: unquote('green');
+
+        // @include assert-equal(_is-string($string), true);
+    }
+
+    @include test('should return true for unquoted strings') {
+        $string: foobar;
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: unquote('foo bar baz quo');
+
+        @include assert-equal(_is-string($string), true);
+    }
+
+    @include test('should return true for empty strings') {
+        $string: '';
+
+        @include assert-equal(_is-string($string), true);
+
+        $string: unquote('');
+
+        @include assert-equal(_is-string($string), true);
+    }
+
+    @include test('should return false for colors') {
+        $string: green;
+
+        @include assert-equal(_is-string($string), false);
+
+        $string: #ee5566;
+
+        @include assert-equal(_is-string($string), false);
+    }
+
+    @include test('should return false for non strings') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-string($value), $value == '');
+        }
+    }
+}
+
+@include test-module('_is-time') {
+    @include test('should return true for any time units') {
+        @each $value in 13s, 13ms, 13.5s, 13.5ms {
+            @include assert-equal(_is-time($value), true);
+        }
+    }
+
+    @include test('should return false for strings') {
+        @include assert-equal(_is-time('13s'), false);
+    }
+
+    @include test('should return false for non-time numbers') {
+        @each $value in 13px, 13mm, 13em {
+            @include assert-equal(_is-time($value), false);
+        }
+    }
+}

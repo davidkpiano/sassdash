@@ -1,0 +1,34 @@
+@include test-module('_defaults') {
+    @include test('should assign properties of a source object if missing on the destination object') {
+        $value: ('a': 1);
+        $defaults: ('a': 2, 'b': 2);
+        $actual: _defaults($value, $defaults);
+        $expected: ('a': 1, 'b': 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should accept multiple source objects') {
+        $expected: ('a': 1, 'b': 2, 'c': 3);
+        $actual: _defaults(('a': 1, 'b': 2), ('b': 3), ('c': 3));
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _defaults(('a': 1, 'b': 2), ('b': 3, 'c': 3), ('c': 2));
+
+        @include assert-equal($actual, $expected);
+    }
+
+    // Differs from lodash -- must use 'null' to represent undefined values
+    @include test('should overwrite null values') {
+        $actual: _defaults(('a': null), ('a': 1));
+
+        @include assert-equal(__get($actual, 'a'), 1);
+    }
+
+    @include test('should overwrite undefined values') {
+        $actual: _defaults(('a': $__undefined__), ('a': 1));
+
+        @include assert-equal(__get($actual, 'a'), 1);
+    }
+}

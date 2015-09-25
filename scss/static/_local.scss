@@ -13,67 +13,87 @@
 
 
 @function __list-get($list, $index) {
-    @if type-of($index) != 'number' {
-        @error '[__list-get] $index #{inspect($index)} for $list #{inspect($list)} is not a number.';
-        @return null;
+    $index: __parse-float($index);
+
+    @if type-of($index) != 'number'
+        or $index < 1 {
+        @return $__undefined__;
     }
 
     @if $index > length($list) {
-        @return null;
+        @return $__undefined__;
     }
 
     @return nth($list, $index);
 }
 
 
-@function __string-get($string, $index) {
+@function __string-get($string, $index, $default: null) {
+    $index: __parse-float($index);
+
     @if type-of($index) != 'number' {
         @error '[__string-get] $index #{inspect($index)} for $string #{inspect($string)} is not a number.';
-        @return null;
+        @return $default;
     }
 
     @if $index > str-length($string) {
-        @return null;
+        @return $default;
     }
 
     @return str-slice($string, $index, $index);
 }
 
 
-@function __get($map, $keys) {
+
+@function __to-keys($keys, $map) {
+    @if type-of($keys) == 'string' {
+        @if not (type-of($map) == 'map' and map-has-key($map, $keys)) {
+            $keys: __string-split($keys, '.');
+        }
+    }
+
+    @return $keys;
+}
+
+
+@function __get($map, $keys, $default: null) {
     $value-type: type-of($map);
 
+    $keys: __to-keys($keys, $map);
+
     @if $value-type == 'string' {
-        @return __string-get($map, nth($keys, 1));
+        @return __string-get($map, nth($keys, 1), $default);
     }
 
     @if $value-type != 'list' and $value-type != 'map' {
-        @return null;
+        @return $default;
     }
 
     @if $value-type == 'list' {
         $index: nth($keys, 1);
 
-        @if type-of($index) != 'number' {
-            @return null;
-        }
-
         $map: __list-get($map, $index);
-    } @else {
-        $map: map-get($map, nth($keys, 1));
+    } @else if $value-type == 'map' {
+        $key: nth($keys, 1);
+
+        @if map-has-key($map, $key) {
+            $map: map-get($map, nth($keys, 1));
+        } @else {
+            @return $default;
+        }
     }
 
     $keys: __pop($keys);
 
-    @if not $map and length($keys) > 0 {
-        @return null;
+    @if __is-falsey($map) and length($keys) > 0 {
+        @return $default;
     }
 
     @if length($keys) == 0 {
-        @return $map;
+        @return if(__is-undefined($map), $default, $map);
     }
 
-    @return __get($map, $keys);
+    @return __get($map, $keys, $default);
 }
 
 
@@ -101,9 +121,9 @@
 }
 
 
-@function __set($map, $properties, $value) {
-    $property: nth($properties, 1);
-    $properties: __pop($properties);
+@function __set($map, $keys, $value) {
+    $property: nth($keys, 1);
+    $keys: __pop(__to-keys($keys, $map));
     $child-map: null;
 
     @if type-of($map) == 'list' and length($map) > 0 {
@@ -118,7 +138,7 @@
         $child-map: ();
     }
 
-    @if length($properties) == 0 {
+    @if length($keys) == 0 {
         @if type-of($map) == 'list' and length($map) > 0 {
             @return __set-list($map, $property, $value);
         }
@@ -129,11 +149,11 @@
     }
 
     @if type-of($map) == 'list' and length($map) > 0 {
-        @return __set-list($map, $property, __set($child-map, $properties, $value));
+        @return __set-list($map, $property, __set($child-map, $keys, $value));
     }
 
     @return map-merge($map, (
-        $property: __set($child-map, $properties, $value),
+        $property: __set($child-map, $keys, $value),
     ));
 }
 
@@ -145,15 +165,17 @@
 }
 
 
-@function __new($type, $params: (), $extends: false, $prototype: ()) {
+@function __new($type, $params: (), $extends: false, $defaults: ()) {
     $instance-meta: (
         '_type': $type,
-        '_constructor': $type,
-        '_extends': $extends,
-        '_prototype': $prototype,
+        '_extends': $extends
     );
 
     $instance: ();
+
+    @if $defaults {
+        $instance: map-merge($instance, $defaults);
+    }
 
     @if $extends {
         $instance: map-merge($instance, __new($extends, $params));
@@ -170,7 +192,7 @@
         @return type-of($value) == $constructor;
     }
 
-    @return __get($value, '_constructor') == $constructor;
+    @return __get($value, '_type') == $constructor;
 }
 
 
@@ -196,6 +218,9 @@
 /// 
 /// $color-primary: _get($palette, 'primary' 'default');
 /// // => red
+/// 
+/// $color-dark: _get($palette, 'primary.dark');
+/// // => #CC0000
 
 @function _get($args...) {
     @return call('__get', $args...);

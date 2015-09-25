@@ -1,0 +1,58 @@
+@include test-module('_concat') {
+    @include test('should concat two lists to one') {
+        @include assert-equal(_concat(1 2, 3 4), 1 2 3 4);
+    }
+
+    @include test('should concat multiple lists to one') {
+        @include assert-equal(_concat(1 2, 3 4, 5 6), 1 2 3 4 5 6);
+    }
+
+    @include test('should support non-list source') {
+        @include assert-equal(_concat(1, 2 3), 1 2 3);
+    }
+
+    @include test('should support non-list arguments') {
+        @include assert-equal(_concat(1 2, 3, 4), 1 2 3 4);
+    }
+
+    @include test('should support non-list source nor arguments') {
+        @include assert-equal(_concat(1, 2), 1 2);
+    }
+
+    @include test('should support no arguments other than source') {
+        @include assert-equal(_concat(1 2), 1 2);
+    }
+
+    @include test('should return a list') {
+        @include assert-equal(_concat(1), (1,));
+    }
+}
+
+@include test-module('_str-concat') {
+    @include test('should concatenate strings') {
+        @include assert-equal(_str-concat('hello', ' world'), 'hello world');
+    }
+
+    @include test('should concatenate multiple strings') {
+        @include assert-equal(_str-concat('one', 'two', 'three'), 'onetwothree');
+    }
+
+    @include test('should coerce arguments to strings') {
+        @include assert-equal(_str-concat('one', 2, 3), 'one23');
+        @include assert-equal(_str-concat(1, 2, 3, 4, 5), '12345');
+    }
+
+    @include test('should return an empty string when provided no arguments') {
+        @include assert-equal(_str-concat(), '');
+    }
+
+    @include test('should return initial source when provided no extra arguments') {
+        @include assert-equal(_str-concat('foo'), 'foo');
+    }
+
+    @include test('should work as iteratee for _reduce') {
+        $list: ('a', 'b', 'c', 'd', 'e');
+
+        @include assert-equal(_reduce($list, _str-concat), 'abcde');
+    }
+}

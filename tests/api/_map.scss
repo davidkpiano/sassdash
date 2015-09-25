@@ -1,0 +1,43 @@
+@include test-module('_map') {
+    $list: 1 2 3;
+
+    @include test('should work with a _pluck style iteratee') {
+        $maps: (('a': 'x'), ('a': 'y'));
+
+        @include assert-equal(_map($maps, 'a'), 'x' 'y');
+    }
+
+    @include test('should work with a map with no iteratee') {
+        @include assert-equal(_map(('a': 1, 'b': 2, 'c': 3)), $list);
+    }
+
+    @include test('should accept a falsey collection argument') {
+        @each $value in $test-falsey {
+            @include assert-equal(_map($value), ());
+        }
+    }
+
+    @include test('should treat number values for collection as empty') {
+        @include assert-equal(_map(1), ());
+    }
+
+    @include test('should be chainable') {
+        $list: 1 2 3 4;
+
+        $actual: _($list, _filter test-is-even, _map test-square);
+
+        @include assert-equal($actual, 4 16);
+    }
+
+    @include test('should work with shifted argument syntax for function') {
+        $lists: 1 2 3, 2 1 3, 3 1 2;
+
+        $actual: _map($lists, index 2);
+
+        @include assert-equal($actual, 2 1 3);
+    }
+
+    @include test('should be aliased') {
+        @include assert-equal(_map($list, test-square), _collect($list, test-square))
+    }
+}

@@ -1,0 +1,77 @@
+@include test-module('_get') {
+    $map: ('foo': ('bar': ('baz': 'quo')));
+    $list: 'foo' 'bar' 'baz' 'quo';
+    $string: 'abcde';
+
+    @include test('should work similar to map-get()') {
+        @include assert-equal(_get(('foo': 1, 'bar': 2), 'foo'), 1);
+        @include assert-equal(_get(('foo': 1, 'bar': 2), 'bar'), 2);
+        @include assert-equal(_get(('foo': 1, 'bar': 2), 'baz'), null);
+    }
+
+    @include test('should deeply retrieve values from map if given a list for keys') {
+        @include assert-equal(_get($map, 'foo' 'bar' 'baz'), 'quo');
+    }
+
+    @include test('should return null if any deep key does not exist on source map') {
+        @include assert-equal(_get($map, 'foo' 'zilch' 'baz'), null);
+    }
+
+    @include test('should work with lists with key as index') {
+        @include assert-equal(_get($list, 3), 'baz');
+        @include assert-equal(_get($list, 5), null);
+    }
+
+    @include test('should work with strings with key as index') {
+        @include assert-equal(_get($string, 3), 'c');
+        @include assert-equal(_get($string, 9), null);
+    }
+
+    @include test('should deeply retrieve values from a list containing lists and/or maps') {
+        $mixed: $map $list $string;
+
+        @include assert-equal(_get($mixed, 1 'foo' 'bar' 'baz'), 'quo');
+        @include assert-equal(_get($mixed, 2 3), 'baz');
+        @include assert-equal(_get($mixed, 3 5), 'e');
+    }
+
+    @include test('should return null for non-iterable values') {
+        @each $value in null, true, 42, green {
+            @include assert-equal(_get($value, 1), null);
+        }
+    }
+
+    @include test('should return null for non-numerical keys for list') {
+        @each $value in true, false, null, green, 'string' {
+            @include assert-equal(_get($list, $value), null);
+        }
+    }
+
+    @include test('should work with dot-delimited $keys value') {
+        @include assert-equal(_get($map, 'foo.bar.baz'), 'quo');
+    }
+
+    @include test('should work with dot-delimited $keys value for lists and nested lists') {
+        $list-map: 1 ('a': 2) 3 4;
+        $map-list: ('a': 1, 'b': 2 3 4);
+
+        @include assert-equal(_get($list-map, '2.a'), 2);
+        @include assert-equal(_get($map-list, 'b.2'), 3);
+    }
+
+    @include test('should return null if any deep dot-delimited key does not exist on source map') {
+        @include assert-equal(_get($map, 'foo.bar.zilch'), null);
+    }
+
+    @include test('should return default value if key in map does not exist') {
+        @include assert-equal(_get($map, 'zilch', 'default'), 'default');
+    }
+
+    @include test('should return default value if deep key in map does not exist') {
+        @include assert-equal(_get($map, 'foo.bar.zilch', 'default'), 'default');
+    }
+
+    @include test('should return default value if key in list does not exist') {
+        @include assert-equal(_get($list, 7, 'default'), 'default');
+    }
+}

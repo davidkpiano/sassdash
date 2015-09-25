@@ -1,0 +1,75 @@
+@function test-filter-1($num, $args...) {
+    @return $num % 2;
+}
+@include test-module('_filter') {
+    @include test('should return elements predicate returns truthy for') {
+        $actual: _filter(1 2 3, test-filter-1);
+        $expected: 1 3;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should be aliased') {
+        $actual: _select(1 2 3, test-filter-1);
+        $expected: _filter(1 2 3, test-filter-1);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with shifted argument syntax for function') {
+        $actual: _filter(black white yellow purple, lightness);
+
+        @include assert-equal($actual, white yellow purple);
+    }
+}
+
+
+@function test-filter-methods-1($value, $args...) {
+  @return $value > 3;
+}
+
+@include test-module('filter methods') {
+  @each $method-name in 'filter', 'reject' {
+    $func: unquote('_#{$method-name}');
+    $is-filter: $method-name == 'filter';
+
+
+    @include test('#{$func} should work with a _pluck style predicate') {
+      $maps: (('a': 0), ('a': 1));
+
+      @include assert-lists-equal(
+        _call($func, null, $maps, 'a'),
+        (nth($maps, if($is-filter, 2, 1)),));
+    }
+
+    @include test('#{$func} should work with a _where style predicate') {
+      $maps: (('a': 0), ('a': 1));
+
+      @include assert-lists-equal(
+        _call($func, null, $maps, nth($maps, 2)),
+        (nth($maps, if($is-filter, 2, 1)),));
+    }
+
+
+    @include test('#{$func} should work in a lazy chain sequence') {
+      $list: 1 2 3;
+
+      $actual: _($list, _map test-square, $func test-filter-methods-1);
+
+      @include assert-lists-equal(
+        $actual,
+        if($is-filter, 4 9, (1,)));
+    }
+
+
+    @include test('#{$func} should work in a lazy chain sequence (2)') {
+      $map: ('a': 1, 'b': 2, 'c': 3);
+
+      $actual: _(('a': 1, 'b': 4, 'c': 9), $func test-filter-methods-1);
+
+      @include assert-lists-equal(
+        $actual,
+        if($is-filter, 4 9, (1,)));
+    }
+  }
+}

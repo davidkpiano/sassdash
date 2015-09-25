@@ -13,7 +13,7 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
 
 @function __scope($map: ()) {
     @if $map == false {
-        $scope: static-get($__current-scope__);
+        $scope: _static-get($__current-scope__);
         $__current-scope__: __get($scope, '_parent') !global;
 
         @return true;
@@ -27,17 +27,17 @@ $__undefined__: '__undefined-#{unique-id()}__' !global;
         $scope: map-merge($scope, $map);
     }
 
-    @return static-set($__current-scope__, $scope);
+    @return _static-set($__current-scope__, $scope);
 }
 
 @function __this($key: $__undefined__, $value: $__undefined__) {
     @if __is-undefined($key) and __is-undefined($value) {
-        @return static-get($__current-scope__);
+        @return _static-get($__current-scope__);
     }
 
     @if __is-undefined($value) {
-        @return static-get($__current-scope__ $key);
+        @return _static-get($__current-scope__ $key);
     }
 
-    @return static-set($__current-scope__ $key, $value);
+    @return _static-set($__current-scope__ $key, $value);
 }

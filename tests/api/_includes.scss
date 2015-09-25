@@ -1,0 +1,62 @@
+
+@include test-module('_includes') {
+  $map: ('a': 1, 'b': 2, 'c': 3, 'd': 4);
+
+  @each $item in ('an arglist': test-args(1, 2, 3)), ('a list': 1 2 3 4), ('a map': $map), ('a string': '1234') {
+    @each $key, $collection in $item {    
+      $values: __to-list($collection);
+
+      @include test('should work with #{$key} and return true for matched values') {
+        @include assert-equal(_includes($collection, if($key == 'a string', '3', 3)), true);
+      }
+
+      @include test('should work with #{$key} and return false for unmatched values') {
+        @include assert-equal(_includes($collection, 5), false);
+      }
+
+      @include test('should work with #{$key} and a positive from-index') {
+        @include assert-equal(_includes($collection, nth($values, 2), 2), true);
+        @include assert-equal(_includes($collection, nth($values, 1), 2), false);
+      }
+
+      @include test('should work with #{$key} and a from-index >= collection length') {
+        @include assert-equal(_includes($collection, nth($values, 1), 5), false);
+      }
+
+      @include test('should work with #{$key} and treat falsey and non-number from-index values as 1') {
+        @each $value in join($test-falsey, '1') {
+          @include assert-equal(_includes($collection, nth($values, 1), $test-falsey), true);
+        }
+      }
+
+      @include test('should work with #{$key} and negative from-index') {
+        @include assert-equal(_includes($collection, nth($values, 3), -2), true);
+        @include assert-equal(_includes($collection, nth($values, 2), -2), true);
+      }
+
+      @include test('should work with #{$key} and negative from-index <= negative collection length') {
+        @include assert-equal(_includes($collection, nth($values, 1), -4), true);
+        @include assert-equal(_includes($collection, nth($values, 1), -6), true);
+      }
+
+      @include test('should work with #{$key} and be chainable') {
+        @include assert-equal(_($collection, _includes if($key == 'a string', '3', 3)), true);
+      }
+    }
+  }
+  
+  @include test('should work with a string literal for collection') {
+    @include assert-equal(_includes('abc', 'a'), true);
+    @include assert-equal(_includes('abc', 'bc'), true);
+    @include assert-equal(_includes('abc', 'd'), false);
+  }
+
+  @include test('should return false for empty collections') {
+    @include assert-equal(_includes(()), false);
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(_contains('abc', 'a'), _includes('abc', 'a'));
+    @include assert-equal(_include('abc', 'a'), _includes('abc', 'a'));
+  }
+}

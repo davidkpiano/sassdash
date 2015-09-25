@@ -1,0 +1,59 @@
+@function test-call-1() {
+    @return 'foo';
+}
+@function test-call-2() {
+    @return __this('value');
+}
+@function test-call-3($value) {
+    @return __this('value') + $value;
+}
+@include test-module('_call and _exec') {
+    @include test('should be callable with only a function with no args') {
+        $actual: _call(test-call-1);
+        $expected: 'foo';
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _exec(test-call-1);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should call a function with no args and with a this-arg') {
+        $_: __scope(('value': 'foobar'));
+        $actual: _call(test-call-2, $__current-scope__);
+        $_: __scope(false);
+
+        $expected: 'foobar';
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should call a function with args and without a thisArg') {
+        $actual: _call(test-add, null, 1, 2);
+        $expected: 3;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _exec(test-add, 1, 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should call a function with args and with a this-arg (or with a scope binding for _exec)') {
+        $value: 'second';
+
+        $_: __scope(('value': 'first'));
+        $actual: _call(test-call-3, $__current-scope__, $value);
+        $exec-func: _bind(test-call-3);
+        $_: __scope(false);
+
+        $expected: 'firstsecond';
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _exec($exec-func, $value);
+
+        @include assert-equal($actual, $expected);
+    }
+}

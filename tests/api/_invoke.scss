@@ -1,0 +1,27 @@
+@include test-module('_invoke') {
+    @include test('should invoke a function per item in list') {
+        $list: 1 2 3;
+
+        @include assert-equal(_invoke($list, test-square), 1 4 9);
+    }
+
+    @include test('should work with a map for collection') {
+        $map: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal(_invoke($map, test-square), 1 4 9);
+    }
+
+    @include test('should treat number values for collection as empty') {
+        @include assert-equal(_invoke(1), ());
+    }
+
+    @include test('should invoke a function on each element of a collection') {
+        $list: 'a' 'b' 'c';
+
+        @include assert-equal(_invoke($list, to-upper-case), 'A' 'B' 'C');
+    }
+
+    @include test('should support invoking with arguments') {
+        @include assert-true(test-lists-equal(_invoke((123, 456), _split, ''), (('1' '2' '3'), ('4' '5' '6'))));
+    }
+}

@@ -1,0 +1,12 @@
+@include test-module('_to-list') {
+    $map: ('a': 1, 'b': 2, 'c': 3);
+    $list: 1 2 3;
+
+  @include test('should return the values of maps') {
+    @include assert-true(test-lists-equal(_to-list($map), $list));
+  }
+
+  @include test('should work with a string for collection') {
+    @include assert-true(test-lists-equal(_to-list('abc'), 'a' 'b' 'c'));
+  }
+}

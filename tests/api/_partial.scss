@@ -1,0 +1,38 @@
+
+@function test-partial-1($a, $b) {
+  @return ($a, $b);
+}
+@function test-partial-2($args...) {
+  @return length($args);
+}
+@include test-module('_partial methods') {
+  @each $method-name in 'partial', 'partial-right' {
+    $func: unquote('_#{$method-name}');
+    $is-partial: $method-name == 'partial';
+
+    $par: _call($func, null, _identity, 'a');
+
+    @include test('#{$func} partially applies arguments') {
+      @include assert-equal(_call($par), 'a');
+    }
+
+    $expected: ('a', 'b');
+    $par: _call($func, null, test-partial-1, 'a');
+
+    @include test('#{$func} creates a function that can be invoked with additional arguments') {
+      @include assert-true(test-lists-equal(_call($par, null, 'b'), if($is-partial, $expected, __list-reverse($expected))));
+    }
+
+    $par: _call($func, null, test-partial-2);
+
+    @include test('#{$func} works when there are no partially applied arguments and the created function is invoked without additional arguments') {
+      @include assert-equal(_call($par), 0);
+    }
+
+    $par: _call($func, null, _identity);
+
+    @include test('#{$func} works when there are no partially applied arguments and the created function is invoked with additional arguments') {
+      @include assert-equal(_call($par, null, 'a'), 'a');
+    }
+  }
+}

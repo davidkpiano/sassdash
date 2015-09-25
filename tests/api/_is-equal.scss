@@ -1,0 +1,102 @@
+
+@include test-module('_is-equal') {
+    @include test('should perform comparisons between primitive values') {    
+        $pairs: (
+            (1, 1, true), (1, '1', false), (1, 2, false),
+            (0, 0, true), (0, '0', false), (0, null, false),
+            ('a', 'a', true), ('a', a, true), (a, a, true), ('a', 'b', false), ('a', ('a',), false),
+            (true, true, true), (true, 1, false), (true, 'a', false),
+            (false, false, true), (false, 0, false), (false, '', false),
+            (null, null, true), (null, (), false), (null, '', false)
+        );
+
+        @each $pair in $pairs {
+            @include assert-equal(_is-equal(nth($pair, 1), nth($pair, 2)), nth($pair, 3),
+                'values #{inspect(nth($pair, 1))} == #{inspect(nth($pair, 2))} should equal #{nth($pair, 3)}');
+        }
+    }
+
+    @include test('should perform comparisons between lists') {
+        $list1: true null 1 'a' ('b': 2) #112233;
+        $list2: true null 1 'a' ('b': 2) #112233;
+
+        @include assert-equal(_is-equal($list1, $list2), true);
+
+        @include assert-equal(_is-equal(1 2 3, 3 2 1), false);
+    }
+
+    @include test('should perform comparisons between plain maps') {
+        $map1: ('a': true, 'b': null, 'c': 1, 'd': 'a', 'e': false);
+        $map2: ('a': true, 'b': null, 'c': 1, 'd': 'a', 'e': false);
+
+        @include assert-equal(_is-equal($map1, $map2), true);
+
+        $map1: ('a': 1, 'b': 2, 'c': 3);
+        $map2: ('a': 3, 'b': 2, 'c': 1);
+
+        @include assert-equal(_is-equal($map1, $map2), false);
+
+        $map1: ('a': 1, 'b': 2, 'c': 3);
+        $map2: ('d': 1, 'e': 2, 'f': 3);
+
+        @include assert-equal(_is-equal($map1, $map2), false);
+
+        $map1: ('a': 1, 'b': 2);
+        $map2: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal(_is-equal($map1, $map2), false);
+
+        $map1: ('a': 1, 'b': 2, 'c': 3);
+        $map2: ('c': 3, 'b': 2, 'a': 1);
+
+        @include assert-equal(_is-equal($map1, $map2), true);
+    }
+
+    @include test('should perform comparisons of nested maps') {
+        $map1: (
+            'a': 1 2 3,
+            'b': true,
+            'c': 1,
+            'd': 'a',
+            'e': (
+                'f': 'a' 'b' 'c',
+                'g': false,
+                'h': _noop,
+                'j': 'a'
+            )
+        );
+
+        $map2: (
+            'a': 1 2 3,
+            'b': not false,
+            'c': 3 - 2,
+            'd': a,
+            'e': (
+                'f': 'a' 'b' 'c',
+                'g': 1 == 2,
+                'h': '_noop',
+                'j': 'a'
+            )
+        );
+
+        @include assert-equal(_is-equal($map1, $map2), true);
+    }
+
+    @include test('should handle comparisons if customizer returns null') {
+        @include assert-equal(_is-equal('a', 'a', _noop), true);
+    }
+
+    @include test('should return a boolean value even if customizer does not') {
+        @include assert-equal(_is-equal('a', 'a', _constant('a')), true);
+    }
+
+    @include test('should work as an iteratee for _every') {
+        @include assert-equal(_every(1 1 1, _partial(_is-equal, 1)), true);
+    }
+
+    @include test('should be chainable') {
+        $actual: _('a', _is-equal 'a');
+
+        @include assert-equal($actual, true);
+    }
+}

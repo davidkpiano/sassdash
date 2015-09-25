@@ -1,0 +1,29 @@
+@include test-module('_intersection') {
+    @include test('should return the intersection of the given lists') {
+        @include assert-true(test-lists-equal(_intersection(1 2 3, 5 2 1 4, 2 1), 1 2));
+    }
+
+    @include test('should return a list of unique values') {
+        $list: 1 1 3 2 2;
+
+        @include assert-true(test-lists-equal(_intersection($list, 5 2 2 1 4, 2 1 1), 1 2));
+        @include assert-true(test-lists-equal(_intersection($list), 1 3 2));
+    }
+
+    @include test('should work with arglists') {
+        @include assert-true(test-lists-equal(_intersection(test-args(1, 2, 3), 2 3 4), 2 3));
+    }
+
+    @include test('should ignore values that are not lists or arglists') {
+        $list: 0 1 null 3;
+        $args: test-args(1, 2, 3);
+
+        @include assert-true(test-lists-equal(_intersection($list, 3, null, (0: 1)), $list));
+        @include assert-true(test-lists-equal(_intersection(null, $list, null, 2 1), (1,)));
+        @include assert-true(test-lists-equal(_intersection(null, $list, null, $args), 1 3));
+    }
+
+    @include test('should be chainable') {
+        @include assert-true(test-lists-equal(_(1 2 3, _map test-square, _intersection (9 4 7)), 4 9));
+    }
+}

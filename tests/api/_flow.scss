@@ -1,0 +1,27 @@
+@include test-module('flow methods') {
+    @each $method-name in ('flow', 'flow-right') {
+        $func: unquote('_#{$method-name}');
+        $is-flow: ($method-name == 'flow');
+
+        @include test('#{$func} should supply each function with the return value of the previous') {
+            $combined: if($is-flow, call($func, test-add, test-square, test-fixed), call($func, test-fixed, test-square, test-add));
+
+            $actual: _call($combined, null, 1, 2);
+            $expected: 9.0;
+
+            @include assert-equal($actual, $expected);
+        }
+
+        @include test('#{$func} should return a new function') {
+            @include assert-unequal(_call($func, null, _noop), _noop);
+        }
+
+        @include test('#{$func} should return a noop function when no arguments are provided') {
+            $combined: call($func);
+
+            @include assert-equal(_call($combined), _call(_noop));
+        }
+
+        @include xit('#{$func} should return a wrapped value when chaining') {}
+    }
+}

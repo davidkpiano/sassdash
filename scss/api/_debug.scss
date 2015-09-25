@@ -1,0 +1,26 @@
+
+
+@function __debug($value, $args...) {
+  @debug $value;
+
+  @return $value;
+}
+
+
+/// Debugs a `$value` using `@debug` and returns the same value.
+/// 
+/// @access public
+/// @group Utility
+/// @param {*} $value The value to be debugged.
+/// @returns {*} Returns the value after it is debugged.
+/// @example scss
+/// $list: 'one' 'two' 'three';
+/// 
+/// $list: _map($list, _debug);
+/// // DEBUG: one
+/// // DEBUG: two
+/// // DEBUG: three
+/// // => 'one' 'two' 'three'
+@function _debug($args...) {
+  @return call('__debug', $args...);
+}

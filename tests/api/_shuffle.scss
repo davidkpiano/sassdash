@@ -1,0 +1,29 @@
+@function test-shuffle-1($args...) {
+  @return _shuffle(1 2);
+}
+@include test-module('_shuffle') {
+  $list: 1 2 3 4 5;
+  $map: ('a': 1, 'b': 2, 'c': 3);
+    
+  @include test('should return a new list') {
+
+    @include assert-false(_shuffle($list) == $list);
+  }
+    
+  @include test('should contain the same elements after a collection is shuffled') {
+
+    @include assert-lists-equal(__sort(_shuffle($list)), $list);
+  }
+    
+  @include test('should contain the same elements after a collection is shuffled') {
+
+    @include assert-equal(length(_shuffle($map)), length($map));
+  }
+
+    
+  @include test('should shuffle small collections') {
+    $actual: _times(10, test-shuffle-1);
+
+    @include assert-lists-equal(_sort-by(_uniq($actual), 1), (1 2, 2 1));
+  }
+}

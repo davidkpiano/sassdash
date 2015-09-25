@@ -16,15 +16,23 @@
 
 @function __capitalize($string) {
     $string: __base-to-string($string);
+    $char: str-slice($string, 1, 1);
+    $char: to-upper-case($char);
+    $rest: str-slice($string, 2);
+    $result: $char + $rest;
 
     @return if(str-length($string) > 0,
-        to-upper-case(__char-at($string, 1)) + str-slice($string, 2),
+        $result,
         false);
 }
 
 
 @function __kebab-case-compounder($result, $word, $index: 0) {
-    @return $result + if($index > 1, '-', '') + to-lower-case($word);
+    $pre: if($index > 1, '-', '');
+    $word: to-lower-case($word);
+    $result: $result + $pre + $word;
+
+    @return $result;
 }
 
 
@@ -36,7 +44,11 @@
 
 
 @function __snake-case-compounder($result, $word, $index) {
-    @return $result + if($index > 1, '_', '') + to-lower-case($word);
+    $pre: if($index > 1, '_', '');
+    $word: to-lower-case($word);
+    $result: $result + $pre + $word;
+
+    @return $result;
 }
 
 
@@ -48,7 +60,13 @@
 
 
 @function __start-case-compounder($result, $word, $index) {
-    @return $result + if($index > 1, ' ', '') + to-upper-case(__char-at($word, 1)) + str-slice($word, 2);
+    $pre: if($index > 1, ' ', '');
+    $char: __char-at($word, 1);
+    $char: to-upper-case($char);
+    $rest: str-slice($word, 2);
+    $result: $result + $pre + $char + $rest;
+
+    @return $result;
 }
 
 

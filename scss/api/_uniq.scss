@@ -5,6 +5,11 @@
 
     @each $item in $list {
         $iteration: __exec($iteratee, $item);
+
+        @if type-of($iteration) == 'list' {
+            $iteration: inspect($iteration);
+        }
+
         $result: map-merge($result, (
             $iteration: $item
         ));

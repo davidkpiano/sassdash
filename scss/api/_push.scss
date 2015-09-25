@@ -1,5 +1,11 @@
 @function __push($list, $items...) {
-    @return join($list, $items, $separator: auto);
+    @each $item in $items {
+      $list: append($list, $item);
+    }
+
+    @return $list;
+
+    // @return join($list, $items, $separator: auto);
 }
 
 /// Adds one or more elements to the end of a `$list` and

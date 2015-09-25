@@ -1,0 +1,22 @@
+@include test-module('Sassdash') {
+  @include test('_unescape') {
+    $escaped: '&amp;&lt;&gt;&quot;&#39;&#96;\/';
+    $unescaped: '&<>"' + "'`/";
+
+    $escaped: $escaped + $escaped;
+    $unescaped: $unescaped + $unescaped;
+
+    @include assert-equal(_unescape('&amp;lt;'), '&lt;',
+      'should unescape entities in the correct order');
+
+    @include assert-equal(_unescape($escaped), $unescaped,
+      'should unescape the proper entities');
+
+    @include assert-equal(_unescape('abc'), 'abc',
+      'should handle strings with nothing to unescape');
+
+    @include assert-equal(_unescape(_escape($unescaped)), $unescaped,
+      'should unescape the same characters escaped by _escape');
+    
+  }
+}

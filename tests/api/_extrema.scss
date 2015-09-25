@@ -1,0 +1,80 @@
+
+@include test-module('_max') {
+    @include test('should return the largest value from a collection') {
+        @include assert-equal(_max(1 2 3), 3);
+    }
+
+    @include test('should return -infinity for empty collections') {
+        @include assert-equal(_max(()), __const('NEGATIVE_INFINITY'));
+    }
+
+    @include test('should return -infinity for non-numeric collection values') {
+        $collections: (true, false), (true: true, false: false);
+
+        @each $collection in $collections {
+            @include assert-equal(_max($collection), __const('NEGATIVE_INFINITY'), inspect($collection));
+        }
+    }
+}
+
+@include test-module('_min') {
+  @include test('should return the smallest value from a collection') {
+    @include assert-equal(_min(1 2 3), 1);
+  }
+
+  @include test('should return Infinity for empty collections') {
+    @include assert-equal(_min(()), __const('POSITIVE_INFINITY'));
+  }
+
+  @include test('should return Infinity for non-numeric collection items') {
+    @include assert-equal(_min(('a' 'b') ('a': 'a', 'b': 'b')), __const('POSITIVE_INFINITY'));
+  }
+}
+
+
+@function test-maxmin-1($num, $args...) {
+  @return -$num;
+}
+@include test-module('_max and _min') {
+  @each $method-name in 'max', 'min' {
+    $list: 1 2 3;
+    $func: unquote('_#{$method-name}');
+    $is-max: $method-name == 'max';
+
+    @include test('should work with an iteratee argument') {
+      @include assert-equal(_call($func, null, $list, test-maxmin-1), if($is-max, 1, 3));
+    }
+
+    $maps: (('a': 2), ('a': 3), ('a': 1));
+    $actual: _call($func, null, $maps, 'a');
+
+    @include test('should work with _pluck style iteratee') {
+      @include assert-equal($actual, nth($maps, if($is-max, 2, 3)));
+    }
+
+    $actual: _call($func, null, ('a': 1, 'b': 2, 'c': 3));
+
+    @include test('should iterate a map') {
+      @include assert-equal($actual, if($is-max, 3, 1));
+    }
+
+    @include test('should iterate a string') {
+      @include assert-equal(_call($func, null, 'abc'), if($is-max, 'c', 'a'));
+    }
+
+    $list: (2 3 1, 5 6 4, 8 9 7);
+    $actual: _map($list, $func);
+
+    @include test('#{$func} should work as an iteratee for _map') {
+      @include assert-equal($actual, if($is-max, 3 6 9, 1 4 7));
+    }
+
+    @include test('#{$func} should work as an iteratee for _map') {
+      @include assert-equal(_map('abc', $func), 'a' 'b' 'c');
+    }
+
+    @include test('should work when chaining on a list with only one value') {
+      @include assert-equal(_((40,), $func), 40);
+    }
+  }
+}

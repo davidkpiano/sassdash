@@ -1,0 +1,19 @@
+@function TestShape($x: 0, $y: 0) {
+    @return ('x': $x, 'y': $y);
+}
+@include test-module('_create') {
+    @include test('should create a map that inherits from the given prototype map') {
+        $shape: _create(TestShape);
+
+        @include assert-equal(_instance-of($shape, 'TestShape'), true);
+    }
+
+    @include test('should assign properties to the created map') {
+        $expected: ('radius': 0);
+ 
+        $shape: _create(TestShape, $expected);
+
+        @include assert-equal(_instance-of($shape, 'TestShape'), true);
+        @include assert-equal(map-get($shape, 'radius'), 0);
+    }
+}

@@ -1,5 +1,7 @@
 @function __get-callback($function: __identity, $this-arg: null, $arg-count: null) {
-    @return if($arg-count, __exec('__base-callback', $function, $this-arg, $arg-count), '__base-callback');
+    $result: if($arg-count, __exec('__base-callback', $function, $this-arg, $arg-count), '__base-callback');
+
+    @return $result;
 }
 
 
@@ -78,9 +80,11 @@
 @function __base-callback-shifted($value, $args...) {
     $function: __this('function');
     $this-arg: __this('this-arg');
-    $arguments: __this('arguments');
+    $shifted-arguments: __this('shifted-arguments');
 
-    @return __call($function, $this-arg, $value, $arguments...);
+    $arguments: set-nth($shifted-arguments, 1, $value);
+
+    @return __call($function, $this-arg, $arguments...);
 }
 
 
@@ -92,12 +96,12 @@
     }
 
     @if $type == 'list' {
-        $arguments: _drop($function, 1);
+        $shifted-arguments: set-nth($function, 1, null);
         $function: nth($function, 1);
         $_: __scope((
             'function': $function,
             'this-arg': $this-arg,
-            'arguments': $arguments
+            'shifted-arguments': $shifted-arguments
         ));
         $base-callback-shifted: __bind('__base-callback-shifted');
         $_: __scope(false);

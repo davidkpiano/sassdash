@@ -1,0 +1,253 @@
+@function test-drop-1($value, $args...) {
+    @return $value > 2;
+}
+@include test-module('_drop') {
+    $list: 1 2 3;
+
+    @include test('should drop the first two elements') {
+        $actual: _drop($list, 2);
+        $expected: (3,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    @include test('should treat falsey n values, except nullish, as \0') {
+        @each $value in $test-falsey {        
+            $actual: _drop($list, $value);
+            $expected: if($value == null, (2, 3), $list);
+
+            @include assert-true(test-lists-equal($actual, $expected));
+        }
+    }
+
+    @include test('should return all elements when n is less than one') {
+        @each $value in 0, -1, -9999 {
+            $actual: _drop($list, $value);
+            $expected: $list;
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should return an empty list when n is greater than or equal to length of list') {
+        @each $value in 3, 4, pow(2, 32), 9999 {
+            $actual: _drop($list, $value);
+            $expected: ();
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+        $actual: _map($list, _drop);
+        $expected: (2 3, 5 6, 8 9);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3 4 5 6 7 8 9 10;
+        $predicate: test-drop-1;
+
+        $actual: _($list,
+            _drop 2,
+            _drop);
+        $expected: 4 5 6 7 8 9 10;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _($list, _filter $predicate,
+            _drop 2,
+            _drop);
+        $expected: 6 7 8 9 10;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _($list,
+            _drop 2,
+            _drop-right,
+            _drop,
+            _drop-right 2);
+        $expected: 4 5 6 7;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _($list,
+            _drop,
+            _filter $predicate,
+            _drop 2,
+            _drop-right,
+            _drop,
+            _drop-right 2);
+        $expected: 6 7;
+
+        @include assert-equal($actual, $expected);
+    }
+}
+
+@function test-drop-right-1($value, $args...) {
+    @return $value < 9;
+}
+@include test-module('_drop-right') {
+    $list: 1 2 3;
+
+    @include test('should drop the first two elements') {
+        $actual: _drop-right($list, 2);
+        $expected: (1,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    @include test('should treat falsey n values, except nullish, as zero') {
+        @each $value in $test-falsey {        
+            $actual: _drop-right($list, $value);
+            $expected: if($value == null, (1, 2), $list);
+
+            @include assert-true(test-lists-equal($actual, $expected));
+        }
+    }
+
+    @include test('should return all elements when n is less than one') {
+        @each $value in 0, -1, -9999 {
+            $actual: _drop-right($list, $value);
+            $expected: $list;
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should return an empty list when n is greater than or equal to length of list') {
+        @each $value in 3, 4, pow(2, 32), 9999 {
+            $actual: _drop-right($list, $value);
+            $expected: ();
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+        $actual: _map($list, _drop-right);
+        $expected: (1 2, 4 5, 7 8);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3 4 5 6 7 8 9 10;
+        $predicate: test-drop-right-1;
+
+        $actual: _($list,
+            _drop-right 2,
+            _drop-right);
+        $expected: 1 2 3 4 5 6 7;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _($list, _filter $predicate,
+            _drop-right 2,
+            _drop-right);
+        $expected: 1 2 3 4 5;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _($list,
+            _drop-right 2,
+            _drop,
+            _drop-right,
+            _drop 2);
+        $expected: 4 5 6 7;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _($list,
+            _drop-right,
+            _filter $predicate,
+            _drop-right 2,
+            _drop,
+            _drop-right,
+            _drop 2);
+        $expected: 4 5;
+
+        @include assert-equal($actual, $expected);
+    }
+}
+
+
+@function test-drop-right-while-1($value, $args...) {
+    @return $value > 1;
+}
+@function test-drop-right-while-2($num, $index, $args...) {
+    @return nth(__this('list'), $index) > 1;
+}
+@include test-module('_drop-right-while') {
+    $list: 1 2 3;
+    $maps: (
+        (a: 0, b: 0),
+        (a: 1, b: 1),
+        (a: 2, b: 2)
+    );
+
+    @include test('should drop elements while predicate returns truthy') {
+        $actual: _drop-right-while($list, test-drop-right-while-1);
+        $expected: (1,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    // @include test('should support the this-arg argument') {} // todo
+
+    @include test('should work with a _pluck style predicate') {
+        $actual: _drop-right-while($maps, 'b');
+        $expected: _slice($maps, 0, 1);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with a _where style predicate') {
+        $actual: _drop-right-while($maps, ('b': 2));
+        $expected: _slice($maps, 0, 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include xit('should return a wrapped value when chaining');
+}
+
+@function test-drop-while-1($num, $args...) {
+    @return $num < 3;
+}
+@include test-module('_drop-while') {
+    $list: 1 2 3;
+    $maps: (
+        (a: 2, b: 2),
+        (a: 1, b: 1),
+        (a: 0, b: 0)
+    );
+
+    @include test('should drop elements while predicate returns truthy') {
+        $actual: _drop-while($list, test-drop-while-1);
+        $expected: (3,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    // @include test('should support the this-arg argument') {} // todo
+
+    @include test('should work with a _pluck style predicate') {
+        $actual: _drop-while($maps, 'b');
+        $expected: _slice($maps, 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with a _where style predicate') {
+        $actual: _drop-while($maps, ('b': 2));
+        $expected: _slice($maps, 1);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include xit('should return a wrapped value when chaining');
+}

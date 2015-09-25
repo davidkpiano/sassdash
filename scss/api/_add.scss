@@ -3,6 +3,18 @@
     $augend: __parse-float($augend);
     $addend: __parse-float($addend);
 
+    $units: __map($augend $addend, __unit);
+    $unit-groups: __map($units, __unit-group);
+
+    $unit-groups-equal: if(
+      __every($unit-groups, __is-equal null),
+      __is-equal($units...),
+      __is-equal($unit-groups...));
+
+    @if ($unit-groups-equal == false and __every($units)) {
+      @return calc(#{unquote('#{$augend} + #{$addend}')});
+    }
+
     @return $augend + $addend;
 }
 
@@ -20,5 +32,12 @@
 /// // => 10
 
 @function _add($args...) {
+    @return call('__add', $args...);
+}
+
+
+/// @alias _add
+
+@function \+($args...) {
     @return call('__add', $args...);
 }

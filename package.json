@@ -1,15 +1,18 @@
 {
   "name": "sassdash",
-  "version": "0.3.0",
+  "version": "0.7.0",
   "description": "The Sass implementation of lodash.",
   "main": "scss/_sassdash.scss",
   "directories": {
     "test": "tests"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "node-sass": "^3.3.3",
+    "sass-true": "^2.0.2"
+  },
   "scripts": {
-    "test": "true-cli tests/true-tests.scss"
+    "test": "mocha tests/index.js"
   },
   "repository": {
     "type": "git",

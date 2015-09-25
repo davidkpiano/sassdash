@@ -1,0 +1,41 @@
+@include test-module('_parse-int') {
+  @include test('should accept a radix argument') {
+    @for $value from 2 through 37 {
+      @include assert-equal(_parse-int('10', $value), $value);
+    }
+  }
+
+  @include test('should use a radix of 10, for non-hexadecimals, if radix is null or 0') {
+    @include assert-equal(_parse-int('10'), 10);
+    @include assert-equal(_parse-int('10', 0), 10);
+    @include assert-equal(_parse-int('10', 10), 10);
+  }
+
+  @include test('should use a radix of 16, for hexadecimals, if radix is 0 or null') {
+    @each $string in '0x20', '0X20', '#000020', #000020 {
+      @include assert-equal(_parse-int($string), 32);
+      @include assert-equal(_parse-int($string, 0), 32);
+      @include assert-equal(_parse-int($string, 16), 32);
+    }
+  }
+
+  @include test('should use a radix of 10 for string with leading zeros') {
+    @include assert-equal(_parse-int('08'), 8);
+    @include assert-equal(_parse-int('08', 10), 8);
+  }
+
+  @include test('should parse strings with leading whitespace') {
+    @include assert-equal(_parse-int('   123'), 123);
+    @include assert-equal(_parse-int('   0x20'), 32);
+  }
+
+  @include test('should work as an iteratee for _map') {
+    $actual: _map('6' '08' '10', _parse-int);
+
+    @include assert-equal($actual, 6 8 10);
+
+    $actual: _map('123', _parse-int);
+
+    @include assert-equal($actual, 1 2 3);
+  }
+}

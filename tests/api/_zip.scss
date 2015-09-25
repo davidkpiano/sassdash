@@ -1,0 +1,84 @@
+@include test-module('_zip methods') {
+  @each $method-name in 'unzip', 'zip' {
+    $func: unquote('_#{$method-name}');
+    $is-zip: $method-name == 'zip';
+
+    $map: (
+      'an empty array': (
+        (),
+        ()
+      ),
+      '0-tuples': (
+        ((), ()),
+        ()
+      ),
+      '2-tuples': (
+        (('barney', 'fred'), (36, 40)),
+        (('barney', 36), ('fred', 40))
+      ),
+      '3-tuples': (
+        (('barney', 'fred'), (36, 40), (true, false)),
+        (('barney', 36, true), ('fred', 40, false))
+      )
+    );
+
+    @each $key, $pair in $map {
+      $lists: if($is-zip, nth($pair, 1), nth($pair, 2));
+      $actual: if($is-zip, call($func, $lists...), call($func, $lists));
+      $expected: if($is-zip, nth($pair, 2), if(length($actual) == 0, (), nth($pair, 1)));
+
+      @include test('#{$func} should work with #{$key}') {
+        @include assert-lists-equal($actual, $expected);
+      }
+    }
+  }
+}
+
+@function test-zip-map-1($value, $args...) {
+  @return __parse-float($value) > 1;
+}
+
+@include test-module('_zip-map') {
+  $map: ('barney': 36, 'fred': 40);
+  $list: (('barney', 36), ('fred', 40));
+
+  $actual: _zip-map('barney' 'fred', 36 40);
+
+  @include test('should zip together key/value lists into a map') {
+    @include assert-equal($actual, $map);
+  } 
+
+  @include test('should ignore extra values') {
+    @include assert-equal(_zip-map(('a',), 1 2), ('a': 1));
+  } 
+
+  @include test('should accept a two dimensional list') {
+    @include assert-equal(_zip-map($list), $map);
+  } 
+
+  @include test('should not assume keys is two dimensional if values argument is not provided') {
+    @include assert-equal(_zip-map('barney' 'fred'), ('barney': null, 'fred': null));
+  } 
+
+  @each $value in $test-falsey {
+    @include test('should accept a falsey list argument') {
+      @include assert-equal(_zip-map($value), ());
+    }
+  }
+  
+  @include test('should support consuming the return value of _pairs') {
+    @include assert-equal(_zip-map(_pairs($map)), $map);
+  }
+
+  $list: ('a' 1, 'b' 2);
+  $predicate: test-zip-map-1;
+  $actual: _($list, _zip-map, _map _to-string, _filter $predicate, _take);
+  
+  @include test('should work in a lazy chain sequence') {
+    @include assert-true(test-lists-equal($actual, ('2',)));
+  }  
+
+  @include test('should be aliased') {
+    @include assert-equal(_object($list), _zip-map($list));
+  }
+}

@@ -1,0 +1,63 @@
+@include test-module('Sassdash') {
+  @include test('_trim methods') {
+    @each $method-name in 'trim', 'trim-left', 'trim-right' {
+      $func: unquote('_#{$method-name}');
+      $is-trim-right: $method-name == 'trim-right';
+      $is-trim-left: $method-name == 'trim-left';
+
+      $parts: ();
+      $parts: if($method-name != 'trim-right', append($parts, 'leading'), $parts);
+      $parts: if($method-name != 'trim-left', append($parts, 'trailing'), $parts);
+      $parts: _list-join($parts, ' and ');
+
+      $string: ' a b c ';
+      $expected: if($is-trim-right, ' ', '') + 'a b c' + if($is-trim-left, ' ', '');
+
+      @include assert-equal(_call($func, null, $string), $expected,
+        '#{$func} should remove #{$parts} whitespace');
+
+      @include assert-equal(_call($func, null, 123), '123',
+        '#{$func} should coerce string to a string');
+
+      $string: '-_-a-b-c-_-';
+      $expected: if($is-trim-right, '-_-', '') + 'a-b-c' + if($is-trim-left, '-_-', '');
+
+      @include assert-equal(_call($func, null, $string, '_-'), $expected,
+        '#{$func} should remove #{$parts} chars');
+
+      $string: '121a-b-c121';
+      $expected: if($is-trim-right, '121', '') + 'a-b-c' + if($is-trim-left, '121', '');
+
+      @include assert-equal(_call($func, null, $string, 12), $expected,
+        '#{$func} should coerce chars to a string');
+
+      @each $value in null, '' {
+        @include assert-equal(_call($func, null, $value, '_-'), '',
+          '#{$func} should return an empty string when provided null or empty string and chars');
+
+        @include assert-equal(_call($func, null, $value, null), '',
+          '#{$func} should return an empty string when provided null or empty string and chars');
+
+        @include assert-equal(_call($func, null, $value, ''), '',
+          '#{$func} should return an empty string when provided null or empty string and chars');
+      }
+
+      $string: ' abc ';
+      $expected: if($is-trim-right, ' ', '') + 'abc' + if($is-trim-left, ' ', '');
+
+      @include assert-equal(_call($func, null, $string, null), $expected,
+        '#{$func} should work with null or empty string for chars');
+
+      @include assert-equal(_call($func, null, $string, ''), $string,
+        '#{$func} should work with null or empty string for chars');
+
+      $string: ' a b c ';
+      $expected: if($is-trim-right, ' ', '') + 'a b c' + if($is-trim-left, ' ', '');
+
+      $actual: _map($string $string $string, $func);
+
+      @include assert-equal($actual, $expected $expected $expected,
+        '#{$func} should work as an iteratee for _map');
+    }
+  }
+}

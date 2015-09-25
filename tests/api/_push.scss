@@ -1,0 +1,19 @@
+
+@include test-module('_push') {
+    @include test('should append items to list') {
+        @include assert-lists-equal(_push(1 2 3, 4), 1 2 3 4);
+    }
+
+    @include test('should append items to an empty list') {
+        @include assert-lists-equal(_push((), 123), (123,));
+    }
+
+    @include test('should accept multiple arguments as items to push') {
+        @include assert-equal(_push(1 2, 3, 4, 5, 6), 1 2 3 4 5 6)
+    }
+
+    @include test('should maintain the source list separator') {
+        @include assert-equal(list-separator(_push(('a', 'b'), 'c', 'd')), comma);
+        @include assert-equal(list-separator(_push(('a' 'b'), 'c', 'd')), space);
+    }
+}

@@ -1,0 +1,38 @@
+@function test-index-by-1($value, $args...) {
+    @return $value > 1;
+}
+@include test-module('_index-by') {
+    @include test('should use _identity when iteratee is nullish') {
+        $list: 4 6 6;
+
+        @include assert-equal(_index-by($list, null), (4: 4, 6: 6));
+        @include assert-equal(_index-by($list), (4: 4, 6: 6));
+    }
+
+    @include test('should work with a _pluck style iteratee') {
+        $list: ('a': 'foo', 'b': 1) ('a': 'bar', 'b': 1) ('a': 'baz', 'b': 2);
+
+        @include assert-equal(_index-by($list, 'b'), (1: ("a": "bar", "b": 1), 2: ("a": "baz", "b": 2)));
+    }
+
+    @include test('should work with a number for iteratee') {
+        $list: (1 'a', 2 'a', 2 'b');
+
+        @include assert-equal(_index-by($list, 1), (1: 1 'a', 2: 2 'b'));
+        @include assert-equal(_index-by($list, 2), ('a': 2 'a', 'b': 2 'b'));
+    }
+
+    @include test('should work with map for collection') {
+        $map: ('a': 4.2, 'b': 6.1, 'c': 6.4);
+
+        @include assert-equal(_index-by($map, test-floor), (4: 4.2, 6: 6.4));
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 1 3;
+
+        $actual: _($list, _index-by _identity, _filter test-index-by-1, _take);
+
+        @include assert-true(test-lists-equal($actual, (2,)));
+    }
+}

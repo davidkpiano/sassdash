@@ -1,0 +1,9 @@
+@include test-module('_for methods') {
+  @include test('_for-each should be aliased') {
+    @include assert-equal(_each(1 2 3, test-square), _for-each(1 2 3, test-square));
+  }
+
+  @include test('_for-each-right should be aliased') {
+    @include assert-equal(_each-right(1 2 3, test-square), _for-each-right(1 2 3, test-square));
+  }
+}

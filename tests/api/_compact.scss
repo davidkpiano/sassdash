@@ -1,0 +1,20 @@
+@include test-module('_compact') {
+    @include test('should filter falsey values') {
+        $list: join('0' '1' '2', $test-falsey);
+        $actual: _compact($list);
+        $expected: ('0' '1' '2');
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work when in between lazy operators') {
+        $actual: _($test-falsey, _slice, _compact, _slice);
+
+        @include assert-equal(length($actual), 0);
+
+        $actual: _($test-falsey, _slice, _push true 1, _compact, _push 'a');
+        $expected: (true, 1, 'a');
+
+        @include assert-lists-equal($actual, $expected);
+    }
+}

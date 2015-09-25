@@ -1,0 +1,38 @@
+@function test-result-1() {
+  @return __this('a');
+}
+@include test-module('_result') {
+  $map: (
+    'a': 1,
+    'b': null,
+    'c': test-result-1
+  );
+
+  @include test('should resolve property values') {
+    @include assert-equal(_result($map, 'a'), 1);
+  }
+
+  @include test('should resolve property values') {
+    @include assert-equal(_result($map, 'b'), null);
+  }
+
+  @include test('should resolve property values') {
+    @include assert-equal(_result($map, 'c'), 1);
+  }
+
+  @include test('should resolve property values') {
+    @include assert-equal(_result($map, 'd'), null);
+  }
+
+  @include test('should return null when map is nullish') {
+    @include assert-equal(_result(null, 'a'), null);
+  }
+
+  @include test('should return the specified default value for undefined properties') {
+    @include assert-equal(_result($map, 'd', 42), 42);
+  }
+
+  @include test('should execute default function values') {
+    @include assert-equal(_result($map, 'd', __get($map, 'c')), 1);
+  }
+}

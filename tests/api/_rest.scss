@@ -1,0 +1,33 @@
+
+@include test-module('_rest') {
+  $list: 1 2 3;
+
+  @each $value in $test-falsey {
+    @include test('should accept a falsey list argument') {
+      @include assert-equal(_rest($value), ());
+    }
+  }
+
+  @include test('should exclude the first element') {
+    @include assert-equal(_rest($list), 2 3);
+  }
+
+  @include test('should return an empty list when querying empty lists') {
+    @include assert-equal(_rest(()), ());
+  }
+
+  $list-list: (1 2 3, 4 5 6, 7 8 9);
+  $actual: _map($list-list, _rest);
+
+  @include test('should work as an iteratee for _map') {
+    @include assert-true(test-lists-equal($actual, (2 3, 5 6, 8 9)));
+  }
+
+  @include test('should work in a lazy chain sequence') {
+    @include assert-true(test-lists-equal(_($list, _rest, _filter test-is-even), (2,)));
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(_tail($list), _rest($list));
+  }
+}

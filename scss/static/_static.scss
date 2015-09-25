@@ -1,3 +1,4 @@
+$__static__: () !global;
 
 ///
 /// Gets the specified static variable. Uses `_get()` syntax.
@@ -8,14 +9,14 @@
 /// @returns {*} Returns the retrieved static value.
 /// @see {function} _get
 /// @example scss
-///     @include static-set('global-padding', 1rem);
+///     @include _static-set('global-padding', 1rem);
 ///     
 ///     .foo {
-///         padding: static-get('global-padding');
+///         padding: _static-get('global-padding');
 ///         // => 1rem
 ///     }
 
-@function static-get($keys) {
+@function _static-get($keys) {
     @return __get($__static__, $keys);
 }
 
@@ -29,14 +30,14 @@
 /// @returns {*} Returns the updated static value.
 /// @see {function} _set
 /// @example scss
-///     $global-padding: static-set('global-padding', 1rem);
+///     $global-padding: _static-set('global-padding', 1rem);
 ///     
 ///     .foo {
-///         padding: static-get('global-padding');
+///         padding: _static-get('global-padding');
 ///         // => 1rem
 ///     }
 
-@function static-set($keys, $value) {
+@function _static-set($keys, $value) {
     $__static__: __set($__static__, $keys, $value) !global;
 
     @return __get($__static__, $keys);
@@ -49,35 +50,35 @@
 /// @access public
 /// @group Utility
 /// @param {string|list} $keys Single key or list of keys for static value setting.
-/// @see {function} static-set
+/// @see {function} _static-set
 /// @example scss
-///     @include static-set('global-padding', 1rem);
+///     @include _static-set('global-padding', 1rem);
 ///     
 ///     .foo {
-///         padding: static-get('global-padding');
+///         padding: _static-get('global-padding');
 ///         // => 1rem
 ///     }
 
-@mixin static-set($args...) {
-    $__static__: static-set($args...) !global;
+@mixin _static-set($args...) {
+    $__static__: _static-set($args...) !global;
 }
 
 
-@function static-push($keys, $value) {
+@function _static-push($keys, $value) {
     $__static__: __push($__static__, $keys, $value) !global;
 
     @return $__static__;
 }
 
 
-@function static($keys: $__undefined__, $value: $__undefined__) {
+@function _static($keys: $__undefined__, $value: $__undefined__) {
     @if __is-undefined($keys) and __is-undefined($value) {
         @return $__static__;
     }
 
     @if __is-undefined($value) {
-        @return static-get($keys);
+        @return _static-get($keys);
     }
 
-    @return static-set($keys, $value);
+    @return _static-set($keys, $value);
 }

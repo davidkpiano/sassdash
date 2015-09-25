@@ -1,4 +1,5 @@
 # Sassdash
+**[Read the complete documentation here: davidkpiano.github.io/sassdash](http://davidkpiano.github.io/sassdash)**
 
 ![Sassdash logo](https://raw.githubusercontent.com/davidkpiano/sassdash/master/sassdash.png)
 
@@ -6,22 +7,18 @@
 
 It's [lodash](http://www.lodash.com) for Sass. Sassdash.
 
-**[Read the documentation!](http://davidkpiano.github.io/sassdash)**
-
 **Why?** Developed with Sass toolkit developer in mind, Sassdash gives you nearly the full expressive power of [lodash for JavaScript](http://www.lodash.com), inside your SCSS projects. Developers can also build SCSS libraries on top of Sassdash for concepts such as advanced animation composition and timing, 3D CSS rendering, geometrical rendering, complex grid frameworks, and more.
 
-Sassdash is a **collection of utility functions**, just like lodash. Sassdash never outputs any CSS declarations as it provides no mixins to do so.
+Sassdash is a **collection of utility functions**, just like lodash. Sassdash never outputs any CSS declarations as it provides no mixins to do so (except for [`_rules`](https://davidkpiano.github.io/sassdash/sassdoc/index.html#mixin-_rules), which is pretty handy).
 
 ## Getting Started
 This library contains most of the implementable functions from [lodash](http://lodash.com). [See below](#available-functions) to see which functions are included.
 
-1. `npm install sassdash`
+1. `npm install sassdash` or `bower install sassdash`
 2. `@import 'path/to/sassdash'` in your project
 3. Use your new powers wisely.
 
-FYI: Neither Compass nor Eyeglass are required! Sassdash *should* work in both Sass and Libsass* (latest versions).
-
-* Testing still needs to be done in Libsass.
+FYI: Neither Compass nor Eyeglass are required. Sassdash works in both Ruby Sass and Libsass (latest versions)!
 
 ## Using Sassdash
 If you are familiar with lodash, Sassdash will feel very natural to you.
@@ -44,10 +41,10 @@ Functions **are chainable** in Sassdash via `_(...)`, but there is **no lazy eva
 $foobar: ('a' 'b' 'c', 'd' 'e' 'f', 'g' 'h' 'i');
 
 _($foobar,
-  map _join,
-  reduce _str-concat,
-  concat 'jkl',
-  join ' -- '); // 'abcdefghi -- jkl'
+  _map _join,
+  _reduce _str-concat,
+  _concat 'jkl',
+  _join ' -- '); // 'abcdefghi -- jkl'
 ```
 
 Also, just as in lodash, iteratee functions (such as those used with `_map`) are called with three arguments: `$value, $index, $collection`. Keep this in mind when passing in your functions as iteratee functions. If your function only expects the `$value` argument, you can either:
@@ -55,20 +52,27 @@ Also, just as in lodash, iteratee functions (such as those used with `_map`) are
 * Discard the rest of the arguments in the function definition: `@function is-even($value, $args...) { ... }`
 * Wrap the function with `_ary`: `_map($list, _ary(is-even));`
 
-However, **native Sass functions as iteratees are automatically guarded**!
+However, **native Sass functions as iteratees are automatically guarded**! You can simply include them as an interatee:
+
+```scss
+$capitals: ('Tallahassee', 'Springfield', 'Austin');
+
+$uppercase-capitals: _map($capitals, to-upper-case);
+// => ('TALLAHASSEE', 'SPRINGFIELD', 'AUSTIN')
+```
 
 ## Running Tests
-**WARNING:** There are *over 500* unit tests, and more to come. Running them all takes between 1 and 2 minutes.
+There are *over 700* unit tests. With node-sass, they usually take under 10 seconds to run. With Ruby Sass, they may take anywhere from 1 to 2 minutes.
 
 1. `cd path/to/sassdash`
 2. [`bower install true`](https://github.com/ericam/true)
-3. `true-cli tests/true-tests.scss`
+3. `true-cli tests/tests.scss`
 
 ## New Functions
 Sassdash includes a number of helper functions not available in lodash, which include utility functions and implementations of native Javascript functions:
 
 * **`char` functions** - `_char-at`, `_char-code`, `_char-code-at`
-* **`number` functions** - `_parse-float` (alias `_to-number`) - similar to Javascript `parseFloat`
+* **`number` functions** - `_parse-float` (alias `_to-number`) - similar to JavaScript `parseFloat`
 * **`value` functions** - `_get`, `_set` and `_memo` for easy cache manipulation
 * **`list` functions** - `_reverse`, `_concat`, and `_splice`
 * **`string` functions** - `_str-concat` and `_join` (list to string)

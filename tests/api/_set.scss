@@ -1,0 +1,34 @@
+@include test-module('_set') {
+    $map: ('a': 1, 'b': ('c': 2, 'd': 3));
+
+    @include test('should set value in map based on key') {
+        @include assert-equal(_set($map, 'a', 3), ('a': 3, 'b': ('c': 2, 'd': 3)));
+
+        @include assert-equal(_set($map, 'new', 42), ('a': 1, 'b': ('c': 2, 'd': 3), 'new': 42));
+    }
+
+    @include test('should deep set value in map if given a list for keys') {
+        @include assert-equal(_set($map, 'b' 'c', 99), ('a': 1, 'b': ('c': 99, 'd': 3)));
+    }
+
+    @include test('should create deep maps if keys do not exist') {
+        @include assert-equal(_set($map, 'b' 'e' 'f', 99), ('a': 1, 'b': ('c': 2, 'd': 3, 'e': ('f': 99))));
+    }
+
+    @include test('should deeply set map from an initial list') {
+        $list: 1 $map 3 4;
+
+        @include assert-equal(_set($list, 2 'a', 42), 1 ('a': 42, 'b': ('c': 2, 'd': 3)) 3 4);
+
+        @include assert-equal(_set($list, 2 'b' 'c', 99), 1 ('a': 1, 'b': ('c': 99, 'd': 3)) 3 4);
+    }
+
+    @include test('should set value in list based on key as index') {
+        $list: 1 2 3 4;
+
+        @include assert-equal(_set($list, 2, 'foo'), 1 'foo' 3 4);
+        @include assert-equal(_set($list, 5, 'new'), 1 2 3 4 'new');
+        @include assert-equal(_set($list, 6, 'bar'), 1 2 3 4 null 'bar');
+
+    }
+}

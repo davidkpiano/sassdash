@@ -1,0 +1,7 @@
+@include test-module('_identity') {
+  @include test('should return the first argument provided') {
+    $map: ('name': 'fred');
+
+    @include assert-equal(_identity($map), $map);
+  }
+}

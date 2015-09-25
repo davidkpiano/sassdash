@@ -1,0 +1,92 @@
+@include test-module('_pad') {
+  @include test('should pad a string to a given length') {
+    @include assert-equal(_pad('abc', 9), '   abc   ');
+  }
+
+  @include test('should truncate pad characters to fit the pad length') {
+    @include assert-equal(_pad('abc', 8), '  abc   ');
+  }
+
+  @include test('should truncate pad characters to fit the pad length') {
+    @include assert-equal(_pad('abc', 8, '_-'), '_-abc_-_');
+  }
+
+  @include test('should coerce to a string') {
+    @include assert-equal(_pad(123, 9), '   123   ');
+  }
+}
+
+@include test-module('_pad-left') {
+  @include test('should pad a string to a given length') {
+    @include assert-equal(_pad-left('abc', 9), '      abc');
+  }
+
+  @include test('should truncate pad characters to fit the pad length') {
+    @include assert-equal(_pad-left('abc', 6, '_-'), '_-_abc');
+  }
+
+  @include test('should coerce to a string') {
+    @include assert-equal(_pad-left(123, 4), ' 123');
+  }
+}
+
+@include test-module('_pad-right') {
+  @include test('should pad a string to a given length') {
+    @include assert-equal(_pad-right('abc', 9), 'abc      ');
+  }
+
+  @include test('should truncate pad characters to fit the pad length') {
+    @include assert-equal(_pad-right('abc', 6, '_-'), 'abc_-_');
+  }
+
+  @include test('should coerce to a string') {
+    @include assert-equal(_pad-right(123, 4), '123 ');
+  }
+}
+
+@include test-module('_pad methods') {
+  @each $method-name in 'pad', 'pad-left', 'pad-right' {
+    $func: unquote('_#{$method-name}');
+    $is-pad-left: $method-name == 'pad-left';
+
+    @include test('should not pad if string is >= length') {
+      @include assert-equal(_call($func, null, 'abc', 2), 'abc');
+    }
+
+    @include test('should not pad if string is >= length') {
+      @include assert-equal(_call($func, null, 'abc', 3), 'abc');
+    }
+
+    @include test('should treat negative length as 0') {
+      @include assert-equal(_call($func, null, 'abc', 0), 'abc');
+    }
+
+    @include test('should treat negative length as 0') {
+      @include assert-equal(_call($func, null, 'abc', -3), 'abc');
+    }
+
+    @include test('should return an empty string when provided null or empty string and chars') {
+      @include assert-equal(_call($func, null, null, 0, null), '');
+    }
+
+    @include test('should return an empty string when provided null or empty string and chars') {
+      @include assert-equal(_call($func, null, null, 0, '_-'), '');
+    }
+
+    @include test('should return an empty string when provided null or empty string and chars') {
+      @include assert-equal(_call($func, null, '', 0, null), '');
+    }
+
+    @include test('should return an empty string when provided null or empty string and chars') {
+      @include assert-equal(_call($func, null, '', 0, '_-'), '');
+    }
+
+    @include test('should work with null or empty string for chars') {
+      @include assert-equal(_call($func, null, 'abc', 6, null), 'abc');
+    }
+
+    @include test('should work with null or empty string for chars') {
+      @include assert-equal(_call($func, null, 'abc', 6, ''), 'abc');
+    }
+  }
+}

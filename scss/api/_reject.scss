@@ -1,7 +1,9 @@
 @function __reject-iteratee($value, $index, $collection) {
     $predicate: __this('predicate');
+    $test: __exec($predicate, $value, $index, $collection);
+    $result: __is-falsey(__exec($predicate, $value, $index, $collection));
 
-    @return __is-falsey(__exec($predicate, $value, $index, $collection));
+    @return $result;
 }
 
 
@@ -11,7 +13,8 @@
     $_: __scope((
         'predicate': $predicate
     ));
-    $result: __exec($function, $collection, '__reject-iteratee');
+    $reject-iteratee: __bind('__reject-iteratee');
+    $result: __exec($function, $collection, $reject-iteratee);
     $_: __scope(false);
 
     @return $result;

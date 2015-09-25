@@ -1,0 +1,6 @@
+
+@include test-module('_reject') {
+  @include test('should return elements the predicate returns falsey for') {
+    @include assert-equal(_reject(1 2 3, test-is-even), 1 3);
+  }
+}

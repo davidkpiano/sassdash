@@ -1,0 +1,56 @@
+
+
+@include test-module('_add') {
+    @include test('should add two numbers together') {
+        @include assert-equal(_add(6, 4), 10);
+    }
+
+    @include test('should coerce numerical strings to numbers') {
+        @include assert-equal(_add(6, '14'), 20);
+    }
+
+    @include test('should be chainable') {
+        @include assert-equal(_(1, _add 2), 3);
+    }
+
+    @include test('should work with units') {
+        @include assert-equal(_add(6px, 4px), 10px);
+
+        @include assert-equal(_add(10%, 20%), 30%);
+    }
+
+    @include test('should work across similar units') {
+
+        @include assert-equal(_add(3s, 101ms), 3.101s);
+
+        @include assert-equal(_add(101ms, 3s), 3101ms);
+
+        @include assert-equal(_add(6px, 4), 10px);
+    }
+
+    @include test('should work using calc() across different units') {
+        @include assert-equal(_add(3px, 5rem), calc(3px + 5rem));
+    }
+
+    @include test('should use calc() across units of unknown unit groups') {
+        @include assert-equal(_add(3rem, 5ch), calc(3rem + 5ch));
+
+        @include assert-equal(_add(3px, 5ex), calc(3px + 5ex));
+
+        @include assert-equal(_add(3dppi, 5px), calc(3dppi + 5px));
+    }
+
+    @include test('should not use calc() if any unit is an empty unit') {
+        @include assert-equal(_add(3px, 5), 8px);
+
+        @include assert-equal(_add(3, 5), 8);
+    }
+
+    @include test('should work with calc() and negative values') {
+        @include assert-equal(_add(3rem, -80%), calc(3rem + -80%));
+    }
+
+    @include test('should be aliased') {
+        @include assert-equal(\+(3px, 6px), _add(3px, 6px));
+    }
+}

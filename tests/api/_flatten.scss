@@ -1,0 +1,94 @@
+@function test-flatten-1($args...) {
+  @return $args;
+}
+@include test-module('_flatten') {
+  $args: test-flatten-1(1, 2, 3);
+  $list: ((('a',),), (('b',),));
+
+  @include test('should perform a shallow flatten') {
+    @include assert-true(test-lists-equal(_flatten($list), (('a',), ('b',))));
+  }
+
+  $expected: ('a', 'b');
+
+  @include test('should work with isDeep') {
+    @include assert-true(test-lists-equal(_flatten($list, true), $expected));
+  }
+
+  @include test('should work with isDeep') {
+    @include assert-true(test-lists-equal(_flatten-deep($list), $expected));
+  }
+
+  $list: ($args, ($args,));
+  $expected: (1, 2, 3, $args);
+
+  @include test('should flatten arglists') {
+    @include assert-true(test-lists-equal(_flatten($list), $expected));
+  }
+
+  $expected: (1, 2, 3, 1, 2, 3);
+
+  @include test('should flatten arglists') {
+    @include assert-true(test-lists-equal(_flatten($list, true), $expected));
+  }
+
+  @include test('should flatten arglists') {
+    @include assert-true(test-lists-equal(_flatten-deep($list), $expected));
+  }
+
+  $list: (((('a',),),), ((('b',),),));
+
+  @include test('should work as an iteratee for _map') {
+    @include assert-true(test-lists-equal(_map($list, _flatten), ((('a',),), (('b',),))));
+  }
+
+  @include test('should work as an iteratee for _map') {
+    @include assert-true(test-lists-equal(_map($list, _flatten-deep), (('a',), ('b',))));
+  }
+  
+  $list: ((), ((),), ((), (((),),),));
+  $expected: ((), (), (((),),));
+
+  @include test('should work with empty lists') {
+    @include assert-true(test-lists-equal(_flatten($list), $expected));
+  }
+
+  @include test('should work with empty lists') {
+    @include assert-true(test-lists-equal(_flatten($list, true), $test-empty-list));
+  }
+
+  @include test('should work with empty lists') {
+    @include assert-true(test-lists-equal(_flatten-deep($list), $test-empty-list));
+  }
+
+  $list: (1, (2,), (3, (4,)));
+  $expected: (1, 2, 3, (4,));
+
+  @include test('should support flattening of nested lists') {
+    @include assert-true(test-lists-equal(_flatten($list), $expected));
+  }
+
+  $expected: (1, 2, 3, 4);
+
+  @include test('should support flattening of nested lists') {
+    @include assert-true(test-lists-equal(_flatten($list, true), $expected));
+  }
+
+  @include test('should support flattening of nested lists') {
+    @include assert-true(test-lists-equal(_flatten-deep($list), $expected));
+  }
+
+  $expected: ();
+
+  @include test('should return empty list for non list-like objects') {
+    @include assert-true(test-lists-equal(_flatten(('a': 1)), $expected));
+  }
+
+  @include test('should return empty list for non list-like objects') {
+    @include assert-true(test-lists-equal(_flatten(('a': 1), true), $expected));
+  }
+
+  @include test('should return empty list for non list-like objects') {
+    @include assert-true(test-lists-equal(_flatten-deep(('a': 1)), $expected));
+  }
+}

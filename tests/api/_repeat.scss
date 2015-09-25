@@ -1,0 +1,30 @@
+
+@include test-module('_repeat') {
+  @include test('should repeat a string n times') {
+    @include assert-equal(_repeat('*', 3), '***');
+  }
+
+  @include test('should repeat a string n times') {
+    @include assert-equal(_repeat('abc', 3), 'abcabcabc');
+  }
+
+  @include test('should return an empty string for negative n or n of 0') {
+    @include assert-equal(_repeat('abc', 0), '');
+  }
+
+  @include test('should return an empty string for negative n or n of 0') {
+    @include assert-equal(_repeat('abc', -2), '');
+  }
+
+  @include test('should coerce n to a number') {
+    @include assert-equal(_repeat('abc'), '');
+  }
+
+  @include test('should coerce n to a number') {
+    @include assert-equal(_repeat('abc', '2'), 'abcabc');
+  }
+
+  @include test('should coerce string to a string') {
+    @include assert-equal(_repeat(123, '2'), '123123');
+  }
+}

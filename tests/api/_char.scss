@@ -1,0 +1,68 @@
+
+
+@include test-module('_char-at') {
+  @include test('should return the specified character at index') {
+    $string: 'abcde';
+    $string-two: "abcde";
+
+    $actual: _char-at($string, 1);
+    @include assert-equal($actual, 'a');
+
+    $actual: _char-at($string-two, 1);
+    @include assert-equal($actual, 'a');
+
+    $actual: _char-at($string, 3);
+    @include assert-equal($actual, 'c');
+
+    $actual: _char-at($string-two, 3);
+    @include assert-equal($actual, 'c');
+  }
+
+  @include test('should return empty string if index not in string') {
+    $string: 'abc';
+    $actual: _char-at($string, 4);
+
+    @include assert-equal($actual, '');
+  }
+}
+
+@include test-module('_char-code-at') {
+    @include test('should return the proper char code of the specified character at index') {
+        $string: 'abc';
+        $actual: _char-code-at($string, 2);
+        $expected: 98;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return null for index not in string') {
+        $string: 'abc';
+        $actual: _char-code-at($string, 4);
+        $expected: null;
+
+        @include assert-equal($actual, $expected);
+    }
+}
+
+@include test-module('_get-char-code') {
+    @include test('should return the proper char code of the specified character') {
+        $actual: _get-char-code('a');
+        $expected: 97;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return null for empty string') {
+        $actual: _get-char-code('');
+        $expected: null;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should be aliased') {
+        $actual: _char-code('z');
+        $expected: _get-char-code('z');
+
+        @include assert-equal($actual, $expected);
+    }
+}

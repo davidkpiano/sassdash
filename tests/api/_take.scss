@@ -1,0 +1,204 @@
+@function test-take-1($value, $args...) {
+    @return $value > 2;
+}
+@include test-module('_take') {
+    $list: 1 2 3;
+
+    @include test('should take the first two elements') {
+        $actual: _take($list, 2);
+        $expected: 1 2;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should treat falsey n values, except nullish, as zero') {
+        @each $value in $test-falsey {        
+            $actual: _take($list, $value);
+            $expected: if($value == null, (1,), ());
+
+            @if $value == null {
+                @include assert-true(test-lists-equal($actual, $expected));
+            } @else {
+                @include assert-equal($actual, $expected);
+            }
+        }
+    }
+
+    @include test('should return an empty list when n is less than one') {
+        @each $value in 0, -1, -9999 {        
+            $actual: _take($list, $value);
+            $expected: ();
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should return all elements when n is greater than list length') {
+        @each $value in 3, 4, pow(2, 32), 9999 {        
+            $actual: _take($list, $value);
+            $expected: $list;
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+        $actual: _map($list, _take);
+        $expected: ((1,), (4,), (7,));
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3 4 5 6 7 8 9 10;
+
+        $actual: _($list, _take 2, _take);
+        $expected: (1,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+
+        $actual: _($list, _filter test-take-1, _take 2, _take);
+        $expected: (3,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+
+        $actual: _($list, _take 6, _take-right 4, _take 2, _take-right);
+        $expected: (4,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+
+        $actual: _($list, _take (length($list) - 1), _filter test-take-1, _take 6, _take-right 4, _take 2, _take-right);
+        $expected: (6,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+}
+
+@function test-take-right-1($value, $args...) {
+  @return $value < 9;
+}
+@include test-module('Sassdash') {
+  @include test('_take-right') {
+    $list: 1 2 3;
+
+    $actual: _take-right($list, 2);
+    $expected: 2 3;
+
+    @include assert-true(test-lists-equal($actual, $expected),
+      'should take the last two elements');
+
+    @each $value in $test-falsey {
+      $actual: _take-right($list, $value);
+      $expected: if($value == null, (3,), $test-empty-list);
+
+      @include assert-true(test-lists-equal($actual, $expected),
+        'should treat falsey n value, except nullish, as 0');
+    }
+
+    @each $value in 0, -1, -9999 {
+      @include assert-true(test-lists-equal(_take-right($list, $value), $test-empty-list),
+        'should return an empty list when n < 1');
+    }
+
+    @each $value in 3, 4, pow(2, 32), 9999 {
+      @include assert-true(test-lists-equal(_take-right($list, $value), $list),
+        'should return all elements when n >= list length');
+    }
+
+    @include test-group() {
+      $list: 1 2 3, 4 5 6, 7 8 9;
+      $actual: _map($list, _take-right);
+      $expected: (3,), (6,), (9,);
+
+      @include assert-true(test-lists-equal($actual, $expected),
+        'should work as iteratee for map');
+    }
+
+    @include test-group() {
+      $list: 1 2 3 4 5 6 7 8 9 10;
+      $predicate: test-take-right-1;
+      $actual: _($list, _take-right 2, _take-right);
+
+      @include assert-true(test-lists-equal($actual, (10,)),
+        'should work in a lazy chain sequence');
+
+      $actual: _($list, _filter $predicate, _take-right 2, _take-right);
+
+      @include assert-true(test-lists-equal($actual, (8,)),
+        'should work in a lazy chain sequence');
+
+      $actual: _($list, _take-right 6, _take 4, _take-right 2, _take);
+
+      @include assert-true(test-lists-equal($actual, (7,)),
+        'should work in a lazy chain sequence');
+
+      $actual: _($list, _filter $predicate, _take-right 6, _take 4, _take-right 2, _take);
+
+      @include assert-true(test-lists-equal($actual, (5,)),
+        'should work in a lazy chain sequence');
+    }
+  }
+}
+
+@function test-take-right-while-1($num, $args...) {
+  @return $num > 1;
+}
+@include test-module('Sassdash') {
+  @include test('_take-right-while') {  
+    $list: 1 2 3;
+    $maps: (
+      ('a': 0, 'b': 0),
+      ('a': 1, 'b': 1),
+      ('a': 2, 'b': 2),
+    );
+
+    $actual: _take-right-while($list, test-take-right-while-1);
+
+    @include assert-equal($actual, 2 3,
+      'should take elements while predicate returns truthy');
+
+    @include assert-true(true, 'should support the this-arg argument'); // todo
+
+    @include assert-equal(_take-right-while($maps, 'b'), _slice($maps, 1),
+      'should work with a _pluck style predicate');
+
+    @include assert-equal(_take-right-while($maps, ('b': 2)), _slice($maps, 2),
+      'should work with a _where style predicate');
+
+    @include assert-equal(_($list, _take-right-while test-take-right-while-1), 2 3,
+      'should return expected value when chaining');
+  }
+}
+
+@function test-take-while-1($num, $args...) {
+  @return $num < 3;
+}
+@include test-module('Sassdash') {
+  @include test('_take-while') {  
+    $list: 1 2 3;
+    $maps: (
+      ('a': 2, 'b': 2),
+      ('a': 1, 'b': 1),
+      ('a': 0, 'b': 0),
+    );
+
+    $actual: _take-while($list, test-take-while-1);
+
+    @include assert-equal($actual, 1 2,
+      'should take elements while predicate returns truthy');
+
+    @include assert-true(true, 'should provide the correct predicate arguments'); // not implemented
+
+    @include assert-true(true, 'should support the this-arg argument'); // todo
+
+    @include assert-equal(_take-while($maps, 'b'), _slice($maps, 0, 2),
+      'should work with a _pluck style predicate');
+
+    @include assert-equal(_take-while($maps, ('b': 2)), _slice($maps, 0, 1),
+      'should work with a _where style predicate');
+
+    @include assert-equal(_($list, _take-while test-take-while-1), 1 2,
+      'should return expected value when chaining');
+  }
+}

@@ -1,0 +1,17 @@
+
+
+@function __modify($map, $properties, $function: '__identity', $this-arg: null) {
+  $value: __get($map, $properties);
+
+  $function: __get-callback($function, $this-arg, 3);
+
+  $result: __exec($function, $value, $properties, $map);
+
+  $map: __set($map, $properties, $result);
+
+  @return $map;
+}
+
+@function _modify($args...) {
+  @return call('__modify', $args...);
+}

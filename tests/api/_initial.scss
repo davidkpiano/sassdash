@@ -1,0 +1,32 @@
+@function test-initial-1($value, $args...) {
+    @return $value < 3;
+}
+@include test-module('_initial') {
+    $list: 1 2 3;
+
+    @include test('should accept a falsey list argument') {
+        @each $value in $test-falsey {
+            @include assert-true(test-lists-equal(_initial($value), ()));
+        }
+    }
+
+    @include test('should exclude last element') {
+        @include assert-true(test-lists-equal(_initial($list), 1 2));
+    }
+
+    @include test('should return an empty list when querying empty lists') {
+        @include assert-true(test-lists-equal(_initial(()), ()));
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+
+        @include assert-true(test-lists-equal(_map($list, _initial), (1 2, 4 5, 7 8)));
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3;
+
+        @include assert-true(test-lists-equal(_($list, _filter test-initial-1, _initial), (1,)));
+    }
+}

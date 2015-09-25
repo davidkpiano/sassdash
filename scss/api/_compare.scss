@@ -1,0 +1,180 @@
+
+@function __lt($value, $other, $args...) {
+  @return __base-compare-ascending($value, $other) < 0;
+}
+
+
+@function __lte($value, $other, $args...) {
+  @return __base-compare-ascending($value, $other) <= 0;
+}
+
+
+@function __gt($value, $other, $args...) {
+  @return __base-compare-ascending($value, $other) > 0;
+}
+
+
+@function __gte($value, $other, $args...) {
+  @return __base-compare-ascending($value, $other) >= 0;
+}
+
+
+///
+/// Checks if `$value` is less than `$other`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {number|string} $value The value to compare.
+/// @param {number|string} $other The other value to compare.
+/// @returns {bool} Returns `true` if `$value` is less than `$other`, else `false`.
+/// @example scss
+/// 
+/// $foo: _lt(1, 3);
+/// // => true
+/// 
+/// $foo: _lt(3, 1);
+/// // => false
+/// 
+/// $foo: _lt(3, 3);
+/// // => false
+/// 
+/// $foo: _lt('abc', 'def');
+/// // => true
+/// 
+/// $foo: _lt('def', 'abc');
+/// // => false
+/// /// 
+/// $foo: _lt('def', 'def');
+/// // => false
+
+@function _lt($args...) {
+  @return call('__lt', $args...);
+}
+
+
+/// @alias _lt
+
+@function \<($args...) {
+  @return call('__lt', $args...);
+}
+
+///
+/// Checks if `$value` is less than or equal to `$other`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {number|string} $value The value to compare.
+/// @param {number|string} $other The other value to compare.
+/// @returns {bool} Returns `true` if `$value` is less than or 
+/// equal to `$other`, else `false`.
+/// @example scss
+/// 
+/// $foo: _lt(1, 3);
+/// // => true
+/// 
+/// $foo: _lt(3, 1);
+/// // => false
+/// 
+/// $foo: _lt(3, 3);
+/// // => true
+/// 
+/// $foo: _lt('abc', 'def');
+/// // => true
+/// 
+/// $foo: _lt('def', 'abc');
+/// // => false
+/// 
+/// $foo: _lt('def', 'def');
+/// // => true
+
+@function _lte($args...) {
+  @return call('__lte', $args...);
+}
+
+
+/// @alias _lte
+
+@function ≤($args...) {
+  @return call('__lte', $args...);
+}
+
+
+///
+/// Checks if `$value` is greater than `$other`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {number|string} $value The value to compare.
+/// @param {number|string} $other The other value to compare.
+/// @returns {bool} Returns `true` if `$value` is greater than `$other`, else `false`.
+/// @example scss
+/// 
+/// $foo: _lt(1, 3);
+/// // => false
+/// 
+/// $foo: _lt(3, 1);
+/// // => true
+/// 
+/// $foo: _lt(3, 3);
+/// // => false
+/// 
+/// $foo: _lt('abc', 'def');
+/// // => false
+/// 
+/// $foo: _lt('def', 'abc');
+/// // => true
+/// 
+/// $foo: _lt('def', 'def');
+/// // => false
+
+@function _gt($args...) {
+  @return call('__gt', $args...);
+}
+
+
+/// @alias _gt
+
+@function \>($args...) {
+  @return call('__gt', $args...);
+}
+
+
+///
+/// Checks if `$value` is greater than or equal to `$other`.
+/// 
+/// @access public
+/// @group Lang
+/// @param {number|string} $value The value to compare.
+/// @param {number|string} $other The other value to compare.
+/// @returns {bool} Returns `true` if `$value` is greater than or 
+/// equal to `$other`, else `false`.
+/// @example scss
+/// 
+/// $foo: _lt(1, 3);
+/// // => false
+/// 
+/// $foo: _lt(3, 1);
+/// // => true
+/// 
+/// $foo: _lt(3, 3);
+/// // => true
+/// 
+/// $foo: _lt('abc', 'def');
+/// // => false
+/// 
+/// $foo: _lt('def', 'abc');
+/// // => true
+/// 
+/// $foo: _lt('def', 'def');
+/// // => true
+
+@function _gte($args...) {
+  @return call('__gte', $args...);
+}
+
+
+/// @alias _gte
+
+@function ≥($args...) {
+  @return call('__gte', $args...);
+}

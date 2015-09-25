@@ -1,0 +1,40 @@
+
+@include test-module('_pluck') {
+  $maps: (
+    ('name': 'barney', 'age': 36),
+    ('name': 'fred', 'age': 40)
+  );
+
+  @include test('should return a list of property values from each element of a collection') {
+    @include assert-true(test-lists-equal(_pluck($maps, 'name'), ('barney', 'fred')));
+  }
+
+  $map: ('a': (1: 'one'), 'b': (1: 'two'), 'c': (1: 'three'));
+
+  @include test('should work with a map for collection') {
+    @include assert-true(test-lists-equal(_pluck($map, 1), ('one' 'two' 'three')));
+  }
+
+  $list: (('a': 1),);
+
+  @include test('should return null for undefined properties') {
+    @include assert-true(test-lists-equal(_pluck($list, 'b'), (null,)));
+  }
+
+  $maps: (('a': 1), null, false, ('a': 4));
+
+  @include test('should work with nullish elements') {
+    @include assert-true(test-lists-equal(_pluck($maps, 'a'), (1 null null 4)));
+  }
+
+  $list: (('a': 1), null, ('a': 3), ('a': 4));
+  $actual: _($list, _pluck 'a');
+
+  @include test('should work in a lazy chain sequence') {
+    @include assert-true(test-lists-equal($actual, 1 null 3 4));
+  }
+
+  @include test('should work in a lazy chain sequence') {
+    @include assert-true(test-lists-equal(_($list, _filter _identity, _pluck 'a'), 1 3 4));
+  }
+}

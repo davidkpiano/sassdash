@@ -1,0 +1,102 @@
+
+$test-falsey: ('', 0, false, null);
+$test-empty-list: ();
+
+@function test-add($x, $y, $args...) {
+    @return $x + $y;
+}
+
+@function test-square($n, $args...) {
+    @return $n * $n;
+}
+
+@function test-double($n, $args...) {
+  @return $n * 2;
+}
+
+@function test-fixed($n) {
+    @return __number-to-fixed($n);
+}
+
+@function test-is-even($n, $args...) {
+    @return $n % 2 == 0;
+}
+
+@function test-floor($n, $args...) {
+  @return floor($n);
+}
+
+@function test-args($args...) {
+  @return $args;
+}
+
+@function test-lists-equal($one, $two) {
+  @if type-of($one) == number and type-of($two) == number {
+    @return $one == $two and unit($one) == unit($two);
+  } @else if type-of($one) == color and type-of($two) == color {
+    // Get around some really weird color issue in LibSass
+    // TODO: find out what's up with LibSass here.
+    $equal: $one == $two;
+
+    @if not $equal {
+      $equal: $one + '' == $two + '';
+    }
+
+    @return $equal;
+  } @else if (type-of($one) == list or type-of($one) == arglist)
+        and (type-of($two) == list or type-of($two) == arglist) {
+    $equal: length($one) == length($two);
+    $index: 1;
+
+    @if not $equal {
+      @debug '#{inspect($one)} != #{inspect($two)} (lengths: #{length($one)}, #{length($two)})';
+      @return false;
+    }
+
+    @while $index <= length($one) and $equal == true {
+      $equal: test-lists-equal(nth($one, $index), nth($two, $index));
+      
+      $index: $index + 1;
+    }
+
+    @return $equal;
+  } @else {
+    @return $one == $two;
+  }
+}
+
+@function test-maps-equal($one, $two) {
+  @if type-of($one) != map or type-of($two) != map {
+    @return test-lists-equal($one, $two);
+  }
+
+  @if length($one) != length($two) {
+    @return false;
+  }
+
+  $equal: true;
+
+  @each $key, $value in $one {
+    $other-value: map-get($two, $key);
+    $equal: test-lists-equal($value, $other-value);
+  }
+
+  @return $equal;
+}
+
+@mixin assert-lists-equal($one, $two, $msg: '') {
+  $equal: test-lists-equal($one, $two);
+
+  @include assert-true($equal, $msg);
+}
+
+@mixin assert-maps-equal($one, $two, $msg: '') {
+  $equal: test-maps-equal($one, $two);
+
+  @include assert-true($equal, $msg);
+}
+
+
+@mixin test-group() { @content; }
+
+@mixin xit($args...) { @if false { @content; } }

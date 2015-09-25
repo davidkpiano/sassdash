@@ -1,0 +1,6 @@
+@include test-module('Sassdash') {
+  @include test('_without') {
+    @include assert-equal(_without(1 2 3 1 2 3, 1, 2), 3 3,
+      'should remove all occurences of each value from a list');
+  }
+}

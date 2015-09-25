@@ -1,0 +1,26 @@
+@include test-module('_property') {
+  $map: ('a': 1, 'b': 2);
+  $prop: _property('a');
+
+  @include test('should create a function that plucks a property value of a given map') {
+    @include assert-equal(_call($prop, null, $map), 1);
+  }
+
+  $prop: _property('b');
+
+  @include test('should create a function that plucks a property value of a given map') {
+    @include assert-equal(_call($prop, null, $map), 2);
+  }
+
+  $prop: _property(2);
+
+  @include test('should work with non-string prop arguments') {
+    @include assert-equal(_call($prop, null, 10 20 30), 20);
+  }
+
+  $prop: _property('a');
+
+  @include test('should work when map is nullish') {
+    @include assert-equal(_call($prop, null, null), null);
+  }
+}

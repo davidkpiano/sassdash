@@ -1,0 +1,42 @@
+
+
+@function __encode-uri-char($char, $args...) {
+  $char-code: _char-code($char);
+
+  @if not $char-code {
+    @return $char;
+  }
+
+  @if (($char-code >= 48 and $char-code <= 57)
+    or ($char-code >= 65 and $char-code <= 90)
+    or ($char-code >= 97 and $char-code <= 122)) {
+    @return $char;
+  }
+
+  @return unquote("%#{str-slice(ie-hex-str(rgb($char-code,0,0)),4,5)}");
+}
+
+
+@function __encode($string, $args...) {
+  @return _($string,
+    _map __encode-uri-char,
+    _join);
+}
+
+
+/// Converts a `$string` to a URL encoding representation by converting
+/// certain characters to their 2-digit hexadecimal equivalent,
+/// preceded by a "%" sign.
+/// 
+/// @access public
+/// @group String
+/// @param {String} $string The string to encode.
+/// @returns {String} Returns the encoded string.
+/// 
+/// @example scss
+/// $foo: _encode('Hello world');
+/// // => 'Hello%20world'
+
+@function _encode($args...) {
+  @return call('__encode', $args...);
+}

@@ -1,0 +1,51 @@
+$__context__: () !global;
+
+@mixin __context($context: (), $callback: '__identity') {
+  $parent-context: $__context__;
+
+  $__context__: $context !global;
+
+  @content;
+
+  $parent-context: __exec($callback, $parent-context, $__context__);
+
+  $__context__: $parent-context !global;
+}
+
+
+@function __context-get($keys: null, $args...) {
+  @if not $keys {
+    @return $__context__;
+  }
+
+  @return __get($__context__, $keys);
+}
+
+
+@function __context-set($keys, $value, $args...) {
+  $__context__: __set($__context__, $keys, $value) !global;
+
+  @return $__context__;
+}
+
+
+@mixin _context($args...) {
+  @include __context($args...) {
+    @content;
+  }
+}
+
+
+@mixin _context-set($args...) {
+  $_: __context-set($args...);
+}
+
+
+@function _context-get($args...) {
+  @return call('__context-get', $args...);
+}
+
+
+@function _context-set($args...) {
+  @return call('__context-set', $args...);
+}

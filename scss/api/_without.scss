@@ -1,5 +1,11 @@
 @function __without($list, $args...) {
-    @return __base-difference($list, join((), $args));
+    $arguments: ();
+
+    @each $arg in $args {
+      $arguments: append($arguments, $arg);
+    }
+
+    @return __base-difference($list, $arguments);
 }
 
 

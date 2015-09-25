@@ -1,0 +1,105 @@
+@include test-module('_is-match') {
+    @include test('should perform a deep comparison between map and source') {
+        $map: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal(_is-match($map, ('a': 1)), true);
+        @include assert-equal(_is-match($map, ('b': 1)), false);
+        @include assert-equal(_is-match($map, ('a': 1, 'c': 3)), true);
+        @include assert-equal(_is-match($map, ('c': 3, 'd': 4)), false);
+
+        $map: ('a': ('b': ('c': 1, 'd': 2), 'e': 3), 'f': 4);
+        @include assert-equal(_is-match($map, ('a': ('b': ('c': 1)))), true);
+    }
+
+    @include test('should compare a variety of source values') {
+        $map1: ('a': false, 'b': true, 'c': '3', 'd': 4, 'e': (5,), 'f': ('g': 6));
+        $map2: ('a': 0, 'b': 1, 'c': 3, 'd': '4', 'e': ('5',), 'f': ('g': '6'));
+
+        @include assert-equal(_is-match($map1, $map1), true);
+        @include assert-equal(_is-match($map1, $map2), false);
+    }
+
+    @include test('should return true when comparing an empty source') {
+        $map: ('a': 1);
+
+        @include assert-equal(_is-match($map, ()), true);
+    }
+
+    @include test('should return true when comparing a source of empty lists and maps') {
+        $maps: (('a': (1,), 'b': ('c': 1)), ('a': 2 3, 'b': ('d': 2)));
+        $source: ('a': (), 'b': ());
+
+        @each $map in $maps {
+            @include assert-equal(__is-match($map, $source), true);
+        }
+    }
+
+    @include test('should return false for falsey map values') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-match($value, ('a': 1)), false);
+        }
+    }
+
+    @include test('should return true when comparing an empty source to a falsey map') {
+        @each $value in $test-falsey {
+            @include assert-equal(_is-match($value, ()), true);
+        }
+    }
+
+    @include test('should search lists of source for values') {
+        $maps: (('a': ('b',)), ('a': ('c', 'd')));
+        $source: ('a': ('d',));
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-true(test-lists-equal($actual, (nth($maps, 2),)));
+
+        $source: ('a': ('d', 'b'));
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-equal($actual, ());
+
+        $source: ('a': ('b', 'd'));
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-equal($actual, ());
+    }
+
+    @include test('should perform a partial comparison of all maps within lists of source') {
+        $source: ('a': (('b': 1), ('b': 4, 'c': 5)));
+
+        $maps: (
+            ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 5, 'd': 6 ))),
+            ('a': (('b': 1, 'c': 2 ), ('b': 4, 'c': 6, 'd': 7 )))
+        );
+
+        $actual: ();
+
+        @each $map in $maps {
+            @if _is-match($map, $source) {
+                $actual: append($actual, $map);
+            }
+        }
+
+        @include assert-true(test-lists-equal($actual, (nth($maps, 1),)));
+    }
+
+    // TODO: fix and finish _is-match tests
+}

@@ -1,0 +1,25 @@
+@include test-module('_to-string') {
+  @include test('should not affect string as string argument') {
+    @include assert-equal(_to-string('abc'), 'abc');
+  }
+      
+
+  @include test('should coerce number to string') {
+    @include assert-equal(_to-string(123), '123');
+  }
+      
+
+  @include test('should coerce bool to string') {
+    @include assert-equal(_to-string(true), 'true');
+  }
+      
+
+  @include test('should coerce list to string') {
+    @include assert-equal(_to-string(1 2 3), '1 2 3');
+  }
+      
+
+  @include test('should coerce map to string') {
+    @include assert-equal(_to-string(('a': 1, 'b': 2, 'c': 3)), '("a": 1, "b": 2, "c": 3)');
+  }
+}

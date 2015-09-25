@@ -1,0 +1,73 @@
+
+@include test-module('_lt') {
+  @include test('should return true if value is less than other') {
+    @include assert-equal(_lt(1, 3), true);
+    @include assert-equal(_lt('abc', 'def'), true);
+  }
+
+  @include test('should return false if value is greater than or equal to other') {
+    @include assert-equal(_lt(3, 1), false);
+    @include assert-equal(_lt(3, 3), false);
+    @include assert-equal(_lt('def', 'abc'), false);
+    @include assert-equal(_lt('def', 'def'), false);
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(\<(1, 3), _lt(1, 3));
+  }
+}
+
+@include test-module('_lte') {
+  @include test('should return true if value is less than or equal to other') {
+    @include assert-equal(_lte(1, 3), true);
+    @include assert-equal(_lte(3, 3), true);
+    @include assert-equal(_lte('abc', 'def'), true);
+    @include assert-equal(_lte('def', 'def'), true);
+  }
+
+  @include test('should return false if value is greater than other') {
+    @include assert-equal(_lte(3, 1), false);
+    @include assert-equal(_lte('def', 'abc'), false);
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(≤(1, 3), _lt(1, 3));
+  }
+}
+
+@include test-module('_gt') {
+  @include test('should return true if value is greater than other') {
+    @include assert-equal(_gt(3, 1), true);
+    @include assert-equal(_gt('def', 'abc'), true);
+  }
+
+  @include test('should return false if value is less than or equal to other') {
+    @include assert-equal(_gt(1, 3), false);
+    @include assert-equal(_gt('abc', 'def'), false);
+    @include assert-equal(_gt(3, 3), false);
+    @include assert-equal(_gt('def', 'def'), false);
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(\>(3, 1), _gt(3, 1));
+  }
+}
+
+@include test-module('_gte') {
+  @include test('should return true if value is greater than or equal to other') {
+    @include assert-equal(_gte(3, 1), true);
+    @include assert-equal(_gte('def', 'abc'), true);
+    @include assert-equal(_gte(3, 3), true);
+    @include assert-equal(_gte('def', 'def'), true);
+  }
+
+  @include test('should return false if value is less than other') {
+    @include assert-equal(_gte(1, 3), false);
+    @include assert-equal(_gte('abc', 'def'), false);
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(≥(1, 3), _gte(1, 3));
+  }
+}
+

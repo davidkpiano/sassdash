@@ -1,0 +1,23 @@
+@include test-module('Sassdash') {
+  @include test('_times') {
+    @include assert-equal(_times(3, null), 1 2 3,
+      'should use _identity when iteratee is nullish');
+
+    @include assert-equal(_times(3), 1 2 3,
+      'should use _identity when iteratee is nullish');
+
+    @include assert-equal(_times(3, test-square), 1 4 9,
+      'should return a list of the results of each iteratee execution');
+
+    @each $value in $test-falsey {
+      @include assert-equal(_times($value), (),
+        'should return an empty list for falsey and negative n arguments');
+    }
+
+    @include assert-equal(_times(-1), (),
+      'should return an empty list for falsey and negative n arguments');
+
+    @include assert-equal(_(3, _times), 1 2 3,
+      'should be chainable');
+  }
+}

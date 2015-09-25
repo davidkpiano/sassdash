@@ -1,0 +1,48 @@
+
+@include test-module('_partition') {
+  $list: 1 0 1;
+
+  @include test('should return two groups of elements') {
+    @include assert-true(test-lists-equal(_partition((), _identity), ((), ())));
+  }
+
+  @include test('should return two groups of elements') {
+    @include assert-true(test-lists-equal(_partition($list, _constant(true)), ($list, ())));
+  }
+
+  @include test('should return two groups of elements') {
+    @include assert-true(test-lists-equal(_partition($list, _constant(false)), ((), $list)));
+  }
+
+  $expected: (1 1), (0,);
+
+  @include test('should use _identity when predicate is nullish') {
+    @include assert-true(test-lists-equal(_partition($list, null), $expected));
+  }
+
+  @include test('should use _identity when predicate is nullish') {
+    @include assert-true(test-lists-equal(_partition($list), $expected));
+  }
+
+  // todo: should support the this-arg argument
+
+  $maps: (('a': 1), ('a': 1), ('b': 2));
+  $expected: _slice($maps, 0, 2), _slice($maps, 2);
+
+  @include test('should work with a _pluck style predicate') {
+    @include assert-true(test-lists-equal(_partition($maps, 'a'), $expected));
+  }
+
+  $list: (1 0, 0 1, 1 0);
+  $expected: ((1 0, 1 0), (0 1,));
+
+  @include test('should work with a number for predicate') {
+    @include assert-true(test-lists-equal(_partition($list, 1), $expected));
+  }
+
+  $map: ('a': 1.1, 'b': 0.2, 'c': 1.3);
+
+  @include test('should work with map for collection') {
+    @include assert-true(test-lists-equal(_partition($map, test-floor), ((1.1, 1.3), (0.2,))));
+  }
+}

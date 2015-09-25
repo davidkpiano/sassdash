@@ -1,0 +1,52 @@
+@function test-assign-1($a, $b, $args...) {
+    @return if($a == null or $a == $__undefined__, $b, $a);
+}
+@include test-module('_assign') {
+    @include test('should assign properties of a source object to the destination object') {
+        @include assert-equal(_assign(('a': 1), ('b': 2)), ('a': 1, 'b': 2));
+    }
+
+    @include test('should accept multiple source objects') {
+        $expected: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal(_assign(('a': 1), ('b': 2), ('c': 3)), $expected);
+        @include assert-equal(_assign(('a': 1), ('b': 2, 'c': 2), ('c': 3)), $expected);
+    }
+
+    @include test('should overwrite destination properties') {
+        $expected: ('a': 3, 'b': 2, 'c': 1);
+
+        @include assert-equal(_assign(('a': 1, 'b': 2), $expected), $expected);
+    }
+
+    @include test('should work with a customizer callback') {
+        $actual: _assign(('a': 1, 'b': 2), ('a': 3, 'c': 3), test-assign-1);
+        $expected: ('a': 1, 'b': 2, 'c': 3);
+
+        @include assert-equal($actual, $expected);
+    }
+}
+
+@include test-module('map assignments') {  
+  // TODO: add 'merge'
+  @each $method-name in 'assign', 'defaults' {
+    $func: unquote('_#{$method-name}');
+
+    @each $value in $test-falsey {
+      $actual: _call($func, null, $value);
+      $expected: $value;
+
+      @include test('#{$func} should pass thru falsey map values') {
+        @include assert-equal($actual, $expected);
+      }
+    }
+
+    $list: (('b': 2), ('c': 3));
+    $actual: _reduce($list, $func, ('a': 1));
+    $expected: ('a': 1, 'b': 2, 'c': 3);
+
+    @include test('#{$func} should work as an iteratee for _reduce') {
+      @include assert-equal($actual, $expected);
+    }
+  }
+}

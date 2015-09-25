@@ -1,0 +1,29 @@
+
+@include test-module('_to-map') {
+  $map: (a: 1, b: 2, c: 3);
+  $list: (100, 200, 300);
+  $string: 'abc';
+  $non-list-like: (3, true, false, null, #C0FFEE);
+
+  @include test('should not affect map as map argument') {
+    @include assert-maps-equal(_to-map($map), $map);
+  }
+
+  @include test('should coerce list to map') {
+    $expected: (1: 100, 2: 200, 3: 300);
+
+    @include assert-maps-equal(_to-map($list), $expected);
+  }
+
+  @include test('should coerce string to map') {
+    $expected: (1: 'a', 2: 'b', 3: 'c');
+
+    @include assert-maps-equal(_to-map($string), $expected);
+  }
+
+  @include test('should return empty map for non-list-like values') {
+    @each $value in $non-list-like {
+      @include assert-equal(_to-map($value), ());
+    }
+  }
+}

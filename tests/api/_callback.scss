@@ -1,0 +1,107 @@
+@function test-callback-1($args...) {
+    @return $args;
+}
+@function test-callback-2($args...) {
+    $result: __this('a');
+    $result: join(($result), $args);
+
+    @return $result;
+}
+@function test-callback-3($callback, $args...) {
+    @return _call($callback);
+}
+@function test-callback-4() {
+    @return false;
+}
+@function _lighten($color, $amount) {
+    @return type-of($amount), $amount;
+}
+@include test-module('_callback') {
+    @include test('should provide arguments to func') {
+        $callback: _callback(test-callback-1);
+
+        $actual: _call($callback, null, 'a', 'b', 'c', 'd', 'e', 'f');
+        $expected: 'a' 'b' 'c' 'd' 'e' 'f';
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+
+    @include test('should return _identity when func is nullish') {
+        $actual: _call(_callback());
+        $expected: null;
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _call(_callback(null));
+        $expected: null;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include xit('should not error when func is nullish and a thisArg is provided') {
+        // todo
+    }
+
+    @include xit('should create a callback with a falsey thisArg') {
+        // todo
+    }
+
+    @include test('should return a callback created by _matches when func is an object') {
+        $callback: _callback(('a': 1));
+        $actual: _call($callback, null, ('a': 1, 'b': 2));
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return a callback created by _property when func is a number or string') {
+        $list: ('a');
+        $callback: _callback(1);
+        $actual: _call($callback, null, $list);
+        $expected: 'a';
+
+        @include assert-equal($actual, $expected);
+
+        $callback: _callback('first');
+        $actual: _call($callback, null, ('first': 'a'));
+        $expected: 'a';
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include xit('should work with functions created by _partial and _partial-right') {
+        $_: __scope(('a': 1));
+        $callback: _callback(test-callback-2, _partial(test-callback-2, 2), $__current-scope__);
+        $_: __scope(false);
+
+        $actual: _call($callback, null, 3);
+        $expected: (1 2 3);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return the function provided when there is no this reference') {
+        $actual: _callback(test-add);
+        $expected: test-add;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $fn: test-callback-4;
+        $list: ($fn $fn $fn);
+        $expected: _map($list, _constant(false));
+        $callbacks: _map($list, _callback);
+
+        $actual: _map($callbacks, test-callback-3);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work as a shifted argument callback with a list for function') {
+        $shifted-args: _callback(lighten 100%);
+        $actual: _exec($shifted-args, black);
+
+        @include assert-equal($actual, white);
+    }
+}

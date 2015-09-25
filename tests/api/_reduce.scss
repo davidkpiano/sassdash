@@ -1,0 +1,73 @@
+@function test-reduce-1($a, $b, $args...) {
+  @return $a + $b + to-upper-case($b);
+}
+@include test-module('_reduce') {  
+$list: 1 2 3;
+
+  @include test('should use the first element of a collection as the default accumulator') {
+    @include assert-equal(_reduce($list), 1);
+  }
+
+  @include test('should reduce a collection given an iterator') {
+    @include assert-equal(_reduce($list, test-add), 6);
+  }
+
+  @include test('should work with a string literal for collection') {
+    @include assert-equal(_reduce('abc', test-reduce-1, ''), 'aAbBcC');
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(_foldl($list, test-add), _reduce($list, test-add));
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(_inject($list, test-add), _reduce($list, test-add));
+  }
+}
+
+@include test-module('_reduce-right') {  
+$list: 1 2 3;
+
+  @include test('should use the last element of a collection as the default accumulator') {
+    @include assert-equal(_reduce-right($list), 3);
+  }
+
+  @include test('should reduce a collection given an iterator') {
+    @include assert-equal(_reduce-right($list, test-add), 6);
+  }
+
+  @include test('should work with a string literal for collection') {
+    @include assert-equal(_reduce-right('abc', test-reduce-1, ''), 'cCbBaA');
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(_foldr($list, test-add), _reduce-right($list, test-add));
+  }
+}
+
+@include test-module('_reduce methods') {  
+$list: 1 2 3;
+
+  @each $method-name in 'reduce', 'reduce-right' {
+    $func: unquote('_#{$method-name}');
+    $is-reduce: $method-name == 'reduce';
+
+    @include test('#{$func} should reduce a collection to a single value') {
+      @include assert-equal(
+        _call($func, null, 'a' 'b' 'c', test-add, ''),
+        if($is-reduce, 'abc', 'cba'));
+    }
+
+    @include test('#{$func} should support empty collections without an initial accumulator value') {
+      @include assert-equal(
+        _call($func, null, (), _noop),
+        null);
+    }
+
+    @include test('#{$func} should support empty collections with an initial accumulator value') {
+      @include assert-equal(
+        _call($func, null, (), _noop, 'x'),
+        'x');
+    }
+  }
+}

@@ -1,0 +1,58 @@
+$test-before-count: 0 !global;
+@function test-before-1() {
+    $test-before-count: $test-before-count + 1 !global;
+
+    @return $test-before-count;
+}
+@include test-module('_before') {
+    @include test('should create a function that invokes func after n calls') {
+        // before(n) should invoke `func` before being called `n` times
+        $test-before-count: 0 !global;
+        $test-before: _before(5, test-before-1);
+
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+
+        @include assert-equal($test-before-count, 4);
+
+        // before(n) should not invoke `func` after being called `n - 1` times
+        $test-before-count: 0 !global;
+        $test-before: _before(5, test-before-1);
+
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+        $_: _call($test-before);
+
+        @include assert-equal($test-before-count, 4);
+        
+        // before(0) should not invoke `func` immediately
+        $test-before-count: 0 !global;
+        $test-before: _before(0, test-before-1);
+
+        @include assert-equal($test-before-count, 0);
+
+        // before(0) should not invoke `func` when called
+        $test-before-count: 0 !global;
+        $test-before: _before(0, test-before-1);
+
+        $_: _call($test-before);
+
+        @include assert-equal($test-before-count, 0);
+    }
+
+    @include test('should allow func as the first argument') {
+        $test-before-count: 0 !global;
+
+        $test-before: _before(test-before-1, 2);
+
+        $_: _call($test-before);
+        $_: _call($test-before);
+
+        @include assert-equal($test-before-count, 1);
+    }
+}

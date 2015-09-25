@@ -1,0 +1,28 @@
+
+@include test-module('_splice') {
+    $list: 1 2 3 4;
+
+    @include test('should remove specified number of items from list') {
+        @include assert-equal(_splice($list, 3, 1), 1 2 4);
+
+        @include assert-equal(_splice($list, 3, 2), 1 2);
+
+        @include assert-equal(_splice($list, 1, 1), 2 3 4);
+    }
+
+    @include test('should default to deleting one item from list') {
+        @include assert-equal(_splice($list, 2), 1 3 4);
+    }
+
+    @include test('should add any number of items to spliced list region') {
+        @include assert-equal(_splice($list, 2, 1, 'x'), 1 'x' 3 4);
+
+        @include assert-equal(_splice($list, 2, 1, 'x', 'y', 'z'), 1 'x' 'y' 'z' 3 4);
+    }
+
+    @include test('should work with delete-count > length of remaining items') {
+        @include assert-equal(_splice($list, 3, 99), 1 2);
+
+        // @include assert-equal(_splice($list, 3, 99, 10, 20, 30), 1 2 10 20 30);
+    }
+}

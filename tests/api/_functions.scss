@@ -1,0 +1,18 @@
+
+@include test-module('_functions') {
+    $map: (
+        'a': 'a',
+        'b': _identity,
+        'c': hsla,
+        'd': 'floor',
+        'e': 123
+    );
+
+    @include test('should return the function names of a map') {
+        @include assert-equal(_functions($map), 'b' 'c' 'd');
+    }
+
+    @include test('should be aliased') {
+        @include assert-equal(_methods($map), _functions($map));
+    }
+}

@@ -1,0 +1,27 @@
+@include test-module('_constant') {
+    @include test('should create a function that returns value') {
+        $constant: _constant(('a': 1));
+        $actual: _call($constant);
+        $expected: ('a': 1);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with falsey values') {
+        @each $value in $test-falsey {        
+            $constant: _constant($value);
+            $actual: _call($constant);
+            $expected: $value;
+
+            @include assert-equal($actual, $expected);
+        }
+
+        $constant: _constant();
+        $actual: _call($constant);
+        $expected: null;
+
+        @include assert-equal($actual, $expected);    
+    }
+
+    @include xit('should return a wrapped value when chaining') {}
+}

@@ -1,0 +1,6 @@
+
+@include test-module('_noop') {
+  @include test('should return null') {
+    @include assert-equal(_noop(1, 2, 3), null);
+  }
+}

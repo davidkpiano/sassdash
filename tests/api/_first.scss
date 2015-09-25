@@ -1,0 +1,40 @@
+@include test-module('_first') {
+    $list: 1 2 3;
+
+    @include test('should return the first element') {
+        $actual: _first($list);
+        $expected: 1;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return null when querying empty arrays') {
+        $actual: _first(());
+        $expected: null;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work as an iteratee for _map') {
+        $list: (1 2 3, 4 5 6, 7 8 9);
+        $actual: _map($list, _first);
+        $expected: 1 4 7;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: 1 2 3 4;
+        $actual: _($list, _filter test-is-even, _first);
+        $expected: 2;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should be aliased') {
+        $actual: _head($list);
+        $expected: _first($list);
+
+        @include assert-equal($actual, $expected);
+    }
+}

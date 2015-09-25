@@ -1,0 +1,58 @@
+
+@function test-uniq-1($map, $args...) {
+  @return __get($map, 'a');
+}
+@include test-module('_uniq') {
+  $maps: (
+    ( 'a': 2 ),
+    ( 'a': 3 ),
+    ( 'a': 1 ),
+    ( 'a': 2 ),
+    ( 'a': 3 ),
+    ( 'a': 1 )
+  );
+
+  @include test('should return unique values of an unsorted list') {
+    @include assert-lists-equal(_uniq(2 3 1 2 3 1), 2 3 1);
+  }
+
+  @include test('should return unique values of a sorted list') {
+    @include assert-lists-equal(_uniq(1 1 2 2 3), 1 2 3);
+  }
+
+  @include test('should return unique values of multidimensional lists') {
+    $list: 1 2, 1 2, 2 1, 1 2, 2 1, 1 2, 2 1, 2 1, 1 2, 2 1;
+    $actual: _uniq($list);
+    $expected: 1 2, 2 1;
+
+    @include assert-lists-equal($actual, $expected);
+  }
+
+  @include test('should work with an iteratee argument without specifying is-sorted') {
+    @include assert-lists-equal(_uniq($maps, test-uniq-1), _slice($maps, 0, 3));
+  }
+
+  @include test('should work with a _pluck style iteratee') {
+    @include assert-lists-equal(_uniq($maps, 'a'), _slice($maps, 0, 3));
+  }
+
+  $lists: (2 1, 3 1, 1 1, 2 1, 3 1, 1 1);
+
+  @include test('should work with a _pluck style iteratee') {
+    @include assert-lists-equal(_uniq($lists, 1), _slice($lists, 0, 3));
+  }
+
+  $list: (2 1 2, 1 2 1);
+
+  @include test('should perform an unsorted uniq when used as an iteratee for _map') {
+    @include assert-lists-equal(_map($list, _uniq), (2 1, 1 2));
+  }
+
+  @include test('should distinguish between numbers and numeric strings') {
+    @include assert-lists-equal(_uniq('2' 2 3 '2' 3 2), '2' 2 3);
+  }
+
+  @include test('should be aliased') {
+    @include assert-equal(_unique(2 3 1 2), _uniq(2 3 1 2));
+  }
+}

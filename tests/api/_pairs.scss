@@ -1,0 +1,7 @@
+@include test-module('_pairs') {
+  $map: ('a': 1, 'b': 2);
+
+  @include test('should create a 2d list of key-value pairs') {
+    @include assert-lists-equal(_pairs($map), (('a', 1), ('b', 2)));
+  }
+}

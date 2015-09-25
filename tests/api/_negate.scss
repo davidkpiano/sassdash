@@ -1,0 +1,11 @@
+@include test-module('Sassdash') {
+  $negate: _negate(test-is-even);
+
+  @include test('should create a function that negates the result of func') {
+    @include assert-equal(_call($negate, null, 1), true);
+  }
+
+  @include test('should create a function that negates the result of func') {
+    @include assert-equal(_call($negate, null, 2), false);
+  }
+}

@@ -1,0 +1,72 @@
+@function test-count-by-1($value, $args...) {
+    @return floor($value);
+}
+@function test-count-by-2($value, $args...) {
+    @return $value > 2;
+}
+@include test-module('_count-by') {
+    $list: (4.2, 6.1, 6.4);
+
+    @include test('should work with an iteratee') {
+        $actual: _count-by($list, test-count-by-1);
+        $expected: (4: 1, 6: 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should use _identity when iteratee is null') {
+        $list: (4, 6, 6);
+        $actual: _count-by($list, null);
+        $expected: (4: 1, 6: 2);
+
+        @include assert-equal($actual, $expected);
+
+        $actual: _count-by($list);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    // @include xit('should support the this-arg argument') {}
+
+    @include test('should work with a _pluck style iteratee') {
+        $map: (
+            (a: 'one', len: 3),
+            (a: 'two', len: 3),
+            (a: 'three', len: 5),
+        );
+        $actual: _count-by($map, 'len');
+        $expected: (3: 2, 5: 1);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with a number for iteratee') {
+        $list: (1 'a', 2 'a', 2 'b');
+        $actual: _count-by($list, 1);
+        $expected: (1: 1, 2: 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with an object for collection') {
+        $actual: _count-by(('a': 4.2, 'b': 6.1, 'c': 6.4), test-count-by-1);
+        $expected: (4: 1, 6: 2);
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work in a lazy chain sequence') {
+        $list: (1 2 1 3);
+        $foo: _($list,
+            _count-by _identity,
+            _map test-double);
+        $actual: _($list,
+            _count-by _identity,
+            _map test-double,
+            _filter test-count-by-2,
+            _take);
+        $expected: (4,);
+
+        @include assert-true(test-lists-equal($actual, $expected));
+    }
+}

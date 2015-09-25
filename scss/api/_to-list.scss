@@ -1,10 +1,10 @@
 @function __to-list($value) {
+    $result: ();
+
     @if __is-map($value) {
         @if __list-some(map-keys($value), __is-string) {
             @return map-values($value);
         }
-
-        $result: ();
 
         @for $index from 1 through max(map-keys($value)...) {
             $map-value: __get($value, $index);
@@ -15,18 +15,22 @@
     }
 
     @if __is-string($value) {
-        $result: ();
-
         @if str-length($value) >= 1 {
             @for $index from 1 through str-length($value) {
-                $result: append($result, str-slice($value, $index, $index));
+                $result: append($result, unquote(str-slice($value, $index, $index)));
             }
         }
 
         @return $result;
     }
 
-    @return if(__is-list-like($value), join((), $value), ());
+    @if __is-list-like($value) {
+        @each $item in $value {
+            $result: append($result, $item);
+        }
+    }
+
+    @return $result;
 }
 
 

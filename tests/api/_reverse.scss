@@ -1,0 +1,20 @@
+@include test-module('Sassdash') {
+  @include test('_reverse') {
+    $list: 1 2 3;
+    $list-list: 1 2 3, 4 5 6;
+
+    @include assert-equal(_reverse('abcde'), 'edcba',
+      'should reverse a string');
+
+    @include assert-equal(_reverse($list), 3 2 1,
+      'should reverse a list');
+
+    @include assert-equal(_map($list-list, _reverse), ((3 2 1) (6 5 4)),
+      'should work as iteratee for _map');
+
+    @include assert-equal(
+      _($list-list, _map _join, _map _to-string, _reduce _str-concat, _reverse),
+      '654321',
+      'should be chainable');
+  }
+}

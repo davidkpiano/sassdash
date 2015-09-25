@@ -1,0 +1,54 @@
+@include test-module('case methods') {
+    $strings: (
+        'foo bar', 'Foo bar', 'foo Bar', 'Foo Bar',
+        'fooBar', '--foo-bar', '__foo_bar__'
+    );
+
+    $converted: (
+        'camel': 'fooBar',
+        'kebab': 'foo-bar',
+        'snake': 'foo_bar',
+        'start': 'Foo Bar'
+    );
+
+    @each $case-name in ('camel' 'kebab' 'snake' 'start') {
+        $method-name: '_' + $case-name + '-case';
+        
+        @include test('should convert string to #{$case-name} case') {
+            @each $string in $strings {
+                $actual: call($method-name, $string);
+                $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
+
+                @include assert-equal($actual, $expected);
+            }
+        }
+
+        @include test('#{$method-name} should handle double-converting strings') {
+            @each $string in $strings {
+                $actual: call($method-name, call($method-name, $string));
+                $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
+
+                @include assert-equal($actual, $expected);
+            }
+        }
+
+        @include test('#{$method-name} should return an unwrapped value when chaining') {
+            $actual: _('foo bar', $method-name);
+            $expected: __get($converted, $case-name);
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+}
+
+@include test-module('_capitalize') {
+    @include test('should capitalize the first character of a string') {
+        @include assert-equal(_capitalize('fred'), 'Fred');
+        @include assert-equal(_capitalize('Fred'), 'Fred');
+        @include assert-equal(_capitalize(' fred'), ' fred');
+    }
+
+    @include test('should return an unwrapped value when chaining') {
+        @include assert-equal(_('fred', _capitalize), 'Fred');
+    }
+}

@@ -1,0 +1,43 @@
+
+@include test-module('_range') {
+  @include test('should work with a single end argument') {
+    @include assert-true(test-lists-equal(_range(4), 0 1 2 3));
+  }
+
+  @include test('should work with start and end arguments') {
+    @include assert-true(test-lists-equal(_range(1, 5), 1 2 3 4));
+  }
+
+  @include test('should work with start, end, and step arguments') {
+    @include assert-true(test-lists-equal(_range(0, 20, 5), 0 5 10 15));
+  }
+
+  @include test('should support a step of 0') {
+    @include assert-true(test-lists-equal(_range(1, 4, 0), 1 1 1));
+  }
+
+  @include test('should work with a step larger than end') {
+    @include assert-true(test-lists-equal(_range(1, 5, 20), (1,)));
+  }
+
+  @include test('should work with a negative step argument') {
+    @include assert-true(test-lists-equal(_range(0, -4, -1), 0 -1 -2 -3));
+  }
+
+  @include test('should work with a negative step argument') {
+    @include assert-true(test-lists-equal(_range(21, 10, -3), 21 18 15 12));
+  }
+
+  @each $value in $test-falsey {
+    @include test('should treat falsey arguments as 0') {
+      @include assert-true(test-lists-equal(_range($value), ()));
+    }
+  }
+
+  $actual: _map(1 2 3, _range);
+  $expected: (0,), (0 1), (0 1 2);
+
+  @include test('should work as an iteratee for _map') {
+    @include assert-true(test-lists-equal($actual, $expected));
+  }
+}

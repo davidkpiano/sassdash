@@ -1,0 +1,13 @@
+@include test-module('Sassdash') {
+  @include test('_unique-id') {
+    $actual: _times(500, _unique-id);
+
+    @include assert-equal(length(_uniq($actual)), length($actual),
+      'should generate unique ids');
+
+    $actual: _unique-id('test-');
+
+    @include assert-equal(_starts-with($actual, 'test-'), true,
+      'should prepend prefix to unique id if specified');
+  }
+}

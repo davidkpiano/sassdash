@@ -1,0 +1,69 @@
+@include test-module('_ends-with') {
+    $string: 'abc';
+
+    @include test('should return true if a string ends with target') {
+        $actual: _ends-with($string, 'c');
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should return false if a string does not end with target') {
+        $actual: _ends-with($string, 'b');
+        $expected: false;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with a position argument') {
+        $actual: _ends-with($string, 'b', 2);
+        $expected: true;
+
+        @include assert-equal($actual, $expected);
+    }
+
+    @include test('should work with position greater than or equal to string length') {
+        @each $position in 3, 5, 9999 {        
+            $actual: _ends-with($string, 'c', $position);
+            $expected: true;
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should treat falsey position values, except undefined, as zero') {
+        @each $position in $test-falsey {        
+            $actual: _ends-with($string, if(__is-undefined($position), 'c', ''), $position);
+            $expected: true;
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+
+    @include test('should treate a negative position as zero') {
+        @each $position in -1, -3, -9999 {
+            @each $char in ('a', 'b', 'c') {            
+                $actual: _ends-with($string, $char, $position);
+                $expected: false;
+
+                @include assert-equal($actual, $expected);
+            }
+        }
+    }
+
+    @include test('should return true when target is an empty string regardless of position') {
+        @each $position in -9999, -3, -1, 0, 1, 2, 3, 5, 9999 {        
+            $actual: _ends-with($string, '', $position);
+            $expected: true;
+
+            @include assert-equal($actual, $expected);
+        }
+    }
+}
+
+@include test-module('_ends-with-any') {
+    @include test('should work with a list for target') {
+      @include assert-equal(_ends-with-any('abc', 'c' 'd' 'e'), true);
+      @include assert-equal(_ends-with-any('abc', 'bcc' 'zbc' 'cd'), false);
+    }
+}

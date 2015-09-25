@@ -1,0 +1,19 @@
+@include test-module('_replace') {
+    @include test('should globally replace instances of target in string') {
+        @include assert-equal(_replace('abracadabra', 'a', 'e'), 'ebrecedebre');
+        @include assert-equal(_replace('abracadabra', 'a'), 'brcdbr');
+        @include assert-equal(_replace('abracadabra', 'a', 'aaa'), 'aaabraaacaaadaaabraaa');
+    }
+
+    @include test('should keep string with no instances of target intact') {
+        @include assert-equal(_replace('abc', 'x'), 'abc');
+    }
+
+    @include test('should work with an empty string') {
+        @include assert-equal(_replace('', 'a'), '');
+    }
+
+    @include test('should work with a function as replacement') {
+        @include assert-equal(_replace('abcabc', 'ab', to-upper-case), 'ABcABc');
+    }
+}

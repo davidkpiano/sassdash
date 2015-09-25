@@ -4,8 +4,10 @@
     @if not __is-map($declarations) {
         @error 'Declarations for _declare must be a map.';
     } @else {
-        @each $property, $value in $declarations {
-            #{$property}: $value;
+        @each $properties, $value in $declarations {
+            @each $property in $properties {
+                #{$property}: $value;
+            }
         }
     }
 

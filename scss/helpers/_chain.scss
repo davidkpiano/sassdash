@@ -28,10 +28,9 @@
     $result: $value;
 
     @each $function-call in $function-calls {
-        $function: __first($function-call);
-        $args: __drop($function-call);
-        $function: if(__starts-with($function, '_'), $function, '_' + $function);
-        $result: __exec($function, $result, $args...);
+        $function: nth($function-call, 1);
+        $args: set-nth($function-call, 1, $result);
+        $result: __exec($function, $args...);
     }
 
     @return $result;

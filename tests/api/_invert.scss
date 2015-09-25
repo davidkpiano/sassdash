@@ -1,0 +1,30 @@
+@include test-module('_invert') {
+    @include test('should invert a map') {
+        $map: ('a': 1, 'b': 2);
+        $actual: _invert($map);
+
+        @include assert-equal($actual, (1: 'a', 2: 'b'));
+        @include assert-equal(_invert($actual), $map);
+    }
+
+    @include test('should accept a multi-value flag') {
+        $map: ('a': 1, 'b': 2, 'c': 1);
+
+        @include assert-equal(_invert($map, true), (1: ('a', 'c'), 2: ('b',)));
+    }
+
+    @include test('should work as iteratee for _map') {
+        $map: ('a': 1, 'b': 2, 'c': 1);
+        $inverted: (1: 'c', 2: 'b');
+        $actual: _map($map $map $map, _invert);
+
+        @include assert-equal($actual, $inverted $inverted $inverted);
+    }
+
+    @include test('should be chainable') {
+        $map: ('a': 1, 'b': 2, 'c': 1);
+        $actual: _($map, _map-values test-square, _invert true);
+
+        @include assert-equal($actual, (1: ('a', 'c'), 4: ('b',)));
+    }
+}

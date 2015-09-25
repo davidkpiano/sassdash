@@ -1,0 +1,33 @@
+@include test-module('_pick') {
+  $map: ('a': 1, 'b': 2, 'c': 3);
+  $expected: ('a': 1, 'c': 3);
+
+  @include test('should create a map of picked properties') {
+    @include assert-equal(_pick($map, 'a'), ('a': 1));
+  }
+
+  @include test('should support picking a list of properties') {
+    @include assert-equal(_pick($map, 'a' 'c'), $expected);
+  }
+
+  @include test('should support picking a list of properties and individual properties') {
+    @include assert-equal(_pick($map, ('a',), 'c'), $expected);
+  }
+
+  @include test('should return an empty map when map is null') {
+    @include assert-equal(_pick(null, 'something'), ());
+  }
+
+  $args: test-args('a', 'c');
+  @include test('should work with arglist as secondary arguments') {
+    @include assert-equal(_pick($map, $args), $expected);
+  }
+
+  @include test('should work with a list map argument') {
+    @include assert-equal(_pick(1 2 3, 2), (2: 2));
+  }
+
+  @include test('should work with a predicate argument') {
+    @include assert-equal(_pick($map, test-is-even), ('b': 2));
+  }
+}

@@ -94,7 +94,7 @@
             @return false;
         }
 
-        $has-ctor: if($has-ctor, true, ($key == '_constructor'));
+        $has-ctor: if($has-ctor, true, ($key == '_type'));
         $index: $index + 1;
     }
 
@@ -165,3 +165,11 @@
 @function _is-equal($args...) {
     @return call('__is-equal', $args...);
 }
+
+
+/// @alias _is-equal
+
+@function _eq($args...) {
+    @return call('__is-equal', $args...);
+}
+

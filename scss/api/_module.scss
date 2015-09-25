@@ -9,15 +9,19 @@
 @import 'case';
 @import 'chunk';
 @import 'compact';
+@import 'compare';
 @import 'concat';
 @import 'constant';
+@import 'context';
 @import 'count-by';
 @import 'create';
+@import 'debug';
 @import 'declare';
 @import 'defaults';
 @import 'difference';
 @import 'drop';
 @import 'either';
+@import 'encode';
 @import 'ends-with';
 @import 'escape';
 @import 'every';
@@ -52,6 +56,7 @@
 @import 'matches';
 @import 'memoize';
 @import 'merge';
+@import 'modify';
 @import 'negate';
 @import 'noop';
 @import 'omit';

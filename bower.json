@@ -1,7 +1,7 @@
 {
   "name": "sassdash",
-  "main": "scss/_sassdash.scss",
-  "version": "0.4.2",
+  "main": "scss/_index.scss",
+  "version": "0.7.0",
   "homepage": "https://github.com/davidkpiano/sassdash",
   "authors": [
     "David Khourshid <davidkpiano@gmail.com>"

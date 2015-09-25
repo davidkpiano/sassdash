@@ -69,22 +69,22 @@
 /// equal to `$other`, else `false`.
 /// @example scss
 /// 
-/// $foo: _lt(1, 3);
+/// $foo: _lte(1, 3);
 /// // => true
 /// 
-/// $foo: _lt(3, 1);
+/// $foo: _lte(3, 1);
 /// // => false
 /// 
-/// $foo: _lt(3, 3);
+/// $foo: _lte(3, 3);
 /// // => true
 /// 
-/// $foo: _lt('abc', 'def');
+/// $foo: _lte('abc', 'def');
 /// // => true
 /// 
-/// $foo: _lt('def', 'abc');
+/// $foo: _lte('def', 'abc');
 /// // => false
 /// 
-/// $foo: _lt('def', 'def');
+/// $foo: _lte('def', 'def');
 /// // => true
 
 @function _lte($args...) {
@@ -109,22 +109,22 @@
 /// @returns {bool} Returns `true` if `$value` is greater than `$other`, else `false`.
 /// @example scss
 /// 
-/// $foo: _lt(1, 3);
+/// $foo: _gt(1, 3);
 /// // => false
 /// 
-/// $foo: _lt(3, 1);
+/// $foo: _gt(3, 1);
 /// // => true
 /// 
-/// $foo: _lt(3, 3);
+/// $foo: _gt(3, 3);
 /// // => false
 /// 
-/// $foo: _lt('abc', 'def');
+/// $foo: _gt('abc', 'def');
 /// // => false
 /// 
-/// $foo: _lt('def', 'abc');
+/// $foo: _gt('def', 'abc');
 /// // => true
 /// 
-/// $foo: _lt('def', 'def');
+/// $foo: _gt('def', 'def');
 /// // => false
 
 @function _gt($args...) {
@@ -150,22 +150,22 @@
 /// equal to `$other`, else `false`.
 /// @example scss
 /// 
-/// $foo: _lt(1, 3);
+/// $foo: _gte(1, 3);
 /// // => false
 /// 
-/// $foo: _lt(3, 1);
+/// $foo: _gte(3, 1);
 /// // => true
 /// 
-/// $foo: _lt(3, 3);
+/// $foo: _gte(3, 3);
 /// // => true
 /// 
-/// $foo: _lt('abc', 'def');
+/// $foo: _gte('abc', 'def');
 /// // => false
 /// 
-/// $foo: _lt('def', 'abc');
+/// $foo: _gte('def', 'abc');
 /// // => true
 /// 
-/// $foo: _lt('def', 'def');
+/// $foo: _gte('def', 'def');
 /// // => true
 
 @function _gte($args...) {

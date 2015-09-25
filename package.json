@@ -12,7 +12,8 @@
     "sass-true": "^2.0.2"
   },
   "scripts": {
-    "test": "mocha tests/index.js"
+    "test": "mocha tests/index.js",
+    "start": "sassdoc scss/"
   },
   "repository": {
     "type": "git",

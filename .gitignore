@@ -5,5 +5,5 @@
 /sassdoc
 /tests/*.css
 /tests/*.map
-index.js
+/tests/.sass-cache
 index.html

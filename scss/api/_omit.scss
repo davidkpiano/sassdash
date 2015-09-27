@@ -4,11 +4,15 @@
     }
 
     $map: __to-map($map);
-
+    
     @if not __function-exists($predicate) {
-        $props: __base-flatten(($map, $predicate, $this-arg), false, false, 1);
+        $omitted-keys: __base-flatten(($predicate, $this-arg, $args));
 
-        @return __pick-by-list($map, __base-difference(__keys-in($map), $props));
+        @each $key in $omitted-keys {
+            $map: map-remove($map, $key);
+        }
+
+        @return $map;
     }
 
     $predicate: __bind-callback($predicate, $this-arg, 3);

@@ -22,9 +22,9 @@
     @include assert-equal(_omit(null, 'test'), ());
   }
 
-  $args: test-args('a', 'c');
-
   @include test('should work with arglists as secondary arguments') {
+    $args: test-args('a', 'c');
+
     @include assert-equal(_omit($map, $args), $expected);
   }
 
@@ -34,5 +34,19 @@
   
   @include test('should work with a predicate argument') {
     @include assert-equal(_omit(('a': 1,'b': 2,'c': 3,'d': 4,'e': 5), test-is-even), ('a': 1, 'c': 3, 'e': 5));
+  }
+
+  @include test('should work with lists as keys') {
+    $map-with-list-as-key: ('a': 'test', ('b', 'c'): 'test2');
+    $expected: (('b', 'c'): 'test2');
+
+    @include assert-equal(_omit($map-with-list-as-key, 'a'), $expected);
+  }
+
+  @include test('should work with maps as keys') {
+    $map-with-map-as-key: ('a': 'test', ('b': 'c'): 'test2');
+    $expected: (('b': 'c'): 'test2');
+
+    @include assert-equal(_omit($map-with-map-as-key, 'a'), $expected);
   }
 }

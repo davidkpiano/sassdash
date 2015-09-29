@@ -1,11 +1,19 @@
-@function pow($number, $exp) {
-    $value: 1;
 
+
+@function __math-pow($number, $exp) {
+    @if (round($exp) != $exp) {
+      @return __math-exp($exp * __math-ln($number));
+    }
+    
+    // Traditional method for integers
+    $value: 1;
+    
     @if $exp > 0 {
         @for $i from 1 through $exp {
-            $value: $value * $number;
+           $value: $value * $number;
         }
-    } @else if $exp < 0 {
+    }
+    @else if $exp < 0 {
         @for $i from 1 through -$exp {
             $value: $value / $number;
         }
@@ -15,12 +23,72 @@
 }
 
 
+@function __math-factorial($value) {
+  @if $value == 0 {
+    @return 1;
+  }
+  
+  $result: 1;
+  
+  @for $index from 1 through $value {
+    $result: $result * $index;
+  }
+  
+  @return $result;
+}
+
+
+@function __math-summation($iteratee, $input, $initial: 0, $limit: 100) {
+  $sum: 0;
+  
+  @for $index from $initial to $limit {
+    $sum: $sum + call($iteratee, $input, $index);
+  }
+  
+  @return $sum;
+}
+
+
+@function __math-exp-maclaurin($x, $n) {
+  $result: __math-pow($x, $n) / __math-factorial($n);
+  @return $result;
+}
+
+
+@function __math-exp($value) {
+  $result: __math-summation(__math-exp-maclaurin, $value, 0, 100);
+  @return $result;
+}
+
+
+@function __math-ln-maclaurin($x, $n) {
+  $result: (__math-pow(-1, $n + 1) / $n) * (__math-pow($x - 1, $n));
+  @return $result;
+}
+
+
+@function __math-ln($value) {
+  $ten-exp: 1;
+  $ln-ten: 2.30258509;
+  
+  @while ($value > __math-pow(10, $ten-exp)) {
+    $ten-exp: $ten-exp + 1;
+  }
+  
+  $value: $value / __math-pow(10, $ten-exp);
+
+  $result: __math-summation(__math-ln-maclaurin, $value, 1, 100);
+  
+  @return $result + $ten-exp * $ln-ten;
+}
+
+
 @function __number-to-fixed($value, $digits: null) {
     @if $digits == null {
         @return round($value);
     }
 
-    @return round($value * pow(10, $digits)) / pow(10, $digits);
+    @return round($value * __math-pow(10, $digits)) / __math-pow(10, $digits);
 }
 
 
@@ -78,7 +146,7 @@
 
     $unit: __unit($string);
 
-    @return $multiplier * $result / pow($radix, $exponent) * $unit;
+    @return $multiplier * $result / __math-pow($radix, $exponent) * $unit;
 }
 
 
@@ -89,4 +157,9 @@
 
 @function _to-number($args...) {
     @return call('__parse-float', $args...);
+}
+
+
+@function _pow($args...) {
+    @return call('__math-pow', $args...);
 }

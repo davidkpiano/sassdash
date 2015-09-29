@@ -26,7 +26,7 @@
         'should return an empty list when n < 1 or NaN');
     }
 
-    @each $value in 3, 4, pow(2, 32), 9999 {
+    @each $value in 3, 4, _pow(2, 32), 9999 {
       @include assert-equal(__sort(_sample($list, $value)), $list,
         'should return all elements when n >= list length');
     }

@@ -34,7 +34,7 @@
     }
 
     @include test('should return all elements when n is greater than list length') {
-        @each $value in 3, 4, pow(2, 32), 9999 {        
+        @each $value in 3, 4, _pow(2, 32), 9999 {        
             $actual: _take($list, $value);
             $expected: $list;
 
@@ -101,7 +101,7 @@
         'should return an empty list when n < 1');
     }
 
-    @each $value in 3, 4, pow(2, 32), 9999 {
+    @each $value in 3, 4, _pow(2, 32), 9999 {
       @include assert-true(test-lists-equal(_take-right($list, $value), $list),
         'should return all elements when n >= list length');
     }

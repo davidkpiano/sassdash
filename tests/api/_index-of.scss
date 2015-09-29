@@ -10,7 +10,7 @@
     }
 
     @include test('should work with from-index >= list length') {
-        $values: 6 8 pow(2, 32);
+        $values: 6 8 _pow(2, 32);
 
         @each $value in $values {
             @include assert-equal(_index-of($list, 1, $value), -1);
@@ -28,7 +28,7 @@
     }
 
     @include test('should work with a negative from-index <= -list length') {
-        @each $value in -6 -8 (pow(2, 32) * -1) {
+        @each $value in -6 -8 (_pow(2, 32) * -1) {
             @include assert-equal(_index-of($list, 1, $value), 1);
         }
     }
@@ -47,7 +47,7 @@
     }
 
     @include test('should work with from-index >= list length') {
-        $values: 6, 8, pow(2, 32), 9999;
+        $values: 6, 8, _pow(2, 32), 9999;
 
         @each $value in $values {
             @include assert-equal(_last-index-of($list, null, $value), -1);

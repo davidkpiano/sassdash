@@ -5,7 +5,7 @@
     @include assert-true(test-lists-equal(_slice($list, 1), 2 3),
       'should work with a positive start');
 
-    @each $value in 3, 4, pow(2, 32), 9999 {
+    @each $value in 3, 4, _pow(2, 32), 9999 {
       @include assert-true(test-lists-equal(_slice($list, $value), ()),
         'should work with a start >= list length');
     }
@@ -31,7 +31,7 @@
     @include assert-true(test-lists-equal(_slice($list, 0, 1), (1,)),
       'should work with positive end');
 
-    @each $value in 3, 4, pow(2, 32), 9999 {
+    @each $value in 3, 4, _pow(2, 32), 9999 {
       @include assert-true(test-lists-equal(_slice($list, 0, $value), $list),
         'should work with an end >= list length');
     }

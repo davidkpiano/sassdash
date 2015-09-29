@@ -30,7 +30,7 @@
     }
 
     @include test('should return an empty list when n is greater than or equal to length of list') {
-        @each $value in 3, 4, pow(2, 32), 9999 {
+        @each $value in 3, 4, _pow(2, 32), 9999 {
             $actual: _drop($list, $value);
             $expected: ();
 
@@ -118,7 +118,7 @@
     }
 
     @include test('should return an empty list when n is greater than or equal to length of list') {
-        @each $value in 3, 4, pow(2, 32), 9999 {
+        @each $value in 3, 4, _pow(2, 32), 9999 {
             $actual: _drop-right($list, $value);
             $expected: ();
 

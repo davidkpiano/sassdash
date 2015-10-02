@@ -76,6 +76,40 @@
 }
 
 
+@function __map-keys-iteratee($value, $key, $map) {
+    $result: __this('result');
+    $iteratee: __this('iteratee');
+    $iteratee-value: if(__this('with-keys'),
+        $key,
+        $value);
+
+    $result: __set($result,
+        __exec($iteratee, $iteratee-value, $key, $map),
+        $value);
+    $_: __this('result', $result);
+
+    @return $result;
+}
+
+
+@function __map-keys($map, $iteratee: __identity, $this-arg: null, $with-keys: false) {
+    $result: ();
+    $iteratee: __get-callback($iteratee, $this-arg, 3);
+    $_: __scope((
+        'result': $result,
+        'iteratee': $iteratee,
+        'with-keys': $with-keys
+    ));
+    $map-keys-iteratee: __bind('__map-keys-iteratee');
+
+    $_: __base-for-own($map, $map-keys-iteratee);
+    $result: __this('result');
+    $_: __scope(false);
+
+    @return $result;
+}
+
+
 /// Creates a list of values by running each element in `$collection` through
 /// `$iteratee`. The `$iteratee` is bound to `$this-arg` and invoked with three
 /// arguments; (value, index|key, collection).
@@ -175,4 +209,10 @@
 
 @function _map-values($args...) {
     @return call('__map-values', $args...);
+}
+
+
+
+@function _map-keys($args...) {
+    @return call('__map-keys', $args...);
 }

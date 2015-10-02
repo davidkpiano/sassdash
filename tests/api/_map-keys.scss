@@ -1,0 +1,48 @@
+
+@include test-module('_map-keys') {
+    $list: (1, 2);
+    $map: ('a': 1, 'b': 2, 'c': 3);
+
+    @include test('should map keys in $map to a new map') {
+        $expected: ('1': 1, '2': 2, '3': 3);
+
+        @include assert-maps-equal(
+            _map-keys($map, _to-string),
+            $expected);
+    }
+
+    @include test('should treat lists like maps') {
+        $expected: ('1': 1, '2': 2);
+
+        @include assert-maps-equal(
+            _map-keys($list, _to-string),
+            $expected);
+    }
+
+    @include test('should work with a _property style iteratee') {
+        $nested-map: ('a': ('b': 'c'));
+        $expected: ('c': ('b': 'c'));
+
+        @include assert-maps-equal(
+            _map-keys($nested-map, 'b'),
+            $expected);
+    }
+
+    @include test('should work on a map with no iteratee') {
+        $expected: (1: 1, 2: 2, 3: 3);
+
+        @include assert-maps-equal(
+            _map-keys($map),
+            $expected);
+    }
+
+    @include test('should only use keys as value of iteratee when $with-keys is true') {
+        $expected: ('A': 1, 'B': 2, 'C': 3);
+
+        @include assert-maps-equal(
+            // Pending bug fix: https://github.com/sass/libsass/issues/1579
+            // Works when all arguments are specified
+            _map-keys($map, to-upper-case, null, $with-keys: true),
+            $expected);
+    }
+}

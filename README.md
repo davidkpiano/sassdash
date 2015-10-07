@@ -73,7 +73,7 @@ Sassdash includes a number of helper functions not available in lodash, which in
 
 * **`char` functions** - `_char-at`, `_char-code`, `_char-code-at`
 * **`number` functions** - `_parse-float` (alias `_to-number`) - similar to JavaScript `parseFloat`
-* **`value` functions** - `_get`, `_set` and `_memo` for easy cache manipulation
+* **`value` functions** - `_memo` for easy cache manipulation
 * **`list` functions** - `_reverse`, `_concat`, and `_splice`
 * **`string` functions** - `_str-concat` and `_join` (list to string)
 
@@ -84,6 +84,9 @@ $list: (1, ('a': 2), 3);
 
 $baz: _get($map, 'foo' 'bar' 'baz'); // => 'quo'
 $something: _get($list, 2 'a'); // => 2
+
+// You can also do this:
+$baz: _get($map, 'foo.bar.baz'); // => 'quo'
 
 $map: _set($map, 'foo' 'bar' 'test', 42);
 // => ('foo': ('bar': ('baz': 'quo', 'test': 42)))

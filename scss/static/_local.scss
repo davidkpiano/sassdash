@@ -59,6 +59,7 @@
 @function __get($map, $keys, $default: null) {
     $value-type: type-of($map);
 
+    $original-key: $keys;
     $keys: __to-keys($keys, $map);
 
     @if $value-type == 'string' {
@@ -74,6 +75,11 @@
 
         $map: __list-get($map, $index);
     } @else if $value-type == 'map' {
+        // Check if map has original key
+        @if map-has-key($map, $original-key) {
+            @return map-get($map, $original-key);
+        }
+        
         $key: nth($keys, 1);
 
         @if map-has-key($map, $key) {

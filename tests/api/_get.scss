@@ -74,4 +74,22 @@
     @include test('should return default value if key in list does not exist') {
         @include assert-equal(_get($list, 7, 'default'), 'default');
     }
+
+    @include test('should return value from original key if key exists on map as list/map') {
+        $map-with-list-key: (
+            'a': 1,
+            ('b', 'c'): 2,
+            ('b' 'c'): 3
+        );
+
+        $map-with-map-key: (
+            'a': 1,
+            ('b': 'c'): 2
+        );
+
+        @include assert-equal(_get($map-with-list-key, ('b', 'c')), 2);
+        @include assert-equal(_get($map-with-list-key, 'b' 'c'), 3);
+        @include assert-equal(_get($map-with-map-key, ('b': 'c')), 2);
+
+    }
 }

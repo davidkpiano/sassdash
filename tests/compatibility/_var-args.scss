@@ -1,0 +1,30 @@
+
+
+@function __test-call-fn($list) {
+    @return call(__test-fn-static-var-args, $list);
+}
+@function __test-fn-static-var-args($list, $args...) {
+    @return length($list);
+}
+@function __test-fn-var-args($args...) {
+  $all: ();
+
+  @each $arg in $args {
+    $all: append($all, $arg);
+  }
+
+  @return inspect($all);
+}
+@include test-module('variable-length args') {
+  @include test('should maintain list when calling function with variable-length args after static arg') {
+    $list: 1 2 3;
+
+    @include assert-equal(__test-call-fn($list), 3);
+  }
+
+  @include test('should maintain list when calling function with only variable-length args') {
+    @include assert-equal(__test-fn-var-args(1 2 3), '(1 2 3)');
+    @include assert-equal(__test-fn-var-args(1 2, 3 4), '(1 2) (3 4)');
+    @include assert-equal(__test-fn-var-args(1, 2, 3), '1 2 3');
+  }
+}

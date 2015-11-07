@@ -6,13 +6,14 @@
   "directories": {
     "test": "tests"
   },
-  "dependencies": {},
   "devDependencies": {
-    "node-sass": "^3.3.3",
-    "sass-true": "^2.0.2"
+    "node-sass": "3.3.3",
+    "sass-true": "^2.0.2",
+    "should": "^7.1.1"
   },
   "scripts": {
-    "test": "mocha tests/index.js"
+    "test": "mocha tests/index.js",
+    "test:dev": "./node_modules/node-sass/bin/node-sass tests/tests.scss"
   },
   "repository": {
     "type": "git",

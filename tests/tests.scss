@@ -4,6 +4,7 @@
 $true-terminal-output: true;
 
 @import 'helpers';
+@import 'compatibility/module';
 @import 'api/module';
 
 @include report();

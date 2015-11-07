@@ -108,8 +108,11 @@
     @return 1;
 }
 
+@function __unit-group-predicate($unit, $group, $args...) {
+  @return __includes($group, $unit);
+}
 @function __unit-group($value, $args...) {
-    @return __find-key(__const('UNIT_GROUPS'), __includes $value);
+    @return __find-key(__const('UNIT_GROUPS'), __partial(__unit-group-predicate, $value));
 }
 
 

@@ -36,7 +36,7 @@
 
 @function __property-of($map, $args...) {
     $_: __scope((
-        'map', $map
+        'map': $map
     ));
     $property-of-function: __bind('__property-of-function');
     $_: __scope(false);

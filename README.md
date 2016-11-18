@@ -62,11 +62,11 @@ $uppercase-capitals: _map($capitals, to-upper-case);
 ```
 
 ## Running Tests
-There are *over 700* unit tests. With node-sass, they usually take under 10 seconds to run. With Ruby Sass, they may take anywhere from 1 to 2 minutes.
+There are *over 800* unit tests. With node-sass, they usually take under 10 seconds to run. With Ruby Sass, they may take anywhere from 1 to 2 minutes.
 
 1. `cd path/to/sassdash`
-2. [`bower install true`](https://github.com/ericam/true)
-3. `true-cli tests/tests.scss`
+2. `npm install`
+3. `npm test`
 
 ## New Functions
 Sassdash includes a number of helper functions not available in lodash, which include utility functions and implementations of native Javascript functions:

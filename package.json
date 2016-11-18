@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "devDependencies": {
+    "mocha": "^3.1.2",
     "node-sass": "3.3.3",
     "sass-true": "^2.0.2",
     "should": "^7.1.1"

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 
 @function __lt($value, $other, $args...) {
   @return __base-compare-ascending($value, $other) < 0;

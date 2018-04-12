@@ -32,12 +32,12 @@
 /// // => 10
 
 @function _add($args...) {
-    @return call('__add', $args...);
+    @return call(get-function('__add'), $args...);
 }
 
 
 /// @alias _add
 
 @function \+($args...) {
-    @return call('__add', $args...);
+    @return call(get-function('__add'), $args...);
 }

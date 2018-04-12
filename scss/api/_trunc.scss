@@ -88,5 +88,5 @@
 /// // => 'hi-diddly-ho there, neig (...)'
 
 @function _trunc($string, $options: null, $guard: null, $omission: null, $length: null, $separator: null) {
-    @return call('__trunc', $string, $options, $guard, $omission, $length, $separator);
+    @return call(get-function('__trunc'), $string, $options, $guard, $omission, $length, $separator);
 }

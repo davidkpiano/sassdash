@@ -38,5 +38,5 @@
 /// $foo: _either('hijkl', 'xyz', str-index 'abc');
 /// // => 'xyz'
 @function _either($args...) {
-    @return call('__either', $args...);
+    @return call(get-function('__either'), $args...);
 }

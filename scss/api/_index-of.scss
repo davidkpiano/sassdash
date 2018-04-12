@@ -120,7 +120,7 @@
 /// // => 3
 
 @function _index-of($args...) {
-    @return call('__index-of', $args...);
+    @return call(get-function('__index-of'), $args...);
 }
 
 
@@ -148,7 +148,7 @@
 /// // => 4
 
 @function _last-index-of($args...) {
-    @return call('__last-index-of', $args...);
+    @return call(get-function('__last-index-of'), $args...);
 }
 
 

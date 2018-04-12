@@ -1,7 +1,7 @@
 
 
 @function __test-call-fn($list) {
-    @return call(__test-fn-static-var-args, $list);
+    @return call(get_function(__test-fn-static-var-args), $list);
 }
 @function __test-fn-static-var-args($list, $args...) {
     @return length($list);

@@ -96,11 +96,11 @@
 /// // => false
 
 @function _every($args...) {
-    @return call('__every', $args...);
+    @return call(get-function('__every'), $args...);
 }
 
 /// @alias _every
 
 @function _all($args...) {
-    @return call('__every', $args...);
+    @return call(get-function('__every'), $args...);
 }

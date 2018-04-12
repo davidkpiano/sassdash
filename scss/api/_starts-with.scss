@@ -53,7 +53,7 @@
 /// // => true
 
 @function _starts-with($args...) {
-    @return call('__starts-with', $args...);
+    @return call(get-function('__starts-with'), $args...);
 }
 
 /// Checks if `$string` starts with any of the strings in `$targets` list.
@@ -74,5 +74,5 @@
 /// // => true
 
 @function _starts-with-any($args...) {
-    @return call('__starts-with-any', $args...);
+    @return call(get-function('__starts-with-any'), $args...);
 }

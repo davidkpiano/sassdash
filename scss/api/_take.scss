@@ -91,7 +91,7 @@
 /// // => ()
 
 @function _take($args...) {
-    @return call('__take', $args...);
+    @return call(get-function('__take'), $args...);
 }
 
 
@@ -114,7 +114,7 @@
 /// // => ()
 
 @function _take-right($args...) {
-    @return call('__take-right', $args...);
+    @return call(get-function('__take-right'), $args...);
 }
 
 
@@ -161,7 +161,7 @@
 /// // => ()
 
 @function _take-right-while($args...) {
-    @return call('__take-right-while', $args...);
+    @return call(get-function('__take-right-while'), $args...);
 }
 
 
@@ -207,5 +207,5 @@
 /// // => ()
 
 @function _take-while($args...) {
-    @return call('__take-while', $args...);
+    @return call(get-function('__take-while'), $args...);
 }

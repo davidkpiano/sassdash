@@ -44,5 +44,5 @@
 /// // => 'fred, barney, & pebbles'
 
 @function _unescape($args...) {
-    @return call('__unescape', $args...);
+    @return call(get-function('__unescape'), $args...);
 }

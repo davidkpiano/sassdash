@@ -48,5 +48,5 @@
 /// // => 1, 2, 3
 
 @function _to-list($args...) {
-    @return call('__to-list', $args...);
+    @return call(get-function('__to-list'), $args...);
 }

@@ -156,14 +156,14 @@
 ///     // => ('barney', 'fred')
 
 @function _map($args...) {
-    @return call('__map', $args...);
+    @return call(get-function('__map'), $args...);
 }
 
 
 /// @alias _map
 
 @function _collect($args...) {
-    @return call('__map', $args...);
+    @return call(get-function('__map'), $args...);
 }
 
 
@@ -208,7 +208,7 @@
 ///     // => ( 'fred': 40, 'pebbles': 1 )
 
 @function _map-values($args...) {
-    @return call('__map-values', $args...);
+    @return call(get-function('__map-values'), $args...);
 }
 
 
@@ -261,5 +261,5 @@
 ///     // )
 
 @function _map-keys($args...) {
-    @return call('__map-keys', $args...);
+    @return call(get-function('__map-keys'), $args...);
 }

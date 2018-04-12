@@ -96,7 +96,7 @@
 /// // => ('foo', 'bar')
 
 @function _trim($args...) {
-    @return call('__trim', $args...);
+    @return call(get-function('__trim'), $args...);
 }
 
 
@@ -115,7 +115,7 @@
 /// // => 'abc-_-'
 
 @function _trim-left($args...) {
-    @return call('__trim-left', $args...);
+    @return call(get-function('__trim-left'), $args...);
 }
 
 
@@ -134,5 +134,5 @@
 /// // => '-_-abc'
 
 @function _trim-right($args...) {
-    @return call('__trim-right', $args...);
+    @return call(get-function('__trim-right'), $args...);
 }

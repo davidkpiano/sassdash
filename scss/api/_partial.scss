@@ -63,7 +63,7 @@
 ///     // => 'hello fred'
 
 @function _partial($args...) {
-    @return call('__partial', $args...);
+    @return call(get-function('__partial'), $args...);
 }
 
 
@@ -87,5 +87,5 @@
 ///     // => 'hi fred'
 
 @function _partial-right($args...) {
-    @return call('__partial-right', $args...);
+    @return call(get-function('__partial-right'), $args...);
 }

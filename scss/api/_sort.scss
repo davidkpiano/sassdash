@@ -264,7 +264,7 @@
 /// // => 9 8 7 6 5 4 3 2 1
 
 @function _sort($args...) {
-    @return call('__sort', $args...);
+    @return call(get-function('__sort'), $args...);
 }
 
 
@@ -306,7 +306,7 @@
 /// // => ('barney', 'fred', 'pebbles')
 
 @function _sort-by($args...) {
-    @return call('__sort-by', $args...);
+    @return call(get-function('__sort-by'), $args...);
 }
 
 
@@ -331,5 +331,5 @@
 /// // => (('barney', 26), ('barney', 36), ('fred', 30), ('fred', 40))
 
 @function _sort-by-all($args...) {
-    @return call('__sort-by-all', $args...);
+    @return call(get-function('__sort-by-all'), $args...);
 }

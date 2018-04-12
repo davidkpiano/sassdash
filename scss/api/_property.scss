@@ -67,7 +67,7 @@
 /// // => ('barney', 'fred')
 
 @function _property($args...) {
-    @return call('__property', $args...);
+    @return call(get-function('__property'), $args...);
 }
 
 
@@ -87,5 +87,5 @@
 /// // => ('b', 'c', 'a')
 
 @function _property-of($args...) {
-    @return call('__property-of', $args...);
+    @return call(get-function('__property-of'), $args...);
 }

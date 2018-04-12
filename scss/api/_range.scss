@@ -55,5 +55,5 @@
 /// // => ()
 
 @function _range($args...) {
-    @return call('__range', $args...);
+    @return call(get-function('__range'), $args...);
 }

@@ -29,5 +29,5 @@
 /// // => (3, 6, 4)
 
 @function _times($args...) {
-    @return call('__times', $args...);
+    @return call(get-function('__times'), $args...);
 }

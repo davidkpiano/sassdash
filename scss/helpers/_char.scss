@@ -73,7 +73,7 @@
 /// // => 'f'
 
 @function _char-at($args...) {
-    @return call('__char-at', $args...);
+    @return call(get-function('__char-at'), $args...);
 }
 
 
@@ -89,7 +89,7 @@
 /// // => 97
 
 @function _char-code-at($args...) {
-    @return call('__char-code-at', $args...);
+    @return call(get-function('__char-code-at'), $args...);
 }
 
 
@@ -104,12 +104,12 @@
 /// // => 97
 
 @function _get-char-code($args...) {
-    @return call('__get-char-code', $args...);
+    @return call(get-function('__get-char-code'), $args...);
 }
 
 
 /// @alias _get-char-code
 
 @function _char-code($args...) {
-    @return call('__get-char-code', $args...);
+    @return call(get-function('__get-char-code'), $args...);
 }

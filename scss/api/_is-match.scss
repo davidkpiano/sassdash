@@ -112,5 +112,5 @@
 /// // todo
 
 @function _is-match($args...) {
-    @return call('__is-match', $args...);
+    @return call(get-function('__is-match'), $args...);
 }

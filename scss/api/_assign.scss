@@ -102,12 +102,12 @@
 /// // => ( 'user': 'barney', 'age': 36 )
 
 @function _assign($args...) {
-    @return call('__assign', $args...);
+    @return call(get-function('__assign'), $args...);
 }
 
 
 /// @alias _assign
 
 @function _extend($args...) {
-    @return call('__assign', $args...);
+    @return call(get-function('__assign'), $args...);
 }

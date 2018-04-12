@@ -1,6 +1,6 @@
 @function __exec($function, $args...) {
   @if function-exists($function) {
-    @return call($function, $args...);
+    @return call(get_function($function), $args...);
   }
   
   @return __call($function, null, $args...);
@@ -27,5 +27,5 @@
 /// $foo: _exec($is-primary, $theme);
 /// // => true
 @function _exec($args...) {
-    @return call('__exec', $args...);
+    @return call(get-function('__exec'), $args...);
 }

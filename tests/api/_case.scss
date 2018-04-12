@@ -16,7 +16,7 @@
         
         @include test('should convert string to #{$case-name} case') {
             @each $string in $strings {
-                $actual: call($method-name, $string);
+                $actual: call(get_function($method-name), $string);
                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
 
                 @include assert-equal($actual, $expected);
@@ -25,7 +25,7 @@
 
         @include test('#{$method-name} should handle double-converting strings') {
             @each $string in $strings {
-                $actual: call($method-name, call($method-name, $string));
+                $actual: call(get_function($method-name), call(get_function($method-name), $string));
                 $expected: if($case-name == 'start' and $string == 'FOO BAR', $string, __get($converted, $case-name));
 
                 @include assert-equal($actual, $expected);

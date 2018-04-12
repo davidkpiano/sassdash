@@ -74,5 +74,5 @@
 /// // todo
 
 @function _create($args...) {
-    @return call('__create', $args...);
+    @return call(get-function('__create'), $args...);
 }

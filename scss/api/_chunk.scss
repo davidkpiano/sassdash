@@ -40,5 +40,5 @@
 /// // => (('a', 'b', 'c'), ('d',))
 
 @function _chunk($args...) {
-    @return call('__chunk', $args...);
+    @return call(get-function('__chunk'), $args...);
 }

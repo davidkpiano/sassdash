@@ -13,5 +13,5 @@
 }
 
 @function _modify($args...) {
-  @return call('__modify', $args...);
+  @return call(get-function('__modify'), $args...);
 }

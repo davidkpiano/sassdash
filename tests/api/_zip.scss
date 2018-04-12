@@ -24,7 +24,7 @@
 
     @each $key, $pair in $map {
       $lists: if($is-zip, nth($pair, 1), nth($pair, 2));
-      $actual: if($is-zip, call($func, $lists...), call($func, $lists));
+      $actual: if($is-zip, call(get_function($func), $lists...), call(get_function($func), $lists));
       $expected: if($is-zip, nth($pair, 2), if(length($actual) == 0, (), nth($pair, 1)));
 
       @include test('#{$func} should work with #{$key}') {

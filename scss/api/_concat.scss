@@ -44,7 +44,7 @@
 /// $foo: _concat(1 2, 3, 4);
 /// // => (1 2 3 4)
 @function _concat($args...) {
-    @return call('__concat', $args...);
+    @return call(get-function('__concat'), $args...);
 }
 
 /// Combines the text of two or more strings and returns a new string.
@@ -58,5 +58,5 @@
 /// $foo: _concat('Hello', ' ', 'World');
 /// // => 'Hello World'
 @function _str-concat($args...) {
-    @return call('__str-concat', $args...);
+    @return call(get-function('__str-concat'), $args...);
 }

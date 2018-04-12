@@ -92,7 +92,7 @@
 /// // => (1, 2, 3)
 
 @function _drop($args...) {
-    @return call('__drop', $args...);
+    @return call(get-function('__drop'), $args...);
 }
 
 
@@ -118,7 +118,7 @@
 /// // => (1, 2, 3)
 
 @function _drop-right($args...) {
-    @return call('__drop-right', $args...);
+    @return call(get-function('__drop-right'), $args...);
 }
 
 
@@ -171,7 +171,7 @@
 ///     // => ('barney', 'fred', 'pebbles')
 
 @function _drop-right-while($args...) {
-    @return call('__drop-right-while', $args...);
+    @return call(get-function('__drop-right-while'), $args...);
 }
 
 
@@ -222,5 +222,5 @@
 ///     // => ('barney', 'fred', 'pebbles')
 
 @function _drop-while($args...) {
-    @return call('__drop-while', $args...);
+    @return call(get-function('__drop-while'), $args...);
 }

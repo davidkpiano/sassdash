@@ -55,5 +55,5 @@
 /// // => (2,)
 
 @function _intersection($args...) {
-    @return call('__intersection', $args...);
+    @return call(get-function('__intersection'), $args...);
 }

@@ -154,15 +154,15 @@
 
 
 @function _parse-float($args...) {
-    @return call('__parse-float', $args...);
+    @return call(get-function('__parse-float'), $args...);
 }
 
 
 @function _to-number($args...) {
-    @return call('__parse-float', $args...);
+    @return call(get-function('__parse-float'), $args...);
 }
 
 
 @function _pow($args...) {
-    @return call('__math-pow', $args...);
+    @return call(get-function('__math-pow'), $args...);
 }

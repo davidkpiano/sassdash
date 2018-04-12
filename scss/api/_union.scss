@@ -15,5 +15,5 @@
 /// // => (1, 2, 4)
 
 @function _union($args...) {
-    @return call('__union', $args...);
+    @return call(get-function('__union'), $args...);
 }

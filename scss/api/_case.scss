@@ -94,7 +94,7 @@
 /// // => 'fooBar'
 
 @function _camel-case($args...) {
-    @return call('__camel-case', $args...);
+    @return call(get-function('__camel-case'), $args...);
 }
 
 
@@ -110,7 +110,7 @@
 /// // => 'Fred'
 
 @function _capitalize($args...) {
-    @return call('__capitalize', $args...);
+    @return call(get-function('__capitalize'), $args...);
 }
 
 
@@ -132,7 +132,7 @@
 /// // => 'foo-bar'
 
 @function _kebab-case($args...) {
-    @return call('__kebab-case', $args...);
+    @return call(get-function('__kebab-case'), $args...);
 }
 
 
@@ -153,7 +153,7 @@
 /// // => 'foo_bar'
 
 @function _snake-case($args...) {
-    @return call('__snake-case', $args...);
+    @return call(get-function('__snake-case'), $args...);
 }
 
 
@@ -175,5 +175,5 @@
 /// // => 'Foo Bar'
 
 @function _start-case($args...) {
-    @return call('__start-case', $args...);
+    @return call(get-function('__start-case'), $args...);
 }

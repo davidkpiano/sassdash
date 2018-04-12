@@ -47,5 +47,5 @@
 /// $foo: _count-by(('one', 'two', 'three'), 'str-length');
 /// // => ( 3: 2, 5: 1 )
 @function _count-by($args...) {
-  @return call('__count-by', $args...);
+  @return call(get-function('__count-by'), $args...);
 }

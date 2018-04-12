@@ -58,19 +58,19 @@
 /// // => true
 
 @function _includes($args...) {
-    @return call('__includes', $args...);
+    @return call(get-function('__includes'), $args...);
 }
 
 
 /// @alias _includes
 
 @function _include($args...) {
-    @return call('__includes', $args...);
+    @return call(get-function('__includes'), $args...);
 }
 
 
 /// @alias _includes
 
 @function _contains($args...) {
-    @return call('__includes', $args...);
+    @return call(get-function('__includes'), $args...);
 }

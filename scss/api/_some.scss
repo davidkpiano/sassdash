@@ -99,12 +99,12 @@
 /// // => true
 
 @function _some($args...) {
-    @return call('__some', $args...);
+    @return call(get-function('__some'), $args...);
 }
 
 
 /// @alias _some
 
 @function _any($args...) {
-    @return call('__some', $args...);
+    @return call(get-function('__some'), $args...);
 }

@@ -34,7 +34,7 @@
 /// // todo
 
 @function _values($args...) {
-    @return call('__values', $args...);
+    @return call(get-function('__values'), $args...);
 }
 
 
@@ -50,5 +50,5 @@
 /// // todo
 
 @function _values-in($args...) {
-    @return call('__values-in', $args...);
+    @return call(get-function('__values-in'), $args...);
 }

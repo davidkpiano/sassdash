@@ -144,5 +144,5 @@
 /// // todo
 
 @function _merge($args...) {
-    @return call('__merge', $args...);
+    @return call(get-function('__merge'), $args...);
 }

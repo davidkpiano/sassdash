@@ -39,5 +39,5 @@
 /// // => 'a' 'b' 'c' 'd' 'e'
 
 @function _split($args...) {
-    @return call('__string-split', $args...);
+    @return call(get-function('__string-split'), $args...);
 }

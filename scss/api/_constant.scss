@@ -28,5 +28,5 @@
 /// $foo: _exec($getter) === $map;
 /// // => true
 @function _constant($args...) {
-  @return call('__constant', $args...);
+  @return call(get-function('__constant'), $args...);
 }

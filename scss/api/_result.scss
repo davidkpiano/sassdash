@@ -44,5 +44,5 @@
 /// // => 'busy'
 
 @function _result($args...) {
-    @return call('__result', $args...);
+    @return call(get-function('__result'), $args...);
 }

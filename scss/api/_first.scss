@@ -18,12 +18,12 @@
 /// // => null
 
 @function _first($args...) {
-    @return call('__first', $args...);
+    @return call(get-function('__first'), $args...);
 }
 
 
 /// @alias _first
 
 @function _head($args...) {
-    @return call('__first', $args...);
+    @return call(get-function('__first'), $args...);
 }

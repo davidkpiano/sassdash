@@ -170,14 +170,14 @@
 ///     // => 'barney'
 
 @function _find($args...) {
-    @return call(__find, $args...);
+    @return call(get_function(__find), $args...);
 }
 
 
 /// @alias _find
 
 @function _detect($args...) {
-    @return call(__find, $args...);
+    @return call(get_function(__find), $args...);
 }
 
 
@@ -229,7 +229,7 @@
 ///     // => 3
 
 @function _find-index($args...) {
-    @return call('__find-index', $args...);
+    @return call(get-function('__find-index'), $args...);
 }
 
 
@@ -282,7 +282,7 @@
 ///     // => 'barney'
 
 @function _find-key($args...) {
-    @return call('__find-key', $args...);
+    @return call(get-function('__find-key'), $args...);
 }
 
 
@@ -306,7 +306,7 @@
 ///     // => 3
 
 @function _find-last($args...) {
-    @return call('__find-last', $args...);
+    @return call(get-function('__find-last'), $args...);
 }
 
 
@@ -359,7 +359,7 @@
 ///     // => 1
 
 @function _find-last-index($args...) {
-    @return call('__find-last-index', $args...);
+    @return call(get-function('__find-last-index'), $args...);
 }
 
 
@@ -412,7 +412,7 @@
 ///     // => 'pebbles'
 
 @function _find-last-key($args...) {
-    @return call('__find-last-key', $args...);
+    @return call(get-function('__find-last-key'), $args...);
 }
 
 
@@ -444,5 +444,5 @@
 /// // => 'fred'
 
 @function _find-where($args...) {
-    @return call('__find-where', $args...);
+    @return call(get-function('__find-where'), $args...);
 }

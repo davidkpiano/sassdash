@@ -23,5 +23,5 @@
 /// // => 'xxx' where xxx is a unique-id()
 
 @function _unique-id($args...) {
-    @return call('__unique-id', $args...);
+    @return call(get-function('__unique-id'), $args...);
 }

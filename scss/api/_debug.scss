@@ -22,5 +22,5 @@
 /// // DEBUG: three
 /// // => 'one' 'two' 'three'
 @function _debug($args...) {
-  @return call('__debug', $args...);
+  @return call(get-function('__debug'), $args...);
 }

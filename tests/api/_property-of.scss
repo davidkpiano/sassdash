@@ -1,0 +1,15 @@
+
+
+@include test-module('_property-of') {
+    @include test('should return a function that returns the value of the property') {
+        $map: (a: 1, b: 2, c: 3);
+        $function: _property-of($map);
+        @include assert-equal(_exec($function, a), 1);
+    }
+    @include test('should work with map') {
+        $map: ( 'a': 3, 'b': 1, 'c': 2 );
+        $foo: _map(('a', 'c'), _property-of($map));
+
+        @include assert-equal($foo, (3 2));
+    }
+}

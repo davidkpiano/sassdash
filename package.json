@@ -12,6 +12,9 @@
     "sass-true": "^4.0.0",
     "should": "^13.2.1"
   },
+  "peerDependencies": {
+    "node-sass": "^4.0.0"
+  },
   "scripts": {
     "test": "mocha tests/index.js",
     "test:dev": "./node_modules/node-sass/bin/node-sass tests/tests.scss"

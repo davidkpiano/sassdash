@@ -68,7 +68,7 @@
 /// // => (1, 2, 3, 4);
 
 @function _flatten($args...) {
-    @return call('__flatten', $args...);
+    @return call(get-function('__flatten'), $args...);
 }
 
 
@@ -84,5 +84,5 @@
 /// // => (1, 2, 3, 4);
 
 @function _flatten-deep($args...) {
-    @return call('__flatten-deep', $args...);
+    @return call(get-function('__flatten-deep'), $args...);
 }

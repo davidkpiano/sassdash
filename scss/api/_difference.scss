@@ -46,5 +46,5 @@
 /// // => (1, 3)
 
 @function _difference($args...) {
-    @return call('__difference', $args...);
+    @return call(get-function('__difference'), $args...);
 }

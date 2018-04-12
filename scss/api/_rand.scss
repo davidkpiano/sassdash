@@ -75,5 +75,5 @@
 /// // => a floating-point number between 1.2 and 5.2
 
 @function _rand($args...) {
-    @return call('__rand', $args...);
+    @return call(get-function('__rand'), $args...);
 }

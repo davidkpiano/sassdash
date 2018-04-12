@@ -51,7 +51,7 @@
 /// // => (('fred', 30, true), ('barney', 40, false))
 
 @function _zip($args...) {
-    @return call('__zip', $args...);
+    @return call(get-function('__zip'), $args...);
 }
 
 
@@ -70,11 +70,11 @@
 /// // => ( 'fred': 30, 'barney': 40 )
 
 @function _zip-map($args...) {
-    @return call('__zip-map', $args...);
+    @return call(get-function('__zip-map'), $args...);
 }
 
 /// @alias _zip-map
 
 @function _object($args...) {
-    @return call('__zip-map', $args...);
+    @return call(get-function('__zip-map'), $args...);
 }

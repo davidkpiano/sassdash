@@ -44,5 +44,5 @@
 /// // => ( '1': ('a', 'c'), '2': ('b',) )
 
 @function _invert($args...) {
-    @return call('__invert', $args...);
+    @return call(get-function('__invert'), $args...);
 }

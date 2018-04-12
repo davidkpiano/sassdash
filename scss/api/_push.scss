@@ -23,5 +23,5 @@
 /// @example scss
 /// // todo
 @function _push($args...) {
-    @return call('__push', $args...);
+    @return call(get-function('__push'), $args...);
 }

@@ -102,21 +102,21 @@
 /// // todo
 
 @function _reduce($args...) {
-    @return call('__reduce', $args...);
+    @return call(get-function('__reduce'), $args...);
 }
 
 
 /// @alias _reduce
 
 @function _foldl($args...) {
-    @return call('__reduce', $args...);
+    @return call(get-function('__reduce'), $args...);
 }
 
 
 /// @alias _reduce
 
 @function _inject($args...) {
-    @return call('__reduce', $args...);
+    @return call(get-function('__reduce'), $args...);
 }
 
 
@@ -135,12 +135,12 @@
 /// // todo
 
 @function _reduce-right($args...) {
-    @return call('__reduce-right', $args...);
+    @return call(get-function('__reduce-right'), $args...);
 }
 
 
 /// @alias _reduce-right
 
 @function _foldr($args...) {
-    @return call('__reduce-right', $args...);
+    @return call(get-function('__reduce-right'), $args...);
 }

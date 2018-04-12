@@ -79,7 +79,7 @@ $__memoized__: () !global;
 ///   // => 'Hello, Fred' (since 'Fred' and 'FRED' resolve to 'FRED');
 
 @function _memoize($args...) {
-    @return call('__memoize', $args...);
+    @return call(get-function('__memoize'), $args...);
 }
 
 
@@ -101,5 +101,5 @@ $__memoized__: () !global;
 /// // todo
 
 @function _memo($args...) {
-    @return call('__memo', $args...);
+    @return call(get-function('__memo'), $args...);
 }

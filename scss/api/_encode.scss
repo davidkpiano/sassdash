@@ -38,5 +38,5 @@
 /// // => 'Hello%20world'
 
 @function _encode($args...) {
-  @return call('__encode', $args...);
+  @return call(get-function('__encode'), $args...);
 }

@@ -86,5 +86,5 @@
 /// // => ()
 
 @function _to-map($args...) {
-    @return call('__to-map', $args...);
+    @return call(get-function('__to-map'), $args...);
 }

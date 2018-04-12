@@ -23,5 +23,5 @@
 /// // => (36, 40)
 
 @function _pluck($args...) {
-    @return call('__pluck', $args...);
+    @return call(get-function('__pluck'), $args...);
 }

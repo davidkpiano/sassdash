@@ -49,7 +49,7 @@
 /// // => true
 
 @function _ends-with($args...) {
-    @return call('__ends-with', $args...);
+    @return call(get-function('__ends-with'), $args...);
 }
 
 /// Checks if `$string` ends with any of the strings in `$targets` list.
@@ -72,5 +72,5 @@
 /// // => true
 
 @function _ends-with-any($args...) {
-    @return call('__ends-with-any', $args...);
+    @return call(get-function('__ends-with-any'), $args...);
 }

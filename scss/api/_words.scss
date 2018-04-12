@@ -46,5 +46,5 @@
 /// // => ('fred', 'barney', 'pebbles')
 
 @function _words($args...) {
-    @return call('__words', $args...);
+    @return call(get-function('__words'), $args...);
 }

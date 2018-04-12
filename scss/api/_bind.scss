@@ -42,5 +42,5 @@
 ///     $result: _exec($bound, '!');
 ///     // => 'hi fred!'
 @function _bind($args...) {
-    @return call('__bind', $args...);
+    @return call(get-function('__bind'), $args...);
 }

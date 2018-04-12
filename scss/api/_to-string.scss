@@ -31,5 +31,5 @@
 /// // => '123'
 
 @function _to-string($args...) {
-    @return call('__to-string', $args...);
+    @return call(get-function('__to-string'), $args...);
 }

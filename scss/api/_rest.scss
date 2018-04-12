@@ -15,12 +15,12 @@
 /// // => (2, 3)
 
 @function _rest($args...) {
-    @return call('__rest', $args...);
+    @return call(get-function('__rest'), $args...);
 }
 
 
 /// @alias _rest
 
 @function _tail($args...) {
-    @return call('__rest', $args...);
+    @return call(get-function('__rest'), $args...);
 }

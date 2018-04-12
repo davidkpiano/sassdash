@@ -15,5 +15,5 @@
 /// // => (1, 2)
 
 @function _initial($args...) {
-    @return call('__initial', $args...);
+    @return call(get-function('__initial'), $args...);
 }

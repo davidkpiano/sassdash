@@ -67,7 +67,7 @@
 /// // => { '4': (4.2,), '6': (6.1, 6.4) }
 
 @function _group-by($args...) {
-    @return call('__group-by', $args...);
+    @return call(get-function('__group-by'), $args...);
 }
 
 
@@ -86,5 +86,5 @@
 /// $result: _group-by-keys($foo $bar);
 /// // => (a: (1, 3), b: (2, 4), c: (5,));
 @function _group-by-keys($args...) {
-    @return call('__group-by-keys', $args...);
+    @return call(get-function('__group-by-keys'), $args...);
 }

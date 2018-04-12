@@ -214,14 +214,14 @@
 /// // todo
 
 @function _for-each($args...) {
-    @return call('__for-each', $args...);
+    @return call(get-function('__for-each'), $args...);
 }
 
 
 /// @alias _for-each
 
 @function _each($args...) {
-    @return call('__for-each', $args...);
+    @return call(get-function('__for-each'), $args...);
 }
 
 /// This method is like `_for-each` except that it iterates over elements of
@@ -238,14 +238,14 @@
 /// // todo
 
 @function _for-each-right($args...) {
-    @return call('__for-each-right', $args...);
+    @return call(get-function('__for-each-right'), $args...);
 }
 
 
 /// @alias _for-each-right
 
 @function _each-right($args...) {
-    @return call('__for-each-right', $args...);
+    @return call(get-function('__for-each-right'), $args...);
 }
 
 
@@ -265,7 +265,7 @@
 /// // todo
 
 @function _for-in($args...) {
-    @return call('__for-in', $args...);
+    @return call(get-function('__for-in'), $args...);
 }
 
 
@@ -283,7 +283,7 @@
 /// // todo
 
 @function _for-in-right($args...) {
-    @return call('__for-in-right', $args...);
+    @return call(get-function('__for-in-right'), $args...);
 }
 
 
@@ -303,7 +303,7 @@
 /// // todo
 
 @function _for-own($args...) {
-    @return call('__for-own', $args...);
+    @return call(get-function('__for-own'), $args...);
 }
 
 
@@ -321,5 +321,5 @@
 /// // todo
 
 @function _for-own-right($args...) {
-    @return call('__for-own-right', $args...);
+    @return call(get-function('__for-own-right'), $args...);
 }

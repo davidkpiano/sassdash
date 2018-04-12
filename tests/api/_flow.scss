@@ -4,7 +4,7 @@
         $is-flow: ($method-name == 'flow');
 
         @include test('#{$func} should supply each function with the return value of the previous') {
-            $combined: if($is-flow, call($func, test-add, test-square, test-fixed), call($func, test-fixed, test-square, test-add));
+            $combined: if($is-flow, call(get_function($func), test-add, test-square, test-fixed), call(get_function($func), test-fixed, test-square, test-add));
 
             $actual: _call($combined, null, 1, 2);
             $expected: 9.0;
@@ -17,7 +17,7 @@
         }
 
         @include test('#{$func} should return a noop function when no arguments are provided') {
-            $combined: call($func);
+            $combined: call(get_function($func));
 
             @include assert-equal(_call($combined), _call(_noop));
         }

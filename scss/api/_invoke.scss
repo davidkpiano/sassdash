@@ -70,5 +70,5 @@
 /// // => (('1', '2', '3'), ('4', '5', '6'))
 
 @function _invoke($args...) {
-    @return call('__invoke', $args...);
+    @return call(get-function('__invoke'), $args...);
 }

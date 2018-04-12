@@ -75,12 +75,12 @@
 /// // => (( 'x': 1 ), ( 'x': 2 ))
 
 @function _uniq($args...) {
-    @return call('__uniq', $args...);
+    @return call(get-function('__uniq'), $args...);
 }
 
 
 /// @alias _uniq
 
 @function _unique($args...) {
-    @return call('__uniq', $args...);
+    @return call(get-function('__uniq'), $args...);
 }

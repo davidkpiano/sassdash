@@ -44,7 +44,7 @@
 /// // => 'cba'
 
 @function _reverse($args...) {
-    @return call('__reverse', $args...);
+    @return call(get-function('__reverse'), $args...);
 }
 
 
@@ -60,5 +60,5 @@
 /// // => 'cba'
 
 @function _str-reverse($args...) {
-    @return call('__str-reverse', $args...);
+    @return call(get-function('__str-reverse'), $args...);
 }

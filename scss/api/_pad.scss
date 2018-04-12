@@ -69,7 +69,7 @@
 /// // => 'abc'
 
 @function _pad($args...) {
-    @return call('__pad', $args...);
+    @return call(get-function('__pad'), $args...);
 }
 
 
@@ -93,7 +93,7 @@
 /// // => 'abc'
 
 @function _pad-left($args...) {
-    @return call('__pad-left', $args...);
+    @return call(get-function('__pad-left'), $args...);
 }
 
 
@@ -117,5 +117,5 @@
 /// // => 'abc'
 
 @function _pad-right($args...) {
-    @return call('__pad-right', $args...);
+    @return call(get-function('__pad-right'), $args...);
 }

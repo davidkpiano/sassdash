@@ -22,5 +22,5 @@
 /// // => (3,)
 
 @function _without($args...) {
-    @return call('__without', $args...);
+    @return call(get-function('__without'), $args...);
 }

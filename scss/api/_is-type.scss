@@ -170,7 +170,7 @@
 ///     // => false
 
 @function _is-arglist($args...) {
-    @return call('__is-arglist', $args...);
+    @return call(get-function('__is-arglist'), $args...);
 }
 
 /// Checks if `$value` is a `List`.
@@ -188,7 +188,7 @@
 /// // => true
 
 @function _is-list($args...) {
-    @return call('__is-list', $args...);
+    @return call(get-function('__is-list'), $args...);
 }
 
 /// Checks if `$value` is a `Boolean`.
@@ -209,7 +209,7 @@
 /// // => false
 
 @function _is-boolean($args...) {
-    @return call('__is-boolean', $args...);
+    @return call(get-function('__is-boolean'), $args...);
 }
 
 /// Checks if `$value` is a standard Sass `Function` or a Sassdash
@@ -231,7 +231,7 @@
 /// // => false
 
 @function _is-function($args...) {
-    @return call('__is-function', $args...);
+    @return call(get-function('__is-function'), $args...);
 }
 
 /// Checks if `$value` is `null`.
@@ -253,7 +253,7 @@
 /// 
 /// 
 @function _is-null($args...) {
-    @return call('__is-null', $args...);
+    @return call(get-function('__is-null'), $args...);
 }
 
 /// Checks if `$value` is a `Number`.
@@ -271,7 +271,7 @@
 /// // => false
 
 @function _is-number($args...) {
-    @return call('__is-number', $args...);
+    @return call(get-function('__is-number'), $args...);
 }
 
 
@@ -293,7 +293,7 @@
 /// // => false
 
 @function _is-integer($args...) {
-    @return call('__is-integer', $args...);
+    @return call(get-function('__is-integer'), $args...);
 }
 
 
@@ -312,7 +312,7 @@
 /// // => false
 
 @function _is-map($args...) {
-    @return call('__is-map', $args...);
+    @return call(get-function('__is-map'), $args...);
 }
 
 
@@ -326,7 +326,7 @@
 /// // todo
 
 @function _is-plain-map($args...) {
-    @return call('__is-plain-map', $args...);
+    @return call(get-function('__is-plain-map'), $args...);
 }
 
 
@@ -348,7 +348,7 @@
 /// // => false
 
 @function _is-string($args...) {
-    @return call('__is-string', $args...);
+    @return call(get-function('__is-string'), $args...);
 }
 
 
@@ -364,7 +364,7 @@
 /// // todo
 
 @function _is-undefined($args...) {
-    @return call('__is-undefined', $args...);
+    @return call(get-function('__is-undefined'), $args...);
 }
 
 
@@ -391,7 +391,7 @@
 /// // => false
 
 @function _is-iterable($args...) {
-    @return call('__is-iterable', $args...);
+    @return call(get-function('__is-iterable'), $args...);
 }
 
 
@@ -415,7 +415,7 @@
 /// // => false
 
 @function _is-map-like($args...) {
-    @return call('__is-map-like', $args...);
+    @return call(get-function('__is-map-like'), $args...);
 }
 
 
@@ -431,7 +431,7 @@
 /// // => true
 
 @function _is-list-like($args...) {
-    @return call('__is-list-like', $args...);
+    @return call(get-function('__is-list-like'), $args...);
 }
 
 
@@ -453,7 +453,7 @@
 /// // => false
 
 @function _is-color($args...) {
-    @return call('__is-color', $args...);
+    @return call(get-function('__is-color'), $args...);
 }
 
 
@@ -475,5 +475,5 @@
 /// // => false
 
 @function _is-time($args...) {
-    @return call('__is-time', $args...);
+    @return call(get-function('__is-time'), $args...);
 }

@@ -40,5 +40,5 @@
 /// // => 12
 
 @function _sum($args...) {
-    @return call('__sum', $args...);
+    @return call(get-function('__sum'), $args...);
 }

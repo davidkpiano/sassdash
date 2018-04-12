@@ -15,5 +15,5 @@
 /// // => true
 
 @function _noop($args...) {
-    @return call('__noop', $args...);
+    @return call(get-function('__noop'), $args...);
 }

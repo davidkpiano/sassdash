@@ -163,13 +163,13 @@
 ///     // todo
 
 @function _is-equal($args...) {
-    @return call('__is-equal', $args...);
+    @return call(get-function('__is-equal'), $args...);
 }
 
 
 /// @alias _is-equal
 
 @function _eq($args...) {
-    @return call('__is-equal', $args...);
+    @return call(get-function('__is-equal'), $args...);
 }
 

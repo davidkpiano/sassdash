@@ -39,5 +39,5 @@
 /// // => (6, 8, 10)
 
 @function _ary($args...) {
-    @return call('__ary', $args...);
+    @return call(get-function('__ary'), $args...);
 }

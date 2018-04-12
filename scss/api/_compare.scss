@@ -1,3 +1,4 @@
+@charset "UTF-8";
 
 @function __lt($value, $other, $args...) {
   @return __base-compare-ascending($value, $other) < 0;
@@ -48,14 +49,14 @@
 /// // => false
 
 @function _lt($args...) {
-  @return call('__lt', $args...);
+  @return call(get-function('__lt'), $args...);
 }
 
 
 /// @alias _lt
 
 @function \<($args...) {
-  @return call('__lt', $args...);
+  @return call(get-function('__lt'), $args...);
 }
 
 ///
@@ -88,14 +89,14 @@
 /// // => true
 
 @function _lte($args...) {
-  @return call('__lte', $args...);
+  @return call(get-function('__lte'), $args...);
 }
 
 
 /// @alias _lte
 
 @function ≤($args...) {
-  @return call('__lte', $args...);
+  @return call(get-function('__lte'), $args...);
 }
 
 
@@ -128,14 +129,14 @@
 /// // => false
 
 @function _gt($args...) {
-  @return call('__gt', $args...);
+  @return call(get-function('__gt'), $args...);
 }
 
 
 /// @alias _gt
 
 @function \>($args...) {
-  @return call('__gt', $args...);
+  @return call(get-function('__gt'), $args...);
 }
 
 
@@ -169,12 +170,12 @@
 /// // => true
 
 @function _gte($args...) {
-  @return call('__gte', $args...);
+  @return call(get-function('__gte'), $args...);
 }
 
 
 /// @alias _gte
 
 @function ≥($args...) {
-  @return call('__gte', $args...);
+  @return call(get-function('__gte'), $args...);
 }

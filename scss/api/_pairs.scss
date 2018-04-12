@@ -22,5 +22,5 @@
 /// // => (('barney', 36), ('fred', 40))
 
 @function _pairs($args...) {
-    @return call('__pairs', $args...);
+    @return call(get-function('__pairs'), $args...);
 }

@@ -101,12 +101,12 @@
 ///     // => ('barney',)
 
 @function _filter($args...) {
-    @return call('__filter', $args...);
+    @return call(get-function('__filter'), $args...);
 }
 
 
 /// @alias _filter
 
 @function _select($args...) {
-    @return call('__filter', $args...);
+    @return call(get-function('__filter'), $args...);
 }

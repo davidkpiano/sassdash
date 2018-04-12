@@ -44,5 +44,5 @@
 ///
 
 @function _is-empty($args...) {
-    @return call('__is-empty', $args...);
+    @return call(get-function('__is-empty'), $args...);
 }

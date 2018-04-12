@@ -35,5 +35,5 @@
 /// // => 'fred, barney, &amp; pebbles'
 
 @function _escape($args...) {
-    @return call('__escape', $args...);
+    @return call(get-function('__escape'), $args...);
 }

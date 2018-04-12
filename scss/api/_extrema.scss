@@ -175,7 +175,7 @@
 /// // => ( 'user': 'fred', 'age': 40 );
 
 @function _max($args...) {
-    @return call('__max', $args...);
+    @return call(get-function('__max'), $args...);
 }
 
 
@@ -220,5 +220,5 @@
 /// // => ( 'user': 'barney', 'age': 36 );
 
 @function _min($args...) {
-    @return call('__min', $args...);
+    @return call(get-function('__min'), $args...);
 }

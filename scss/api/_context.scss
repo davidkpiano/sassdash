@@ -42,10 +42,10 @@ $__context__: () !global;
 
 
 @function _context-get($args...) {
-  @return call('__context-get', $args...);
+  @return call(get-function('__context-get'), $args...);
 }
 
 
 @function _context-set($args...) {
-  @return call('__context-set', $args...);
+  @return call(get-function('__context-set'), $args...);
 }

@@ -23,5 +23,5 @@
 /// color: $color; // null
 
 @function _once($args...) {
-    @return call('__once', $args...);
+    @return call(get-function('__once'), $args...);
 }

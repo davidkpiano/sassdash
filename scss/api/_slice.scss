@@ -56,5 +56,5 @@
 /// // todo
 
 @function _slice($args...) {
-    @return call('__slice', $args...);
+    @return call(get-function('__slice'), $args...);
 }

@@ -29,5 +29,5 @@
 /// // => (3, 1)
 
 @function _sample($args...) {
-    @return call('__sample', $args...);
+    @return call(get-function('__sample'), $args...);
 }

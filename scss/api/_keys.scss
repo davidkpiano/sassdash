@@ -28,7 +28,7 @@
 /// // todo
 
 @function _keys($args...) {
-    @return call('__keys', $args...);
+    @return call(get-function('__keys'), $args...);
 }
 
 
@@ -44,5 +44,5 @@
 /// // todo
 
 @function _keys-in($args...) {
-    @return call('__keys-in', $args...);
+    @return call(get-function('__keys-in'), $args...);
 }

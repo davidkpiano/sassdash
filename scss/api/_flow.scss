@@ -101,7 +101,7 @@
 ///     // => 9
 
 @function _flow($args...) {
-    @return call('__flow', $args...);
+    @return call(get-function('__flow'), $args...);
 }
 
 
@@ -127,19 +127,19 @@
 ///     // => 9
 
 @function _flow-right($args...) {
-    @return call('__flow-right', $args...);
+    @return call(get-function('__flow-right'), $args...);
 }
 
 
 /// @alias _flow-right
 
 @function _backflow($args...) {
-    @return call('__flow-right', $args...);
+    @return call(get-function('__flow-right'), $args...);
 }
 
 
 /// @alias _flow-right
 
 @function _compose($args...) {
-    @return call('__flow-right', $args...);
+    @return call(get-function('__flow-right'), $args...);
 }

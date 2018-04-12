@@ -73,5 +73,5 @@
 /// // => (('fred', 'barney'), (30, 40), (true, false))
 
 @function _unzip($args...) {
-    @return call('__unzip', $args...);
+    @return call(get-function('__unzip'), $args...);
 }

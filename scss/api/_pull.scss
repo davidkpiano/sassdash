@@ -39,5 +39,5 @@
 /// // => (1, 1)
 
 @function _pull($args...) {
-    @return call('__pull', $args...);
+    @return call(get-function('__pull'), $args...);
 }

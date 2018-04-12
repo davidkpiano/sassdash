@@ -39,5 +39,5 @@
 /// // todo
 
 @function _index-by($args...) {
-    @return call('__index-by', $args...);
+    @return call(get-function('__index-by'), $args...);
 }

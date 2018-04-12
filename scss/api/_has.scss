@@ -26,5 +26,5 @@
 /// // => true
 
 @function _has($args...) {
-    @return call('__has', $args...);
+    @return call(get-function('__has'), $args...);
 }

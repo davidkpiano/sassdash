@@ -29,5 +29,5 @@
 /// // => ''
 
 @function _repeat($args...) {
-    @return call('__repeat', $args...);
+    @return call(get-function('__repeat'), $args...);
 }

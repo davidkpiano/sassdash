@@ -70,5 +70,5 @@
 /// // => 1 'a' 'a'
 
 @function _fill($args...) {
-    @return call('__fill', $args...);
+    @return call(get-function('__fill'), $args...);
 }

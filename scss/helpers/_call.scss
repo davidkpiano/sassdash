@@ -62,7 +62,7 @@
         @return null;
     }
 
-    $result: call($function-name, $args...);
+    $result: call(get-function($function-name), $args...);
     $__current-scope__: $previous-scope !global;
 
     @return $result;
@@ -70,7 +70,7 @@
 
 
 @function _call($args...) {
-    @return call(__call, $args...);
+    @return call(get_function(__call), $args...);
 }
 
 

@@ -16,5 +16,5 @@
 /// // => true
 
 @function _identity($args...) {
-    @return call('__identity', $args...);
+    @return call(get-function('__identity'), $args...);
 }

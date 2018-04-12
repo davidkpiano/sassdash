@@ -65,5 +65,5 @@
 /// // => 123
 
 @function _parse-int($args...) {
-    @return call('__parse-int', $args...);
+    @return call(get-function('__parse-int'), $args...);
 }

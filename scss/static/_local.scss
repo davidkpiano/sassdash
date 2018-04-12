@@ -187,7 +187,7 @@
         $instance: map-merge($instance, __new($extends, $params));
     }
 
-    $instance: map-merge($instance, call($type, $params...));
+    $instance: map-merge($instance, call(get_function($type), $params...));
     $instance: map-merge($instance, $instance-meta);
 
     @return $instance;
@@ -229,7 +229,7 @@
 /// // => #CC0000
 
 @function _get($args...) {
-    @return call('__get', $args...);
+    @return call(get-function('__get'), $args...);
 }
 
 
@@ -261,14 +261,14 @@
 /// // );
 
 @function _set($args...) {
-    @return call('__set', $args...);
+    @return call(get-function('__set'), $args...);
 }
 
 
 @function _new($args...) {
-    @return call('__new', $args...);
+    @return call(get-function('__new'), $args...);
 }
 
 @function _instance-of($args...) {
-    @return call('__instance-of', $args...);
+    @return call(get-function('__instance-of'), $args...);
 }

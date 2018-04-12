@@ -31,5 +31,5 @@
 /// // => (1, 4)
 
 @function _xor($args...) {
-    @return call('__xor', $args...);
+    @return call(get-function('__xor'), $args...);
 }

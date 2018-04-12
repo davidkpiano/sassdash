@@ -36,5 +36,5 @@
 /// $foo: _replace('abcde', 'bcd', '---');
 /// // => 'a---e'
 @function _replace($args...) {
-    @return call('__string-replace', $args...);
+    @return call(get-function('__string-replace'), $args...);
 }

@@ -31,12 +31,12 @@
 /// // => ('a', 'b')
 
 @function _functions($args...) {
-    @return call('__functions', $args...);
+    @return call(get-function('__functions'), $args...);
 }
 
 
 /// @alias _functions
 
 @function _methods($args...) {
-    @return call('__functions', $args...);
+    @return call(get-function('__functions'), $args...);
 }

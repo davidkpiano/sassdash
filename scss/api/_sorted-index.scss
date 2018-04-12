@@ -108,7 +108,7 @@
 /// // => 2
 
 @function _sorted-index($args...) {
-    @return call('__sorted-index', $args...);
+    @return call(get-function('__sorted-index'), $args...);
 }
 
 
@@ -131,5 +131,5 @@
 /// // => 5
 
 @function _sorted-last-index($args...) {
-    @return call('__sorted-last-index', $args...);
+    @return call(get-function('__sorted-last-index'), $args...);
 }

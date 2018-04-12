@@ -60,5 +60,5 @@
 ///         }
 ///     }
 @function _before($args...) {
-    @return call('__before', $args...);
+    @return call(get-function('__before'), $args...);
 }

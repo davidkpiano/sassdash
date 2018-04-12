@@ -28,5 +28,5 @@
 /// // => (1, 2, 3)
 
 @function _compact($args...) {
-    @return call('__compact', $args...);
+    @return call(get-function('__compact'), $args...);
 }

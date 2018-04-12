@@ -46,5 +46,5 @@
 /// // => ('fred', 'pebbles')
 
 @function _at($args...) {
-    @return call('__at', $args...);
+    @return call(get-function('__at'), $args...);
 }

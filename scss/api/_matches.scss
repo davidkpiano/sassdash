@@ -81,5 +81,5 @@
 /// // => (( 'user': 'fred', 'age': 40, 'active': false ),)
 
 @function _matches($args...) {
-    @return call('__matches', $args...);
+    @return call(get-function('__matches'), $args...);
 }

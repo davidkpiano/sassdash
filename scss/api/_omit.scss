@@ -48,5 +48,5 @@
 /// // => ( 'user': 'fred' )
 
 @function _omit($args...) {
-    @return call('__omit', $args...);
+    @return call(get-function('__omit'), $args...);
 }

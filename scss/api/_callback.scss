@@ -159,9 +159,9 @@
 ///     // => white
 
 @function _callback($args...) {
-    @return call('__callback', $args...);
+    @return call(get-function('__callback'), $args...);
 }
 
 @function _iteratee($args...) {
-    @return call('__callback', $args...);
+    @return call(get-function('__callback'), $args...);
 }

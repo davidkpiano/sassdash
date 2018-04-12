@@ -17,5 +17,5 @@
 /// // => 3
 
 @function _last($args...) {
-    @return call('__last', $args...);
+    @return call(get-function('__last'), $args...);
 }

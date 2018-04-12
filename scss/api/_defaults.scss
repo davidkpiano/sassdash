@@ -37,5 +37,5 @@
 /// // => ( 'user': 'barney', 'age': 36 )
 
 @function _defaults($args...) {
-    @return call('__defaults', $args...);
+    @return call(get-function('__defaults'), $args...);
 }

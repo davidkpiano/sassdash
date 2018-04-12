@@ -76,5 +76,5 @@
 /// // => ( 'user': 'fred' )
 
 @function _pick($args...) {
-    @return call('__pick', $args...);
+    @return call(get-function('__pick'), $args...);
 }

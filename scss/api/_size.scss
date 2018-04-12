@@ -33,5 +33,5 @@
 /// // => 7
 
 @function _size($args...) {
-    @return call('__size', $args...);
+    @return call(get-function('__size'), $args...);
 }

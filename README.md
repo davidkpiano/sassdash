@@ -52,7 +52,7 @@ Also, just as in lodash, iteratee functions (such as those used with `_map`) are
 * Discard the rest of the arguments in the function definition: `@function is-even($value, $args...) { ... }`
 * Wrap the function with `_ary`: `_map($list, _ary(is-even));`
 
-However, **native Sass functions as iteratees are automatically guarded**! You can simply include them as an interatee:
+However, **native Sass functions as iteratees are automatically guarded**! You can simply include them as an iteratee:
 
 ```scss
 $capitals: ('Tallahassee', 'Springfield', 'Austin');

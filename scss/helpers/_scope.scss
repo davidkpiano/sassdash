@@ -1,5 +1,5 @@
 $__current-scope__: null !global;
-$__undefined__: '__undefined-#{unique-id()}__' !global;
+$__undefined__: '__undefined-#{unique-id()}__';
 
 @function Scope($parent: $__current-scope__) {
     $scope-id: unquote('@#{unique-id()}');

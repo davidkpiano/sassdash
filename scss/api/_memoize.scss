@@ -1,4 +1,4 @@
-$__memoized__: () !global;
+$__memoized__: ();
 
 @function __memoize-memoized($arguments...) {
     $func: __this('func');

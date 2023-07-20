@@ -1,4 +1,4 @@
-$__context__: () !global;
+$__context__: ();
 
 @mixin __context($context: (), $callback: '__identity') {
   $parent-context: $__context__;

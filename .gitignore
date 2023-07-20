@@ -7,3 +7,4 @@
 /tests/*.map
 /tests/.sass-cache
 index.html
+.history
